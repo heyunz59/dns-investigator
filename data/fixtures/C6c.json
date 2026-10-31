@@ -1,0 +1,35 @@
+[
+  {
+    "tool": "query_dns",
+    "match": {
+      "domain": "example.com"
+    },
+    "data": {
+      "rcode": "NOERROR",
+      "records": [
+        {
+          "value": "192.0.2.10",
+          "ttl": 60
+        }
+      ],
+      "resolvers": [
+        "192.0.2.53"
+      ],
+      "record_type": "A"
+    }
+  },
+  {
+    "tool": "check_http",
+    "match": {
+      "url": "https://example.com/"
+    },
+    "data": {
+      "status_code": null,
+      "final_url": "https://example.com/",
+      "redirects": [],
+      "peer_ip": null,
+      "proxy_mode": "fixture",
+      "error": "TIMEOUT"
+    }
+  }
+]

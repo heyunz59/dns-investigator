@@ -1,0 +1,33 @@
+[
+  {
+    "tool": "query_dns",
+    "match": {
+      "domain": "example.com"
+    },
+    "data": {
+      "rcode": "NOERROR",
+      "records": [
+        {
+          "value": "192.0.2.10",
+          "ttl": 60
+        }
+      ],
+      "resolvers": [
+        "192.0.2.53"
+      ],
+      "record_type": "A"
+    }
+  },
+  {
+    "tool": "check_tcp",
+    "match": {
+      "ip": "192.0.2.10",
+      "port": 443
+    },
+    "data": {
+      "ip": "192.0.2.10",
+      "port": 443,
+      "status": "TIMEOUT"
+    }
+  }
+]

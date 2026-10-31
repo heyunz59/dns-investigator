@@ -1,0 +1,16 @@
+[
+  {
+    "tool": "query_dns",
+    "match": {
+      "domain": "example.com"
+    },
+    "data": {
+      "rcode": "NXDOMAIN",
+      "records": [],
+      "resolvers": [
+        "192.0.2.53"
+      ],
+      "record_type": "A"
+    }
+  }
+]

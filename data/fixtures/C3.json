@@ -1,0 +1,37 @@
+[
+  {
+    "tool": "query_dns",
+    "match": {
+      "domain": "example.com",
+      "resolver": null
+    },
+    "data": {
+      "rcode": "TIMEOUT",
+      "records": [],
+      "resolvers": [
+        "192.0.2.53"
+      ],
+      "record_type": "A"
+    }
+  },
+  {
+    "tool": "query_dns",
+    "match": {
+      "domain": "example.com",
+      "resolver": "1.1.1.1"
+    },
+    "data": {
+      "rcode": "NOERROR",
+      "records": [
+        {
+          "value": "192.0.2.10",
+          "ttl": 60
+        }
+      ],
+      "resolvers": [
+        "1.1.1.1"
+      ],
+      "record_type": "A"
+    }
+  }
+]
