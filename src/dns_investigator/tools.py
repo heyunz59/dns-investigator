@@ -41,8 +41,13 @@ class ToolBackend:
         self.calls.append(row)
         try:
             if self.fixture is not None:
-                matches = [item for item in self.fixture if item["tool"] == name and
-                           all(args.get(k) == v for k, v in item["match"].items())]
+                def matching(item):
+                    expected = item["match"]
+                    if name == "query_dns":
+                        expected = {"record_type": "A", "resolver": None, **expected}
+                    actual = {"record_type": "A", "resolver": None, **args} if name == "query_dns" else args
+                    return item["tool"] == name and all(actual.get(k) == v for k, v in expected.items())
+                matches = [item for item in self.fixture if matching(item)]
                 if not matches:
                     raise ValueError("fixture 没有匹配此参数的原始事实")
                 row["data"] = matches[0]["data"].copy()

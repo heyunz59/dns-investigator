@@ -114,12 +114,12 @@ async def investigate(text, target, config, fixture=None, model=None, baseline_f
             if parts:
                 visible.append({"kind": message.get("kind"), "parts": parts})
         log.update(status="completed", result=result.output.model_dump(),
-                   usage=asdict(result.usage), visible_messages=visible)
+                   usage=json.loads(json.dumps(asdict(result.usage), default=str)), visible_messages=visible)
     except Exception as exc:
         # Do not persist SDK exception strings: these may contain request details.
         log.update(status="failed", error={"category": type(exc).__name__,
                    "message": str(exc) if isinstance(exc, ValueError) else "模型或运行失败；已有工具证据已保存"})
     finally:
         log.update(evidence=backend.calls, elapsed_seconds=round(time.monotonic()-start, 3))
-        path.write_text(json.dumps(redact(log, [config.api_key]), ensure_ascii=False, indent=2), encoding="utf-8")
+        path.write_text(json.dumps(redact(log, [config.api_key]), ensure_ascii=False, indent=2, default=str), encoding="utf-8")
     return log, path

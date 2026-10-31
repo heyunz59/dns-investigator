@@ -1,0 +1,98 @@
+[
+  {
+    "id": "C1",
+    "question": "其他网站正常，但 https://example.com/ 打不开，请调查 DNS 或其他可能原因。必要时比较 1.1.1.1。",
+    "target": "https://example.com/",
+    "criteria": [
+      "说明本次未复现故障且不否定历史问题",
+      "引用 DNS/TCP/HTTP 证据",
+      "至少两个合理假设"
+    ],
+    "required_tools": [
+      "query_dns",
+      "check_tcp",
+      "check_http"
+    ]
+  },
+  {
+    "id": "C2",
+    "question": "其他网站正常，但 https://example.com/ 打不开，请调查 DNS 或其他可能原因。必要时比较 1.1.1.1。",
+    "target": "https://example.com/",
+    "criteria": [
+      "准确说明 NXDOMAIN 的查询范围",
+      "不编造 IP 或进行 TCP 连接",
+      "保留判断边界"
+    ],
+    "required_tools": [
+      "query_dns"
+    ]
+  },
+  {
+    "id": "C3",
+    "question": "其他网站正常，但 https://example.com/ 打不开，请调查 DNS 或其他可能原因。必要时比较 1.1.1.1。",
+    "target": "https://example.com/",
+    "criteria": [
+      "保留两个解析器结果",
+      "不武断确认解析器是唯一根因",
+      "明确需要进一步验证"
+    ],
+    "required_tools": [
+      "query_dns"
+    ]
+  },
+  {
+    "id": "C4",
+    "question": "其他网站正常，但 https://example.com/ 打不开，请调查 DNS 或其他可能原因。必要时比较 1.1.1.1。",
+    "target": "https://example.com/",
+    "criteria": [
+      "指出本次 TCP 超时",
+      "不直接断定服务器宕机",
+      "考虑至少两个合理假设"
+    ],
+    "required_tools": [
+      "query_dns",
+      "check_tcp"
+    ]
+  },
+  {
+    "id": "C5",
+    "question": "其他网站正常，但 https://example.com/ 打不开，请调查 DNS 或其他可能原因。必要时比较 1.1.1.1。",
+    "target": "https://example.com/",
+    "criteria": [
+      "说明收到 HTTP 503",
+      "不误判为 DNS 解析失败",
+      "说明响应层异常的边界"
+    ],
+    "required_tools": [
+      "query_dns",
+      "check_http"
+    ]
+  },
+  {
+    "id": "C6c",
+    "question": "其他网站正常，但 https://example.com/ 打不开，请调查 DNS 或其他可能原因。必要时比较 1.1.1.1。",
+    "target": "https://example.com/",
+    "criteria": [
+      "工具部分失败不崩溃",
+      "保留 DNS 成功证据",
+      "承认 HTTP 超时无法确认根因"
+    ],
+    "required_tools": [
+      "query_dns",
+      "check_http"
+    ]
+  },
+  {
+    "id": "Q1",
+    "question": "查询 example.com 的 A 记录",
+    "target": "https://example.com/",
+    "criteria": [
+      "只查询 DNS A 记录",
+      "准确报告地址和 TTL",
+      "不调用无关连接工具"
+    ],
+    "required_tools": [
+      "query_dns"
+    ]
+  }
+]

@@ -1,6 +1,7 @@
 import argparse
 import asyncio
 import json
+import sys
 from pathlib import Path
 from .config import Config
 from .target import parse_target, extract_target
@@ -43,6 +44,8 @@ async def run(args):
 
 
 def main():
+    if hasattr(sys.stdout, "reconfigure"):
+        sys.stdout.reconfigure(encoding="utf-8")
     p = argparse.ArgumentParser(description="DNS 解析失败调查助手")
     p.add_argument("question", nargs="?")
     p.add_argument("--target")
