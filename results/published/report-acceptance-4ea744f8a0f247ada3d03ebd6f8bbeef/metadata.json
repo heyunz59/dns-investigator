@@ -1,0 +1,23 @@
+{
+  "base_commit": "5223c060dce2b436be7490185d7ac5eb29dd1867",
+  "source_hashes": {
+    "src\\dns_investigator\\accounting.py": "d86207e3be9e28561538c3e9cccae54bb388e3351b7a39564a63155a9f1a254b",
+    "src\\dns_investigator\\agent.py": "f01b53d7179b91f0d0f3a7e6577be9b1db0f4e7940c77ddabb36a1d195fa8af2",
+    "src\\dns_investigator\\authority.py": "d8334dd7281ab29f23c323f7792748679aef2f6cc41d187719c9c799ca9f12f1",
+    "src\\dns_investigator\\config.py": "70f48951131d91146a4a0a863aad461b9adb756aff01955eda439b10857f5af6",
+    "src\\dns_investigator\\dns_compare.py": "702838bf56f146f66069e9426dad65a3415bf20359d4e3fe46071f3ded590aba",
+    "src\\dns_investigator\\dns_diagnosis.py": "587328321347a7225bbceb0e9af84a8156fb511697248b12d2aada96da2b79fd",
+    "src\\dns_investigator\\dns_wire.py": "239798f1f7be36f5ee7b65db65df939415c5abf8a239553cce49f7fa4f94b38c",
+    "src\\dns_investigator\\main.py": "1021076ce983475fef118036713d05d41126f5ab1a8803aa746bd6aa4fcbc665",
+    "src\\dns_investigator\\network_errors.py": "df4b93832d77a43d334771706d8c03ee8b89c91ce79289586cdb76349a65adc1",
+    "src\\dns_investigator\\privacy.py": "c60a85b4e2c903e5afed81cd8afea8b1ae6a0f3200e9fec4419a1a9af41bfee7",
+    "src\\dns_investigator\\reporting.py": "0d882a2aa15146d2700b44adc8ed3e52176a639964809166703266d22eee5f30",
+    "src\\dns_investigator\\schemas.py": "17cd705756f5d877a03013b137000d8c064d757911b7f520561534abfc349e05",
+    "src\\dns_investigator\\target.py": "cc3e570dcdd7fdbe13dbd755a34ed7bf4ce7fab9cd4590dd03e918fd736d428c",
+    "src\\dns_investigator\\tools.py": "b94782f36c10b37b418d8152d99baf877a8d8370aa76396c663279701f0ffa72",
+    "src\\dns_investigator\\__init__.py": "acde81e4ea71101b9803713e101815492b576f72796438a60f27e8c3c6329544"
+  },
+  "verification": "offline scripted model + controlled loopback HTTP + historical replay",
+  "paid_model_invoked": false,
+  "public_network_invoked": false
+}

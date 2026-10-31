@@ -1,5 +1,6 @@
 """Evidence-bound output. Free model drafts are retained separately for review."""
 import json
+import re
 from pydantic_ai import ModelRetry
 from .schemas import Observation,ExecutionIssue
 
@@ -8,11 +9,17 @@ def facts(evidence):
     rows=[]
     for e in evidence:
         d=e["data"];args=e.get("input",{})
-        rows.append(dict(evidence_id=e["id"],target=d.get("qname",args.get("domain",args.get("url",args.get("ip","unknown")))),
+        target=(d.get("ip",args.get("ip","unknown")) if e["tool_name"]=="check_tcp" else
+                args.get("url",d.get("final_url","unknown")) if e["tool_name"]=="check_http" else d.get("qname",args.get("domain","unknown")))
+        rows.append(dict(evidence_id=e["id"],target=target,
             resolver=d.get("resolver",args.get("resolver")),record_type=d.get("qtype",args.get("record_type")),
             measured_at=e.get("started_at"),source_mode=e["source_mode"],tool=e["tool_name"],
             result=next((d[k] for k in ("result_kind","rcode","status_code","status","error") if d.get(k) is not None),"UNKNOWN"),
             records=d.get("records",[]),error=d.get("error"),error_detail=d.get("error_detail"),peer_ip=d.get("peer_ip")))
+        if e["tool_name"]=="check_http":
+            rows[-1].update(status_code=d.get("status_code"),final_url=d.get("final_url"),redirects=d.get("redirects",[]),
+                bytes_read=d.get("bytes_read"),request_state="incomplete" if d.get("error") else "finished_within_check_limits")
+        elif e["tool_name"]=="check_tcp":rows[-1]["port"]=d.get("port",args.get("port"))
     return rows
 
 
@@ -45,7 +52,13 @@ def evidence_bound_report(result,backend):
     result.execution_issues=issues(backend.attempts)
     def describe(f):
         scope=f"{f['target']}"+(f" {f['record_type']} / 解析器 {f['resolver']}" if f["record_type"] else f" {f['tool']}")
-        details=json.dumps(f["records"],ensure_ascii=False) if f["records"] else ""
+        if f["tool"]=="check_http":
+            details=f"HTTP 状态码={f['status_code']}；请求状态={f['request_state']}；错误={f['error']}；读取字节={f['bytes_read']}；最终 URL={f['final_url']}；跳转={json.dumps(f['redirects'],ensure_ascii=False)}"
+            if f["error_detail"]:
+                details+=f"；底层错误类别={f['error_detail'].get('code')}；证书错误={json.dumps(f['error_detail'].get('certificate'),ensure_ascii=False)}"
+        elif f["tool"]=="check_tcp":
+            details=f"端口={f['port']}；错误详情={json.dumps(f['error_detail'],ensure_ascii=False)}"
+        else:details=json.dumps(f["records"],ensure_ascii=False) if f["records"] else ""
         return f"{scope}：{f['result']} {details}；来源 {f['source_mode']}；时间 {f['measured_at']}（{f['evidence_id']}）"
     result.observations=[Observation(evidence_id=f["evidence_id"],observation=describe(f)) for f in measured]
     # No parser attempts or model prose are allowed to add measured combinations.
@@ -53,35 +66,59 @@ def evidence_bound_report(result,backend):
     result.conclusion_evidence_ids=[f["evidence_id"] for f in measured]
     if measured and result.request_kind!="query":result.conclusion += "。以上仅为已测组合，未列出的解析器×类型组合未测；不据此确认唯一根因。"
     allowed={f["evidence_id"]:f for f in measured}
+    kept=[]
+    identities={}
+    def relation_status(h):
+        if h.supporting_evidence_ids and h.contradicting_evidence_ids:return "无法确定"
+        return "待验证" if h.supporting_evidence_ids else "被削弱" if h.contradicting_evidence_ids else "无法确定"
     for h in result.hypotheses:
         def admissible(eid,support):
-            f=allowed[eid]
-            if h.category=="dns_resolution":
+            if eid not in allowed:raise ModelRetry("假设引用了不存在的测量证据。")
+            f=allowed[eid];scope=h.measurement_scope
+            # Category is not a causal identity. Only an explicit observation claim
+            # with an exact measured scope may establish a mechanical relationship.
+            required={"target","source_mode"}
+            if h.testable_claim=="dns_query_failure":required|={"resolver","record_type"}
+            if h.testable_claim=="tcp_connection_failure":required|={"port"}
+            if not required.issubset(scope) or any(scope[k] is None for k in required) or any(f.get(k)!=v for k,v in scope.items()):return False
+            if h.testable_claim=="dns_query_failure":
                 return f["record_type"] is not None and ((f["result"] in {"NXDOMAIN","NODATA","SERVFAIL","REFUSED","TIMEOUT"}) if support else f["result"]=="NOERROR")
-            if h.category=="certificate_validation":
+            if h.testable_claim=="certificate_verification_failure":
                 return f["error_detail"] is not None and f["error_detail"].get("code")=="CERTIFICATE_VERIFY_FAILED" and support
-            if h.category=="http_response":return f["tool"]=="check_http" and isinstance(f["result"],int) and f["result"]>=400 and support
-            if h.category=="transport":return f["tool"]=="check_tcp" and ((f["result"] in {"TIMEOUT","REFUSED","NETWORK_ERROR"}) if support else f["result"]=="CONNECTED")
+            if h.testable_claim=="http_error_response":return f["tool"]=="check_http" and isinstance(f["status_code"],int) and ((f["status_code"]>=400) if support else f["status_code"]<400)
+            if h.testable_claim=="tcp_connection_failure":return f["tool"]=="check_tcp" and ((f["result"] in {"TIMEOUT","REFUSED","NETWORK_ERROR"}) if support else f["result"]=="CONNECTED")
             return False  # client state, endpoint intent and registration not measured by these tools
-        h.supporting_evidence_ids=[x for x in h.supporting_evidence_ids if admissible(x,True)]
-        h.contradicting_evidence_ids=[x for x in h.contradicting_evidence_ids if admissible(x,False)]
-        # A successful sampled path cannot refute a general candidate covering
-        # unmeasured clients/addresses/times. Keep it in measured_facts instead.
-        h.contradicting_evidence_ids=[]
+        proposed_support=h.supporting_evidence_ids[:];proposed_counter=h.contradicting_evidence_ids[:]
+        h.supporting_evidence_ids=[x for x in proposed_support if admissible(x,True)]
+        h.contradicting_evidence_ids=[x for x in proposed_counter if admissible(x,False)]
+        h.evidence_review_notes=[f"{eid} 的{direction}关系缺少匹配的具体观测命题/范围或结果类型；未据此确认或否定该原因。"
+            for direction,proposed,kept_refs in [("支持",proposed_support,h.supporting_evidence_ids),("反面",proposed_counter,h.contradicting_evidence_ids)]
+            for eid in proposed if eid not in kept_refs]
         # Candidate explanations remain candidates, even when a symptom is observed.
-        h.status="待验证" if h.supporting_evidence_ids else "无法确定"
-        h.statement={"dns_resolution":"DNS 解析路径是否有异常","transport":"指定地址的连接路径是否有异常", "http_response":"HTTP 错误响应的服务侧原因", "certificate_validation":"证书验证是否失败及其具体原因", "client_environment":"用户客户端环境是否与程序路径不同", "endpoint_intent":"该端点是否按设计返回错误状态", "registration":"域名注册或权威配置是否异常", "other":"其他尚未验证的解释"}[h.category]
-        h.missing_information=["仍需直接验证该候选解释，症状不等于已确认原因。"]
+        h.status=relation_status(h)
+        h.statement=re.sub(r"^(?:已确认|已经确认|已证实)[：:\s]*","",h.statement).strip()
+        if not h.statement:raise ModelRetry("假设身份不能为空。")
+        if not h.missing_information and not h.contradicting_evidence_ids:
+            h.missing_information=["仍需直接验证该候选解释，症状不等于已确认原因。"]
+        identity=(re.sub(r"\s+","",h.statement).casefold(),json.dumps(h.measurement_scope,sort_keys=True),h.testable_claim)
+        if identity not in identities:
+            kept.append(h);identities[identity]=h
+        else:
+            original=identities[identity]
+            for field in ("supporting_evidence_ids","contradicting_evidence_ids","missing_information","evidence_review_notes"):
+                setattr(original,field,list(dict.fromkeys(getattr(original,field)+getattr(h,field))))
+            original.status=relation_status(original)
+    result.hypotheses=kept
     invalid=backend.target.domain=="invalid" or backend.target.domain.endswith(".invalid")
-    synthetic=any(f["source_mode"]!="live" for f in measured)
+    synthetic=backend.fixture is not None or any(f["source_mode"]!="live" for f in measured)
     if result.request_kind=="query":result.hypotheses=[]
-    result.hypotheses=[h for h in result.hypotheses if h.category!="other"]
     if invalid:result.hypotheses=[h for h in result.hypotheses if h.category!="registration"]
-    if result.request_kind=="investigation" and result.outcome=="answered" and len({h.category for h in result.hypotheses})<2:
+    if len({h.id for h in result.hypotheses})!=len(result.hypotheses):raise ModelRetry("最终假设编号必须唯一。")
+    if result.outcome=="answered" and (not measured or (result.request_kind=="investigation" and len(result.hypotheses)<2)):
         result.outcome="insufficient_information"
     recommendations=["优先收集故障设备的具体错误、发生时间，再进行不修改配置的对照检查。"]
     if synthetic:recommendations=["本次包含 fixture/synthetic 事实。转入真实检查前先重新 live 解析，再使用真实返回地址；不要探测模拟 IP。"]
-    if invalid:recommendations=[".invalid 为公网保留测试用途，本次公网 NXDOMAIN 符合此用途；如需访问实际服务，请核对真实域名。hosts 或私有 DNS 覆盖仍可能有不同结果。"]
+    if invalid:recommendations.append(".invalid 按规范为公网保留测试用途，预期不在公共 DNS 中正常解析；这是背景知识，不是本次观测。实际结果以测量表为准，hosts 或私有 DNS 覆盖仍可能不同。请核对服务应使用的真实域名。")
     elif result.request_kind!="query" and not synthetic:
         recommendations += [f"外部对照可用 curl.exe -v -L '{backend.target.url}'，保留证书校验；IPv4/IPv6 可分别用 -4/-6 对照，不修改系统配置。",
             "现有 HTTP 工具不能绑定指定后端。外部专项检查可用 curl.exe --resolve 域名:端口:IP 配合原始 HTTPS URL，保留 Host/SNI 和证书校验。"]

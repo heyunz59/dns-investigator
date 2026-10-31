@@ -3,6 +3,9 @@ from pydantic import BaseModel, Field
 
 
 class Hypothesis(BaseModel):
+    testable_claim: Literal["dns_query_failure","tcp_connection_failure","http_error_response","certificate_verification_failure"] | None = None
+    measurement_scope: dict = Field(default_factory=dict)
+    evidence_review_notes: list[str] = Field(default_factory=list)
     category: Literal["dns_resolution","transport","http_response","certificate_validation","client_environment","endpoint_intent","registration","other"] = "other"
     id: str
     statement: str

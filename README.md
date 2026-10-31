@@ -1,5 +1,7 @@
 # DNS 调查助手
 
+报告层验收修复：.invalid 背景与实际观测分开；HTTP 摘要保留错误、跳转、最终 URL 和证书类别；假设身份不按类别重写，具体范围内的证据关系另行约束。[验证与边界](docs/report-acceptance-fixes.md)。
+
 九案例修复：正式事实与结论按实际 E 测量逐行生成，执行错误使用独立 A 引用；模型草稿另存，不作为已验证结论展示。候选原因保持待验证，单项查询简化；HTTP 安全异常链和 Windows IPv6 地址处理已修正。日志格式 v4，[逐项记录与边界](docs/manual-review-fixes.md)。
 
 v0.3 针对性修复：并发测量按调用 ID 归属，保留独立 HTTP/DNS 证据；CNAME 转介、未完成别名和链末端负回答明确区分。见 [修复与验证](docs/v0.3-targeted-fixes.md)。
