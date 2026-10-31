@@ -21,4 +21,5 @@ dns-investigator = "dns_investigator.main:main"
 [tool.pytest.ini_options]
 pythonpath = ["src"]
 asyncio_mode = "auto"
+asyncio_default_fixture_loop_scope = "function"
 testpaths = ["tests"]
