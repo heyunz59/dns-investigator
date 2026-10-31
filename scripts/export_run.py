@@ -18,17 +18,21 @@ def export(source, destination):
                 collect(item)
         elif isinstance(value,list):
             for item in value: collect(item)
-    for evidence in log.get("evidence", []):
+    evidence_rows=log.get("evidence",[]) if isinstance(log,dict) else []
+    for evidence in evidence_rows:
         if evidence["source_mode"] == "live" and evidence["tool_name"] == "query_dns":
             data = evidence.get("data", {})
             local_resolvers.update(data.get("resolvers", []))
             if data.get("responding_resolver"):
                 local_resolvers.add(data["responding_resolver"])
-    if any(e.get("source_mode")=="live" for e in log.get("evidence",[])):
+    if any(e.get("source_mode")=="live" for e in evidence_rows):
         collect(log)
     text = json.dumps(redact(log), ensure_ascii=False, indent=2)
-    for resolver in sorted(local_resolvers, key=len, reverse=True):
-        text = text.replace(resolver, "[resolver redacted]")
+    index=0
+    for resolver in sorted(local_resolvers, key=lambda x:(-len(x),x)):
+        if resolver in {"1.1.1.1","8.8.8.8"}:continue
+        index+=1
+        text = text.replace(resolver, f"[local-resolver-{index}]")
     destination.parent.mkdir(parents=True, exist_ok=True)
     destination.write_text(text, encoding="utf-8")
 

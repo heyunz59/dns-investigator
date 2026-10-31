@@ -28,7 +28,7 @@ async def run(repeats):
     out.mkdir(parents=True, exist_ok=False)
     metadata = dict(repeats_requested=repeats, cases=len(cases), expected_executions=repeats*len(cases)*2,
                     model=config.model, thinking="disabled", temperature=0, max_tool_calls=config.max_tool_calls,
-                    model_timeout=config.model_timeout, schema_version=3,
+                    model_timeout=config.model_timeout, schema_version=4,
                     dns_query_budget=config.dns_query_budget,dns_tool_timeout=config.dns_tool_timeout,
                     commit=subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=ROOT, text=True).strip(),
                     source_hashes={str(p.relative_to(ROOT)): hashlib.sha256(p.read_bytes()).hexdigest()
@@ -59,6 +59,7 @@ async def run(repeats):
                     elapsed_seconds=log["elapsed_seconds"], tool_ms=stats["tool_ms"],
                     total_calls=stats["total_calls"], dns_network_attempts=stats["dns_network_attempts"],
                     measurements=stats["measurements"],attempt_accounting=stats["attempt_accounting"],
+                    execution_issue_accounting=stats["execution_issue_accounting"],
                     missing_required_tools=json.dumps(stats["missing_required_measurements"], ensure_ascii=False) if arm == "B" else "N/A",
                     success="", correct_calls="", reviewer="", notes="", log_file=path.name)
                 reviews.append(review)

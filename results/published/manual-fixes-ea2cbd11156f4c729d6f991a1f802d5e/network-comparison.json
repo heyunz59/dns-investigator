@@ -1,0 +1,186 @@
+{
+  "evidence": [
+    {
+      "tool_call_id": "A1",
+      "parent_tool_call_id": "A1",
+      "query_attempt_id": "Q1",
+      "tool_name": "query_dns",
+      "input": {
+        "domain": "example.com",
+        "record_type": "AAAA",
+        "resolver": "[local-resolver-1]"
+      },
+      "started_at": "2026-10-31T15:15:11.491526+00:00",
+      "duration_ms": 0.0,
+      "execution_status": "ok",
+      "data": {
+        "qname": "example.com",
+        "qtype": "AAAA",
+        "record_type": "AAAA",
+        "resolver": "[local-resolver-1]",
+        "responding_resolver": "[local-resolver-1]",
+        "resolver_role": "recursive",
+        "rcode": "NOERROR",
+        "flags": {
+          "AA": false,
+          "RD": true,
+          "RA": true,
+          "TC": false
+        },
+        "answer": [
+          {
+            "name": "example.com",
+            "type": "AAAA",
+            "ttl": 180,
+            "values": [
+              "2606:4700:10::6814:179a",
+              "2606:4700:10::ac42:93f3"
+            ]
+          }
+        ],
+        "authority": [],
+        "additional": [],
+        "transport": "UDP",
+        "execution_status": "ok",
+        "error": null,
+        "records": [
+          {
+            "value": "2606:4700:10::6814:179a",
+            "ttl": 180
+          },
+          {
+            "value": "2606:4700:10::ac42:93f3",
+            "ttl": 180
+          }
+        ],
+        "result_kind": "NOERROR",
+        "cname_loop": false,
+        "cname_chain": [],
+        "canonical_name": "example.com",
+        "negative_name": null,
+        "negative_scope": null,
+        "resolution_complete": true,
+        "soa_serials": [],
+        "duration_ms": 0.0
+      },
+      "source_mode": "live",
+      "measurement_location": "program-host",
+      "error": null,
+      "id": "E1"
+    },
+    {
+      "tool_call_id": "A2",
+      "tool_name": "check_tcp",
+      "input": {
+        "ip": "2606:4700:10::6814:179a",
+        "port": 443
+      },
+      "started_at": "2026-10-31T15:15:11.492035+00:00",
+      "source_mode": "live",
+      "measurement_location": "program-host",
+      "execution_status": "ok",
+      "data": {
+        "ip": "2606:4700:10::6814:179a",
+        "port": 443,
+        "status": "CONNECTED",
+        "error_detail": null,
+        "event_loop": "ProactorEventLoop",
+        "family": "IPv6"
+      },
+      "error": null,
+      "duration_ms": 1219.0,
+      "id": "E2",
+      "parent_tool_call_id": "A2"
+    },
+    {
+      "tool_call_id": "A3",
+      "tool_name": "check_http",
+      "input": {
+        "url": "https://example.com/"
+      },
+      "started_at": "2026-10-31T15:15:12.703884+00:00",
+      "source_mode": "live",
+      "measurement_location": "program-host",
+      "execution_status": "ok",
+      "data": {
+        "status_code": 200,
+        "final_url": "https://example.com/",
+        "redirects": [],
+        "peer_ip": "2606:4700:10::ac42:93f3",
+        "proxy_mode": "disabled (trust_env=False)",
+        "bytes_read": 400,
+        "error": null
+      },
+      "error": null,
+      "duration_ms": 4281.0,
+      "id": "E3",
+      "parent_tool_call_id": "A3"
+    }
+  ],
+  "attempts": [
+    {
+      "attempt_id": "A1",
+      "tool_name": "query_dns",
+      "provider_call_id": null,
+      "input": {
+        "domain": "example.com",
+        "record_type": "AAAA"
+      },
+      "started_at": "2026-10-31T15:15:11.483622+00:00",
+      "status": "measured",
+      "evidence_id": "E1",
+      "error": null,
+      "duration_ms": 0.0,
+      "evidence_ids": [
+        "E1"
+      ]
+    },
+    {
+      "attempt_id": "A2",
+      "tool_name": "check_tcp",
+      "provider_call_id": null,
+      "input": {
+        "ip": "2606:4700:10::6814:179a",
+        "port": 443
+      },
+      "started_at": "2026-10-31T15:15:11.491526+00:00",
+      "status": "measured",
+      "evidence_id": "E2",
+      "error": null,
+      "duration_ms": 1219.0,
+      "evidence_ids": [
+        "E2"
+      ]
+    },
+    {
+      "attempt_id": "A3",
+      "tool_name": "check_http",
+      "provider_call_id": null,
+      "input": {
+        "url": "https://example.com/"
+      },
+      "started_at": "2026-10-31T15:15:12.703884+00:00",
+      "status": "measured",
+      "evidence_id": "E3",
+      "error": null,
+      "duration_ms": 4281.0,
+      "evidence_ids": [
+        "E3"
+      ]
+    }
+  ],
+  "dns_attempts": [
+    {
+      "query_attempt_id": "Q1",
+      "parent_tool_call_id": "A1",
+      "qname": "example.com",
+      "qtype": "AAAA",
+      "server": "[local-resolver-1]",
+      "port": 53,
+      "transport": "UDP",
+      "status": "measured",
+      "duration_ms": 0.0,
+      "evidence_id": "E1"
+    }
+  ]
+}

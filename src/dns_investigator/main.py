@@ -12,8 +12,12 @@ from .agent import investigate
 async def run(args):
     text = args.question or input("问题（域名或网址）：").strip()
     value = args.target or extract_target(text)
+    target_source="explicit_target" if args.target else "question_extraction"
+    supplements=[]
     if not value:
         value = input("请补充单个域名或 HTTP/HTTPS 网址：").strip()
+        target_source="interactive_supplement"
+        supplements=[{"event":"target_requested_and_supplied"}]
     try:
         target = parse_target(value)
     except ValueError as exc:
@@ -22,7 +26,7 @@ async def run(args):
     if args.tools_only:
         backend = ToolBackend(target, args.fixture)
         await backend.call("query_dns", domain=target.domain, record_type="A")
-        records = backend.calls[0]["data"].get("records", [])
+        records = backend.calls[0]["data"].get("records", []) if backend.calls else []
         if records:
             await backend.call("check_tcp", ip=records[0]["value"], port=target.port)
             await backend.call("check_http", url=target.url)
@@ -38,8 +42,12 @@ async def run(args):
         return 2
     print(f"开始调查：{target.domain}；测量位置：本机；默认 HTTPS：{target.default_https}", flush=True)
     log, path = await investigate(text, target, config, args.fixture,
+        target_source=target_source,supplement_events=supplements,
         progress=lambda row: print(f"已记录 {row['id']} · {row['tool_name']} · {row['execution_status']}", flush=True))
-    print(json.dumps(log.get("result", log.get("error")), ensure_ascii=False, indent=2))
+    if log.get("request_kind")=="query" and log.get("result"):
+        print(log["result"]["conclusion"])
+        for issue in log["result"].get("execution_issues",[]):print(json.dumps(issue,ensure_ascii=False))
+    else:print(json.dumps(log.get("result", log.get("error")), ensure_ascii=False, indent=2))
     print(f"状态：{log['status']}；日志：{path.resolve()}")
     return 0 if log["status"] == "completed" else 3 if log["status"] == "limited" else 1
 

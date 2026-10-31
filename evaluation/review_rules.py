@@ -9,7 +9,7 @@ def screen(log, case):
     measured = log.get("evidence", [])
     stats = statistics(log, case)
     calls = call_reviews(log, case)
-    model_result = log.get("result_origin") == "model" and log.get("execution_status") == "ended"
+    model_result = log.get("result_origin") in {"model","model_with_evidence_bound_report"} and log.get("execution_status") == "ended"
     enough = not stats["missing_required_measurements"]
     hypotheses = len(result.get("hypotheses", [])) >= 2 or case["id"] in {"Q1", "MISSING"}
     checks = {"model_returned_validated_output": model_result,

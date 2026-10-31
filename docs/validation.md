@@ -1,5 +1,13 @@
 # 验证记录
 
+## 九案例集中修复（2026-10-31）
+
+基于 4ebb005，修改前 **108 passed in 7.65s**。新增事实矩阵、typed A 执行问题、候选关系、TLS 异常包装、IPv6 回环与错误码、重复与超时拒绝、目标来源与单项展示测试；完整运行 **120 passed in 7.64s**，原并发/CNAME/预算回归保留。
+
+五次真实 DeepSeek 复测及额外工具对照另存于 results/published/manual-fixes-ea2cbd11156f4c729d6f991a1f802d5e/：live 的 .invalid limited、badssl completed、example IPv6 调查 completed、单项查询 completed；fixture 缺失案例 limited。badssl 本次捕获明确证书验证异常和 verify_code=10。受控 Windows IPv6 旧地址形式 errno22/winerror10022，新形式 CONNECTED；公网独立 IPv6 TCP 也 CONNECTED。source/config/hash、实际回答、失败/拒绝均保留，状态不当作人工准确率。
+
+docs/manual-reviews/ 原始用户材料及旧 runs 保持原样，原始材料未自动提交。输出事实由程序逐测量生成、模型草稿另存未验证区域，候选原因均保持未确认；独立人工语义确认、完整因果定位和所有跨轮去重尚不能保证。[逐项修复与边界](manual-review-fixes.md)。
+
 ## v0.3 并发与 CNAME 修复（2026-10-31）
 
 基于 40d75ab，原有 87 项通过；新增回归先在旧代码复现 12 failed / 3 passed，再实施修复。最终 **108 passed in 8.03s**，命令 `.venv\Scripts\python.exe -m pytest -q`。并发测试采用 Event 控制完成顺序，核对调用/证据/内容及 JSON、JSONL，未禁用并发。报文测试联合检查解析与 Finding，覆盖 CNAME 转介、末端 NODATA/NXDOMAIN、未知别名、正常回答和截断。

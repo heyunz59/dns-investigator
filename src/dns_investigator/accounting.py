@@ -18,6 +18,7 @@ def statistics(log, case):
     requirements = case.get("required_measurements", [{"tool": t} for t in case.get("required_tools", [])])
     missing = [r for r in requirements if not any(matches(e, r) for e in log.get("evidence", []))]
     return dict(attempt_accounting="complete" if complete else "incomplete",
+                execution_issue_accounting="typed_sources" if log.get("schema_version",0)>=4 else "legacy_unavailable",
                 dns_network_attempts=len(log.get("dns_attempts",[])) if log.get("schema_version",0)>=3 else None,
                 measurements=len(log.get("evidence",[])),
                 total_calls=len(attempts) if complete else 0 if baseline else None,
@@ -34,7 +35,7 @@ def call_reviews(log, case):
         error = (attempt.get("error") or {}).get("code")
         valid = attempt["status"] in {"measured", "unavailable", "execution_error"}
         reason = "参数有效且属于调查范围；执行失败不自动说明选择错误"
-        if error in {"INVALID_INPUT", "FRAMEWORK_ARGUMENT_REJECTED", "NON_RETRYABLE_DUPLICATE", "BUDGET_EXHAUSTED", "NOT_EXECUTED", "CANCELLED"}:
+        if error in {"INVALID_INPUT", "FRAMEWORK_ARGUMENT_REJECTED", "NON_RETRYABLE_DUPLICATE", "REDUNDANT_QUERY", "BUDGET_EXHAUSTED", "NOT_EXECUTED", "CANCELLED"}:
             valid, reason = False, error
         args = attempt.get("input", {})
         if case["id"] == "Q1" and (attempt["tool_name"] != "query_dns" or args.get("record_type", "A") != "A"):

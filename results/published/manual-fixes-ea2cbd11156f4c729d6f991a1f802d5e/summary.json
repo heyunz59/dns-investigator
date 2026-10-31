@@ -1,0 +1,61 @@
+[
+  {
+    "case": "case3",
+    "source": "live+real-model",
+    "status": "limited",
+    "run_file": "6610a521f20e4b4a9d087a89da7724dd.json",
+    "attempts": 3,
+    "measurements": 6,
+    "issues": [],
+    "semantic_review": "PENDING_HUMAN_REVIEW"
+  },
+  {
+    "case": "case4",
+    "source": "live+real-model",
+    "status": "completed",
+    "run_file": "08026a8caa15400e8ae9ca6e8df24ef1.json",
+    "attempts": 3,
+    "measurements": 3,
+    "issues": [],
+    "semantic_review": "PENDING_HUMAN_REVIEW"
+  },
+  {
+    "case": "case7",
+    "source": "live+real-model",
+    "status": "completed",
+    "run_file": "39f40d97d30f4568bcfeeda6f12887e8.json",
+    "attempts": 5,
+    "measurements": 5,
+    "issues": [],
+    "semantic_review": "PENDING_HUMAN_REVIEW"
+  },
+  {
+    "case": "case9",
+    "source": "fixture+real-model",
+    "status": "limited",
+    "run_file": "05fe7bf9fa7b46228ac2c28a17e43aec.json",
+    "attempts": 2,
+    "measurements": 1,
+    "issues": [
+      {
+        "attempt_id": "A2",
+        "tool_name": "query_dns",
+        "target": "example.com",
+        "record_type": "AAAA",
+        "error_code": "FIXTURE_NOT_COVERED",
+        "description": "测试数据没有提供该项事实；不是 DNS 无记录/NXDOMAIN 或真实网络失败。不可重试；请保留未知并结束或选择其他有用检查。"
+      }
+    ],
+    "semantic_review": "PENDING_HUMAN_REVIEW"
+  },
+  {
+    "case": "query",
+    "source": "live+real-model",
+    "status": "completed",
+    "run_file": "87e50d2635054e4c891ced1d13ee6029.json",
+    "attempts": 1,
+    "measurements": 1,
+    "issues": [],
+    "semantic_review": "PENDING_HUMAN_REVIEW"
+  }
+]

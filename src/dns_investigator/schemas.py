@@ -3,6 +3,7 @@ from pydantic import BaseModel, Field
 
 
 class Hypothesis(BaseModel):
+    category: Literal["dns_resolution","transport","http_response","certificate_validation","client_environment","endpoint_intent","registration","other"] = "other"
     id: str
     statement: str
     status: Literal["待验证", "获得支持", "被削弱", "无法确定"]
@@ -16,6 +17,15 @@ class Observation(BaseModel):
     observation: str
 
 
+class ExecutionIssue(BaseModel):
+    attempt_id: str
+    tool_name: str
+    target: str
+    record_type: str | None = None
+    error_code: str
+    description: str = ""
+
+
 class Finding(BaseModel):
     code: str
     stage: str
@@ -27,6 +37,8 @@ class Finding(BaseModel):
 
 
 class InvestigationResult(BaseModel):
+    execution_issues: list[ExecutionIssue] = Field(default_factory=list)
+    measured_facts: list[dict] = Field(default_factory=list)
     findings: list[Finding] = Field(default_factory=list)
     request_kind: Literal["query", "investigation"] = "investigation"
     outcome: Literal["answered", "insufficient_information", "execution_failed"] = "answered"

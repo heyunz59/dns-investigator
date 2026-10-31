@@ -4,6 +4,8 @@ import platform
 import time
 import uuid
 import re
+from typing import Annotated
+from pydantic import Field
 from dataclasses import asdict
 from importlib.metadata import version
 from pathlib import Path
@@ -17,6 +19,7 @@ from .privacy import redact
 from .schemas import InvestigationResult, Finding
 from .tools import ToolBackend, now
 from .dns_diagnosis import diagnose
+from .reporting import facts,validate_issue_refs,validate_fact_claims,evidence_bound_report
 
 SYSTEM = """你是 DNS 调查助手。中文回答。只使用用户陈述与实际返回的工具证据，不编造测量。
 调查至少考虑两个合理假设；单项 DNS 查询无需强制两个。区分支持、反面、未知。
@@ -36,6 +39,15 @@ FIXTURE_NOT_COVERED 表示测试没有提供事实，不是网络故障，且不
 可根据 Finding 自主选择 compare_resolvers 或 query_authoritative，不固定执行所有工具。仅 AA 回答可用于权威判断。CDN 地址差异、SOA Serial 差异不证明污染或故障。只引用 E 编号，不将 A/Q 编号当证据。必须输出结构化结果，给出边界、下一步建议及缺少的信息。"""
 
 NETWORK_TOOLS = {"query_dns", "compare_resolvers", "query_authoritative", "check_tcp", "check_http"}
+DNSSeconds=Annotated[float,Field(gt=0,le=5)]
+HTTPSeconds=Annotated[float,Field(gt=0,le=15)]
+SYSTEM += """\n每个假设填写单一 category，不合并注册、DNS、TLS、客户端等不同原因。成功的 DNS/TCP/HTTP 不证明客户端问题、端点设计意图或证书过期。
+支持/反面列表可以为空，仅填写缺失信息；不得为凑假设数编造不适用原因。.invalid 为公网保留测试后缀，不能建议续费或等待恢复，但 hosts/私有覆盖可能不同。
+事实必须限定工具返回 fact_summary 中的 target/resolver/record_type/source_mode/time，不把部分解析器×类型扩为笛卡尔积。
+调用错误放 execution_issues，引用 A 编号及准确的工具、目标、类型、error_code；不得挂靠 E。measured_facts 留空，由程序生成。
+fixture 地址不可直接用于真实探测，先 live 解析。仅查询记录时简洁输出地址、应答 TTL，不添加故障假设。
+同轮不要独立查系统 A 又比较含系统的 A；工具返回可重用的实际证据，重复测量需有具体目的。HTTP 超时参数上限15秒，DNS/TCP5秒。
+"""
 
 
 def request_kind(text):
@@ -66,43 +78,47 @@ def build_agent(config: Config, model=None, with_tools=True):
     if with_tools:
         @agent.tool(prepare=prepare_network)
         async def query_dns(ctx: RunContext[ToolBackend], domain: str,
-                            record_type: str = "A", resolver: str | None = None, timeout: float = 5) -> dict:
+                            record_type: str = "A", resolver: str | None = None, timeout: DNSSeconds = 5) -> dict:
             """查询目标 A/AAAA/CNAME/NS/SOA，保留完整 DNS 分区与标志。"""
             return await invoke(ctx, "query_dns", domain=domain, record_type=record_type, resolver=resolver, timeout=timeout)
 
         @agent.tool(prepare=prepare_network)
-        async def compare_resolvers(ctx: RunContext[ToolBackend], domain: str, record_type: str="A", timeout: float=5) -> dict:
+        async def compare_resolvers(ctx: RunContext[ToolBackend], domain: str, record_type: str="A", timeout: DNSSeconds=5) -> dict:
             """比较配置中的系统/公共递归解析器，独立保留子查询证据；地址不同不证明污染。"""
             return await invoke(ctx,"compare_resolvers",domain=domain,record_type=record_type,timeout=timeout)
 
         @agent.tool(prepare=prepare_network)
-        async def query_authoritative(ctx: RunContext[ToolBackend], domain: str, record_type: str="A", timeout: float=5) -> dict:
+        async def query_authoritative(ctx: RunContext[ToolBackend], domain: str, record_type: str="A", timeout: DNSSeconds=5) -> dict:
             """递归辅助发现最近权威区，向有限公共权威地址直接查询；并非完整迭代验证。"""
             return await invoke(ctx,"query_authoritative",domain=domain,record_type=record_type,timeout=timeout)
 
         @agent.tool(prepare=prepare_network)
-        async def check_tcp(ctx: RunContext[ToolBackend], ip: str, port: int, timeout: float = 5) -> dict:
+        async def check_tcp(ctx: RunContext[ToolBackend], ip: str, port: int, timeout: DNSSeconds = 5) -> dict:
             """连接已有 DNS 证据中的 IP，限网站端口。"""
             return await invoke(ctx, "check_tcp", ip=ip, port=port, timeout=timeout)
 
         @agent.tool(prepare=prepare_network)
-        async def check_http(ctx: RunContext[ToolBackend], url: str, timeout: float = 15) -> dict:
+        async def check_http(ctx: RunContext[ToolBackend], url: str, timeout: HTTPSeconds = 15) -> dict:
             """有总时间预算和正文大小上限的 GET，验证 TLS，记录重定向。"""
             return await invoke(ctx, "check_http", url=url, timeout=timeout)
 
     @agent.output_validator
     def validate(ctx: RunContext[ToolBackend], result: InvestigationResult):
+        ctx.deps.model_draft=result.model_dump()
+        validate_issue_refs(result,ctx.deps.attempts)
+        validate_fact_claims(result,ctx.deps.calls)
         validate_references(result, {row["id"] for row in ctx.deps.calls}, ctx.deps.request_kind)
         result.findings=[Finding(**f) for f in diagnose(ctx.deps.calls)]
         for finding in result.findings:
             if set(finding.evidence_ids)-{e["id"] for e in ctx.deps.calls}:
                 raise ModelRetry("Finding 引用了不存在的测量。")
-        return result
+        return evidence_bound_report(result,ctx.deps)
     return agent
 
 
 async def invoke(ctx, name, **args):
-    return await ctx.deps.call(name, provider_id=ctx.tool_call_id, **args)
+    response=await ctx.deps.call(name, provider_id=ctx.tool_call_id, **args)
+    return {**response,"fact_summary":facts(ctx.deps.calls)}
 
 
 def validate_references(result, known, kind="investigation"):
@@ -143,7 +159,7 @@ def validate_references(result, known, kind="investigation"):
 
 
 async def investigate(text, target, config, fixture=None, model=None, baseline_facts=None,
-                      log_dir=Path("results/runs"), progress=None):
+                      log_dir=Path("results/runs"), progress=None,target_source="api",supplement_events=None):
     run_id = uuid.uuid4().hex
     log_dir.mkdir(parents=True, exist_ok=True)
     path = log_dir / f"{run_id}.json"
@@ -166,7 +182,8 @@ async def investigate(text, target, config, fixture=None, model=None, baseline_f
                "measurement_location": "synthetic" if fixture or baseline_facts is not None else "program-host"},
                model=config.model, mode="baseline" if baseline_facts is not None else "agent",
                thinking="disabled", temperature=0, model_endpoint=config.base_url,
-               schema_version=3, attempt_accounting="complete", request_kind=backend.request_kind,
+               schema_version=4, attempt_accounting="complete", request_kind=backend.request_kind,
+               target_source=target_source,supplement_events=supplement_events or [],
                versions={"app": "0.3.0", "python": platform.python_version(),
                          "pydantic-ai-slim": version("pydantic-ai-slim")}, status="started")
     start = time.monotonic()
@@ -200,7 +217,7 @@ async def investigate(text, target, config, fixture=None, model=None, baseline_f
         outcome = result.output.outcome
         log.update(status="completed" if outcome == "answered" else "limited" if outcome == "insufficient_information" else "failed",
                    execution_status="ended", requirements_met=outcome == "answered",
-                   result_origin="model", result=result.output.model_dump(),
+                   result_origin="model_with_evidence_bound_report", result=result.output.model_dump(),
                    usage=json.loads(json.dumps(asdict(result.usage), default=str)), visible_messages=visible)
     except Exception as exc:
         # Do not persist SDK exception strings: these may contain request details.
@@ -219,6 +236,7 @@ async def investigate(text, target, config, fixture=None, model=None, baseline_f
                 if p.get("part_kind") in {"tool-call", "tool-return", "retry-prompt", "text"}]}
                 for m in json.loads(run.all_messages_json())]
         log.update(evidence=backend.calls, attempts=backend.attempts,
+                   model_draft=getattr(backend,"model_draft",None),report_policy="evidence_bound_v1",
                    dns_attempts=backend.dns.attempts,findings=diagnose(backend.calls),
                    elapsed_seconds=round(time.monotonic()-start, 3))
         path.write_text(json.dumps(redact(log, [config.api_key]), ensure_ascii=False, indent=2, default=str), encoding="utf-8")

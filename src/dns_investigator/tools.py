@@ -19,6 +19,7 @@ from .dns_wire import DNSClient, TYPES
 from .dns_compare import compare
 from .dns_diagnosis import diagnose
 from .authority import investigate_authority
+from .network_errors import describe
 
 PARENT = contextvars.ContextVar("dns_parent", default=None)
 
@@ -116,6 +117,14 @@ class ToolBackend:
         fingerprint = json.dumps([name, {k: v for k, v in args.items() if k != "timeout"}], sort_keys=True)
         if fingerprint in self.blocked:
             return self.reject(attempt, "NON_RETRYABLE_DUPLICATE", "相同请求已明确不可重试；未重复执行，无新增事实。")
+        if name=="query_dns" and args.get("resolver") is None and any(
+            a is not attempt and a["tool_name"]=="compare_resolvers" and a["status"] in {"pending","running"}
+            and a["input"].get("domain")==args.get("domain") and a["input"].get("record_type","A")==args.get("record_type","A")
+            for a in self.attempts):
+            return self.reject(attempt,"REDUNDANT_QUERY","同轮 compare_resolvers 将提供相同系统解析器查询；本次未重复执行。")
+        upper=15 if name=="check_http" else 5
+        if isinstance(args.get("timeout"),(int,float)) and not 0<args["timeout"]<=upper:
+            return self.reject(attempt,"INVALID_INPUT",f"timeout 必须大于0且不超过{upper}秒；此次未执行。")
         try:
             self._validate(name, args)
         except (ValueError, KeyError, TypeError, UnicodeError):
@@ -233,19 +242,27 @@ class ToolBackend:
         sock = socket.socket(socket.AF_INET6 if ipaddress.ip_address(ip).version == 6 else socket.AF_INET,
                              socket.SOCK_STREAM)
         sock.setblocking(False)
+        detail=None
         try:
             async with asyncio.timeout(timeout):
-                await asyncio.get_running_loop().sock_connect(sock, (ip, port))
+                # Windows Proactor sock_connect needs a numeric IPv6 4-tuple;
+                # resolve locally with AI_NUMERICHOST (no network DNS lookup).
+                address=socket.getaddrinfo(ip,port,sock.family,socket.SOCK_STREAM,0,socket.AI_NUMERICHOST)[0][4]
+                await asyncio.get_running_loop().sock_connect(sock, address)
             status = "CONNECTED"
-        except ConnectionRefusedError:
+        except ConnectionRefusedError as exc:
             status = "REFUSED"
-        except TimeoutError:
+            detail=describe(exc)
+        except TimeoutError as exc:
             status = "TIMEOUT"
-        except OSError:
+            detail=describe(exc)
+        except OSError as exc:
             status = "NETWORK_ERROR"
+            detail=describe(exc)
         finally:
             sock.close()
-        return dict(ip=ip, port=port, status=status)
+        return dict(ip=ip, port=port, status=status,error_detail=detail,
+                    event_loop=type(asyncio.get_running_loop()).__name__,family="IPv6" if ":" in ip else "IPv4")
 
     async def check_http(self, url, timeout=15):
         data = dict(status_code=None, final_url=safe_url(url), redirects=[], peer_ip=None,
@@ -277,13 +294,10 @@ class ToolBackend:
                                 if data["bytes_read"] >= 65536:
                                     break
                             break
-        except (TimeoutError, httpx.TimeoutException):
+        except (TimeoutError, httpx.TimeoutException) as exc:
             data["error"] = "TIMEOUT"
+            data["error_detail"]=describe(exc)
         except httpx.RequestError as exc:
-            cause = exc
-            tls = False
-            while cause:
-                tls |= isinstance(cause, ssl.SSLError)
-                cause = cause.__cause__
-            data["error"] = "TLS_ERROR" if tls else type(exc).__name__
+            data["error_detail"]=describe(exc)
+            data["error"] = "TLS_ERROR" if data["error_detail"]["code"] in {"TLS_ERROR","CERTIFICATE_VERIFY_FAILED"} else type(exc).__name__
         return data
