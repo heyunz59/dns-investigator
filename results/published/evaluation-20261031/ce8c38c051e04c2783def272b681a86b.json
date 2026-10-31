@@ -1,0 +1,165 @@
+{
+  "run_id": "ce8c38c051e04c2783def272b681a86b",
+  "started_at": "2026-10-31T03:34:29.369458+00:00",
+  "incident": {
+    "id": "ce8c38c051e04c2783def272b681a86b",
+    "user_input": "查询 example.com 的 A 记录",
+    "target": {
+      "domain": "example.com",
+      "url": "https://example.com/",
+      "port": 443,
+      "default_https": false
+    },
+    "measurement_location": "synthetic"
+  },
+  "model": "deepseek-flash",
+  "mode": "baseline",
+  "thinking": "disabled",
+  "temperature": 0,
+  "model_endpoint": "https://api.deepseek.com",
+  "versions": {
+    "app": "0.1.0",
+    "python": "3.12.14",
+    "pydantic-ai-slim": "2.64.0"
+  },
+  "status": "completed",
+  "result": {
+    "observations": [
+      {
+        "evidence_id": "E1",
+        "observation": "对 example.com 的 A 记录查询返回 rcode=NOERROR，记录为 192.0.2.10，TTL=60，使用的解析器为 192.0.2.53。"
+      },
+      {
+        "evidence_id": "E1",
+        "observation": "该结果来源标记为 fixture（合成数据），测量位置为 synthetic，并非真实网络测量。"
+      }
+    ],
+    "hypotheses": [
+      {
+        "id": "H1",
+        "statement": "example.com 存在 A 记录，当前解析结果为 192.0.2.10（在本次查询所用解析器视角下）。",
+        "status": "获得支持",
+        "supporting_evidence_ids": [
+          "E1"
+        ],
+        "contradicting_evidence_ids": [],
+        "missing_information": [
+          "真实网络环境下的独立复测结果",
+          "其他解析器/权威服务器的一致性验证"
+        ]
+      },
+      {
+        "id": "H2",
+        "statement": "该结果可能不代表真实公网 DNS 现状，因为数据来自合成 fixture 而非实际测量。",
+        "status": "获得支持",
+        "supporting_evidence_ids": [
+          "E1"
+        ],
+        "contradicting_evidence_ids": [],
+        "missing_information": [
+          "真实工具执行记录",
+          "权威 NS 与 SOA 信息"
+        ]
+      }
+    ],
+    "conclusion": "在本次提供的证据（E1）中，example.com 的 A 记录查询返回 NOERROR，解析结果为 192.0.2.10，TTL 60，解析器 192.0.2.53。需注意该结果标记为 fixture/synthetic，属于合成数据，不能作为真实公网 DNS 现状的实测结论；同时 192.0.2.0/24 属于文档保留网段，通常不会出现在真实公网解析中，进一步提示该数据为示例性质。",
+    "conclusion_evidence_ids": [
+      "E1"
+    ],
+    "limitations": [
+      "本组不允许调用工具，仅有单条预置证据 E1，无法交叉验证。",
+      "E1 来源为 fixture、测量位置为 synthetic，非真实网络测量。",
+      "仅有一个解析器视角，未验证权威服务器、其他递归解析器或 CDN/多后端差异。",
+      "未涉及浏览器缓存、hosts 文件、代理或 DoH 等本地因素。",
+      "未测量 AAAA、CNAME 链、TTL 变化或 DNSSEC 状态。"
+    ],
+    "recommendations": [
+      "在允许工具的环境中，用真实 query_dns 对 example.com 的 A 记录重新查询，并记录解析器 IP 与 rcode。",
+      "向权威 NS 直接查询（如 dig @<权威NS> example.com A）以确认权威数据。",
+      "使用第二个独立公共解析器复测，比较结果是否一致。",
+      "补充查询 CNAME/AAAA/SOA/NS 记录，确认是否存在别名链与委派结构。",
+      "若关注网页可达性，另行进行 HTTPS 请求测量，注意 HTTP 状态码与 DNS 失败是不同层面的证据。"
+    ]
+  },
+  "usage": {
+    "input_tokens": 1036,
+    "cache_write_tokens": 0,
+    "cache_write_1h_tokens": 0,
+    "cache_read_tokens": 896,
+    "output_tokens": 738,
+    "unmeasured_requests": 0,
+    "output_reasoning_tokens": 0,
+    "input_audio_tokens": 0,
+    "cache_audio_read_tokens": 0,
+    "output_audio_tokens": 0,
+    "audio_seconds": 0,
+    "details": {
+      "prompt_cache_hit_tokens": 896,
+      "prompt_cache_miss_tokens": 140
+    },
+    "cost": "0.000932976",
+    "requests": 1,
+    "tool_calls": 0
+  },
+  "visible_messages": [
+    {
+      "kind": "response",
+      "parts": [
+        {
+          "tool_name": "final_result",
+          "args": "{\"observations\": [{\"evidence_id\": \"E1\", \"observation\": \"对 example.com 的 A 记录查询返回 rcode=NOERROR，记录为 192.0.2.10，TTL=60，使用的解析器为 192.0.2.53。\"}, {\"evidence_id\": \"E1\", \"observation\": \"该结果来源标记为 fixture（合成数据），测量位置为 synthetic，并非真实网络测量。\"}], \"hypotheses\": [{\"id\": \"H1\", \"statement\": \"example.com 存在 A 记录，当前解析结果为 192.0.2.10（在本次查询所用解析器视角下）。\", \"status\": \"获得支持\", \"supporting_evidence_ids\": [\"E1\"], \"contradicting_evidence_ids\": [], \"missing_information\": [\"真实网络环境下的独立复测结果\", \"其他解析器/权威服务器的一致性验证\"]}, {\"id\": \"H2\", \"statement\": \"该结果可能不代表真实公网 DNS 现状，因为数据来自合成 fixture 而非实际测量。\", \"status\": \"获得支持\", \"supporting_evidence_ids\": [\"E1\"], \"contradicting_evidence_ids\": [], \"missing_information\": [\"真实工具执行记录\", \"权威 NS 与 SOA 信息\"]}], \"conclusion\": \"在本次提供的证据（E1）中，example.com 的 A 记录查询返回 NOERROR，解析结果为 192.0.2.10，TTL 60，解析器 192.0.2.53。需注意该结果标记为 fixture/synthetic，属于合成数据，不能作为真实公网 DNS 现状的实测结论；同时 192.0.2.0/24 属于文档保留网段，通常不会出现在真实公网解析中，进一步提示该数据为示例性质。\", \"conclusion_evidence_ids\": [\"E1\"], \"limitations\": [\"本组不允许调用工具，仅有单条预置证据 E1，无法交叉验证。\", \"E1 来源为 fixture、测量位置为 synthetic，非真实网络测量。\", \"仅有一个解析器视角，未验证权威服务器、其他递归解析器或 CDN/多后端差异。\", \"未涉及浏览器缓存、hosts 文件、代理或 DoH 等本地因素。\", \"未测量 AAAA、CNAME 链、TTL 变化或 DNSSEC 状态。\"], \"recommendations\": [\"在允许工具的环境中，用真实 query_dns 对 example.com 的 A 记录重新查询，并记录解析器 IP 与 rcode。\", \"向权威 NS 直接查询（如 dig @<权威NS> example.com A）以确认权威数据。\", \"使用第二个独立公共解析器复测，比较结果是否一致。\", \"补充查询 CNAME/AAAA/SOA/NS 记录，确认是否存在别名链与委派结构。\", \"若关注网页可达性，另行进行 HTTPS 请求测量，注意 HTTP 状态码与 DNS 失败是不同层面的证据。\"]}",
+          "tool_call_id": "call_00_Akbej1foG6N3L5zGhQsM5235",
+          "tool_kind": null,
+          "id": null,
+          "provider_name": null,
+          "provider_details": null,
+          "part_kind": "tool-call"
+        }
+      ]
+    },
+    {
+      "kind": "request",
+      "parts": [
+        {
+          "tool_name": "final_result",
+          "content": "Final result processed.",
+          "tool_call_id": "call_00_Akbej1foG6N3L5zGhQsM5235",
+          "tool_kind": null,
+          "metadata": null,
+          "timestamp": "2026-10-31T03:34:34.121400Z",
+          "outcome": "success",
+          "retry": null,
+          "part_kind": "tool-return"
+        }
+      ]
+    }
+  ],
+  "evidence": [
+    {
+      "id": "E1",
+      "tool_call_id": "F1",
+      "tool_name": "query_dns",
+      "input": {
+        "domain": "example.com",
+        "record_type": "A"
+      },
+      "data": {
+        "rcode": "NOERROR",
+        "records": [
+          {
+            "value": "192.0.2.10",
+            "ttl": 60
+          }
+        ],
+        "resolvers": [
+          "192.0.2.53"
+        ],
+        "record_type": "A"
+      },
+      "source_mode": "fixture",
+      "measurement_location": "synthetic",
+      "execution_status": "ok"
+    }
+  ],
+  "elapsed_seconds": 4.75
+}

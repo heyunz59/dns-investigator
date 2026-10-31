@@ -31,7 +31,9 @@ def summarize(source, output):
         w.writerows(result)
     fig, ax = plt.subplots(figsize=(6, 4))
     ax.bar(["A: facts supplied", "B: agent + tools"], [r["success_rate"] for r in result])
-    ax.set(ylim=(0, 1), ylabel="Task success rate", title="Same-model comparison (human reviewed)")
+    reviewers = {r["reviewer"] for r in rows}
+    review_label = "Codex review; human review pending" if any("Codex" in r for r in reviewers) else "Reviewed results"
+    ax.set(ylim=(0, 1), ylabel="Task success rate", title=f"Same-model comparison\n{review_label}")
     fig.tight_layout()
     fig.savefig(output / "comparison.png", dpi=160)
     plt.close(fig)

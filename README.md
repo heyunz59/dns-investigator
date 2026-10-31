@@ -47,6 +47,8 @@ notepad .env
 
 具体评分、调用遗漏、零调用 N/A 与信息差异见 [evaluation/README.md](evaluation/README.md)。同模型对照必须是真实运行，CSV 和图表仅在实际运行并人工评分后生成。不要把 fixture 设计或框架测试的通过率当成模型效果。
 
+本次已完成 14 次真实模型对照运行；[原始回答、初步复核表和图表](results/published/evaluation-20261031/README.md)均已保留。Codex 规则辅助复核结果为 A 组 6/7、B 组 4/7，**待独立人工复核**，未证明 Agent 优于直接接收事实的模型。每场景只重复 1 次，稀疏 fixture 和重复无效调用限制了解释力度。
+
 架构见 [docs/architecture.md](docs/architecture.md)，实际公开材料在 `results/published/`。原始日志位于 `results/runs/` 和 `results/evaluation-raw/`，均被 Git 忽略；仍须自行保管。工具日志公开导出可用 `scripts/publish_tools.py`，它会隐藏本地 DNS 配置，其他用户输入、路径等仍需逐项审核。首次及后续推送前运行 `python scripts/check_public.py`，并人工检查待提交文件。
 
 ## 已知边界

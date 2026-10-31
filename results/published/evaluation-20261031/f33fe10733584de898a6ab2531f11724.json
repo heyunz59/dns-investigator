@@ -1,0 +1,232 @@
+{
+  "run_id": "f33fe10733584de898a6ab2531f11724",
+  "started_at": "2026-10-31T03:33:23.162526+00:00",
+  "incident": {
+    "id": "f33fe10733584de898a6ab2531f11724",
+    "user_input": "其他网站正常，但 https://example.com/ 打不开，请调查 DNS 或其他可能原因。必要时比较 1.1.1.1。",
+    "target": {
+      "domain": "example.com",
+      "url": "https://example.com/",
+      "port": 443,
+      "default_https": false
+    },
+    "measurement_location": "synthetic"
+  },
+  "model": "deepseek-flash",
+  "mode": "agent",
+  "thinking": "disabled",
+  "temperature": 0,
+  "model_endpoint": "https://api.deepseek.com",
+  "versions": {
+    "app": "0.1.0",
+    "python": "3.12.14",
+    "pydantic-ai-slim": "2.64.0"
+  },
+  "status": "failed",
+  "error": {
+    "category": "UsageLimitExceeded",
+    "message": "模型或运行失败；已有工具证据已保存"
+  },
+  "evidence": [
+    {
+      "id": "E1",
+      "tool_call_id": "T1",
+      "tool_name": "query_dns",
+      "input": {
+        "domain": "example.com",
+        "record_type": "A",
+        "resolver": null,
+        "timeout": 5
+      },
+      "started_at": "2026-10-31T03:33:24.538031+00:00",
+      "source_mode": "fixture",
+      "measurement_location": "synthetic",
+      "execution_status": "ok",
+      "data": {
+        "rcode": "TIMEOUT",
+        "records": [],
+        "resolvers": [
+          "192.0.2.53"
+        ],
+        "record_type": "A"
+      },
+      "error": null,
+      "duration_ms": 0.0
+    },
+    {
+      "id": "E2",
+      "tool_call_id": "T2",
+      "tool_name": "query_dns",
+      "input": {
+        "domain": "example.com",
+        "record_type": "A",
+        "resolver": "1.1.1.1",
+        "timeout": 5
+      },
+      "started_at": "2026-10-31T03:33:24.540314+00:00",
+      "source_mode": "fixture",
+      "measurement_location": "synthetic",
+      "execution_status": "ok",
+      "data": {
+        "rcode": "NOERROR",
+        "records": [
+          {
+            "value": "192.0.2.10",
+            "ttl": 60
+          }
+        ],
+        "resolvers": [
+          "1.1.1.1"
+        ],
+        "record_type": "A"
+      },
+      "error": null,
+      "duration_ms": 0.0
+    },
+    {
+      "id": "E3",
+      "tool_call_id": "T3",
+      "tool_name": "query_dns",
+      "input": {
+        "domain": "example.com",
+        "record_type": "AAAA",
+        "resolver": null,
+        "timeout": 5
+      },
+      "started_at": "2026-10-31T03:33:24.544663+00:00",
+      "source_mode": "fixture",
+      "measurement_location": "synthetic",
+      "execution_status": "error",
+      "data": {},
+      "error": {
+        "category": "ValueError"
+      },
+      "duration_ms": 0.0
+    },
+    {
+      "id": "E4",
+      "tool_call_id": "T4",
+      "tool_name": "query_dns",
+      "input": {
+        "domain": "example.com",
+        "record_type": "AAAA",
+        "resolver": "1.1.1.1",
+        "timeout": 5
+      },
+      "started_at": "2026-10-31T03:33:25.754336+00:00",
+      "source_mode": "fixture",
+      "measurement_location": "synthetic",
+      "execution_status": "error",
+      "data": {},
+      "error": {
+        "category": "ValueError"
+      },
+      "duration_ms": 0.0
+    },
+    {
+      "id": "E5",
+      "tool_call_id": "T5",
+      "tool_name": "check_tcp",
+      "input": {
+        "ip": "192.0.2.10",
+        "port": 443,
+        "timeout": 5
+      },
+      "started_at": "2026-10-31T03:33:25.755345+00:00",
+      "source_mode": "fixture",
+      "measurement_location": "synthetic",
+      "execution_status": "error",
+      "data": {},
+      "error": {
+        "category": "ValueError"
+      },
+      "duration_ms": 0.0
+    },
+    {
+      "id": "E6",
+      "tool_call_id": "T6",
+      "tool_name": "check_http",
+      "input": {
+        "url": "https://example.com/",
+        "timeout": 15
+      },
+      "started_at": "2026-10-31T03:33:25.756472+00:00",
+      "source_mode": "fixture",
+      "measurement_location": "synthetic",
+      "execution_status": "error",
+      "data": {},
+      "error": {
+        "category": "ValueError"
+      },
+      "duration_ms": 0.0
+    },
+    {
+      "id": "E7",
+      "tool_call_id": "T7",
+      "tool_name": "check_tcp",
+      "input": {
+        "ip": "192.0.2.10",
+        "port": 443,
+        "timeout": 3.0
+      },
+      "started_at": "2026-10-31T03:33:26.728200+00:00",
+      "source_mode": "fixture",
+      "measurement_location": "synthetic",
+      "execution_status": "error",
+      "data": {},
+      "error": {
+        "category": "ValueError"
+      },
+      "duration_ms": 0.0
+    },
+    {
+      "id": "E8",
+      "tool_call_id": "T8",
+      "tool_name": "check_http",
+      "input": {
+        "url": "https://example.com/",
+        "timeout": 10.0
+      },
+      "started_at": "2026-10-31T03:33:26.729205+00:00",
+      "source_mode": "fixture",
+      "measurement_location": "synthetic",
+      "execution_status": "error",
+      "data": {},
+      "error": {
+        "category": "ValueError"
+      },
+      "duration_ms": 0.0
+    },
+    {
+      "id": "E9",
+      "tool_call_id": "T9",
+      "tool_name": "query_dns",
+      "input": {
+        "domain": "example.com",
+        "record_type": "A",
+        "resolver": "1.1.1.1",
+        "timeout": 3.0
+      },
+      "started_at": "2026-10-31T03:33:26.730232+00:00",
+      "source_mode": "fixture",
+      "measurement_location": "synthetic",
+      "execution_status": "ok",
+      "data": {
+        "rcode": "NOERROR",
+        "records": [
+          {
+            "value": "192.0.2.10",
+            "ttl": 60
+          }
+        ],
+        "resolvers": [
+          "1.1.1.1"
+        ],
+        "record_type": "A"
+      },
+      "error": null,
+      "duration_ms": 0.0
+    }
+  ],
+  "elapsed_seconds": 4.546
+}

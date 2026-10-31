@@ -36,8 +36,9 @@ async def run(args):
     if not config.api_key:
         print("缺少 DEEPSEEK_API_KEY。请复制 .env.example 为 .env 并在本机填写；可先运行 --tools-only。")
         return 2
-    print(f"开始调查：{target.domain}；测量位置：本机；默认 HTTPS：{target.default_https}")
-    log, path = await investigate(text, target, config, args.fixture)
+    print(f"开始调查：{target.domain}；测量位置：本机；默认 HTTPS：{target.default_https}", flush=True)
+    log, path = await investigate(text, target, config, args.fixture,
+        progress=lambda row: print(f"已记录 {row['id']} · {row['tool_name']} · {row['execution_status']}", flush=True))
     print(json.dumps(log.get("result", log.get("error")), ensure_ascii=False, indent=2))
     print(f"状态：{log['status']}；日志：{path.resolve()}")
     return 0 if log["status"] == "completed" else 1

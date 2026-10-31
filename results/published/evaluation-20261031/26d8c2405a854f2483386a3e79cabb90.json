@@ -1,0 +1,722 @@
+{
+  "run_id": "26d8c2405a854f2483386a3e79cabb90",
+  "started_at": "2026-10-31T03:33:35.609893+00:00",
+  "incident": {
+    "id": "26d8c2405a854f2483386a3e79cabb90",
+    "user_input": "其他网站正常，但 https://example.com/ 打不开，请调查 DNS 或其他可能原因。必要时比较 1.1.1.1。",
+    "target": {
+      "domain": "example.com",
+      "url": "https://example.com/",
+      "port": 443,
+      "default_https": false
+    },
+    "measurement_location": "synthetic"
+  },
+  "model": "deepseek-flash",
+  "mode": "agent",
+  "thinking": "disabled",
+  "temperature": 0,
+  "model_endpoint": "https://api.deepseek.com",
+  "versions": {
+    "app": "0.1.0",
+    "python": "3.12.14",
+    "pydantic-ai-slim": "2.64.0"
+  },
+  "status": "completed",
+  "result": {
+    "observations": [
+      {
+        "evidence_id": "E1",
+        "observation": "使用本机默认解析器（192.0.2.53）查询 example.com 的 A 记录：rcode=NOERROR，返回 192.0.2.10，TTL 60。即域名解析本身成功，不是 NXDOMAIN、无记录或 SERVFAIL。"
+      },
+      {
+        "evidence_id": "E2",
+        "observation": "指定解析器 1.1.1.1 查询 A 记录时工具返回 ValueError（执行错误），未得到任何 DNS 应答数据；这属于测量失败，不能解读为 1.1.1.1 解析失败或超时。"
+      },
+      {
+        "evidence_id": "E6",
+        "observation": "再次以 1.1.1.1 查询 A 记录（timeout=5）仍返回 ValueError，说明该比较路径在本工具环境下不可用，1.1.1.1 侧结果未知。"
+      },
+      {
+        "evidence_id": "E3",
+        "observation": "查询 AAAA 记录返回 ValueError，未获得 IPv6 记录信息；IPv6 是否存在/是否可用为未知，不能据此判断 AAAA 缺失。"
+      },
+      {
+        "evidence_id": "E4",
+        "observation": "对 E1 中的 IP 192.0.2.10 的 443 端口做 TCP 连接：status=TIMEOUT（连接未在时限内建立）。超时只说明本次未收到 SYN-ACK，不能证明服务器宕机或被封禁。"
+      },
+      {
+        "evidence_id": "E7",
+        "observation": "对 192.0.2.10 的 80 端口 TCP 连接返回 ValueError（执行错误），无有效结果，HTTP 端口可达性未知。"
+      },
+      {
+        "evidence_id": "E5",
+        "observation": "对 https://example.com/ 的 HTTPS GET 返回 ValueError（执行错误），未获得任何 HTTP 状态码、TLS 或重定向信息；因此无法判断是 TLS 握手失败、HTTP 4xx/5xx 还是连接层问题。"
+      }
+    ],
+    "hypotheses": [
+      {
+        "id": "H1",
+        "statement": "DNS 解析环节正常，故障位于解析之后的连接层（到 192.0.2.10:443 的 TCP/TLS 不通或极慢）。",
+        "status": "获得支持",
+        "supporting_evidence_ids": [
+          "E1",
+          "E4"
+        ],
+        "contradicting_evidence_ids": [],
+        "missing_information": [
+          "443 端口多次重试结果",
+          "从其他网络/其他出口 IP 到 192.0.2.10:443 的连通性",
+          "traceroute 或 SYN 抓包结果"
+        ]
+      },
+      {
+        "id": "H2",
+        "statement": "本机 DNS 配置/解析器返回了错误或过期的地址（例如被劫持、缓存污染或本地 hosts/代理影响），导致连到不可达的 IP。",
+        "status": "无法确定",
+        "supporting_evidence_ids": [],
+        "contradicting_evidence_ids": [
+          "E1"
+        ],
+        "missing_information": [
+          "1.1.1.1 或 8.8.8.8 的对照解析结果（E2/E6 均因工具错误未取得）",
+          "权威 NS 直接查询结果",
+          "本机 hosts 文件与代理/DoH 配置"
+        ]
+      },
+      {
+        "id": "H3",
+        "statement": "目标站点服务端不可用（服务器宕机、防火墙丢弃 443、或仅对特定来源封锁）。",
+        "status": "无法确定",
+        "supporting_evidence_ids": [
+          "E4"
+        ],
+        "contradicting_evidence_ids": [],
+        "missing_information": [
+          "80 端口结果（E7 执行失败）",
+          "第三方外部探测结果",
+          "站点状态页或维护公告"
+        ]
+      },
+      {
+        "id": "H4",
+        "statement": "故障由本机浏览器/代理/DoH/缓存等客户端因素造成，而非网络或 DNS。",
+        "status": "无法确定",
+        "supporting_evidence_ids": [],
+        "contradicting_evidence_ids": [],
+        "missing_information": [
+          "浏览器具体报错文本（如 ERR_CONNECTION_TIMED_OUT / ERR_NAME_NOT_RESOLVED）",
+          "关闭代理或改用无 DoH 环境后的复测",
+          "curl -v 输出"
+        ]
+      }
+    ],
+    "conclusion": "本次测量中，example.com 的 A 记录解析成功（NOERROR → 192.0.2.10，E1），因此「打不开」不是 NXDOMAIN/无记录类 DNS 失败；但到该 IP 的 443 端口 TCP 连接超时（E4），指向解析之后的连接层问题。1.1.1.1 对照解析、AAAA 查询、80 端口探测与 HTTPS GET 均因工具执行错误（ValueError）未取得有效数据（E2/E3/E5/E6/E7），所以无法确认 DNS 是否返回了正确地址、也无法确认是 TLS/HTTP 层还是纯网络层故障。注意：超时不能证明服务器宕机；本机解析成功也不能排除浏览器缓存、hosts、代理或 DoH 的影响。整体结论为「DNS 解析成功、连接层疑似不通，根因待进一步验证」。",
+    "conclusion_evidence_ids": [
+      "E1",
+      "E4",
+      "E2",
+      "E3",
+      "E5",
+      "E6",
+      "E7"
+    ],
+    "limitations": [
+      "所有测量来自本机（合成测量环境），不代表浏览器缓存、hosts 文件、系统代理或 DoH 的实际解析路径。",
+      "1.1.1.1 对照解析两次均因工具 ValueError 失败，未获得任何对照数据，不能据此判断公共解析器是否一致。",
+      "AAAA 查询、80 端口 TCP、HTTPS GET 均执行失败，缺少 IPv6、明文 HTTP 与 TLS/HTTP 层证据。",
+      "单次 TCP 超时不足以区分服务器宕机、防火墙丢包、路由黑洞或中间设备拦截。",
+      "未复现浏览器侧的具体报错，无法排除历史性/间歇性故障。"
+    ],
+    "recommendations": [
+      "在命令行复测并保留原始输出：nslookup example.com 1.1.1.1、nslookup example.com 8.8.8.8，与默认解析器结果比对；同时查 AAAA。",
+      "用 curl -v --connect-timeout 10 https://example.com/ 观察卡在 DNS、TCP 连接还是 TLS 握手阶段，并记录具体错误码。",
+      "对 192.0.2.10 的 443/80 端口多次重试（如 nc -vz 或 Test-NetConnection），并做 traceroute/mtr 判断丢包位置。",
+      "检查本机 hosts 文件、系统代理设置与浏览器安全 DNS（DoH）开关，必要时临时关闭后复测。",
+      "用手机热点或其他网络访问同一 URL，区分「本机/本网络问题」与「站点侧问题」。",
+      "若确认连接层不通，联系站点方或网络管理员核查 443 端口策略与服务器状态。"
+    ]
+  },
+  "usage": {
+    "input_tokens": 10125,
+    "cache_write_tokens": 0,
+    "cache_write_1h_tokens": 0,
+    "cache_read_tokens": 8704,
+    "output_tokens": 2194,
+    "unmeasured_requests": 0,
+    "output_reasoning_tokens": 0,
+    "input_audio_tokens": 0,
+    "cache_audio_read_tokens": 0,
+    "output_audio_tokens": 0,
+    "audio_seconds": 0,
+    "details": {
+      "prompt_cache_hit_tokens": 8704,
+      "prompt_cache_miss_tokens": 1421
+    },
+    "cost": "0.003111324",
+    "requests": 5,
+    "tool_calls": 7
+  },
+  "visible_messages": [
+    {
+      "kind": "response",
+      "parts": [
+        {
+          "tool_name": "query_dns",
+          "args": "{\"domain\": \"example.com\", \"record_type\": \"A\"}",
+          "tool_call_id": "call_00_Ol9M2dmfrefm77bvN9nd7551",
+          "tool_kind": null,
+          "id": null,
+          "provider_name": null,
+          "provider_details": null,
+          "part_kind": "tool-call"
+        },
+        {
+          "tool_name": "query_dns",
+          "args": "{\"domain\": \"example.com\", \"record_type\": \"A\", \"resolver\": \"1.1.1.1\"}",
+          "tool_call_id": "call_01_QT0Df4orEWRzo63IUySw5322",
+          "tool_kind": null,
+          "id": null,
+          "provider_name": null,
+          "provider_details": null,
+          "part_kind": "tool-call"
+        },
+        {
+          "tool_name": "query_dns",
+          "args": "{\"domain\": \"example.com\", \"record_type\": \"AAAA\"}",
+          "tool_call_id": "call_02_evLMbRGzbUDzCNlVQi0q2820",
+          "tool_kind": null,
+          "id": null,
+          "provider_name": null,
+          "provider_details": null,
+          "part_kind": "tool-call"
+        }
+      ]
+    },
+    {
+      "kind": "request",
+      "parts": [
+        {
+          "tool_name": "query_dns",
+          "content": {
+            "id": "E1",
+            "tool_call_id": "T1",
+            "tool_name": "query_dns",
+            "input": {
+              "domain": "example.com",
+              "record_type": "A",
+              "resolver": null,
+              "timeout": 5
+            },
+            "started_at": "2026-10-31T03:33:36.848472+00:00",
+            "source_mode": "fixture",
+            "measurement_location": "synthetic",
+            "execution_status": "ok",
+            "data": {
+              "rcode": "NOERROR",
+              "records": [
+                {
+                  "value": "192.0.2.10",
+                  "ttl": 60
+                }
+              ],
+              "resolvers": [
+                "192.0.2.53"
+              ],
+              "record_type": "A"
+            },
+            "error": null,
+            "duration_ms": 0.0
+          },
+          "tool_call_id": "call_00_Ol9M2dmfrefm77bvN9nd7551",
+          "tool_kind": null,
+          "metadata": null,
+          "timestamp": "2026-10-31T03:33:36.849642Z",
+          "outcome": "success",
+          "retry": null,
+          "part_kind": "tool-return"
+        },
+        {
+          "tool_name": "query_dns",
+          "content": {
+            "id": "E2",
+            "tool_call_id": "T2",
+            "tool_name": "query_dns",
+            "input": {
+              "domain": "example.com",
+              "record_type": "A",
+              "resolver": "1.1.1.1",
+              "timeout": 5
+            },
+            "started_at": "2026-10-31T03:33:36.850645+00:00",
+            "source_mode": "fixture",
+            "measurement_location": "synthetic",
+            "execution_status": "error",
+            "data": {},
+            "error": {
+              "category": "ValueError"
+            },
+            "duration_ms": 0.0
+          },
+          "tool_call_id": "call_01_QT0Df4orEWRzo63IUySw5322",
+          "tool_kind": null,
+          "metadata": null,
+          "timestamp": "2026-10-31T03:33:36.852647Z",
+          "outcome": "success",
+          "retry": null,
+          "part_kind": "tool-return"
+        },
+        {
+          "tool_name": "query_dns",
+          "content": {
+            "id": "E3",
+            "tool_call_id": "T3",
+            "tool_name": "query_dns",
+            "input": {
+              "domain": "example.com",
+              "record_type": "AAAA",
+              "resolver": null,
+              "timeout": 5
+            },
+            "started_at": "2026-10-31T03:33:36.852647+00:00",
+            "source_mode": "fixture",
+            "measurement_location": "synthetic",
+            "execution_status": "error",
+            "data": {},
+            "error": {
+              "category": "ValueError"
+            },
+            "duration_ms": 0.0
+          },
+          "tool_call_id": "call_02_evLMbRGzbUDzCNlVQi0q2820",
+          "tool_kind": null,
+          "metadata": null,
+          "timestamp": "2026-10-31T03:33:36.853671Z",
+          "outcome": "success",
+          "retry": null,
+          "part_kind": "tool-return"
+        }
+      ]
+    },
+    {
+      "kind": "response",
+      "parts": [
+        {
+          "tool_name": "check_tcp",
+          "args": "{\"ip\": \"192.0.2.10\", \"port\": 443}",
+          "tool_call_id": "call_00_X85o28AXzzkj1VarVEKX7443",
+          "tool_kind": null,
+          "id": null,
+          "provider_name": null,
+          "provider_details": null,
+          "part_kind": "tool-call"
+        },
+        {
+          "tool_name": "check_http",
+          "args": "{\"url\": \"https://example.com/\"}",
+          "tool_call_id": "call_01_97D3uNmvEH8pwHXkbln66984",
+          "tool_kind": null,
+          "id": null,
+          "provider_name": null,
+          "provider_details": null,
+          "part_kind": "tool-call"
+        }
+      ]
+    },
+    {
+      "kind": "request",
+      "parts": [
+        {
+          "tool_name": "check_tcp",
+          "content": {
+            "id": "E4",
+            "tool_call_id": "T4",
+            "tool_name": "check_tcp",
+            "input": {
+              "ip": "192.0.2.10",
+              "port": 443,
+              "timeout": 5
+            },
+            "started_at": "2026-10-31T03:33:37.909817+00:00",
+            "source_mode": "fixture",
+            "measurement_location": "synthetic",
+            "execution_status": "ok",
+            "data": {
+              "ip": "192.0.2.10",
+              "port": 443,
+              "status": "TIMEOUT"
+            },
+            "error": null,
+            "duration_ms": 0.0
+          },
+          "tool_call_id": "call_00_X85o28AXzzkj1VarVEKX7443",
+          "tool_kind": null,
+          "metadata": null,
+          "timestamp": "2026-10-31T03:33:37.910819Z",
+          "outcome": "success",
+          "retry": null,
+          "part_kind": "tool-return"
+        },
+        {
+          "tool_name": "check_http",
+          "content": {
+            "id": "E5",
+            "tool_call_id": "T5",
+            "tool_name": "check_http",
+            "input": {
+              "url": "https://example.com/",
+              "timeout": 15
+            },
+            "started_at": "2026-10-31T03:33:37.910819+00:00",
+            "source_mode": "fixture",
+            "measurement_location": "synthetic",
+            "execution_status": "error",
+            "data": {},
+            "error": {
+              "category": "ValueError"
+            },
+            "duration_ms": 0.0
+          },
+          "tool_call_id": "call_01_97D3uNmvEH8pwHXkbln66984",
+          "tool_kind": null,
+          "metadata": null,
+          "timestamp": "2026-10-31T03:33:37.911821Z",
+          "outcome": "success",
+          "retry": null,
+          "part_kind": "tool-return"
+        }
+      ]
+    },
+    {
+      "kind": "response",
+      "parts": [
+        {
+          "tool_name": "query_dns",
+          "args": "{\"domain\": \"example.com\", \"record_type\": \"A\", \"resolver\": \"1.1.1.1\", \"timeout\": 10}",
+          "tool_call_id": "call_00_IqQlWn1wsoVBkKUF8ZNX4987",
+          "tool_kind": null,
+          "id": null,
+          "provider_name": null,
+          "provider_details": null,
+          "part_kind": "tool-call"
+        },
+        {
+          "tool_name": "check_tcp",
+          "args": "{\"ip\": \"192.0.2.10\", \"port\": 80, \"timeout\": 10}",
+          "tool_call_id": "call_01_82YZOHY0OoCG4DUsWMHX1043",
+          "tool_kind": null,
+          "id": null,
+          "provider_name": null,
+          "provider_details": null,
+          "part_kind": "tool-call"
+        }
+      ]
+    },
+    {
+      "kind": "request",
+      "parts": [
+        {
+          "tool_name": "query_dns",
+          "content": "工具超时参数越界",
+          "tool_call_id": "call_00_IqQlWn1wsoVBkKUF8ZNX4987",
+          "tool_kind": null,
+          "metadata": null,
+          "timestamp": "2026-10-31T03:33:39.263689Z",
+          "outcome": "retried",
+          "retry": {
+            "cause": "model_retry",
+            "attempt": 1,
+            "max_retries": 2
+          },
+          "part_kind": "tool-return"
+        },
+        {
+          "tool_name": "check_tcp",
+          "content": "工具超时参数越界",
+          "tool_call_id": "call_01_82YZOHY0OoCG4DUsWMHX1043",
+          "tool_kind": null,
+          "metadata": null,
+          "timestamp": "2026-10-31T03:33:39.264698Z",
+          "outcome": "retried",
+          "retry": {
+            "cause": "model_retry",
+            "attempt": 1,
+            "max_retries": 2
+          },
+          "part_kind": "tool-return"
+        }
+      ]
+    },
+    {
+      "kind": "response",
+      "parts": [
+        {
+          "tool_name": "query_dns",
+          "args": "{\"domain\": \"example.com\", \"record_type\": \"A\", \"resolver\": \"1.1.1.1\", \"timeout\": 5}",
+          "tool_call_id": "call_00_IhYz5M1mdsszS9peJ2av8096",
+          "tool_kind": null,
+          "id": null,
+          "provider_name": null,
+          "provider_details": null,
+          "part_kind": "tool-call"
+        },
+        {
+          "tool_name": "check_tcp",
+          "args": "{\"ip\": \"192.0.2.10\", \"port\": 80, \"timeout\": 5}",
+          "tool_call_id": "call_01_63EDLbASXLhOyznJ1jsn3782",
+          "tool_kind": null,
+          "id": null,
+          "provider_name": null,
+          "provider_details": null,
+          "part_kind": "tool-call"
+        }
+      ]
+    },
+    {
+      "kind": "request",
+      "parts": [
+        {
+          "tool_name": "query_dns",
+          "content": {
+            "id": "E6",
+            "tool_call_id": "T6",
+            "tool_name": "query_dns",
+            "input": {
+              "domain": "example.com",
+              "record_type": "A",
+              "resolver": "1.1.1.1",
+              "timeout": 5.0
+            },
+            "started_at": "2026-10-31T03:33:40.558053+00:00",
+            "source_mode": "fixture",
+            "measurement_location": "synthetic",
+            "execution_status": "error",
+            "data": {},
+            "error": {
+              "category": "ValueError"
+            },
+            "duration_ms": 0.0
+          },
+          "tool_call_id": "call_00_IhYz5M1mdsszS9peJ2av8096",
+          "tool_kind": null,
+          "metadata": null,
+          "timestamp": "2026-10-31T03:33:40.559096Z",
+          "outcome": "success",
+          "retry": null,
+          "part_kind": "tool-return"
+        },
+        {
+          "tool_name": "check_tcp",
+          "content": {
+            "id": "E7",
+            "tool_call_id": "T7",
+            "tool_name": "check_tcp",
+            "input": {
+              "ip": "192.0.2.10",
+              "port": 80,
+              "timeout": 5.0
+            },
+            "started_at": "2026-10-31T03:33:40.559096+00:00",
+            "source_mode": "fixture",
+            "measurement_location": "synthetic",
+            "execution_status": "error",
+            "data": {},
+            "error": {
+              "category": "ValueError"
+            },
+            "duration_ms": 0.0
+          },
+          "tool_call_id": "call_01_63EDLbASXLhOyznJ1jsn3782",
+          "tool_kind": null,
+          "metadata": null,
+          "timestamp": "2026-10-31T03:33:40.560324Z",
+          "outcome": "success",
+          "retry": null,
+          "part_kind": "tool-return"
+        }
+      ]
+    },
+    {
+      "kind": "response",
+      "parts": [
+        {
+          "tool_name": "final_result",
+          "args": "{\"observations\": [{\"evidence_id\": \"E1\", \"observation\": \"使用本机默认解析器（192.0.2.53）查询 example.com 的 A 记录：rcode=NOERROR，返回 192.0.2.10，TTL 60。即域名解析本身成功，不是 NXDOMAIN、无记录或 SERVFAIL。\"}, {\"evidence_id\": \"E2\", \"observation\": \"指定解析器 1.1.1.1 查询 A 记录时工具返回 ValueError（执行错误），未得到任何 DNS 应答数据；这属于测量失败，不能解读为 1.1.1.1 解析失败或超时。\"}, {\"evidence_id\": \"E6\", \"observation\": \"再次以 1.1.1.1 查询 A 记录（timeout=5）仍返回 ValueError，说明该比较路径在本工具环境下不可用，1.1.1.1 侧结果未知。\"}, {\"evidence_id\": \"E3\", \"observation\": \"查询 AAAA 记录返回 ValueError，未获得 IPv6 记录信息；IPv6 是否存在/是否可用为未知，不能据此判断 AAAA 缺失。\"}, {\"evidence_id\": \"E4\", \"observation\": \"对 E1 中的 IP 192.0.2.10 的 443 端口做 TCP 连接：status=TIMEOUT（连接未在时限内建立）。超时只说明本次未收到 SYN-ACK，不能证明服务器宕机或被封禁。\"}, {\"evidence_id\": \"E7\", \"observation\": \"对 192.0.2.10 的 80 端口 TCP 连接返回 ValueError（执行错误），无有效结果，HTTP 端口可达性未知。\"}, {\"evidence_id\": \"E5\", \"observation\": \"对 https://example.com/ 的 HTTPS GET 返回 ValueError（执行错误），未获得任何 HTTP 状态码、TLS 或重定向信息；因此无法判断是 TLS 握手失败、HTTP 4xx/5xx 还是连接层问题。\"}], \"hypotheses\": [{\"id\": \"H1\", \"statement\": \"DNS 解析环节正常，故障位于解析之后的连接层（到 192.0.2.10:443 的 TCP/TLS 不通或极慢）。\", \"status\": \"获得支持\", \"supporting_evidence_ids\": [\"E1\", \"E4\"], \"contradicting_evidence_ids\": [], \"missing_information\": [\"443 端口多次重试结果\", \"从其他网络/其他出口 IP 到 192.0.2.10:443 的连通性\", \"traceroute 或 SYN 抓包结果\"]}, {\"id\": \"H2\", \"statement\": \"本机 DNS 配置/解析器返回了错误或过期的地址（例如被劫持、缓存污染或本地 hosts/代理影响），导致连到不可达的 IP。\", \"status\": \"无法确定\", \"supporting_evidence_ids\": [], \"contradicting_evidence_ids\": [\"E1\"], \"missing_information\": [\"1.1.1.1 或 8.8.8.8 的对照解析结果（E2/E6 均因工具错误未取得）\", \"权威 NS 直接查询结果\", \"本机 hosts 文件与代理/DoH 配置\"]}, {\"id\": \"H3\", \"statement\": \"目标站点服务端不可用（服务器宕机、防火墙丢弃 443、或仅对特定来源封锁）。\", \"status\": \"无法确定\", \"supporting_evidence_ids\": [\"E4\"], \"contradicting_evidence_ids\": [], \"missing_information\": [\"80 端口结果（E7 执行失败）\", \"第三方外部探测结果\", \"站点状态页或维护公告\"]}, {\"id\": \"H4\", \"statement\": \"故障由本机浏览器/代理/DoH/缓存等客户端因素造成，而非网络或 DNS。\", \"status\": \"无法确定\", \"supporting_evidence_ids\": [], \"contradicting_evidence_ids\": [], \"missing_information\": [\"浏览器具体报错文本（如 ERR_CONNECTION_TIMED_OUT / ERR_NAME_NOT_RESOLVED）\", \"关闭代理或改用无 DoH 环境后的复测\", \"curl -v 输出\"]}], \"conclusion\": \"本次测量中，example.com 的 A 记录解析成功（NOERROR → 192.0.2.10，E1），因此「打不开」不是 NXDOMAIN/无记录类 DNS 失败；但到该 IP 的 443 端口 TCP 连接超时（E4），指向解析之后的连接层问题。1.1.1.1 对照解析、AAAA 查询、80 端口探测与 HTTPS GET 均因工具执行错误（ValueError）未取得有效数据（E2/E3/E5/E6/E7），所以无法确认 DNS 是否返回了正确地址、也无法确认是 TLS/HTTP 层还是纯网络层故障。注意：超时不能证明服务器宕机；本机解析成功也不能排除浏览器缓存、hosts、代理或 DoH 的影响。整体结论为「DNS 解析成功、连接层疑似不通，根因待进一步验证」。\", \"conclusion_evidence_ids\": [\"E1\", \"E4\", \"E2\", \"E3\", \"E5\", \"E6\", \"E7\"], \"limitations\": [\"所有测量来自本机（合成测量环境），不代表浏览器缓存、hosts 文件、系统代理或 DoH 的实际解析路径。\", \"1.1.1.1 对照解析两次均因工具 ValueError 失败，未获得任何对照数据，不能据此判断公共解析器是否一致。\", \"AAAA 查询、80 端口 TCP、HTTPS GET 均执行失败，缺少 IPv6、明文 HTTP 与 TLS/HTTP 层证据。\", \"单次 TCP 超时不足以区分服务器宕机、防火墙丢包、路由黑洞或中间设备拦截。\", \"未复现浏览器侧的具体报错，无法排除历史性/间歇性故障。\"], \"recommendations\": [\"在命令行复测并保留原始输出：nslookup example.com 1.1.1.1、nslookup example.com 8.8.8.8，与默认解析器结果比对；同时查 AAAA。\", \"用 curl -v --connect-timeout 10 https://example.com/ 观察卡在 DNS、TCP 连接还是 TLS 握手阶段，并记录具体错误码。\", \"对 192.0.2.10 的 443/80 端口多次重试（如 nc -vz 或 Test-NetConnection），并做 traceroute/mtr 判断丢包位置。\", \"检查本机 hosts 文件、系统代理设置与浏览器安全 DNS（DoH）开关，必要时临时关闭后复测。\", \"用手机热点或其他网络访问同一 URL，区分「本机/本网络问题」与「站点侧问题」。\", \"若确认连接层不通，联系站点方或网络管理员核查 443 端口策略与服务器状态。\"]}",
+          "tool_call_id": "call_00_t2vcXyYhrvxsGxW1ROJJ3896",
+          "tool_kind": null,
+          "id": null,
+          "provider_name": null,
+          "provider_details": null,
+          "part_kind": "tool-call"
+        }
+      ]
+    },
+    {
+      "kind": "request",
+      "parts": [
+        {
+          "tool_name": "final_result",
+          "content": "Final result processed.",
+          "tool_call_id": "call_00_t2vcXyYhrvxsGxW1ROJJ3896",
+          "tool_kind": null,
+          "metadata": null,
+          "timestamp": "2026-10-31T03:33:49.435277Z",
+          "outcome": "success",
+          "retry": null,
+          "part_kind": "tool-return"
+        }
+      ]
+    }
+  ],
+  "evidence": [
+    {
+      "id": "E1",
+      "tool_call_id": "T1",
+      "tool_name": "query_dns",
+      "input": {
+        "domain": "example.com",
+        "record_type": "A",
+        "resolver": null,
+        "timeout": 5
+      },
+      "started_at": "2026-10-31T03:33:36.848472+00:00",
+      "source_mode": "fixture",
+      "measurement_location": "synthetic",
+      "execution_status": "ok",
+      "data": {
+        "rcode": "NOERROR",
+        "records": [
+          {
+            "value": "192.0.2.10",
+            "ttl": 60
+          }
+        ],
+        "resolvers": [
+          "192.0.2.53"
+        ],
+        "record_type": "A"
+      },
+      "error": null,
+      "duration_ms": 0.0
+    },
+    {
+      "id": "E2",
+      "tool_call_id": "T2",
+      "tool_name": "query_dns",
+      "input": {
+        "domain": "example.com",
+        "record_type": "A",
+        "resolver": "1.1.1.1",
+        "timeout": 5
+      },
+      "started_at": "2026-10-31T03:33:36.850645+00:00",
+      "source_mode": "fixture",
+      "measurement_location": "synthetic",
+      "execution_status": "error",
+      "data": {},
+      "error": {
+        "category": "ValueError"
+      },
+      "duration_ms": 0.0
+    },
+    {
+      "id": "E3",
+      "tool_call_id": "T3",
+      "tool_name": "query_dns",
+      "input": {
+        "domain": "example.com",
+        "record_type": "AAAA",
+        "resolver": null,
+        "timeout": 5
+      },
+      "started_at": "2026-10-31T03:33:36.852647+00:00",
+      "source_mode": "fixture",
+      "measurement_location": "synthetic",
+      "execution_status": "error",
+      "data": {},
+      "error": {
+        "category": "ValueError"
+      },
+      "duration_ms": 0.0
+    },
+    {
+      "id": "E4",
+      "tool_call_id": "T4",
+      "tool_name": "check_tcp",
+      "input": {
+        "ip": "192.0.2.10",
+        "port": 443,
+        "timeout": 5
+      },
+      "started_at": "2026-10-31T03:33:37.909817+00:00",
+      "source_mode": "fixture",
+      "measurement_location": "synthetic",
+      "execution_status": "ok",
+      "data": {
+        "ip": "192.0.2.10",
+        "port": 443,
+        "status": "TIMEOUT"
+      },
+      "error": null,
+      "duration_ms": 0.0
+    },
+    {
+      "id": "E5",
+      "tool_call_id": "T5",
+      "tool_name": "check_http",
+      "input": {
+        "url": "https://example.com/",
+        "timeout": 15
+      },
+      "started_at": "2026-10-31T03:33:37.910819+00:00",
+      "source_mode": "fixture",
+      "measurement_location": "synthetic",
+      "execution_status": "error",
+      "data": {},
+      "error": {
+        "category": "ValueError"
+      },
+      "duration_ms": 0.0
+    },
+    {
+      "id": "E6",
+      "tool_call_id": "T6",
+      "tool_name": "query_dns",
+      "input": {
+        "domain": "example.com",
+        "record_type": "A",
+        "resolver": "1.1.1.1",
+        "timeout": 5.0
+      },
+      "started_at": "2026-10-31T03:33:40.558053+00:00",
+      "source_mode": "fixture",
+      "measurement_location": "synthetic",
+      "execution_status": "error",
+      "data": {},
+      "error": {
+        "category": "ValueError"
+      },
+      "duration_ms": 0.0
+    },
+    {
+      "id": "E7",
+      "tool_call_id": "T7",
+      "tool_name": "check_tcp",
+      "input": {
+        "ip": "192.0.2.10",
+        "port": 80,
+        "timeout": 5.0
+      },
+      "started_at": "2026-10-31T03:33:40.559096+00:00",
+      "source_mode": "fixture",
+      "measurement_location": "synthetic",
+      "execution_status": "error",
+      "data": {},
+      "error": {
+        "category": "ValueError"
+      },
+      "duration_ms": 0.0
+    }
+  ],
+  "elapsed_seconds": 13.828
+}

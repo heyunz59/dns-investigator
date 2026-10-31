@@ -80,7 +80,7 @@ def validate_references(result, known):
 
 
 async def investigate(text, target, config, fixture=None, model=None, baseline_facts=None,
-                      log_dir=Path("results/runs")):
+                      log_dir=Path("results/runs"), progress=None):
     run_id = uuid.uuid4().hex
     log_dir.mkdir(parents=True, exist_ok=True)
     path = log_dir / f"{run_id}.json"
@@ -88,6 +88,8 @@ async def investigate(text, target, config, fixture=None, model=None, baseline_f
     def persist(row):
         with events.open("a", encoding="utf-8") as f:
             f.write(json.dumps(redact(row, [config.api_key]), ensure_ascii=False) + "\n")
+        if progress:
+            progress(row)
     backend = ToolBackend(target, fixture, config.max_tool_calls, persist)
     if baseline_facts is not None:
         backend.calls = baseline_facts.copy()

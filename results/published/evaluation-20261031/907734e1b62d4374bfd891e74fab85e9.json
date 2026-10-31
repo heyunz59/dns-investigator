@@ -1,0 +1,213 @@
+{
+  "run_id": "907734e1b62d4374bfd891e74fab85e9",
+  "started_at": "2026-10-31T03:34:09.110534+00:00",
+  "incident": {
+    "id": "907734e1b62d4374bfd891e74fab85e9",
+    "user_input": "其他网站正常，但 https://example.com/ 打不开，请调查 DNS 或其他可能原因。必要时比较 1.1.1.1。",
+    "target": {
+      "domain": "example.com",
+      "url": "https://example.com/",
+      "port": 443,
+      "default_https": false
+    },
+    "measurement_location": "synthetic"
+  },
+  "model": "deepseek-flash",
+  "mode": "baseline",
+  "thinking": "disabled",
+  "temperature": 0,
+  "model_endpoint": "https://api.deepseek.com",
+  "versions": {
+    "app": "0.1.0",
+    "python": "3.12.14",
+    "pydantic-ai-slim": "2.64.0"
+  },
+  "status": "completed",
+  "result": {
+    "observations": [
+      {
+        "evidence_id": "E1",
+        "observation": "对 example.com 的 A 记录查询返回 NOERROR，解析器 192.0.2.53 给出 192.0.2.10（TTL 60）。即 DNS 解析本身成功，且返回的是文档保留地址段 192.0.2.0/24（TEST-NET-1，通常不可在公网路由）。"
+      },
+      {
+        "evidence_id": "E2",
+        "observation": "对 https://example.com/ 的 HTTP 检查结果为 status_code=null、peer_ip=null、error=TIMEOUT，无重定向记录。这是连接/响应超时，不是 HTTP 4xx/5xx，也不是 DNS 的 NXDOMAIN/SERVFAIL/REFUSED。"
+      }
+    ],
+    "hypotheses": [
+      {
+        "id": "H1",
+        "statement": "DNS 解析失败是打不开的原因（如 NXDOMAIN、无记录、SERVFAIL、REFUSED 或解析器不可达）。",
+        "status": "被削弱",
+        "supporting_evidence_ids": [],
+        "contradicting_evidence_ids": [
+          "E1"
+        ],
+        "missing_information": [
+          "其他解析器（如 1.1.1.1）与权威服务器的对比结果",
+          "是否存在 DNS 层面的间歇性失败"
+        ]
+      },
+      {
+        "id": "H2",
+        "statement": "DNS 解析成功但返回的地址不可达/不可路由（192.0.2.10 属 TEST-NET-1 保留段），导致 TCP 443 连接超时。",
+        "status": "获得支持",
+        "supporting_evidence_ids": [
+          "E1",
+          "E2"
+        ],
+        "contradicting_evidence_ids": [],
+        "missing_information": [
+          "对该 IP 的 TCP 443 连通性测试（本组未执行）",
+          "该域名在真实环境中的权威记录是否本就指向 192.0.2.10"
+        ]
+      },
+      {
+        "id": "H3",
+        "statement": "目标服务器/中间网络在 443 端口无响应或丢包（服务器宕机、防火墙丢包、路由黑洞），与 DNS 无关。",
+        "status": "待验证",
+        "supporting_evidence_ids": [
+          "E2"
+        ],
+        "contradicting_evidence_ids": [],
+        "missing_information": [
+          "TCP 443 握手结果、ping/traceroute 结果",
+          "从其他网络位置访问同一 URL 的结果"
+        ]
+      },
+      {
+        "id": "H4",
+        "statement": "本地环境因素（hosts 文件、浏览器缓存、代理、DoH、企业 DNS 劫持）导致解析到错误地址。",
+        "status": "无法确定",
+        "supporting_evidence_ids": [
+          "E1"
+        ],
+        "contradicting_evidence_ids": [],
+        "missing_information": [
+          "本机 hosts 内容",
+          "浏览器/系统代理与 DoH 配置",
+          "与 1.1.1.1 等公共解析器的对比"
+        ]
+      }
+    ],
+    "conclusion": "DNS 查询本身是成功的：example.com 返回 NOERROR 并给出 A 记录 192.0.2.10（E1），因此“DNS 解析失败/域名不存在”这一常见解释被削弱。真正的问题出现在解析之后的连接阶段——HTTPS 请求以 TIMEOUT 结束，未获得任何 HTTP 状态码，也没有对端 IP（E2）。值得注意的是，返回的 192.0.2.10 属于 TEST-NET-1 文档保留网段，正常情况下不可在公网路由，这使“解析成功但地址不可达”成为最贴合现有证据的解释（E1、E2）。但超时本身不能证明服务器宕机，也不能排除本地 hosts/代理/DoH 或中间网络丢包，需进一步测量确认。",
+    "conclusion_evidence_ids": [
+      "E1",
+      "E2"
+    ],
+    "limitations": [
+      "本组数据为 fixture/synthetic 来源，非真实网络测量，不能代表用户实际环境。",
+      "未执行与 1.1.1.1 或其他解析器的对比，无法判断解析结果是否被本地劫持或污染。",
+      "未执行 TCP 443 连通性测试、ping/traceroute，无法区分“地址不可路由”“服务器无响应”“中间防火墙丢包”。",
+      "测量来自程序所在电脑，不能反映浏览器缓存、hosts 文件、系统代理或 DoH 的行为；未复现也不否定用户历史现象。",
+      "单次超时不能证明服务器宕机，也不能证明故障是持续性的。"
+    ],
+    "recommendations": [
+      "用 1.1.1.1 与 8.8.8.8 分别查询 example.com 的 A/AAAA 记录，与本地解析器结果对比；若结果不同，检查 hosts 文件、代理与 DoH 设置。",
+      "对 E1 返回的 192.0.2.10 做 TCP 443 连接测试（仅使用已有 DNS 记录中的 IP），并配合 ping/traceroute 判断是路由黑洞还是主机无响应。",
+      "查询权威 NS 与权威服务器上的记录，确认 192.0.2.10 是否为该域名真实配置（若为占位/测试配置，则问题在域名配置侧）。",
+      "从另一网络位置（如移动网络或在线探测服务）访问 https://example.com/，判断故障是否局限于本地网络。",
+      "重试 HTTPS 请求并记录耗时与错误类型（连接超时 / TLS 握手失败 / 连接被重置），以区分网络层与 TLS 层问题。",
+      "补充信息：本机 hosts 内容、代理/DoH 配置、故障开始时间与是否稳定复现、是否仅该域名受影响。"
+    ]
+  },
+  "usage": {
+    "input_tokens": 1164,
+    "cache_write_tokens": 0,
+    "cache_write_1h_tokens": 0,
+    "cache_read_tokens": 1024,
+    "output_tokens": 1306,
+    "unmeasured_requests": 0,
+    "output_reasoning_tokens": 0,
+    "input_audio_tokens": 0,
+    "cache_audio_read_tokens": 0,
+    "output_audio_tokens": 0,
+    "audio_seconds": 0,
+    "details": {
+      "prompt_cache_hit_tokens": 1024,
+      "prompt_cache_miss_tokens": 140
+    },
+    "cost": "0.001615344",
+    "requests": 1,
+    "tool_calls": 0
+  },
+  "visible_messages": [
+    {
+      "kind": "response",
+      "parts": [
+        {
+          "tool_name": "final_result",
+          "args": "{\"observations\": [{\"evidence_id\": \"E1\", \"observation\": \"对 example.com 的 A 记录查询返回 NOERROR，解析器 192.0.2.53 给出 192.0.2.10（TTL 60）。即 DNS 解析本身成功，且返回的是文档保留地址段 192.0.2.0/24（TEST-NET-1，通常不可在公网路由）。\"}, {\"evidence_id\": \"E2\", \"observation\": \"对 https://example.com/ 的 HTTP 检查结果为 status_code=null、peer_ip=null、error=TIMEOUT，无重定向记录。这是连接/响应超时，不是 HTTP 4xx/5xx，也不是 DNS 的 NXDOMAIN/SERVFAIL/REFUSED。\"}], \"hypotheses\": [{\"id\": \"H1\", \"statement\": \"DNS 解析失败是打不开的原因（如 NXDOMAIN、无记录、SERVFAIL、REFUSED 或解析器不可达）。\", \"status\": \"被削弱\", \"supporting_evidence_ids\": [], \"contradicting_evidence_ids\": [\"E1\"], \"missing_information\": [\"其他解析器（如 1.1.1.1）与权威服务器的对比结果\", \"是否存在 DNS 层面的间歇性失败\"]}, {\"id\": \"H2\", \"statement\": \"DNS 解析成功但返回的地址不可达/不可路由（192.0.2.10 属 TEST-NET-1 保留段），导致 TCP 443 连接超时。\", \"status\": \"获得支持\", \"supporting_evidence_ids\": [\"E1\", \"E2\"], \"contradicting_evidence_ids\": [], \"missing_information\": [\"对该 IP 的 TCP 443 连通性测试（本组未执行）\", \"该域名在真实环境中的权威记录是否本就指向 192.0.2.10\"]}, {\"id\": \"H3\", \"statement\": \"目标服务器/中间网络在 443 端口无响应或丢包（服务器宕机、防火墙丢包、路由黑洞），与 DNS 无关。\", \"status\": \"待验证\", \"supporting_evidence_ids\": [\"E2\"], \"contradicting_evidence_ids\": [], \"missing_information\": [\"TCP 443 握手结果、ping/traceroute 结果\", \"从其他网络位置访问同一 URL 的结果\"]}, {\"id\": \"H4\", \"statement\": \"本地环境因素（hosts 文件、浏览器缓存、代理、DoH、企业 DNS 劫持）导致解析到错误地址。\", \"status\": \"无法确定\", \"supporting_evidence_ids\": [\"E1\"], \"contradicting_evidence_ids\": [], \"missing_information\": [\"本机 hosts 内容\", \"浏览器/系统代理与 DoH 配置\", \"与 1.1.1.1 等公共解析器的对比\"]}], \"conclusion\": \"DNS 查询本身是成功的：example.com 返回 NOERROR 并给出 A 记录 192.0.2.10（E1），因此“DNS 解析失败/域名不存在”这一常见解释被削弱。真正的问题出现在解析之后的连接阶段——HTTPS 请求以 TIMEOUT 结束，未获得任何 HTTP 状态码，也没有对端 IP（E2）。值得注意的是，返回的 192.0.2.10 属于 TEST-NET-1 文档保留网段，正常情况下不可在公网路由，这使“解析成功但地址不可达”成为最贴合现有证据的解释（E1、E2）。但超时本身不能证明服务器宕机，也不能排除本地 hosts/代理/DoH 或中间网络丢包，需进一步测量确认。\", \"conclusion_evidence_ids\": [\"E1\", \"E2\"], \"limitations\": [\"本组数据为 fixture/synthetic 来源，非真实网络测量，不能代表用户实际环境。\", \"未执行与 1.1.1.1 或其他解析器的对比，无法判断解析结果是否被本地劫持或污染。\", \"未执行 TCP 443 连通性测试、ping/traceroute，无法区分“地址不可路由”“服务器无响应”“中间防火墙丢包”。\", \"测量来自程序所在电脑，不能反映浏览器缓存、hosts 文件、系统代理或 DoH 的行为；未复现也不否定用户历史现象。\", \"单次超时不能证明服务器宕机，也不能证明故障是持续性的。\"], \"recommendations\": [\"用 1.1.1.1 与 8.8.8.8 分别查询 example.com 的 A/AAAA 记录，与本地解析器结果对比；若结果不同，检查 hosts 文件、代理与 DoH 设置。\", \"对 E1 返回的 192.0.2.10 做 TCP 443 连接测试（仅使用已有 DNS 记录中的 IP），并配合 ping/traceroute 判断是路由黑洞还是主机无响应。\", \"查询权威 NS 与权威服务器上的记录，确认 192.0.2.10 是否为该域名真实配置（若为占位/测试配置，则问题在域名配置侧）。\", \"从另一网络位置（如移动网络或在线探测服务）访问 https://example.com/，判断故障是否局限于本地网络。\", \"重试 HTTPS 请求并记录耗时与错误类型（连接超时 / TLS 握手失败 / 连接被重置），以区分网络层与 TLS 层问题。\", \"补充信息：本机 hosts 内容、代理/DoH 配置、故障开始时间与是否稳定复现、是否仅该域名受影响。\"]}",
+          "tool_call_id": "call_00_vDCv9tv81nnBBvQt2pNv0483",
+          "tool_kind": null,
+          "id": null,
+          "provider_name": null,
+          "provider_details": null,
+          "part_kind": "tool-call"
+        }
+      ]
+    },
+    {
+      "kind": "request",
+      "parts": [
+        {
+          "tool_name": "final_result",
+          "content": "Final result processed.",
+          "tool_call_id": "call_00_vDCv9tv81nnBBvQt2pNv0483",
+          "tool_kind": null,
+          "metadata": null,
+          "timestamp": "2026-10-31T03:34:16.379854Z",
+          "outcome": "success",
+          "retry": null,
+          "part_kind": "tool-return"
+        }
+      ]
+    }
+  ],
+  "evidence": [
+    {
+      "id": "E1",
+      "tool_call_id": "F1",
+      "tool_name": "query_dns",
+      "input": {
+        "domain": "example.com"
+      },
+      "data": {
+        "rcode": "NOERROR",
+        "records": [
+          {
+            "value": "192.0.2.10",
+            "ttl": 60
+          }
+        ],
+        "resolvers": [
+          "192.0.2.53"
+        ],
+        "record_type": "A"
+      },
+      "source_mode": "fixture",
+      "measurement_location": "synthetic",
+      "execution_status": "ok"
+    },
+    {
+      "id": "E2",
+      "tool_call_id": "F2",
+      "tool_name": "check_http",
+      "input": {
+        "url": "https://example.com/"
+      },
+      "data": {
+        "status_code": null,
+        "final_url": "https://example.com/",
+        "redirects": [],
+        "peer_ip": null,
+        "proxy_mode": "fixture",
+        "error": "TIMEOUT"
+      },
+      "source_mode": "fixture",
+      "measurement_location": "synthetic",
+      "execution_status": "ok"
+    }
+  ],
+  "elapsed_seconds": 7.265
+}

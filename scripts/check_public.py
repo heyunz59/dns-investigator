@@ -3,10 +3,12 @@ import re
 import subprocess
 import sys
 from pathlib import Path
+from dotenv import dotenv_values
 
 
 def check():
     problems = []
+    local_key = dotenv_values(".env").get("DEEPSEEK_API_KEY", "")
     versions = subprocess.check_output(["git", "rev-list", "--all"], text=True).splitlines()
     for ref in [None] + versions:
         names = subprocess.check_output(["git", "ls-files"] if ref is None else ["git", "ls-tree", "-r", "--name-only", ref], text=True).splitlines()
@@ -18,6 +20,8 @@ def check():
             if p.suffix in {".png", ".jpg"}:
                 continue
             text = data.decode("utf-8", errors="replace")
+            if local_key and local_key in text:
+                problems.append((name, "configured API key found"))
             patterns = [r"sk-[A-Za-z0-9_-]{16,}", r"gh[pousr]_[A-Za-z0-9_]{20,}",
                         r"github_pat_[A-Za-z0-9_]{20,}", r"-----BEGIN (?:RSA |OPENSSH )?PRIVATE KEY-----",
                         r"(?i)[A-Z]:[\\/]Users[\\/]", r"(?im)^DEEPSEEK_API_KEY[ \t]*=[ \t]*\S+"]

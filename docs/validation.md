@@ -4,7 +4,7 @@
 
 ## 已实现并验证
 
-- 34 项离线测试通过：七种 fixture、无效输入、缺失目标提取、DNS NXDOMAIN/无记录/SERVFAIL/REFUSED/超时、真实本机 TCP 连接与拒绝、真实本机 HTTP 重定向/503/正文上限/总超时、TLS 错误分类、证据编号、并发调用预算与模型失败日志。
+- 36 项离线测试通过：七种 fixture、无效输入、CLI 缺目标交互与非法 URL 拦截、DNS NXDOMAIN/无记录/SERVFAIL/REFUSED/超时、真实本机 TCP 连接与拒绝、真实本机 HTTP 重定向/503/正文上限/总超时、TLS 错误分类、证据编号、并发调用预算与模型失败日志。最后一次本地执行：36 passed in 5.96s。
 - 真实 DeepSeek 已完成 live 调查闭环：运行 ID `5de515705979471e9d8f559ea3a4ea63`，9 次工具测量，包括 A/AAAA、两地址 TCP、HTTPS、重复检查和第二解析器；JSON 与 JSONL 实际落盘。
 - 真实 DeepSeek 单项查询：运行 ID `0c8255c61bca456895dabd0c5a967e8d`，仅调用 DNS；额外 AAAA 查询未命中 fixture 并如实返回工具错误，模型未虚构记录。
 - 真实独立工具检查：DNS 返回地址，一个 IPv4 TCP 超时，HTTPS 经另一个地址收到 200。结果不能合并成“同一后端 TCP 超时却 HTTP 成功”。公开副本移除了本机 DNS 配置。
@@ -23,7 +23,7 @@ DNS 单项查询虽只使用 DNS 工具，但额外查询了 AAAA，超出了用
 
 ## 仍需验证或补充
 
-- 正式 A/B 实验与评分结果按实际完成情况更新；未完成前不填成功率。
-- GitHub Actions 的云端执行与本地通过不同，应查看具体工作流结果。
+- 正式 A/B 已执行 7 个场景 × 1 次 × 2 组，共 14 次，使用修复后的 fixture 匹配；原始回答和逐项复核见 results/published/evaluation-20261031/。A 为 6/7，B 为 4/7；这只是 Codex 规则辅助复核的初步结果，待独立人工审核，不能当作稳定的效果提升证据。
+- GitHub Actions 首次云端执行通过：[运行记录](https://github.com/heyunz59/dns-investigator/actions/runs/41164947160)。
 - 多网络位置、实际 IPv6 连通性、真实无效 TLS 站点、长期重复采样尚未验证；TLS 错误分类已用可控测试验证。
 - 截图为实际日志在浏览器中的只读视图，非原始终端截图，图中保留真实模型的不理想表述并标明开发者复核。

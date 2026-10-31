@@ -1,0 +1,301 @@
+{
+  "run_id": "1dbde85c4810434795d94a466d78c2a7",
+  "started_at": "2026-10-31T03:34:34.126822+00:00",
+  "incident": {
+    "id": "1dbde85c4810434795d94a466d78c2a7",
+    "user_input": "查询 example.com 的 A 记录",
+    "target": {
+      "domain": "example.com",
+      "url": "https://example.com/",
+      "port": 443,
+      "default_https": false
+    },
+    "measurement_location": "synthetic"
+  },
+  "model": "deepseek-flash",
+  "mode": "agent",
+  "thinking": "disabled",
+  "temperature": 0,
+  "model_endpoint": "https://api.deepseek.com",
+  "versions": {
+    "app": "0.1.0",
+    "python": "3.12.14",
+    "pydantic-ai-slim": "2.64.0"
+  },
+  "status": "completed",
+  "result": {
+    "observations": [
+      {
+        "evidence_id": "E1",
+        "observation": "对 example.com 的 A 查询返回 NOERROR，记录为 192.0.2.10，TTL 60，使用的解析器为 192.0.2.53（source_mode=fixture，measurement_location=synthetic，即合成/固定数据环境）。"
+      },
+      {
+        "evidence_id": "E2",
+        "observation": "对 example.com 的 AAAA 查询执行失败，错误类别为 ValueError（工具侧参数/处理错误），未返回任何 DNS 响应码，因此不能据此判断 AAAA 记录是否存在。"
+      }
+    ],
+    "hypotheses": [
+      {
+        "id": "H1",
+        "statement": "example.com 当前存在 A 记录，指向 192.0.2.10。",
+        "status": "获得支持",
+        "supporting_evidence_ids": [
+          "E1"
+        ],
+        "contradicting_evidence_ids": [],
+        "missing_information": [
+          "未用第二个解析器交叉验证，无法排除单一解析器缓存或本地策略影响",
+          "未确认该记录是否为 CNAME 链末端结果"
+        ]
+      },
+      {
+        "id": "H2",
+        "statement": "example.com 的 AAAA 记录状态未知（查询工具报错，而非 NXDOMAIN 或 NODATA）。",
+        "status": "无法确定",
+        "supporting_evidence_ids": [
+          "E2"
+        ],
+        "contradicting_evidence_ids": [],
+        "missing_information": [
+          "AAAA 查询未成功执行，缺少有效响应码与记录集"
+        ]
+      },
+      {
+        "id": "H3",
+        "statement": "该结果可直接代表真实公网 DNS 现状。",
+        "status": "被削弱",
+        "supporting_evidence_ids": [],
+        "contradicting_evidence_ids": [
+          "E1"
+        ],
+        "missing_information": [
+          "E1 标注为 fixture/synthetic 数据源，非真实网络测量"
+        ]
+      }
+    ],
+    "conclusion": "在本次测量环境中，example.com 的 A 查询成功返回 NOERROR，唯一 A 记录为 192.0.2.10（TTL 60），解析器为 192.0.2.53（E1）。AAAA 查询因工具侧 ValueError 失败，未获得任何 DNS 响应，故 AAAA 状态为未知，不能解读为无记录或 NXDOMAIN（E2）。需注意 E1 的 source_mode 为 fixture、measurement_location 为 synthetic，说明这是合成/固定数据而非真实公网测量，结论仅适用于该环境，不能外推为 example.com 的真实公网解析现状。",
+    "conclusion_evidence_ids": [
+      "E1",
+      "E2"
+    ],
+    "limitations": [
+      "E1 为 fixture/synthetic 数据源，非真实网络测量，结果不代表公网实际解析。",
+      "仅使用单一解析器 192.0.2.53，未做多解析器交叉验证。",
+      "AAAA 查询工具报错（ValueError），未取得有效 DNS 响应，无法判断 AAAA 记录存在与否。",
+      "测量来自程序所在电脑，不代表浏览器缓存、hosts 文件、代理或 DoH 路径的结果。",
+      "未检查 CNAME 链、DNSSEC 状态或权威服务器直接应答。"
+    ],
+    "recommendations": [
+      "在真实网络环境下重跑 A 查询，并指定至少两个公共解析器（如 1.1.1.1、8.8.8.8）交叉验证 192.0.2.10 是否一致。",
+      "修复或更换工具后重新执行 AAAA 查询，明确其是 NODATA、NXDOMAIN 还是 SERVFAIL，避免与工具错误混淆。",
+      "如需确认权威数据，直接向 example.com 的权威 NS 查询 A/AAAA，并检查是否存在 CNAME 链。",
+      "若关注网站可达性，可基于已获得的 IP 192.0.2.10 做 443 端口 TCP 连接与 https://example.com/ 的 HTTP 检查（注意 192.0.2.0/24 属文档保留网段，通常不可路由）。"
+    ]
+  },
+  "usage": {
+    "input_tokens": 2760,
+    "cache_write_tokens": 0,
+    "cache_write_1h_tokens": 0,
+    "cache_read_tokens": 2304,
+    "output_tokens": 1056,
+    "unmeasured_requests": 0,
+    "output_reasoning_tokens": 0,
+    "input_audio_tokens": 0,
+    "cache_audio_read_tokens": 0,
+    "output_audio_tokens": 0,
+    "audio_seconds": 0,
+    "details": {
+      "prompt_cache_hit_tokens": 2304,
+      "prompt_cache_miss_tokens": 456
+    },
+    "cost": "0.001417824",
+    "requests": 2,
+    "tool_calls": 2
+  },
+  "visible_messages": [
+    {
+      "kind": "response",
+      "parts": [
+        {
+          "tool_name": "query_dns",
+          "args": "{\"domain\": \"example.com\", \"record_type\": \"A\"}",
+          "tool_call_id": "call_00_TNRCTtOQKewDEZjmejbp4131",
+          "tool_kind": null,
+          "id": null,
+          "provider_name": null,
+          "provider_details": null,
+          "part_kind": "tool-call"
+        },
+        {
+          "tool_name": "query_dns",
+          "args": "{\"domain\": \"example.com\", \"record_type\": \"AAAA\"}",
+          "tool_call_id": "call_01_MHPV314pD1IsXXlJcj4K2289",
+          "tool_kind": null,
+          "id": null,
+          "provider_name": null,
+          "provider_details": null,
+          "part_kind": "tool-call"
+        }
+      ]
+    },
+    {
+      "kind": "request",
+      "parts": [
+        {
+          "tool_name": "query_dns",
+          "content": {
+            "id": "E1",
+            "tool_call_id": "T1",
+            "tool_name": "query_dns",
+            "input": {
+              "domain": "example.com",
+              "record_type": "A",
+              "resolver": null,
+              "timeout": 5
+            },
+            "started_at": "2026-10-31T03:34:34.939875+00:00",
+            "source_mode": "fixture",
+            "measurement_location": "synthetic",
+            "execution_status": "ok",
+            "data": {
+              "rcode": "NOERROR",
+              "records": [
+                {
+                  "value": "192.0.2.10",
+                  "ttl": 60
+                }
+              ],
+              "resolvers": [
+                "192.0.2.53"
+              ],
+              "record_type": "A"
+            },
+            "error": null,
+            "duration_ms": 0.0
+          },
+          "tool_call_id": "call_00_TNRCTtOQKewDEZjmejbp4131",
+          "tool_kind": null,
+          "metadata": null,
+          "timestamp": "2026-10-31T03:34:34.940888Z",
+          "outcome": "success",
+          "retry": null,
+          "part_kind": "tool-return"
+        },
+        {
+          "tool_name": "query_dns",
+          "content": {
+            "id": "E2",
+            "tool_call_id": "T2",
+            "tool_name": "query_dns",
+            "input": {
+              "domain": "example.com",
+              "record_type": "AAAA",
+              "resolver": null,
+              "timeout": 5
+            },
+            "started_at": "2026-10-31T03:34:34.941892+00:00",
+            "source_mode": "fixture",
+            "measurement_location": "synthetic",
+            "execution_status": "error",
+            "data": {},
+            "error": {
+              "category": "ValueError"
+            },
+            "duration_ms": 0.0
+          },
+          "tool_call_id": "call_01_MHPV314pD1IsXXlJcj4K2289",
+          "tool_kind": null,
+          "metadata": null,
+          "timestamp": "2026-10-31T03:34:34.946615Z",
+          "outcome": "success",
+          "retry": null,
+          "part_kind": "tool-return"
+        }
+      ]
+    },
+    {
+      "kind": "response",
+      "parts": [
+        {
+          "tool_name": "final_result",
+          "args": "{\"observations\": [{\"evidence_id\": \"E1\", \"observation\": \"对 example.com 的 A 查询返回 NOERROR，记录为 192.0.2.10，TTL 60，使用的解析器为 192.0.2.53（source_mode=fixture，measurement_location=synthetic，即合成/固定数据环境）。\"}, {\"evidence_id\": \"E2\", \"observation\": \"对 example.com 的 AAAA 查询执行失败，错误类别为 ValueError（工具侧参数/处理错误），未返回任何 DNS 响应码，因此不能据此判断 AAAA 记录是否存在。\"}], \"hypotheses\": [{\"id\": \"H1\", \"statement\": \"example.com 当前存在 A 记录，指向 192.0.2.10。\", \"status\": \"获得支持\", \"supporting_evidence_ids\": [\"E1\"], \"contradicting_evidence_ids\": [], \"missing_information\": [\"未用第二个解析器交叉验证，无法排除单一解析器缓存或本地策略影响\", \"未确认该记录是否为 CNAME 链末端结果\"]}, {\"id\": \"H2\", \"statement\": \"example.com 的 AAAA 记录状态未知（查询工具报错，而非 NXDOMAIN 或 NODATA）。\", \"status\": \"无法确定\", \"supporting_evidence_ids\": [\"E2\"], \"contradicting_evidence_ids\": [], \"missing_information\": [\"AAAA 查询未成功执行，缺少有效响应码与记录集\"]}, {\"id\": \"H3\", \"statement\": \"该结果可直接代表真实公网 DNS 现状。\", \"status\": \"被削弱\", \"supporting_evidence_ids\": [], \"contradicting_evidence_ids\": [\"E1\"], \"missing_information\": [\"E1 标注为 fixture/synthetic 数据源，非真实网络测量\"]}], \"conclusion\": \"在本次测量环境中，example.com 的 A 查询成功返回 NOERROR，唯一 A 记录为 192.0.2.10（TTL 60），解析器为 192.0.2.53（E1）。AAAA 查询因工具侧 ValueError 失败，未获得任何 DNS 响应，故 AAAA 状态为未知，不能解读为无记录或 NXDOMAIN（E2）。需注意 E1 的 source_mode 为 fixture、measurement_location 为 synthetic，说明这是合成/固定数据而非真实公网测量，结论仅适用于该环境，不能外推为 example.com 的真实公网解析现状。\", \"conclusion_evidence_ids\": [\"E1\", \"E2\"], \"limitations\": [\"E1 为 fixture/synthetic 数据源，非真实网络测量，结果不代表公网实际解析。\", \"仅使用单一解析器 192.0.2.53，未做多解析器交叉验证。\", \"AAAA 查询工具报错（ValueError），未取得有效 DNS 响应，无法判断 AAAA 记录存在与否。\", \"测量来自程序所在电脑，不代表浏览器缓存、hosts 文件、代理或 DoH 路径的结果。\", \"未检查 CNAME 链、DNSSEC 状态或权威服务器直接应答。\"], \"recommendations\": [\"在真实网络环境下重跑 A 查询，并指定至少两个公共解析器（如 1.1.1.1、8.8.8.8）交叉验证 192.0.2.10 是否一致。\", \"修复或更换工具后重新执行 AAAA 查询，明确其是 NODATA、NXDOMAIN 还是 SERVFAIL，避免与工具错误混淆。\", \"如需确认权威数据，直接向 example.com 的权威 NS 查询 A/AAAA，并检查是否存在 CNAME 链。\", \"若关注网站可达性，可基于已获得的 IP 192.0.2.10 做 443 端口 TCP 连接与 https://example.com/ 的 HTTP 检查（注意 192.0.2.0/24 属文档保留网段，通常不可路由）。\"]}",
+          "tool_call_id": "call_00_JpP0i441pDUeLyJFeqE93322",
+          "tool_kind": null,
+          "id": null,
+          "provider_name": null,
+          "provider_details": null,
+          "part_kind": "tool-call"
+        }
+      ]
+    },
+    {
+      "kind": "request",
+      "parts": [
+        {
+          "tool_name": "final_result",
+          "content": "Final result processed.",
+          "tool_call_id": "call_00_JpP0i441pDUeLyJFeqE93322",
+          "tool_kind": null,
+          "metadata": null,
+          "timestamp": "2026-10-31T03:34:40.214440Z",
+          "outcome": "success",
+          "retry": null,
+          "part_kind": "tool-return"
+        }
+      ]
+    }
+  ],
+  "evidence": [
+    {
+      "id": "E1",
+      "tool_call_id": "T1",
+      "tool_name": "query_dns",
+      "input": {
+        "domain": "example.com",
+        "record_type": "A",
+        "resolver": null,
+        "timeout": 5
+      },
+      "started_at": "2026-10-31T03:34:34.939875+00:00",
+      "source_mode": "fixture",
+      "measurement_location": "synthetic",
+      "execution_status": "ok",
+      "data": {
+        "rcode": "NOERROR",
+        "records": [
+          {
+            "value": "192.0.2.10",
+            "ttl": 60
+          }
+        ],
+        "resolvers": [
+          "192.0.2.53"
+        ],
+        "record_type": "A"
+      },
+      "error": null,
+      "duration_ms": 0.0
+    },
+    {
+      "id": "E2",
+      "tool_call_id": "T2",
+      "tool_name": "query_dns",
+      "input": {
+        "domain": "example.com",
+        "record_type": "AAAA",
+        "resolver": null,
+        "timeout": 5
+      },
+      "started_at": "2026-10-31T03:34:34.941892+00:00",
+      "source_mode": "fixture",
+      "measurement_location": "synthetic",
+      "execution_status": "error",
+      "data": {},
+      "error": {
+        "category": "ValueError"
+      },
+      "duration_ms": 0.0
+    }
+  ],
+  "elapsed_seconds": 6.094
+}
