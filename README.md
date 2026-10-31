@@ -1,5 +1,7 @@
 # DNS 调查助手
 
+v0.3 针对性修复：并发测量按调用 ID 归属，保留独立 HTTP/DNS 证据；CNAME 转介、未完成别名和链末端负回答明确区分。见 [修复与验证](docs/v0.3-targeted-fixes.md)。
+
 ## v0.3 DNS 深度诊断
 
 当前实现为 **1 个 DeepSeek/PydanticAI Agent + 5 个正式工具**：增强的 query_dns（A/AAAA/CNAME/NS/SOA）、compare_resolvers、query_authoritative，以及保留的 check_tcp/check_http。新增确定性 DNS Finding 引擎；不是第二个 Agent，也不是第六个工具。完整验收、实际结果及边界见 [v0.3 交付记录](docs/dns-v3.md)。下文 v0.2 实验是历史材料，不代表 v0.3 的诊断准确率。

@@ -1,5 +1,11 @@
 # 验证记录
 
+## v0.3 并发与 CNAME 修复（2026-10-31）
+
+基于 40d75ab，原有 87 项通过；新增回归先在旧代码复现 12 failed / 3 passed，再实施修复。最终 **108 passed in 8.03s**，命令 `.venv\Scripts\python.exe -m pytest -q`。并发测试采用 Event 控制完成顺序，核对调用/证据/内容及 JSON、JSONL，未禁用并发。报文测试联合检查解析与 Finding，覆盖 CNAME 转介、末端 NODATA/NXDOMAIN、未知别名、正常回答和截断。
+
+真实 DeepSeek + 受控 fixture 两次：一例 limited（独立 DNS E1、HTTP 503 E2），一例 completed（CNAME+NS 被描述为转介）；无公网目标测量，不作为独立人工语义正确率。新目录 results/published/v3-targeted-7599982d892d46e19fe4999f157cd3b0/ 保留事实与回答，旧实验未更改。详情及协议出处见 [针对性修复记录](v0.3-targeted-fixes.md)。
+
 ## v0.3 DNS 深度诊断（2026-10-31）
 
 起点 43f831a，原有 54 项离线测试通过。扩展五记录类型、完整 DNS 报文、多递归比较、权威发现与 RD/AA、确定性 Finding 和双层预算后，完整执行：**87 passed in 7.37s**。命令 `.venv\Scripts\python.exe -m pytest -q`。其中真实本机 DNS 集成测试覆盖 UDP 请求、TC 截断后 TCP 回退及 RD=0，另有并发预算和取消检查。脚本模型路径测试仅验证框架，不当作真实 DeepSeek 验收。

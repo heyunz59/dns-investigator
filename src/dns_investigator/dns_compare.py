@@ -1,6 +1,11 @@
 """Pure comparisons: differences are observations, never a pollution verdict."""
+from .dns_wire import comparable_response
+
+
 def compare(rows):
     usable = [r for r in rows if r.get("execution_status", "ok") == "ok"]
+    if any(not comparable_response(r) for r in usable):
+        return ["COMPARISON_INCONCLUSIVE"]
     codes = []
     if len(usable) < 2:
         return ["COMPARISON_INCONCLUSIVE"]

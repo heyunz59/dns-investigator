@@ -5,6 +5,8 @@ import socket
 import ssl
 import time
 import contextvars
+import copy
+import itertools
 from datetime import datetime, timezone
 from pathlib import Path
 import dns.asyncresolver
@@ -32,6 +34,8 @@ class ToolBackend:
         self.fixture = json.loads(fixture.read_text(encoding="utf-8")) if fixture else None
         self.max_calls = max_calls
         self.calls = []  # Valid measurements only; never a call counter.
+        self._evidence_ids = itertools.count(1)
+        self._evidence_by_call = {}
         self.attempts = []
         self.request_kind = "investigation"
         self.blocked = set()
@@ -41,14 +45,28 @@ class ToolBackend:
         self.max_auth_servers = 2
         self.resolvers = (None,"1.1.1.1","8.8.8.8")
 
+    def owned_evidence(self, call_id):
+        return list(self._evidence_by_call.get(call_id, ()))
+
+    def save_evidence(self, row):
+        # Synchronous allocation + append, with no await: atomic within this event loop.
+        # Imported baseline facts may already occupy an E id.
+        existing={e["id"] for e in self.calls}
+        identifier=f"E{next(self._evidence_ids)}"
+        while identifier in existing:
+            identifier=f"E{next(self._evidence_ids)}"
+        row=copy.deepcopy({**row,"id":identifier,"parent_tool_call_id":row["tool_call_id"]})
+        self.calls.append(row)
+        self._evidence_by_call.setdefault(row["tool_call_id"],[]).append(row)
+        self.emit("evidence",row)
+        return row
+
     def add_dns_evidence(self, data, parent, query_id=None):
-        row=dict(id=f"E{len(self.calls)+1}",tool_call_id=parent,parent_tool_call_id=parent,
+        row=dict(tool_call_id=parent,parent_tool_call_id=parent,
                  query_attempt_id=query_id,tool_name="query_dns",input=dict(domain=data.get("qname"),record_type=data.get("qtype"),resolver=data.get("resolver")),
                  started_at=now(),duration_ms=data.get("duration_ms",0),execution_status="ok",data=data,
                  source_mode="fixture" if self.fixture is not None else "live",measurement_location="synthetic" if self.fixture is not None else "program-host",error=None)
-        self.calls.append(row)
-        self.emit("evidence",row)
-        return row
+        return self.save_evidence(row)
 
     @property
     def finish_now(self):
@@ -71,7 +89,7 @@ class ToolBackend:
         if emit:
             self.emit("attempt_finished", row)
         return dict(attempt_id=row["attempt_id"], execution_status="error", data={},
-                    partial_evidence=[e for e in self.calls if e.get("parent_tool_call_id")==row["attempt_id"]],
+                    partial_evidence=self.owned_evidence(row["attempt_id"]),
                     findings=diagnose(self.calls),
                     error=row["error"], source_mode="fixture" if self.fixture is not None else "live",
                     budget={"remaining": max(0, self.max_calls-len(self.attempts)),
@@ -105,7 +123,6 @@ class ToolBackend:
             return self.reject(attempt, "INVALID_INPUT", "参数非法或不在本次调查范围；检查目标、端口、类型和已有 DNS 证据。")
         attempt["status"] = "running"
         token=PARENT.set(attempt["attempt_id"])
-        before=len(self.calls)
         row = dict(tool_call_id=attempt["attempt_id"],
                    tool_name=name, input=redact(args), started_at=now(),
                    source_mode="fixture" if self.fixture is not None else "live",
@@ -125,7 +142,7 @@ class ToolBackend:
                     return self.reject(attempt, "FIXTURE_NOT_COVERED",
                         "测试数据没有提供该项事实；不是 DNS 无记录/NXDOMAIN 或真实网络失败。不可重试；请保留未知并结束或选择其他有用检查。",
                         status="unavailable", emit=False)
-                row["data"] = matches[0]["data"].copy()
+                row["data"] = copy.deepcopy(matches[0]["data"])
             else:
                 if name == "check_http" and safe_url(args["url"]) == safe_url(self.target.url):
                     args = {**args, "url": self.target.url}
@@ -140,19 +157,22 @@ class ToolBackend:
                         if data.get("execution_status","ok")=="ok":
                             evidence=self.add_dns_evidence(data,attempt["attempt_id"])
                             data["evidence_id"]=evidence["id"]
-                ids=[e["id"] for e in self.calls[before:]]
+                ids=[e["id"] for e in self.owned_evidence(attempt["attempt_id"])]
                 attempt.update(status="measured" if ids else "unavailable",evidence_ids=ids)
                 row["data"]["findings"]=diagnose(self.calls)
                 row["data"]["evidence_ids"]=ids
                 return row
-            if len(self.calls)>before:
-                attempt.update(status="measured",evidence_id=self.calls[-1]["id"])
-                return {**row,"id":self.calls[-1]["id"],"findings":diagnose(self.calls)}
             if row["data"].get("execution_status")=="error":
                 return self.reject(attempt,(row["data"].get("error") or {}).get("code","DNS_EXECUTION_ERROR"),"DNS 查询没有取得响应；已有子查询证据保留。",emit=False)
+            identifier=row["data"].get("evidence_id") if name=="query_dns" else None
+            if identifier is not None:
+                if identifier not in {e["id"] for e in self.owned_evidence(attempt["attempt_id"])}:
+                    raise ValueError("DNS returned evidence owned by another call")
+                attempt.update(status="measured",evidence_id=identifier)
+                return {**row,"id":identifier,"findings":diagnose(self.calls)}
             # Only an actually returned measurement earns an E identifier.
-            row["id"] = f"E{len(self.calls)+1}"
-            self.calls.append(row)
+            row["duration_ms"]=round((time.monotonic()-started)*1000,2)
+            row=self.save_evidence(row)
             attempt.update(status="measured", evidence_id=row["id"])
         except asyncio.CancelledError:
             self.reject(attempt, "CANCELLED", "测量被取消；没有取得有效事实。", status="cancelled", emit=False)
@@ -164,10 +184,9 @@ class ToolBackend:
             return self.reject(attempt, "INTERNAL_EXECUTION_ERROR", "工具内部执行失败；没有取得有效测量，不能据此判断目标故障。", status="execution_error", emit=False)
         finally:
             PARENT.reset(token)
+            attempt["evidence_ids"]=[e["id"] for e in self.owned_evidence(attempt["attempt_id"])]
             attempt["duration_ms"] = round((time.monotonic()-started)*1000, 2)
             self.emit("attempt_finished", attempt)
-        row["duration_ms"] = attempt["duration_ms"]
-        self.emit("evidence", row)
         row = {**row, "findings":diagnose(self.calls), "budget": {"remaining": max(0, self.max_calls-len(self.attempts)),
                                  "finish_now": self.finish_now}}
         return row

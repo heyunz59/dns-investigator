@@ -123,8 +123,9 @@ async def test_d_cases(case):
         await b.call("query_dns",domain="example.com",record_type="A")
         assert len(b.attempts)==1
     else:
-        await b.call("compare_resolvers",domain="example.com",record_type="A")
-        assert all(r.get("evidence_id","").startswith("E") for r in b.fixture[1]["data"]["responses"])
+        result=await b.call("compare_resolvers",domain="example.com",record_type="A")
+        assert all(r.get("evidence_id","").startswith("E") for r in result["data"]["responses"])
+        assert all("evidence_id" not in r for r in b.fixture[1]["data"]["responses"])
         if case in {"D4","D5","D9"}:
             await b.call("query_authoritative",domain="example.com",record_type="A")
     codes={f["code"] for f in diagnose(b.calls)}

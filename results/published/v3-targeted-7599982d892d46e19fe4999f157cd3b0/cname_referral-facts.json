@@ -1,0 +1,74 @@
+[
+  {
+    "tool": "query_dns",
+    "match": {
+      "domain": "example.com",
+      "record_type": "A"
+    },
+    "data": {
+      "qname": "example.com",
+      "qtype": "A",
+      "record_type": "A",
+      "resolver": "1.1.1.1",
+      "responding_resolver": "1.1.1.1",
+      "resolver_role": "recursive",
+      "rcode": "NOERROR",
+      "flags": {
+        "AA": false,
+        "RD": true,
+        "RA": false,
+        "TC": false
+      },
+      "answer": [
+        {
+          "name": "example.com",
+          "type": "CNAME",
+          "ttl": 60,
+          "values": [
+            "target.other."
+          ]
+        }
+      ],
+      "authority": [
+        {
+          "name": "other",
+          "type": "NS",
+          "ttl": 60,
+          "values": [
+            "ns.other."
+          ]
+        }
+      ],
+      "additional": [],
+      "transport": "UDP",
+      "execution_status": "ok",
+      "error": null,
+      "records": [],
+      "result_kind": "REFERRAL",
+      "cname_loop": false,
+      "cname_chain": [
+        {
+          "name": "example.com",
+          "target": "target.other",
+          "ttl": 60
+        }
+      ],
+      "canonical_name": "target.other",
+      "negative_name": null,
+      "negative_scope": null,
+      "resolution_complete": false,
+      "soa_serials": []
+    }
+  },
+  {
+    "tool": "check_http",
+    "match": {
+      "url": "https://example.com/"
+    },
+    "data": {
+      "status_code": 503,
+      "final_url": "https://example.com/",
+      "error": null
+    }
+  }
+]

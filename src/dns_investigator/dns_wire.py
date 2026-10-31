@@ -11,28 +11,94 @@ import dns.exception
 
 TYPES = {"A", "AAAA", "CNAME", "NS", "SOA"}
 
+INCOMPLETE_KINDS = {"REFERRAL", "ALIAS_INCOMPLETE", "TRUNCATED", "INDETERMINATE"}
+
+
+def comparable_response(row):
+    # Old facts without a classification are usable for their explicit RCODE/records,
+    # but must not be promoted to a newly established NODATA result.
+    if row.get("rcode")=="NOERROR" and not row.get("records") and row.get("result_kind")!="NODATA":
+        return False
+    return row.get("result_kind") not in INCOMPLETE_KINDS and not row.get("flags",{}).get("TC")
+
+
+def classify_response(qname, qtype, rcode, flags, answer, authority):
+    """RFC 2308 2.1/2.2: terminal name, relevant RRsets and negative authority."""
+    def normal(name):
+        return dns.name.from_text(name,origin=dns.name.root).canonicalize()
+    original=normal(qname)
+    current=original
+    links={}
+    for rr in answer:
+        if rr["type"]=="CNAME":
+            links.setdefault(normal(rr["name"]),set()).update(normal(v) for v in rr["values"])
+    chain=[]
+    seen=set()
+    invalid=False
+    while current in links:
+        if current in seen or len(links[current])!=1:
+            invalid=True
+            break
+        seen.add(current)
+        target=next(iter(links[current]))
+        ttl=next(rr["ttl"] for rr in answer if rr["type"]=="CNAME" and normal(rr["name"])==current)
+        chain.append(dict(name=str(current).rstrip("."),target=str(target).rstrip("."),ttl=ttl))
+        current=target
+    terminal=original if qtype=="CNAME" else current
+    records=[dict(value=v,ttl=rr["ttl"]) for rr in answer
+             if rr["type"]==qtype and normal(rr["name"])==terminal for v in rr["values"]]
+    soa=[rr for rr in authority if rr["type"]=="SOA"]
+    ns=[rr for rr in authority if rr["type"]=="NS"]
+    relevant_soa=[rr for rr in soa if terminal.is_subdomain(normal(rr["name"]))]
+    relevant_ns=[rr for rr in ns if terminal.is_subdomain(normal(rr["name"]))]
+    if flags["TC"]:
+        kind="TRUNCATED"
+    elif invalid:
+        kind="INDETERMINATE"
+    elif rcode=="NXDOMAIN":
+        kind="INDETERMINATE" if records else "NXDOMAIN"
+    elif rcode!="NOERROR":
+        kind=rcode
+    elif records:
+        kind="NOERROR"
+    elif relevant_soa:
+        # SOA (even together with NS) is a negative result for the terminal name.
+        kind="NODATA"
+    elif soa:
+        kind="INDETERMINATE"  # unrelated SOA cannot prove terminal-name absence
+    elif relevant_ns:
+        # AA may cover the alias's zone, not the chain target. Do not require AA=0.
+        kind="REFERRAL"
+    elif ns:
+        kind="INDETERMINATE"
+    elif chain and qtype!="CNAME":
+        # RFC 2308 2.2.1 warns that broken servers can omit a terminal NXDOMAIN.
+        kind="ALIAS_INCOMPLETE"
+    elif answer:
+        kind="INDETERMINATE"  # unrelated answer RRsets, no terminal proof
+    else:
+        kind="NODATA"  # RFC 2308 type 3: no relevant answers and no NS
+    negative=kind in {"NODATA","NXDOMAIN"}
+    return dict(records=records,result_kind=kind,cname_loop=invalid,cname_chain=chain,
+        canonical_name=str(current).rstrip("."),
+        negative_name=str(terminal).rstrip(".") if negative else None,
+        negative_scope=("original_name" if terminal==original else "cname_target") if negative else None,
+        resolution_complete=kind not in INCOMPLETE_KINDS)
+
 
 def parse_response(message, qname, qtype, server, role="recursive", transport="UDP"):
     def section(rrsets):
         return [dict(name=str(rr.name).rstrip("."), type=dns.rdatatype.to_text(rr.rdtype), ttl=rr.ttl,
                      values=[x.to_text() for x in rr]) for rr in rrsets]
     answer, authority = section(message.answer), section(message.authority)
-    records = [dict(value=v, ttl=rr["ttl"]) for rr in answer if rr["type"] == qtype for v in rr["values"]]
-    chain = [dict(name=rr["name"], target=v.rstrip("."), ttl=rr["ttl"]) for rr in answer if rr["type"] == "CNAME" for v in rr["values"]]
-    seen, loop = set(), False
-    for link in chain:
-        if link["name"] in seen or link["target"] in seen or link["target"] == qname:
-            loop = True
-        seen.add(link["name"])
     rcode = dns.rcode.to_text(message.rcode())
     flags = {name: bool(message.flags & getattr(dns.flags, name)) for name in ("AA", "RD", "RA", "TC")}
-    referral = not flags["AA"] and not answer and any(r["type"] == "NS" for r in authority)
+    classification=classify_response(qname,qtype,rcode,flags,answer,authority)
     return dict(qname=qname, qtype=qtype, record_type=qtype, resolver=server,
         responding_resolver=server, resolver_role=role, rcode=rcode,
-        result_kind="TRUNCATED" if flags["TC"] else "REFERRAL" if referral else "NODATA" if rcode == "NOERROR" and not records else rcode,
         flags=flags, answer=answer, authority=authority, additional=section(message.additional),
-        records=records, cname_chain=chain, canonical_name=chain[-1]["target"] if chain else qname,
-        cname_loop=loop, transport=transport, execution_status="ok", error=None,
+        transport=transport, execution_status="ok", error=None,
+        **classification,
         soa_serials=[int(v.split()[2]) for rr in answer+authority if rr["type"] == "SOA" for v in rr["values"]])
 
 
