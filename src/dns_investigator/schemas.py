@@ -17,9 +17,11 @@ class Observation(BaseModel):
 
 
 class InvestigationResult(BaseModel):
+    request_kind: Literal["query", "investigation"] = "investigation"
+    outcome: Literal["answered", "insufficient_information", "execution_failed"] = "answered"
     observations: list[Observation]
     hypotheses: list[Hypothesis]
-    conclusion: str
+    conclusion: str = Field(min_length=1)
     conclusion_evidence_ids: list[str]
     limitations: list[str]
     recommendations: list[str]

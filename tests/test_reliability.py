@@ -24,15 +24,16 @@ async def test_dns_exception_categories(monkeypatch, exc, expected):
 
 
 async def test_missing_fixture_no_live_fallback():
-    fixture = Path(__file__).resolve().parents[1] / "data/fixtures/C2.json"
+    fixture = Path(__file__).resolve().parents[1] / "data/fixtures/MISSING.json"
     b = ToolBackend(parse_target("example.com"), fixture)
     r = await b.call("check_http", url="https://example.com/")
     assert r["execution_status"] == "error" and r["source_mode"] == "fixture"
+    assert r["error"]["code"] == "FIXTURE_NOT_COVERED"
 
 
 @pytest.mark.parametrize("extra", [{"record_type": "AAAA"}, {"resolver": "1.1.1.1"}])
 async def test_fixture_dns_parameters_are_exact(extra):
-    fixture = Path(__file__).resolve().parents[1] / "data/fixtures/C1.json"
+    fixture = Path(__file__).resolve().parents[1] / "data/fixtures/MISSING.json"
     b = ToolBackend(parse_target("example.com"), fixture)
     r = await b.call("query_dns", domain="example.com", **extra)
     assert r["execution_status"] == "error" and r["data"] == {}
@@ -46,7 +47,8 @@ async def test_parallel_budget(monkeypatch):
     monkeypatch.setattr(b, "query_dns", slow)
     r = await asyncio.gather(b.call("query_dns", domain="example.com"),
                              b.call("query_dns", domain="example.com"), return_exceptions=True)
-    assert len(b.calls) == 1 and sum(isinstance(x, RuntimeError) for x in r) == 1
+    assert len(b.calls) == 1 and len(b.attempts) == 2
+    assert sum(isinstance(x, dict) and x.get("error", {}).get("code") == "BUDGET_EXHAUSTED" for x in r if x.get("error")) == 1
 
 
 async def test_tls_error(monkeypatch):

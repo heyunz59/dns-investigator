@@ -46,11 +46,11 @@ async def test_fixture_cases(case, rcode):
 
 async def test_budget_and_scope():
     b = ToolBackend(parse_target("example.com"), FIXTURES / "C2.json", max_calls=1)
-    with pytest.raises(ValueError):
-        await b.call("check_tcp", ip="192.0.2.10", port=443)
-    await b.call("query_dns", domain="example.com")
-    with pytest.raises(RuntimeError):
-        await b.call("query_dns", domain="example.com")
+    rejected = await b.call("check_tcp", ip="192.0.2.10", port=443)
+    assert rejected["error"]["code"] == "INVALID_INPUT"
+    exhausted = await b.call("query_dns", domain="example.com")
+    assert exhausted["error"]["code"] == "BUDGET_EXHAUSTED"
+    assert len(b.attempts) == 2 and not b.calls
 
 
 @pytest.mark.parametrize("rcode", ["SERVFAIL", "REFUSED"])

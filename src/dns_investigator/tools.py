@@ -24,21 +24,68 @@ class ToolBackend:
         self.target = target
         self.fixture = json.loads(fixture.read_text(encoding="utf-8")) if fixture else None
         self.max_calls = max_calls
-        self.calls = []
+        self.calls = []  # Valid measurements only; never a call counter.
+        self.attempts = []
+        self.request_kind = "investigation"
+        self.blocked = set()
         self.on_evidence = on_evidence
 
-    async def call(self, name, **args):
-        if len(self.calls) >= self.max_calls:
-            raise RuntimeError("工具调用上限已达到")
-        self._validate(name, args)
+    @property
+    def finish_now(self):
+        return len(self.attempts) >= max(1, self.max_calls - 2)
+
+    def emit(self, kind, row):
+        if self.on_evidence:
+            self.on_evidence({"event": kind, **row})
+
+    def register(self, name, args, provider_id=None):
+        row = dict(attempt_id=f"A{len(self.attempts)+1}", tool_name=name,
+                   provider_call_id=provider_id, input=redact(args), started_at=now(),
+                   status="pending", evidence_id=None, error=None, duration_ms=0)
+        self.attempts.append(row)
+        self.emit("attempt_started", row)
+        return row
+
+    def reject(self, row, code, message, retryable=False, status="rejected"):
+        row.update(status=status, error=dict(code=code, message=message, retryable=retryable))
+        self.emit("attempt_finished", row)
+        return dict(attempt_id=row["attempt_id"], execution_status="error", data={},
+                    error=row["error"], source_mode="fixture" if self.fixture is not None else "live",
+                    budget={"remaining": max(0, self.max_calls-len(self.attempts)),
+                            "finish_now": self.finish_now})
+
+    def settle_pending(self, messages, final=False):
+        retries = {getattr(p, "tool_call_id", None) for m in messages for p in m.parts
+                   if getattr(p, "part_kind", "") == "retry-prompt" or getattr(p, "outcome", None) == "retried"}
+        for row in self.attempts:
+            if row["status"] == "pending" and (final or row["provider_call_id"] in retries):
+                schema = row["provider_call_id"] in retries
+                self.reject(row, "FRAMEWORK_ARGUMENT_REJECTED" if schema else "NOT_EXECUTED",
+                            "框架拒绝参数或工具不可用；未进行测量。" if schema else "运行结束前未执行该尝试。",
+                            status="schema_rejected" if schema else "not_executed")
+
+    async def call(self, name, provider_id=None, **args):
+        attempt = next((a for a in self.attempts if provider_id and a["provider_call_id"] == provider_id
+                        and a["status"] == "pending"), None)
+        if attempt is None:
+            attempt = self.register(name, args, provider_id)
         started = time.monotonic()
-        row = dict(id=f"E{len(self.calls)+1}", tool_call_id=f"T{len(self.calls)+1}",
+        if int(attempt["attempt_id"][1:]) > self.max_calls:
+            return self.reject(attempt, "BUDGET_EXHAUSTED", "硬性调用预算已用尽；请使用已有事实结束调查。")
+        fingerprint = json.dumps([name, {k: v for k, v in args.items() if k != "timeout"}], sort_keys=True)
+        if fingerprint in self.blocked:
+            return self.reject(attempt, "NON_RETRYABLE_DUPLICATE", "相同请求已明确不可重试；未重复执行，无新增事实。")
+        try:
+            self._validate(name, args)
+        except (ValueError, KeyError, TypeError, UnicodeError):
+            self.blocked.add(fingerprint)
+            return self.reject(attempt, "INVALID_INPUT", "参数非法或不在本次调查范围；检查目标、端口、类型和已有 DNS 证据。")
+        attempt["status"] = "running"
+        row = dict(tool_call_id=attempt["attempt_id"],
                    tool_name=name, input=redact(args), started_at=now(),
-                   source_mode="fixture" if self.fixture else "live",
-                   measurement_location="synthetic" if self.fixture else "program-host",
+                   source_mode="fixture" if self.fixture is not None else "live",
+                   measurement_location="synthetic" if self.fixture is not None else "program-host",
                    execution_status="ok", data={}, error=None)
-        # Reserve the slot before awaiting: parallel model calls cannot bypass budget.
-        self.calls.append(row)
         try:
             if self.fixture is not None:
                 def matching(item):
@@ -49,21 +96,31 @@ class ToolBackend:
                     return item["tool"] == name and all(actual.get(k) == v for k, v in expected.items())
                 matches = [item for item in self.fixture if matching(item)]
                 if not matches:
-                    raise ValueError("fixture 没有匹配此参数的原始事实")
+                    self.blocked.add(fingerprint)
+                    return self.reject(attempt, "FIXTURE_NOT_COVERED",
+                        "测试数据没有提供该项事实；不是 DNS 无记录/NXDOMAIN 或真实网络失败。不可重试；请保留未知并结束或选择其他有用检查。",
+                        status="unavailable")
                 row["data"] = matches[0]["data"].copy()
             else:
                 if name == "check_http" and safe_url(args["url"]) == safe_url(self.target.url):
                     args = {**args, "url": self.target.url}
                 row["data"] = await getattr(self, name)(**args)
+            # Only an actually returned measurement earns an E identifier.
+            row["id"] = f"E{len(self.calls)+1}"
+            self.calls.append(row)
+            attempt.update(status="measured", evidence_id=row["id"])
         except asyncio.CancelledError:
-            row.update(execution_status="cancelled", error={"category": "cancelled"})
+            self.reject(attempt, "CANCELLED", "测量被取消；没有取得有效事实。", status="cancelled")
             raise
-        except Exception as exc:
-            row.update(execution_status="error", error={"category": type(exc).__name__})
+        except Exception:
+            return self.reject(attempt, "INTERNAL_EXECUTION_ERROR", "工具内部执行失败；没有取得有效测量，不能据此判断目标故障。", status="execution_error")
         finally:
-            row["duration_ms"] = round((time.monotonic()-started)*1000, 2)
-            if self.on_evidence:
-                self.on_evidence(row)
+            attempt["duration_ms"] = round((time.monotonic()-started)*1000, 2)
+            self.emit("attempt_finished", attempt)
+        row["duration_ms"] = attempt["duration_ms"]
+        self.emit("evidence", row)
+        row = {**row, "budget": {"remaining": max(0, self.max_calls-len(self.attempts)),
+                                 "finish_now": self.finish_now}}
         return row
 
     def _validate(self, name, args):

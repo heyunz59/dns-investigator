@@ -11,7 +11,7 @@ from dns_investigator.target import parse_target
 
 
 def output():
-    return dict(observations=[dict(evidence_id="E1", observation="A 记录")], hypotheses=[],
+    return dict(request_kind="query", observations=[dict(evidence_id="E1", observation="A 记录")], hypotheses=[],
                 conclusion="查询得到记录", conclusion_evidence_ids=["E1"],
                 limitations=["仅本次查询"], recommendations=[])
 
