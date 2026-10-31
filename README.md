@@ -1,5 +1,23 @@
 # DNS 调查助手
 
+## v0.3 DNS 深度诊断
+
+当前实现为 **1 个 DeepSeek/PydanticAI Agent + 5 个正式工具**：增强的 query_dns（A/AAAA/CNAME/NS/SOA）、compare_resolvers、query_authoritative，以及保留的 check_tcp/check_http。新增确定性 DNS Finding 引擎；不是第二个 Agent，也不是第六个工具。完整验收、实际结果及边界见 [v0.3 交付记录](docs/dns-v3.md)。下文 v0.2 实验是历史材料，不代表 v0.3 的诊断准确率。
+
+新增能力：比较系统/Cloudflare/Google 的响应状态、记录、别名、TTL 和耗时；递归辅助发现最近 SOA 区域与 NS，再向有限公共权威地址发起 RD=0 查询并检查 AA；生成响应差异、递归/权威差异、权威记录及 SOA Serial 差异等可追溯 Finding。CDN 地址不同、Serial 不同、TIMEOUT 都不直接确认故障根因。
+
+配置通过 `.env` 注入：DNS_RESOLVERS（逗号分隔，system 表示系统，可移除某公共解析器）、DNS_QUERY_BUDGET=32、DNS_TOOL_TIMEOUT=20、MAX_AUTH_SERVERS=2。每个工具单项 DNS 超时最多 5 秒；默认外层 10 次尝试，实际 DNS UDP/TCP 请求另计 Q 预算，复合工具内部子查询不隐藏。权威最多 3 台、同请求每种传输最多重复 2 次；配置范围有校验。模型不能指定权威端口或任意权威 IP。
+
+```powershell
+.\.venv\Scripts\python.exe -m dns_investigator.main "查询 example.com 的 SOA 记录"
+.\.venv\Scripts\python.exe -m dns_investigator.main "example.com 解析失败，请比较递归解析路径，必要时查询权威 DNS"
+.\.venv\Scripts\python.exe -m pytest -q
+.\.venv\Scripts\python.exe scripts/verify_dns_v3.py
+.\.venv\Scripts\python.exe evaluation/dns_v3.py
+```
+
+后两条会实际访问网络，模型测试还会消耗 DeepSeek 额度。新评测每案例先运行 1 次，保留全部状态及 Finding；人工语义指标明确待复核，不生成虚假准确率。本轮未推送 GitHub。
+
 基于 DeepSeek 和 PydanticAI 的命令行单 Agent。工具与证据来自运行程序的电脑；外部网络状态不能保证可复现。
 
 实现：三个网络工具、模型自主工具循环、CLI、诊断结构与证据校验、独立调用尝试日志、受限超时与调用预算、八个可重放场景、离线 CI 和同模型 A/B 实验入口。v0.2 修复说明见 [docs/reliability-v2.md](docs/reliability-v2.md)，验证状态见 [docs/validation.md](docs/validation.md)。课程报告不在本项目范围内。

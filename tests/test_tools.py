@@ -58,8 +58,8 @@ async def test_dns_response_codes(monkeypatch, rcode):
     response = dns.message.make_response(dns.message.make_query("example.com", "A"))
     response.set_rcode(dns.rcode.from_text(rcode))
     async def fail(*a, **kw):
-        raise dns.resolver.NoNameservers(request=response, errors=[("192.0.2.53", False, 53, rcode, response)])
-    monkeypatch.setattr(dns.asyncresolver.Resolver, "resolve", fail)
+        return response
+    monkeypatch.setattr(dns.asyncquery, "udp", fail)
     data = await ToolBackend(parse_target("example.com")).query_dns("example.com")
     assert data["rcode"] == rcode
 
@@ -70,8 +70,8 @@ async def test_dns_no_answer(monkeypatch):
         rrset = None
         nameserver = "192.0.2.53"
     async def resolve(*a, **kw):
-        return Answer()
-    monkeypatch.setattr(dns.asyncresolver.Resolver, "resolve", resolve)
+        return Answer.response
+    monkeypatch.setattr(dns.asyncquery, "udp", resolve)
     data = await ToolBackend(parse_target("example.com")).query_dns("example.com", "AAAA")
     assert data["rcode"] == "NOERROR" and data["records"] == []
 

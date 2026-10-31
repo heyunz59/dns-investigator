@@ -1,5 +1,5 @@
 """Attempts are the denominator; valid measurements satisfy case requirements."""
-NETWORK_TOOLS = {"query_dns", "check_tcp", "check_http"}
+NETWORK_TOOLS = {"query_dns", "compare_resolvers", "query_authoritative", "check_tcp", "check_http"}
 
 
 def matches(evidence, requirement):
@@ -18,6 +18,8 @@ def statistics(log, case):
     requirements = case.get("required_measurements", [{"tool": t} for t in case.get("required_tools", [])])
     missing = [r for r in requirements if not any(matches(e, r) for e in log.get("evidence", []))]
     return dict(attempt_accounting="complete" if complete else "incomplete",
+                dns_network_attempts=len(log.get("dns_attempts",[])) if log.get("schema_version",0)>=3 else None,
+                measurements=len(log.get("evidence",[])),
                 total_calls=len(attempts) if complete else 0 if baseline else None,
                 missing_required_measurements=missing,
                 tool_ms=sum(a.get("duration_ms", 0) for a in attempts))

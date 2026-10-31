@@ -16,8 +16,13 @@ from dns_investigator.target import parse_target
 @pytest.mark.parametrize("exc,expected", [(dns.resolver.NXDOMAIN(), "NXDOMAIN"), (dns.exception.Timeout(), "TIMEOUT")])
 async def test_dns_exception_categories(monkeypatch, exc, expected):
     async def fail(*a, **k):
-        raise exc
-    monkeypatch.setattr(dns.asyncresolver.Resolver, "resolve", fail)
+        if expected == "TIMEOUT":
+            raise exc
+        import dns.message, dns.rcode
+        response=dns.message.make_response(dns.message.make_query("example.com","A"))
+        response.set_rcode(dns.rcode.NXDOMAIN)
+        return response
+    monkeypatch.setattr(dns.asyncquery, "udp", fail)
     b = ToolBackend(parse_target("example.com"))
     r = await b.call("query_dns", domain="example.com")
     assert r["execution_status"] == "ok" and r["data"]["rcode"] == expected

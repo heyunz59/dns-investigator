@@ -1,5 +1,7 @@
 # 对照实验与评分
 
+v0.3 DNS 专项入口：`python evaluation/dns_v3.py`（10 个场景，每个实际模型运行 1 次，fixture 工具数据），随后 `python evaluation/dns_v3_metrics.py results/runs/生成目录`。保存的状态、调用次数、Q 实际 DNS 请求数、E 测量数、规则 Finding、类型和耗时均来自实际记录。metrics.json 的规则命中与结构覆盖不等于语义准确率，工具合理性、错误根因断言与语义诊断仍待独立人工评分。规则基线只分析同一份已观测证据，不额外获取事实，不宣称可证明模型提升。旧版 A/B 实验保持原样。
+
 v0.2：默认 8 案例 × 3 次 × 2 组，48 次真实模型运行。独立目录名含时间与随机后缀，保存源码哈希和原始数据快照。旧版 below 的 7 案例说明仅为历史背景；最新流程及计数口径见 [可靠性说明](../docs/reliability-v2.md)。`review.csv` 每完成一次运行即保存，不等整批结束。`call-review.jsonl` 的自动建议需独立人工审核。
 
 新结果可先运行 `python evaluation/publish_review.py results/evaluation-raw/实验目录 results/published/新的实验目录`，再运行 `python evaluation/summarize.py results/published/新的实验目录/review.csv --output results/published/新的实验目录`。publish_review 的结构/执行/关键词筛查不能证明全部语义正确，生成的 reviewer 明确为 automatic_rules_pending_human_review；审核人应逐条核对原始回答。目标目录已存在时拒绝覆盖。

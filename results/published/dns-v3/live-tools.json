@@ -1,0 +1,1074 @@
+{
+  "attempts": [
+    {
+      "attempt_id": "A1",
+      "tool_name": "compare_resolvers",
+      "provider_call_id": null,
+      "input": {
+        "domain": "example.com",
+        "record_type": "A",
+        "timeout": 3
+      },
+      "started_at": "2026-10-31T07:41:00.307388+00:00",
+      "status": "measured",
+      "evidence_id": null,
+      "error": null,
+      "duration_ms": 3000.0,
+      "evidence_ids": [
+        "E1",
+        "E2",
+        "E3",
+        "E4"
+      ]
+    },
+    {
+      "attempt_id": "A2",
+      "tool_name": "query_authoritative",
+      "provider_call_id": null,
+      "input": {
+        "domain": "example.com",
+        "record_type": "A",
+        "timeout": 3
+      },
+      "started_at": "2026-10-31T07:41:03.312344+00:00",
+      "status": "measured",
+      "evidence_id": null,
+      "error": null,
+      "duration_ms": 13281.0,
+      "evidence_ids": [
+        "E5",
+        "E6",
+        "E7",
+        "E8",
+        "E9",
+        "E10",
+        "E11",
+        "E12",
+        "E13",
+        "E14",
+        "E15",
+        "E16"
+      ]
+    }
+  ],
+  "evidence": [
+    {
+      "id": "E1",
+      "tool_call_id": "A1",
+      "parent_tool_call_id": "A1",
+      "query_attempt_id": "Q3",
+      "tool_name": "query_dns",
+      "input": {
+        "domain": "example.com",
+        "record_type": "A",
+        "resolver": "[resolver redacted]"
+      },
+      "started_at": "2026-10-31T07:41:00.576377+00:00",
+      "duration_ms": 265.0,
+      "execution_status": "ok",
+      "data": {
+        "qname": "example.com",
+        "qtype": "A",
+        "record_type": "A",
+        "resolver": "[resolver redacted]",
+        "responding_resolver": "[resolver redacted]",
+        "resolver_role": "recursive",
+        "rcode": "NOERROR",
+        "result_kind": "NOERROR",
+        "flags": {
+          "AA": false,
+          "RD": true,
+          "RA": true,
+          "TC": false
+        },
+        "answer": [
+          {
+            "name": "example.com",
+            "type": "A",
+            "ttl": 300,
+            "values": [
+              "104.20.23.154",
+              "172.66.147.243"
+            ]
+          }
+        ],
+        "authority": [],
+        "additional": [],
+        "records": [
+          {
+            "value": "104.20.23.154",
+            "ttl": 300
+          },
+          {
+            "value": "172.66.147.243",
+            "ttl": 300
+          }
+        ],
+        "cname_chain": [],
+        "canonical_name": "example.com",
+        "cname_loop": false,
+        "transport": "UDP",
+        "execution_status": "ok",
+        "error": null,
+        "soa_serials": [],
+        "duration_ms": 265.0
+      },
+      "source_mode": "live",
+      "measurement_location": "program-host",
+      "error": null
+    },
+    {
+      "id": "E2",
+      "tool_call_id": "A1",
+      "parent_tool_call_id": "A1",
+      "query_attempt_id": "Q1",
+      "tool_name": "query_dns",
+      "input": {
+        "domain": "example.com",
+        "record_type": "A",
+        "resolver": "[resolver redacted]"
+      },
+      "started_at": "2026-10-31T07:41:01.809955+00:00",
+      "duration_ms": 1500.0,
+      "execution_status": "ok",
+      "data": {
+        "qname": "example.com",
+        "qtype": "A",
+        "record_type": "A",
+        "resolver": "[resolver redacted]",
+        "resolver_role": "recursive",
+        "rcode": "TIMEOUT",
+        "result_kind": "TIMEOUT",
+        "records": [],
+        "execution_status": "ok",
+        "error": null,
+        "transport": "UDP",
+        "duration_ms": 1500.0
+      },
+      "source_mode": "live",
+      "measurement_location": "program-host",
+      "error": null
+    },
+    {
+      "id": "E3",
+      "tool_call_id": "A1",
+      "parent_tool_call_id": "A1",
+      "query_attempt_id": "Q4",
+      "tool_name": "query_dns",
+      "input": {
+        "domain": "example.com",
+        "record_type": "A",
+        "resolver": "[resolver redacted]"
+      },
+      "started_at": "2026-10-31T07:41:01.828593+00:00",
+      "duration_ms": 15.0,
+      "execution_status": "ok",
+      "data": {
+        "qname": "example.com",
+        "qtype": "A",
+        "record_type": "A",
+        "resolver": "[resolver redacted]",
+        "responding_resolver": "[resolver redacted]",
+        "resolver_role": "recursive",
+        "rcode": "NOERROR",
+        "result_kind": "NOERROR",
+        "flags": {
+          "AA": false,
+          "RD": true,
+          "RA": true,
+          "TC": false
+        },
+        "answer": [
+          {
+            "name": "example.com",
+            "type": "A",
+            "ttl": 28,
+            "values": [
+              "104.20.23.154",
+              "172.66.147.243"
+            ]
+          }
+        ],
+        "authority": [],
+        "additional": [],
+        "records": [
+          {
+            "value": "104.20.23.154",
+            "ttl": 28
+          },
+          {
+            "value": "172.66.147.243",
+            "ttl": 28
+          }
+        ],
+        "cname_chain": [],
+        "canonical_name": "example.com",
+        "cname_loop": false,
+        "transport": "UDP",
+        "execution_status": "ok",
+        "error": null,
+        "soa_serials": [],
+        "duration_ms": 15.0
+      },
+      "source_mode": "live",
+      "measurement_location": "program-host",
+      "error": null
+    },
+    {
+      "id": "E4",
+      "tool_call_id": "A1",
+      "parent_tool_call_id": "A1",
+      "query_attempt_id": "Q2",
+      "tool_name": "query_dns",
+      "input": {
+        "domain": "example.com",
+        "record_type": "A",
+        "resolver": "[resolver redacted]"
+      },
+      "started_at": "2026-10-31T07:41:03.312344+00:00",
+      "duration_ms": 3000.0,
+      "execution_status": "ok",
+      "data": {
+        "qname": "example.com",
+        "qtype": "A",
+        "record_type": "A",
+        "resolver": "[resolver redacted]",
+        "resolver_role": "recursive",
+        "rcode": "TIMEOUT",
+        "result_kind": "TIMEOUT",
+        "records": [],
+        "execution_status": "ok",
+        "error": null,
+        "transport": "UDP",
+        "duration_ms": 3000.0
+      },
+      "source_mode": "live",
+      "measurement_location": "program-host",
+      "error": null
+    },
+    {
+      "id": "E5",
+      "tool_call_id": "A2",
+      "parent_tool_call_id": "A2",
+      "query_attempt_id": "Q5",
+      "tool_name": "query_dns",
+      "input": {
+        "domain": "example.com",
+        "record_type": "SOA",
+        "resolver": "[resolver redacted]"
+      },
+      "started_at": "2026-10-31T07:41:04.816026+00:00",
+      "duration_ms": 1500.0,
+      "execution_status": "ok",
+      "data": {
+        "qname": "example.com",
+        "qtype": "SOA",
+        "record_type": "SOA",
+        "resolver": "[resolver redacted]",
+        "resolver_role": "recursive",
+        "rcode": "TIMEOUT",
+        "result_kind": "TIMEOUT",
+        "records": [],
+        "execution_status": "ok",
+        "error": null,
+        "transport": "UDP",
+        "duration_ms": 1500.0
+      },
+      "source_mode": "live",
+      "measurement_location": "program-host",
+      "error": null
+    },
+    {
+      "id": "E6",
+      "tool_call_id": "A2",
+      "parent_tool_call_id": "A2",
+      "query_attempt_id": "Q6",
+      "tool_name": "query_dns",
+      "input": {
+        "domain": "example.com",
+        "record_type": "SOA",
+        "resolver": "[resolver redacted]"
+      },
+      "started_at": "2026-10-31T07:41:05.103609+00:00",
+      "duration_ms": 297.0,
+      "execution_status": "ok",
+      "data": {
+        "qname": "example.com",
+        "qtype": "SOA",
+        "record_type": "SOA",
+        "resolver": "[resolver redacted]",
+        "responding_resolver": "[resolver redacted]",
+        "resolver_role": "recursive",
+        "rcode": "NOERROR",
+        "result_kind": "NOERROR",
+        "flags": {
+          "AA": false,
+          "RD": true,
+          "RA": true,
+          "TC": false
+        },
+        "answer": [
+          {
+            "name": "example.com",
+            "type": "SOA",
+            "ttl": 1800,
+            "values": [
+              "elliott.ns.cloudflare.com. dns.cloudflare.com. 2418004112 10000 2400 604800 1800"
+            ]
+          }
+        ],
+        "authority": [],
+        "additional": [],
+        "records": [
+          {
+            "value": "elliott.ns.cloudflare.com. dns.cloudflare.com. 2418004112 10000 2400 604800 1800",
+            "ttl": 1800
+          }
+        ],
+        "cname_chain": [],
+        "canonical_name": "example.com",
+        "cname_loop": false,
+        "transport": "UDP",
+        "execution_status": "ok",
+        "error": null,
+        "soa_serials": [
+          2418004112
+        ],
+        "duration_ms": 297.0
+      },
+      "source_mode": "live",
+      "measurement_location": "program-host",
+      "error": null
+    },
+    {
+      "id": "E7",
+      "tool_call_id": "A2",
+      "parent_tool_call_id": "A2",
+      "query_attempt_id": "Q7",
+      "tool_name": "query_dns",
+      "input": {
+        "domain": "example.com",
+        "record_type": "NS",
+        "resolver": "[resolver redacted]"
+      },
+      "started_at": "2026-10-31T07:41:06.618017+00:00",
+      "duration_ms": 1500.0,
+      "execution_status": "ok",
+      "data": {
+        "qname": "example.com",
+        "qtype": "NS",
+        "record_type": "NS",
+        "resolver": "[resolver redacted]",
+        "resolver_role": "recursive",
+        "rcode": "TIMEOUT",
+        "result_kind": "TIMEOUT",
+        "records": [],
+        "execution_status": "ok",
+        "error": null,
+        "transport": "UDP",
+        "duration_ms": 1500.0
+      },
+      "source_mode": "live",
+      "measurement_location": "program-host",
+      "error": null
+    },
+    {
+      "id": "E8",
+      "tool_call_id": "A2",
+      "parent_tool_call_id": "A2",
+      "query_attempt_id": "Q8",
+      "tool_name": "query_dns",
+      "input": {
+        "domain": "example.com",
+        "record_type": "NS",
+        "resolver": "[resolver redacted]"
+      },
+      "started_at": "2026-10-31T07:41:06.917709+00:00",
+      "duration_ms": 312.0,
+      "execution_status": "ok",
+      "data": {
+        "qname": "example.com",
+        "qtype": "NS",
+        "record_type": "NS",
+        "resolver": "[resolver redacted]",
+        "responding_resolver": "[resolver redacted]",
+        "resolver_role": "recursive",
+        "rcode": "NOERROR",
+        "result_kind": "NOERROR",
+        "flags": {
+          "AA": false,
+          "RD": true,
+          "RA": true,
+          "TC": false
+        },
+        "answer": [
+          {
+            "name": "example.com",
+            "type": "NS",
+            "ttl": 13330,
+            "values": [
+              "hera.ns.cloudflare.com.",
+              "elliott.ns.cloudflare.com."
+            ]
+          }
+        ],
+        "authority": [],
+        "additional": [
+          {
+            "name": "elliott.ns.cloudflare.com",
+            "type": "A",
+            "ttl": 12392,
+            "values": [
+              "108.162.195.228",
+              "162.159.44.228",
+              "[resolver redacted]"
+            ]
+          },
+          {
+            "name": "hera.ns.cloudflare.com",
+            "type": "A",
+            "ttl": 9994,
+            "values": [
+              "172.64.32.162",
+              "[resolver redacted]",
+              "108.162.192.162"
+            ]
+          },
+          {
+            "name": "elliott.ns.cloudflare.com",
+            "type": "AAAA",
+            "ttl": 12392,
+            "values": [
+              "2606:4700:58::a29f:2ce4",
+              "2803:f800:50::6ca2:c3e4",
+              "2a06:98c1:50::ac40:23e4"
+            ]
+          },
+          {
+            "name": "hera.ns.cloudflare.com",
+            "type": "AAAA",
+            "ttl": 9994,
+            "values": [
+              "2606:4700:50::adf5:3aa2",
+              "2803:f800:50::6ca2:c0a2",
+              "2a06:98c1:50::ac40:20a2"
+            ]
+          }
+        ],
+        "records": [
+          {
+            "value": "hera.ns.cloudflare.com.",
+            "ttl": 13330
+          },
+          {
+            "value": "elliott.ns.cloudflare.com.",
+            "ttl": 13330
+          }
+        ],
+        "cname_chain": [],
+        "canonical_name": "example.com",
+        "cname_loop": false,
+        "transport": "UDP",
+        "execution_status": "ok",
+        "error": null,
+        "soa_serials": [],
+        "duration_ms": 312.0
+      },
+      "source_mode": "live",
+      "measurement_location": "program-host",
+      "error": null
+    },
+    {
+      "id": "E9",
+      "tool_call_id": "A2",
+      "parent_tool_call_id": "A2",
+      "query_attempt_id": "Q9",
+      "tool_name": "query_dns",
+      "input": {
+        "domain": "hera.ns.cloudflare.com",
+        "record_type": "A",
+        "resolver": "[resolver redacted]"
+      },
+      "started_at": "2026-10-31T07:41:08.431884+00:00",
+      "duration_ms": 1516.0,
+      "execution_status": "ok",
+      "data": {
+        "qname": "hera.ns.cloudflare.com",
+        "qtype": "A",
+        "record_type": "A",
+        "resolver": "[resolver redacted]",
+        "resolver_role": "recursive",
+        "rcode": "TIMEOUT",
+        "result_kind": "TIMEOUT",
+        "records": [],
+        "execution_status": "ok",
+        "error": null,
+        "transport": "UDP",
+        "duration_ms": 1516.0
+      },
+      "source_mode": "live",
+      "measurement_location": "program-host",
+      "error": null
+    },
+    {
+      "id": "E10",
+      "tool_call_id": "A2",
+      "parent_tool_call_id": "A2",
+      "query_attempt_id": "Q10",
+      "tool_name": "query_dns",
+      "input": {
+        "domain": "hera.ns.cloudflare.com",
+        "record_type": "A",
+        "resolver": "[resolver redacted]"
+      },
+      "started_at": "2026-10-31T07:41:08.455820+00:00",
+      "duration_ms": 15.0,
+      "execution_status": "ok",
+      "data": {
+        "qname": "hera.ns.cloudflare.com",
+        "qtype": "A",
+        "record_type": "A",
+        "resolver": "[resolver redacted]",
+        "responding_resolver": "[resolver redacted]",
+        "resolver_role": "recursive",
+        "rcode": "NOERROR",
+        "result_kind": "NOERROR",
+        "flags": {
+          "AA": false,
+          "RD": true,
+          "RA": true,
+          "TC": false
+        },
+        "answer": [
+          {
+            "name": "hera.ns.cloudflare.com",
+            "type": "A",
+            "ttl": 9993,
+            "values": [
+              "[resolver redacted]",
+              "172.64.32.162",
+              "108.162.192.162"
+            ]
+          }
+        ],
+        "authority": [],
+        "additional": [],
+        "records": [
+          {
+            "value": "[resolver redacted]",
+            "ttl": 9993
+          },
+          {
+            "value": "172.64.32.162",
+            "ttl": 9993
+          },
+          {
+            "value": "108.162.192.162",
+            "ttl": 9993
+          }
+        ],
+        "cname_chain": [],
+        "canonical_name": "hera.ns.cloudflare.com",
+        "cname_loop": false,
+        "transport": "UDP",
+        "execution_status": "ok",
+        "error": null,
+        "soa_serials": [],
+        "duration_ms": 15.0
+      },
+      "source_mode": "live",
+      "measurement_location": "program-host",
+      "error": null
+    },
+    {
+      "id": "E11",
+      "tool_call_id": "A2",
+      "parent_tool_call_id": "A2",
+      "query_attempt_id": "Q11",
+      "tool_name": "query_dns",
+      "input": {
+        "domain": "example.com",
+        "record_type": "A",
+        "resolver": "[resolver redacted]"
+      },
+      "started_at": "2026-10-31T07:41:08.750152+00:00",
+      "duration_ms": 297.0,
+      "execution_status": "ok",
+      "data": {
+        "qname": "example.com",
+        "qtype": "A",
+        "record_type": "A",
+        "resolver": "[resolver redacted]",
+        "responding_resolver": "[resolver redacted]",
+        "resolver_role": "authoritative",
+        "rcode": "NOERROR",
+        "result_kind": "NOERROR",
+        "flags": {
+          "AA": true,
+          "RD": false,
+          "RA": false,
+          "TC": false
+        },
+        "answer": [
+          {
+            "name": "example.com",
+            "type": "A",
+            "ttl": 300,
+            "values": [
+              "104.20.23.154",
+              "172.66.147.243"
+            ]
+          }
+        ],
+        "authority": [],
+        "additional": [],
+        "records": [
+          {
+            "value": "104.20.23.154",
+            "ttl": 300
+          },
+          {
+            "value": "172.66.147.243",
+            "ttl": 300
+          }
+        ],
+        "cname_chain": [],
+        "canonical_name": "example.com",
+        "cname_loop": false,
+        "transport": "UDP",
+        "execution_status": "ok",
+        "error": null,
+        "soa_serials": [],
+        "duration_ms": 297.0
+      },
+      "source_mode": "live",
+      "measurement_location": "program-host",
+      "error": null
+    },
+    {
+      "id": "E12",
+      "tool_call_id": "A2",
+      "parent_tool_call_id": "A2",
+      "query_attempt_id": "Q12",
+      "tool_name": "query_dns",
+      "input": {
+        "domain": "example.com",
+        "record_type": "SOA",
+        "resolver": "[resolver redacted]"
+      },
+      "started_at": "2026-10-31T07:41:11.756127+00:00",
+      "duration_ms": 3000.0,
+      "execution_status": "ok",
+      "data": {
+        "qname": "example.com",
+        "qtype": "SOA",
+        "record_type": "SOA",
+        "resolver": "[resolver redacted]",
+        "resolver_role": "authoritative",
+        "rcode": "TIMEOUT",
+        "result_kind": "TIMEOUT",
+        "records": [],
+        "execution_status": "ok",
+        "error": null,
+        "transport": "UDP",
+        "duration_ms": 3000.0
+      },
+      "source_mode": "live",
+      "measurement_location": "program-host",
+      "error": null
+    },
+    {
+      "id": "E13",
+      "tool_call_id": "A2",
+      "parent_tool_call_id": "A2",
+      "query_attempt_id": "Q13",
+      "tool_name": "query_dns",
+      "input": {
+        "domain": "elliott.ns.cloudflare.com",
+        "record_type": "A",
+        "resolver": "[resolver redacted]"
+      },
+      "started_at": "2026-10-31T07:41:13.258494+00:00",
+      "duration_ms": 1500.0,
+      "execution_status": "ok",
+      "data": {
+        "qname": "elliott.ns.cloudflare.com",
+        "qtype": "A",
+        "record_type": "A",
+        "resolver": "[resolver redacted]",
+        "resolver_role": "recursive",
+        "rcode": "TIMEOUT",
+        "result_kind": "TIMEOUT",
+        "records": [],
+        "execution_status": "ok",
+        "error": null,
+        "transport": "UDP",
+        "duration_ms": 1500.0
+      },
+      "source_mode": "live",
+      "measurement_location": "program-host",
+      "error": null
+    },
+    {
+      "id": "E14",
+      "tool_call_id": "A2",
+      "parent_tool_call_id": "A2",
+      "query_attempt_id": "Q14",
+      "tool_name": "query_dns",
+      "input": {
+        "domain": "elliott.ns.cloudflare.com",
+        "record_type": "A",
+        "resolver": "[resolver redacted]"
+      },
+      "started_at": "2026-10-31T07:41:13.299086+00:00",
+      "duration_ms": 47.0,
+      "execution_status": "ok",
+      "data": {
+        "qname": "elliott.ns.cloudflare.com",
+        "qtype": "A",
+        "record_type": "A",
+        "resolver": "[resolver redacted]",
+        "responding_resolver": "[resolver redacted]",
+        "resolver_role": "recursive",
+        "rcode": "NOERROR",
+        "result_kind": "NOERROR",
+        "flags": {
+          "AA": false,
+          "RD": true,
+          "RA": true,
+          "TC": false
+        },
+        "answer": [
+          {
+            "name": "elliott.ns.cloudflare.com",
+            "type": "A",
+            "ttl": 12386,
+            "values": [
+              "[resolver redacted]",
+              "162.159.44.228",
+              "108.162.195.228"
+            ]
+          }
+        ],
+        "authority": [],
+        "additional": [],
+        "records": [
+          {
+            "value": "[resolver redacted]",
+            "ttl": 12386
+          },
+          {
+            "value": "162.159.44.228",
+            "ttl": 12386
+          },
+          {
+            "value": "108.162.195.228",
+            "ttl": 12386
+          }
+        ],
+        "cname_chain": [],
+        "canonical_name": "elliott.ns.cloudflare.com",
+        "cname_loop": false,
+        "transport": "UDP",
+        "execution_status": "ok",
+        "error": null,
+        "soa_serials": [],
+        "duration_ms": 47.0
+      },
+      "source_mode": "live",
+      "measurement_location": "program-host",
+      "error": null
+    },
+    {
+      "id": "E15",
+      "tool_call_id": "A2",
+      "parent_tool_call_id": "A2",
+      "query_attempt_id": "Q15",
+      "tool_name": "query_dns",
+      "input": {
+        "domain": "example.com",
+        "record_type": "A",
+        "resolver": "[resolver redacted]"
+      },
+      "started_at": "2026-10-31T07:41:13.586430+00:00",
+      "duration_ms": 281.0,
+      "execution_status": "ok",
+      "data": {
+        "qname": "example.com",
+        "qtype": "A",
+        "record_type": "A",
+        "resolver": "[resolver redacted]",
+        "responding_resolver": "[resolver redacted]",
+        "resolver_role": "authoritative",
+        "rcode": "NOERROR",
+        "result_kind": "NOERROR",
+        "flags": {
+          "AA": true,
+          "RD": false,
+          "RA": false,
+          "TC": false
+        },
+        "answer": [
+          {
+            "name": "example.com",
+            "type": "A",
+            "ttl": 300,
+            "values": [
+              "104.20.23.154",
+              "172.66.147.243"
+            ]
+          }
+        ],
+        "authority": [],
+        "additional": [],
+        "records": [
+          {
+            "value": "104.20.23.154",
+            "ttl": 300
+          },
+          {
+            "value": "172.66.147.243",
+            "ttl": 300
+          }
+        ],
+        "cname_chain": [],
+        "canonical_name": "example.com",
+        "cname_loop": false,
+        "transport": "UDP",
+        "execution_status": "ok",
+        "error": null,
+        "soa_serials": [],
+        "duration_ms": 281.0
+      },
+      "source_mode": "live",
+      "measurement_location": "program-host",
+      "error": null
+    },
+    {
+      "id": "E16",
+      "tool_call_id": "A2",
+      "parent_tool_call_id": "A2",
+      "query_attempt_id": "Q16",
+      "tool_name": "query_dns",
+      "input": {
+        "domain": "example.com",
+        "record_type": "SOA",
+        "resolver": "[resolver redacted]"
+      },
+      "started_at": "2026-10-31T07:41:16.601257+00:00",
+      "duration_ms": 3016.0,
+      "execution_status": "ok",
+      "data": {
+        "qname": "example.com",
+        "qtype": "SOA",
+        "record_type": "SOA",
+        "resolver": "[resolver redacted]",
+        "resolver_role": "authoritative",
+        "rcode": "TIMEOUT",
+        "result_kind": "TIMEOUT",
+        "records": [],
+        "execution_status": "ok",
+        "error": null,
+        "transport": "UDP",
+        "duration_ms": 3016.0
+      },
+      "source_mode": "live",
+      "measurement_location": "program-host",
+      "error": null
+    }
+  ],
+  "dns_attempts": [
+    {
+      "query_attempt_id": "Q1",
+      "parent_tool_call_id": "A1",
+      "qname": "example.com",
+      "qtype": "A",
+      "server": "[resolver redacted]",
+      "port": 53,
+      "transport": "UDP",
+      "status": "measured",
+      "duration_ms": 1500.0,
+      "evidence_id": "E2"
+    },
+    {
+      "query_attempt_id": "Q2",
+      "parent_tool_call_id": "A1",
+      "qname": "example.com",
+      "qtype": "A",
+      "server": "[resolver redacted]",
+      "port": 53,
+      "transport": "UDP",
+      "status": "measured",
+      "duration_ms": 3000.0,
+      "evidence_id": "E4"
+    },
+    {
+      "query_attempt_id": "Q3",
+      "parent_tool_call_id": "A1",
+      "qname": "example.com",
+      "qtype": "A",
+      "server": "[resolver redacted]",
+      "port": 53,
+      "transport": "UDP",
+      "status": "measured",
+      "duration_ms": 265.0,
+      "evidence_id": "E1"
+    },
+    {
+      "query_attempt_id": "Q4",
+      "parent_tool_call_id": "A1",
+      "qname": "example.com",
+      "qtype": "A",
+      "server": "[resolver redacted]",
+      "port": 53,
+      "transport": "UDP",
+      "status": "measured",
+      "duration_ms": 15.0,
+      "evidence_id": "E3"
+    },
+    {
+      "query_attempt_id": "Q5",
+      "parent_tool_call_id": "A2",
+      "qname": "example.com",
+      "qtype": "SOA",
+      "server": "[resolver redacted]",
+      "port": 53,
+      "transport": "UDP",
+      "status": "measured",
+      "duration_ms": 1500.0,
+      "evidence_id": "E5"
+    },
+    {
+      "query_attempt_id": "Q6",
+      "parent_tool_call_id": "A2",
+      "qname": "example.com",
+      "qtype": "SOA",
+      "server": "[resolver redacted]",
+      "port": 53,
+      "transport": "UDP",
+      "status": "measured",
+      "duration_ms": 297.0,
+      "evidence_id": "E6"
+    },
+    {
+      "query_attempt_id": "Q7",
+      "parent_tool_call_id": "A2",
+      "qname": "example.com",
+      "qtype": "NS",
+      "server": "[resolver redacted]",
+      "port": 53,
+      "transport": "UDP",
+      "status": "measured",
+      "duration_ms": 1500.0,
+      "evidence_id": "E7"
+    },
+    {
+      "query_attempt_id": "Q8",
+      "parent_tool_call_id": "A2",
+      "qname": "example.com",
+      "qtype": "NS",
+      "server": "[resolver redacted]",
+      "port": 53,
+      "transport": "UDP",
+      "status": "measured",
+      "duration_ms": 312.0,
+      "evidence_id": "E8"
+    },
+    {
+      "query_attempt_id": "Q9",
+      "parent_tool_call_id": "A2",
+      "qname": "hera.ns.cloudflare.com",
+      "qtype": "A",
+      "server": "[resolver redacted]",
+      "port": 53,
+      "transport": "UDP",
+      "status": "measured",
+      "duration_ms": 1516.0,
+      "evidence_id": "E9"
+    },
+    {
+      "query_attempt_id": "Q10",
+      "parent_tool_call_id": "A2",
+      "qname": "hera.ns.cloudflare.com",
+      "qtype": "A",
+      "server": "[resolver redacted]",
+      "port": 53,
+      "transport": "UDP",
+      "status": "measured",
+      "duration_ms": 15.0,
+      "evidence_id": "E10"
+    },
+    {
+      "query_attempt_id": "Q11",
+      "parent_tool_call_id": "A2",
+      "qname": "example.com",
+      "qtype": "A",
+      "server": "[resolver redacted]",
+      "port": 53,
+      "transport": "UDP",
+      "status": "measured",
+      "duration_ms": 297.0,
+      "evidence_id": "E11"
+    },
+    {
+      "query_attempt_id": "Q12",
+      "parent_tool_call_id": "A2",
+      "qname": "example.com",
+      "qtype": "SOA",
+      "server": "[resolver redacted]",
+      "port": 53,
+      "transport": "UDP",
+      "status": "measured",
+      "duration_ms": 3000.0,
+      "evidence_id": "E12"
+    },
+    {
+      "query_attempt_id": "Q13",
+      "parent_tool_call_id": "A2",
+      "qname": "elliott.ns.cloudflare.com",
+      "qtype": "A",
+      "server": "[resolver redacted]",
+      "port": 53,
+      "transport": "UDP",
+      "status": "measured",
+      "duration_ms": 1500.0,
+      "evidence_id": "E13"
+    },
+    {
+      "query_attempt_id": "Q14",
+      "parent_tool_call_id": "A2",
+      "qname": "elliott.ns.cloudflare.com",
+      "qtype": "A",
+      "server": "[resolver redacted]",
+      "port": 53,
+      "transport": "UDP",
+      "status": "measured",
+      "duration_ms": 47.0,
+      "evidence_id": "E14"
+    },
+    {
+      "query_attempt_id": "Q15",
+      "parent_tool_call_id": "A2",
+      "qname": "example.com",
+      "qtype": "A",
+      "server": "[resolver redacted]",
+      "port": 53,
+      "transport": "UDP",
+      "status": "measured",
+      "duration_ms": 281.0,
+      "evidence_id": "E15"
+    },
+    {
+      "query_attempt_id": "Q16",
+      "parent_tool_call_id": "A2",
+      "qname": "example.com",
+      "qtype": "SOA",
+      "server": "[resolver redacted]",
+      "port": 53,
+      "transport": "UDP",
+      "status": "measured",
+      "duration_ms": 3016.0,
+      "evidence_id": "E16"
+    }
+  ]
+}

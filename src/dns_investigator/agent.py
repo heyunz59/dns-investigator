@@ -14,8 +14,9 @@ from pydantic_ai.usage import UsageLimits
 from pydantic_ai.messages import ToolCallPart
 from .config import Config
 from .privacy import redact
-from .schemas import InvestigationResult
+from .schemas import InvestigationResult, Finding
 from .tools import ToolBackend, now
+from .dns_diagnosis import diagnose
 
 SYSTEM = """你是 DNS 调查助手。中文回答。只使用用户陈述与实际返回的工具证据，不编造测量。
 调查至少考虑两个合理假设；单项 DNS 查询无需强制两个。区分支持、反面、未知。
@@ -32,9 +33,9 @@ request_kind 必须匹配程序标记。outcome=answered 表示满足查询/调�
 FIXTURE_NOT_COVERED 表示测试没有提供事实，不是网络故障，且不可重试；同参数换超时也没有用。
 收到 finish_now=true 或工具不再可用时，用已有证据提交最终输出，承认未知，禁止继续盲目调用。
 单项 A 查询只查 A，不附带 AAAA/TCP/HTTP。TCP 工具支持 IPv4/IPv6。HTTP 总超时不定位具体阶段。
-必须输出结构化结果，给出边界、下一步建议及缺少的信息。"""
+可根据 Finding 自主选择 compare_resolvers 或 query_authoritative，不固定执行所有工具。仅 AA 回答可用于权威判断。CDN 地址差异、SOA Serial 差异不证明污染或故障。只引用 E 编号，不将 A/Q 编号当证据。必须输出结构化结果，给出边界、下一步建议及缺少的信息。"""
 
-NETWORK_TOOLS = {"query_dns", "check_tcp", "check_http"}
+NETWORK_TOOLS = {"query_dns", "compare_resolvers", "query_authoritative", "check_tcp", "check_http"}
 
 
 def request_kind(text):
@@ -45,7 +46,11 @@ def request_kind(text):
 
 
 async def prepare_network(ctx, definition):
-    return None if ctx.deps.finish_now else definition
+    if ctx.deps.finish_now:
+        return None
+    if definition.name in {"query_dns","compare_resolvers","query_authoritative"} and len(ctx.deps.dns.attempts)>=ctx.deps.dns.limit:
+        return None
+    return definition
 
 
 def build_agent(config: Config, model=None, with_tools=True):
@@ -62,8 +67,18 @@ def build_agent(config: Config, model=None, with_tools=True):
         @agent.tool(prepare=prepare_network)
         async def query_dns(ctx: RunContext[ToolBackend], domain: str,
                             record_type: str = "A", resolver: str | None = None, timeout: float = 5) -> dict:
-            """查询本次目标 A/AAAA，resolver 可指定 DNS 服务器 IP。"""
+            """查询目标 A/AAAA/CNAME/NS/SOA，保留完整 DNS 分区与标志。"""
             return await invoke(ctx, "query_dns", domain=domain, record_type=record_type, resolver=resolver, timeout=timeout)
+
+        @agent.tool(prepare=prepare_network)
+        async def compare_resolvers(ctx: RunContext[ToolBackend], domain: str, record_type: str="A", timeout: float=5) -> dict:
+            """比较配置中的系统/公共递归解析器，独立保留子查询证据；地址不同不证明污染。"""
+            return await invoke(ctx,"compare_resolvers",domain=domain,record_type=record_type,timeout=timeout)
+
+        @agent.tool(prepare=prepare_network)
+        async def query_authoritative(ctx: RunContext[ToolBackend], domain: str, record_type: str="A", timeout: float=5) -> dict:
+            """递归辅助发现最近权威区，向有限公共权威地址直接查询；并非完整迭代验证。"""
+            return await invoke(ctx,"query_authoritative",domain=domain,record_type=record_type,timeout=timeout)
 
         @agent.tool(prepare=prepare_network)
         async def check_tcp(ctx: RunContext[ToolBackend], ip: str, port: int, timeout: float = 5) -> dict:
@@ -78,6 +93,10 @@ def build_agent(config: Config, model=None, with_tools=True):
     @agent.output_validator
     def validate(ctx: RunContext[ToolBackend], result: InvestigationResult):
         validate_references(result, {row["id"] for row in ctx.deps.calls}, ctx.deps.request_kind)
+        result.findings=[Finding(**f) for f in diagnose(ctx.deps.calls)]
+        for finding in result.findings:
+            if set(finding.evidence_ids)-{e["id"] for e in ctx.deps.calls}:
+                raise ModelRetry("Finding 引用了不存在的测量。")
         return result
     return agent
 
@@ -135,6 +154,10 @@ async def investigate(text, target, config, fixture=None, model=None, baseline_f
         if progress and row.get("event") == "evidence":
             progress(row)
     backend = ToolBackend(target, fixture, config.max_tool_calls, persist)
+    backend.dns.limit=config.dns_query_budget
+    backend.dns_tool_timeout=config.dns_tool_timeout
+    backend.max_auth_servers=config.max_auth_servers
+    backend.resolvers=config.dns_resolvers
     backend.request_kind = request_kind(text)
     if baseline_facts is not None:
         backend.calls = baseline_facts.copy()
@@ -143,8 +166,8 @@ async def investigate(text, target, config, fixture=None, model=None, baseline_f
                "measurement_location": "synthetic" if fixture or baseline_facts is not None else "program-host"},
                model=config.model, mode="baseline" if baseline_facts is not None else "agent",
                thinking="disabled", temperature=0, model_endpoint=config.base_url,
-               schema_version=2, attempt_accounting="complete", request_kind=backend.request_kind,
-               versions={"app": "0.2.0", "python": platform.python_version(),
+               schema_version=3, attempt_accounting="complete", request_kind=backend.request_kind,
+               versions={"app": "0.3.0", "python": platform.python_version(),
                          "pydantic-ai-slim": version("pydantic-ai-slim")}, status="started")
     start = time.monotonic()
     run = None
@@ -196,6 +219,7 @@ async def investigate(text, target, config, fixture=None, model=None, baseline_f
                 if p.get("part_kind") in {"tool-call", "tool-return", "retry-prompt", "text"}]}
                 for m in json.loads(run.all_messages_json())]
         log.update(evidence=backend.calls, attempts=backend.attempts,
+                   dns_attempts=backend.dns.attempts,findings=diagnose(backend.calls),
                    elapsed_seconds=round(time.monotonic()-start, 3))
         path.write_text(json.dumps(redact(log, [config.api_key]), ensure_ascii=False, indent=2, default=str), encoding="utf-8")
     return log, path

@@ -4,6 +4,7 @@ import json
 import socket
 import ssl
 import time
+import contextvars
 from datetime import datetime, timezone
 from pathlib import Path
 import dns.asyncresolver
@@ -12,6 +13,12 @@ import dns.resolver
 import httpx
 from .privacy import redact, safe_url
 from .target import domain, parse_target
+from .dns_wire import DNSClient, TYPES
+from .dns_compare import compare
+from .dns_diagnosis import diagnose
+from .authority import investigate_authority
+
+PARENT = contextvars.ContextVar("dns_parent", default=None)
 
 
 def now():
@@ -29,6 +36,19 @@ class ToolBackend:
         self.request_kind = "investigation"
         self.blocked = set()
         self.on_evidence = on_evidence
+        self.dns = DNSClient(self)
+        self.dns_tool_timeout = 20
+        self.max_auth_servers = 2
+        self.resolvers = (None,"1.1.1.1","8.8.8.8")
+
+    def add_dns_evidence(self, data, parent, query_id=None):
+        row=dict(id=f"E{len(self.calls)+1}",tool_call_id=parent,parent_tool_call_id=parent,
+                 query_attempt_id=query_id,tool_name="query_dns",input=dict(domain=data.get("qname"),record_type=data.get("qtype"),resolver=data.get("resolver")),
+                 started_at=now(),duration_ms=data.get("duration_ms",0),execution_status="ok",data=data,
+                 source_mode="fixture" if self.fixture is not None else "live",measurement_location="synthetic" if self.fixture is not None else "program-host",error=None)
+        self.calls.append(row)
+        self.emit("evidence",row)
+        return row
 
     @property
     def finish_now(self):
@@ -51,6 +71,8 @@ class ToolBackend:
         if emit:
             self.emit("attempt_finished", row)
         return dict(attempt_id=row["attempt_id"], execution_status="error", data={},
+                    partial_evidence=[e for e in self.calls if e.get("parent_tool_call_id")==row["attempt_id"]],
+                    findings=diagnose(self.calls),
                     error=row["error"], source_mode="fixture" if self.fixture is not None else "live",
                     budget={"remaining": max(0, self.max_calls-len(self.attempts)),
                             "finish_now": self.finish_now})
@@ -82,6 +104,8 @@ class ToolBackend:
             self.blocked.add(fingerprint)
             return self.reject(attempt, "INVALID_INPUT", "参数非法或不在本次调查范围；检查目标、端口、类型和已有 DNS 证据。")
         attempt["status"] = "running"
+        token=PARENT.set(attempt["attempt_id"])
+        before=len(self.calls)
         row = dict(tool_call_id=attempt["attempt_id"],
                    tool_name=name, input=redact(args), started_at=now(),
                    source_mode="fixture" if self.fixture is not None else "live",
@@ -105,7 +129,27 @@ class ToolBackend:
             else:
                 if name == "check_http" and safe_url(args["url"]) == safe_url(self.target.url):
                     args = {**args, "url": self.target.url}
-                row["data"] = await getattr(self, name)(**args)
+                async with asyncio.timeout(self.dns_tool_timeout if name in {"compare_resolvers","query_authoritative"} else 16):
+                    row["data"] = await getattr(self, name)(**args)
+            if self.fixture is not None and name == "query_dns":
+                row["data"]={"qname":args["domain"],"qtype":args.get("record_type","A"),"resolver_role":"recursive",**row["data"]}
+            if name in {"compare_resolvers","query_authoritative"}:
+                # Fixture composites contain raw sub-responses, not conclusions.
+                if self.fixture is not None:
+                    for data in row["data"].get("responses",[]):
+                        if data.get("execution_status","ok")=="ok":
+                            evidence=self.add_dns_evidence(data,attempt["attempt_id"])
+                            data["evidence_id"]=evidence["id"]
+                ids=[e["id"] for e in self.calls[before:]]
+                attempt.update(status="measured" if ids else "unavailable",evidence_ids=ids)
+                row["data"]["findings"]=diagnose(self.calls)
+                row["data"]["evidence_ids"]=ids
+                return row
+            if len(self.calls)>before:
+                attempt.update(status="measured",evidence_id=self.calls[-1]["id"])
+                return {**row,"id":self.calls[-1]["id"],"findings":diagnose(self.calls)}
+            if row["data"].get("execution_status")=="error":
+                return self.reject(attempt,(row["data"].get("error") or {}).get("code","DNS_EXECUTION_ERROR"),"DNS 查询没有取得响应；已有子查询证据保留。",emit=False)
             # Only an actually returned measurement earns an E identifier.
             row["id"] = f"E{len(self.calls)+1}"
             self.calls.append(row)
@@ -113,15 +157,18 @@ class ToolBackend:
         except asyncio.CancelledError:
             self.reject(attempt, "CANCELLED", "测量被取消；没有取得有效事实。", status="cancelled", emit=False)
             raise
+        except TimeoutError:
+            return self.reject(attempt,"DNS_TOOL_TIMEOUT","复合 DNS 工具整体时间预算已用尽；已取得的证据仍保留。",status="execution_error",emit=False)
         except Exception:
             self.blocked.add(fingerprint)
             return self.reject(attempt, "INTERNAL_EXECUTION_ERROR", "工具内部执行失败；没有取得有效测量，不能据此判断目标故障。", status="execution_error", emit=False)
         finally:
+            PARENT.reset(token)
             attempt["duration_ms"] = round((time.monotonic()-started)*1000, 2)
             self.emit("attempt_finished", attempt)
         row["duration_ms"] = attempt["duration_ms"]
         self.emit("evidence", row)
-        row = {**row, "budget": {"remaining": max(0, self.max_calls-len(self.attempts)),
+        row = {**row, "findings":diagnose(self.calls), "budget": {"remaining": max(0, self.max_calls-len(self.attempts)),
                                  "finish_now": self.finish_now}}
         return row
 
@@ -129,13 +176,15 @@ class ToolBackend:
         timeout = args.get("timeout", 5)
         if not 0 < timeout <= (15 if name == "check_http" else 5):
             raise ValueError("工具超时参数越界")
-        if name == "query_dns":
+        if name in {"query_dns","compare_resolvers","query_authoritative"}:
             if domain(args["domain"]) != self.target.domain:
                 raise ValueError("DNS 查询仅限本次调查域名")
-            if args.get("record_type", "A") not in ("A", "AAAA"):
-                raise ValueError("只支持 A/AAAA")
+            if args.get("record_type", "A") not in TYPES:
+                raise ValueError("不支持该 DNS 类型")
             if args.get("resolver"):
                 ipaddress.ip_address(args["resolver"])
+                if self.fixture is None and not self.dns.permitted(args["resolver"]):
+                    raise ValueError("未经配置授权的私有 DNS 地址")
         elif name == "check_tcp":
             ipaddress.ip_address(args["ip"])
             if args["port"] not in {80, 443, self.target.port}:
@@ -152,32 +201,14 @@ class ToolBackend:
             raise ValueError("未知工具")
 
     async def query_dns(self, domain, record_type="A", resolver=None, timeout=5):
-        r = dns.asyncresolver.Resolver()
-        if resolver:
-            r.nameservers = [resolver]
-        data = dict(resolvers=[str(x) for x in r.nameservers], record_type=record_type,
-                    records=[], cname_chain=[], rcode=None,
-                    scope="DNS query only; browser cache/hosts/proxy/DoH not reproduced")
-        try:
-            answer = await r.resolve(domain, record_type, lifetime=timeout, raise_on_no_answer=False)
-            data["rcode"] = dns.rcode.to_text(answer.response.rcode())
-            data["responding_resolver"] = str(answer.nameserver)
-            data["records"] = [{"value": x.to_text(), "ttl": answer.rrset.ttl} for x in answer] if answer.rrset else []
-            data["cname_chain"] = [rr.to_text() for rr in answer.response.answer if rr.rdtype == dns.rdatatype.CNAME]
-        except dns.resolver.NXDOMAIN:
-            data["rcode"] = "NXDOMAIN"
-        except dns.exception.Timeout:
-            data["rcode"] = "TIMEOUT"
-        except dns.resolver.NoNameservers as exc:
-            # Preserve individual response codes rather than conflating them with NXDOMAIN.
-            codes = []
-            for entry in exc.kwargs.get("errors", []):
-                response = entry[4] if len(entry) > 4 else None
-                if isinstance(response, dns.message.Message):
-                    codes.append(dns.rcode.to_text(response.rcode()))
-            data.update(rcode=codes[0] if codes and len(set(codes)) == 1 else "NO_NAMESERVERS",
-                        response_codes=codes)
-        return data
+        return await self.dns.query(domain,record_type,resolver,timeout,PARENT.get())
+
+    async def compare_resolvers(self, domain, record_type="A", timeout=5):
+        rows=await asyncio.gather(*(self.dns.query(domain,record_type,r,timeout,PARENT.get()) for r in self.resolvers))
+        return dict(responses=rows,differences=compare(rows),limitations=["CDN, GeoDNS, TTL, cache and policy can explain differences."])
+
+    async def query_authoritative(self, domain, record_type="A", timeout=5):
+        return await investigate_authority(self,domain,record_type,timeout,PARENT.get())
 
     async def check_tcp(self, ip, port, timeout=5):
         sock = socket.socket(socket.AF_INET6 if ipaddress.ip_address(ip).version == 6 else socket.AF_INET,

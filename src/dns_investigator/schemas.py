@@ -16,7 +16,18 @@ class Observation(BaseModel):
     observation: str
 
 
+class Finding(BaseModel):
+    code: str
+    stage: str
+    status: str
+    evidence_ids: list[str]
+    explanation: str
+    limitations: list[str]
+    next_checks: list[str]
+
+
 class InvestigationResult(BaseModel):
+    findings: list[Finding] = Field(default_factory=list)
     request_kind: Literal["query", "investigation"] = "investigation"
     outcome: Literal["answered", "insufficient_information", "execution_failed"] = "answered"
     observations: list[Observation]

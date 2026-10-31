@@ -1,0 +1,1085 @@
+{
+  "run_id": "0d792e0702d243cd8ba980be8a1068e2",
+  "started_at": "2026-10-31T07:41:18.912743+00:00",
+  "incident": {
+    "id": "0d792e0702d243cd8ba980be8a1068e2",
+    "user_input": "调查 example.com 的 DNS 解析故障。请比较递归解析器；如存在实质响应差异可查询权威 DNS，SOA 信息也可辅助调查。根据证据承认未知，不必执行 TCP/HTTP。",
+    "target": {
+      "domain": "example.com",
+      "url": "https://example.com/",
+      "port": 443,
+      "default_https": true
+    },
+    "measurement_location": "synthetic"
+  },
+  "model": "deepseek-flash",
+  "mode": "agent",
+  "thinking": "disabled",
+  "temperature": 0,
+  "model_endpoint": "https://api.deepseek.com",
+  "schema_version": 3,
+  "attempt_accounting": "complete",
+  "request_kind": "investigation",
+  "versions": {
+    "app": "0.3.0",
+    "python": "3.12.14",
+    "pydantic-ai-slim": "2.64.0"
+  },
+  "status": "completed",
+  "execution_status": "ended",
+  "requirements_met": true,
+  "result_origin": "model",
+  "result": {
+    "findings": [
+      {
+        "code": "NXDOMAIN_OBSERVED",
+        "stage": "recursive",
+        "status": "observed",
+        "evidence_ids": [
+          "E1"
+        ],
+        "explanation": "example.com A 本次返回 NXDOMAIN；不推断注册状态或服务器宕机。",
+        "limitations": [
+          "单次观测不证明唯一根因；缓存、CDN、策略、路径与时间差仍需核实。"
+        ],
+        "next_checks": [
+          "比较同名同类型的递归及 AA 权威回答，保留未知与时间差。 "
+        ]
+      },
+      {
+        "code": "NXDOMAIN_OBSERVED",
+        "stage": "recursive",
+        "status": "observed",
+        "evidence_ids": [
+          "E2"
+        ],
+        "explanation": "example.com A 本次返回 NXDOMAIN；不推断注册状态或服务器宕机。",
+        "limitations": [
+          "单次观测不证明唯一根因；缓存、CDN、策略、路径与时间差仍需核实。"
+        ],
+        "next_checks": [
+          "比较同名同类型的递归及 AA 权威回答，保留未知与时间差。 "
+        ]
+      },
+      {
+        "code": "RECURSIVE_AUTH_MISMATCH",
+        "stage": "recursive-authoritative",
+        "status": "observed",
+        "evidence_ids": [
+          "E1",
+          "E3"
+        ],
+        "explanation": "递归与 AA 权威回答有差异；缓存及正常调度仍可能解释差异。",
+        "limitations": [
+          "单次观测不证明唯一根因；缓存、CDN、策略、路径与时间差仍需核实。"
+        ],
+        "next_checks": [
+          "比较同名同类型的递归及 AA 权威回答，保留未知与时间差。 "
+        ]
+      },
+      {
+        "code": "RECURSIVE_AUTH_MISMATCH",
+        "stage": "recursive-authoritative",
+        "status": "observed",
+        "evidence_ids": [
+          "E1",
+          "E4"
+        ],
+        "explanation": "递归与 AA 权威回答有差异；缓存及正常调度仍可能解释差异。",
+        "limitations": [
+          "单次观测不证明唯一根因；缓存、CDN、策略、路径与时间差仍需核实。"
+        ],
+        "next_checks": [
+          "比较同名同类型的递归及 AA 权威回答，保留未知与时间差。 "
+        ]
+      },
+      {
+        "code": "RECURSIVE_AUTH_MISMATCH",
+        "stage": "recursive-authoritative",
+        "status": "observed",
+        "evidence_ids": [
+          "E2",
+          "E3"
+        ],
+        "explanation": "递归与 AA 权威回答有差异；缓存及正常调度仍可能解释差异。",
+        "limitations": [
+          "单次观测不证明唯一根因；缓存、CDN、策略、路径与时间差仍需核实。"
+        ],
+        "next_checks": [
+          "比较同名同类型的递归及 AA 权威回答，保留未知与时间差。 "
+        ]
+      },
+      {
+        "code": "RECURSIVE_AUTH_MISMATCH",
+        "stage": "recursive-authoritative",
+        "status": "observed",
+        "evidence_ids": [
+          "E2",
+          "E4"
+        ],
+        "explanation": "递归与 AA 权威回答有差异；缓存及正常调度仍可能解释差异。",
+        "limitations": [
+          "单次观测不证明唯一根因；缓存、CDN、策略、路径与时间差仍需核实。"
+        ],
+        "next_checks": [
+          "比较同名同类型的递归及 AA 权威回答，保留未知与时间差。 "
+        ]
+      }
+    ],
+    "request_kind": "investigation",
+    "outcome": "answered",
+    "observations": [
+      {
+        "evidence_id": "E1",
+        "observation": "系统递归解析器 192.0.2.53 对 example.com/A 返回 NXDOMAIN，无 answer/authority 记录，flags 为 AA=false、RD=true、RA=false。"
+      },
+      {
+        "evidence_id": "E2",
+        "observation": "公共递归解析器 1.1.1.1 对 example.com/A 同样返回 NXDOMAIN，无 answer/authority 记录，flags 为 AA=false、RD=true、RA=false。"
+      },
+      {
+        "evidence_id": "E3",
+        "observation": "向权威地址 9.9.9.9 直接查询 example.com/A 得到 NOERROR，AA=true，answer 为 A 192.0.2.10，TTL 60。"
+      },
+      {
+        "evidence_id": "E4",
+        "observation": "向权威地址 8.8.4.4 直接查询 example.com/A 同样得到 NOERROR，AA=true，answer 为 A 192.0.2.10，TTL 60。"
+      }
+    ],
+    "hypotheses": [
+      {
+        "id": "H1",
+        "statement": "递归侧（缓存/转发链路）返回了错误的 NXDOMAIN，而权威区实际存在 example.com 的 A 记录（192.0.2.10），即递归解析路径存在异常。",
+        "status": "获得支持",
+        "supporting_evidence_ids": [
+          "E1",
+          "E2",
+          "E3",
+          "E4"
+        ],
+        "contradicting_evidence_ids": [],
+        "missing_information": [
+          "两个递归解析器是否共享同一上游/转发器或缓存来源",
+          "NXDOMAIN 响应的负缓存 TTL 与产生时间",
+          "递归解析器实际使用的权威 NS 集合与查询路径"
+        ]
+      },
+      {
+        "id": "H2",
+        "statement": "权威侧存在配置不一致或近期变更（如 NS 委派指向不同区、部分权威节点缺记录），导致部分解析路径得到 NXDOMAIN。",
+        "status": "无法确定",
+        "supporting_evidence_ids": [
+          "E1",
+          "E2"
+        ],
+        "contradicting_evidence_ids": [
+          "E3",
+          "E4"
+        ],
+        "missing_information": [
+          "example.com 的 NS 委派记录与全部权威节点逐一比对",
+          "SOA Serial 与区文件变更历史（本次 SOA 查询无事实）",
+          "递归解析器实际访问的权威地址"
+        ]
+      },
+      {
+        "id": "H3",
+        "statement": "递归解析器返回的 NXDOMAIN 是本地策略/过滤（如拦截、DNSSEC 验证失败或策略性 NXDOMAIN）造成，而非真实域名不存在。",
+        "status": "无法确定",
+        "supporting_evidence_ids": [
+          "E1",
+          "E2"
+        ],
+        "contradicting_evidence_ids": [],
+        "missing_information": [
+          "递归解析器是否启用过滤/拦截策略",
+          "是否配置 DNSSEC 验证及是否存在 DS/DNSKEY 链问题",
+          "递归解析器返回的 EDE（扩展错误码）信息"
+        ]
+      }
+    ],
+    "conclusion": "本次测量显示递归与权威结果存在实质差异：两个递归解析器（192.0.2.53、1.1.1.1）对 example.com/A 均返回 NXDOMAIN（E1、E2），而两个权威地址（9.9.9.9、8.8.4.4）均以 AA=true 返回 NOERROR 及 A 192.0.2.10（E3、E4）。因此可以确认“递归侧返回 NXDOMAIN 而权威区存在该 A 记录”这一现象，但无法据此确定唯一根因：可能是递归缓存/转发链路异常、权威侧部分节点不一致，或递归侧策略性/验证性 NXDOMAIN。SOA 查询未获得事实（工具返回 FIXTURE_NOT_COVERED，非 DNS 无记录），无法用于判断区一致性或变更时间。NXDOMAIN 不代表域名未注册或服务器宕机，本次也未执行 TCP/HTTP，故对网站可达性不作结论。",
+    "conclusion_evidence_ids": [
+      "E1",
+      "E2",
+      "E3",
+      "E4"
+    ],
+    "limitations": [
+      "测量来自程序所在电脑的合成环境（synthetic），不代表浏览器缓存、hosts、代理或 DoH 路径。",
+      "每个解析器仅单次观测，未做时间序列，无法区分瞬时故障与持续状态。",
+      "SOA 查询未获得事实（FIXTURE_NOT_COVERED，测试数据未覆盖，非 DNS 无记录），无法比较 Serial 或判断区变更。",
+      "未枚举 example.com 的 NS 委派与全部权威节点，权威结论仅基于两个被查询的权威地址。",
+      "未执行 TCP/HTTP，无法判断网站服务可达性；HTTP 4xx/5xx 与 DNS 失败不可混同。",
+      "未获取递归解析器的 EDE、负缓存 TTL 或上游转发配置。"
+    ],
+    "recommendations": [
+      "查询 example.com 的 NS 记录，逐一直接向各权威节点查询 A 记录，确认是否存在权威间不一致。",
+      "在递归解析器上重复查询并观察 NXDOMAIN 是否持续，检查负缓存 TTL 与是否携带 EDE 扩展错误码。",
+      "确认两个递归解析器是否共享上游转发器或缓存，以判断是否为单点缓存污染/错误。",
+      "检查递归解析器是否启用过滤/拦截策略或 DNSSEC 验证，并核对 DS/DNSKEY 链。",
+      "补充 SOA 查询（Serial、Refresh、Minimum）以辅助判断区一致性与负缓存时长。",
+      "在确认 DNS 解析正常后，再按需对 192.0.2.10:443 做 TCP/HTTPS 检查以评估网站可达性。"
+    ]
+  },
+  "usage": {
+    "input_tokens": 13914,
+    "cache_write_tokens": 0,
+    "cache_write_1h_tokens": 0,
+    "cache_read_tokens": 11392,
+    "output_tokens": 3371,
+    "unmeasured_requests": 0,
+    "output_reasoning_tokens": 0,
+    "input_audio_tokens": 0,
+    "cache_audio_read_tokens": 0,
+    "output_audio_tokens": 0,
+    "audio_seconds": 0,
+    "details": {
+      "prompt_cache_hit_tokens": 11392,
+      "prompt_cache_miss_tokens": 2522
+    },
+    "cost": "0.004870152",
+    "requests": 4,
+    "tool_calls": 3
+  },
+  "visible_messages": [
+    {
+      "kind": "request",
+      "parts": []
+    },
+    {
+      "kind": "response",
+      "parts": [
+        {
+          "tool_name": "compare_resolvers",
+          "args": "{\"domain\": \"example.com\", \"record_type\": \"A\"}",
+          "tool_call_id": "call_00_cOLPunLA1Pf8TvhFZNYI5507",
+          "tool_kind": null,
+          "id": null,
+          "provider_name": null,
+          "provider_details": null,
+          "part_kind": "tool-call"
+        },
+        {
+          "tool_name": "query_dns",
+          "args": "{\"domain\": \"example.com\", \"record_type\": \"SOA\"}",
+          "tool_call_id": "call_01_cj3TcgN956NVE09wvhMg9465",
+          "tool_kind": null,
+          "id": null,
+          "provider_name": null,
+          "provider_details": null,
+          "part_kind": "tool-call"
+        }
+      ]
+    },
+    {
+      "kind": "request",
+      "parts": [
+        {
+          "tool_name": "compare_resolvers",
+          "content": {
+            "tool_call_id": "A1",
+            "tool_name": "compare_resolvers",
+            "input": {
+              "domain": "example.com",
+              "record_type": "A",
+              "timeout": 5
+            },
+            "started_at": "2026-10-31T07:41:20.241915+00:00",
+            "source_mode": "fixture",
+            "measurement_location": "synthetic",
+            "execution_status": "ok",
+            "data": {
+              "responses": [
+                {
+                  "qname": "example.com",
+                  "qtype": "A",
+                  "record_type": "A",
+                  "resolver": "192.0.2.53",
+                  "responding_resolver": "192.0.2.53",
+                  "resolver_role": "recursive",
+                  "rcode": "NXDOMAIN",
+                  "result_kind": "NXDOMAIN",
+                  "flags": {
+                    "AA": false,
+                    "RD": true,
+                    "RA": false,
+                    "TC": false
+                  },
+                  "answer": [],
+                  "authority": [],
+                  "additional": [],
+                  "records": [],
+                  "cname_chain": [],
+                  "canonical_name": "example.com",
+                  "cname_loop": false,
+                  "transport": "UDP",
+                  "execution_status": "ok",
+                  "error": null,
+                  "soa_serials": []
+                },
+                {
+                  "qname": "example.com",
+                  "qtype": "A",
+                  "record_type": "A",
+                  "resolver": "1.1.1.1",
+                  "responding_resolver": "1.1.1.1",
+                  "resolver_role": "recursive",
+                  "rcode": "NXDOMAIN",
+                  "result_kind": "NXDOMAIN",
+                  "flags": {
+                    "AA": false,
+                    "RD": true,
+                    "RA": false,
+                    "TC": false
+                  },
+                  "answer": [],
+                  "authority": [],
+                  "additional": [],
+                  "records": [],
+                  "cname_chain": [],
+                  "canonical_name": "example.com",
+                  "cname_loop": false,
+                  "transport": "UDP",
+                  "execution_status": "ok",
+                  "error": null,
+                  "soa_serials": []
+                }
+              ],
+              "findings": [
+                {
+                  "code": "NXDOMAIN_OBSERVED",
+                  "stage": "recursive",
+                  "status": "observed",
+                  "evidence_ids": [
+                    "E1"
+                  ],
+                  "explanation": "example.com A 本次返回 NXDOMAIN；不推断注册状态或服务器宕机。",
+                  "limitations": [
+                    "单次观测不证明唯一根因；缓存、CDN、策略、路径与时间差仍需核实。"
+                  ],
+                  "next_checks": [
+                    "比较同名同类型的递归及 AA 权威回答，保留未知与时间差。 "
+                  ]
+                },
+                {
+                  "code": "NXDOMAIN_OBSERVED",
+                  "stage": "recursive",
+                  "status": "observed",
+                  "evidence_ids": [
+                    "E2"
+                  ],
+                  "explanation": "example.com A 本次返回 NXDOMAIN；不推断注册状态或服务器宕机。",
+                  "limitations": [
+                    "单次观测不证明唯一根因；缓存、CDN、策略、路径与时间差仍需核实。"
+                  ],
+                  "next_checks": [
+                    "比较同名同类型的递归及 AA 权威回答，保留未知与时间差。 "
+                  ]
+                }
+              ],
+              "evidence_ids": [
+                "E1",
+                "E2"
+              ]
+            },
+            "error": null
+          },
+          "tool_call_id": "call_00_cOLPunLA1Pf8TvhFZNYI5507",
+          "tool_kind": null,
+          "metadata": null,
+          "timestamp": "2026-10-31T07:41:20.244033Z",
+          "outcome": "success",
+          "retry": null,
+          "part_kind": "tool-return"
+        },
+        {
+          "tool_name": "query_dns",
+          "content": {
+            "attempt_id": "A2",
+            "execution_status": "error",
+            "data": {},
+            "error": {
+              "code": "FIXTURE_NOT_COVERED",
+              "message": "测试数据没有提供该项事实；不是 DNS 无记录/NXDOMAIN 或真实网络失败。不可重试；请保留未知并结束或选择其他有用检查。",
+              "retryable": false
+            },
+            "source_mode": "fixture",
+            "budget": {
+              "remaining": 8,
+              "finish_now": false
+            }
+          },
+          "tool_call_id": "call_01_cj3TcgN956NVE09wvhMg9465",
+          "tool_kind": null,
+          "metadata": null,
+          "timestamp": "2026-10-31T07:41:20.245035Z",
+          "outcome": "success",
+          "retry": null,
+          "part_kind": "tool-return"
+        }
+      ]
+    },
+    {
+      "kind": "response",
+      "parts": [
+        {
+          "tool_name": "query_authoritative",
+          "args": "{\"domain\": \"example.com\", \"record_type\": \"A\"}",
+          "tool_call_id": "call_00_F0TRUIywIFtredOeCj354675",
+          "tool_kind": null,
+          "id": null,
+          "provider_name": null,
+          "provider_details": null,
+          "part_kind": "tool-call"
+        }
+      ]
+    },
+    {
+      "kind": "request",
+      "parts": [
+        {
+          "tool_name": "query_authoritative",
+          "content": {
+            "tool_call_id": "A3",
+            "tool_name": "query_authoritative",
+            "input": {
+              "domain": "example.com",
+              "record_type": "A",
+              "timeout": 5
+            },
+            "started_at": "2026-10-31T07:41:21.269420+00:00",
+            "source_mode": "fixture",
+            "measurement_location": "synthetic",
+            "execution_status": "ok",
+            "data": {
+              "zone": "example.com",
+              "responses": [
+                {
+                  "qname": "example.com",
+                  "qtype": "A",
+                  "record_type": "A",
+                  "resolver": "9.9.9.9",
+                  "responding_resolver": "9.9.9.9",
+                  "resolver_role": "authoritative",
+                  "rcode": "NOERROR",
+                  "result_kind": "NOERROR",
+                  "flags": {
+                    "AA": true,
+                    "RD": true,
+                    "RA": false,
+                    "TC": false
+                  },
+                  "answer": [
+                    {
+                      "name": "example.com",
+                      "type": "A",
+                      "ttl": 60,
+                      "values": [
+                        "192.0.2.10"
+                      ]
+                    }
+                  ],
+                  "authority": [],
+                  "additional": [],
+                  "records": [
+                    {
+                      "value": "192.0.2.10",
+                      "ttl": 60
+                    }
+                  ],
+                  "cname_chain": [],
+                  "canonical_name": "example.com",
+                  "cname_loop": false,
+                  "transport": "UDP",
+                  "execution_status": "ok",
+                  "error": null,
+                  "soa_serials": []
+                },
+                {
+                  "qname": "example.com",
+                  "qtype": "A",
+                  "record_type": "A",
+                  "resolver": "8.8.4.4",
+                  "responding_resolver": "8.8.4.4",
+                  "resolver_role": "authoritative",
+                  "rcode": "NOERROR",
+                  "result_kind": "NOERROR",
+                  "flags": {
+                    "AA": true,
+                    "RD": true,
+                    "RA": false,
+                    "TC": false
+                  },
+                  "answer": [
+                    {
+                      "name": "example.com",
+                      "type": "A",
+                      "ttl": 60,
+                      "values": [
+                        "192.0.2.10"
+                      ]
+                    }
+                  ],
+                  "authority": [],
+                  "additional": [],
+                  "records": [
+                    {
+                      "value": "192.0.2.10",
+                      "ttl": 60
+                    }
+                  ],
+                  "cname_chain": [],
+                  "canonical_name": "example.com",
+                  "cname_loop": false,
+                  "transport": "UDP",
+                  "execution_status": "ok",
+                  "error": null,
+                  "soa_serials": []
+                }
+              ],
+              "findings": [
+                {
+                  "code": "NXDOMAIN_OBSERVED",
+                  "stage": "recursive",
+                  "status": "observed",
+                  "evidence_ids": [
+                    "E1"
+                  ],
+                  "explanation": "example.com A 本次返回 NXDOMAIN；不推断注册状态或服务器宕机。",
+                  "limitations": [
+                    "单次观测不证明唯一根因；缓存、CDN、策略、路径与时间差仍需核实。"
+                  ],
+                  "next_checks": [
+                    "比较同名同类型的递归及 AA 权威回答，保留未知与时间差。 "
+                  ]
+                },
+                {
+                  "code": "NXDOMAIN_OBSERVED",
+                  "stage": "recursive",
+                  "status": "observed",
+                  "evidence_ids": [
+                    "E2"
+                  ],
+                  "explanation": "example.com A 本次返回 NXDOMAIN；不推断注册状态或服务器宕机。",
+                  "limitations": [
+                    "单次观测不证明唯一根因；缓存、CDN、策略、路径与时间差仍需核实。"
+                  ],
+                  "next_checks": [
+                    "比较同名同类型的递归及 AA 权威回答，保留未知与时间差。 "
+                  ]
+                },
+                {
+                  "code": "RECURSIVE_AUTH_MISMATCH",
+                  "stage": "recursive-authoritative",
+                  "status": "observed",
+                  "evidence_ids": [
+                    "E1",
+                    "E3"
+                  ],
+                  "explanation": "递归与 AA 权威回答有差异；缓存及正常调度仍可能解释差异。",
+                  "limitations": [
+                    "单次观测不证明唯一根因；缓存、CDN、策略、路径与时间差仍需核实。"
+                  ],
+                  "next_checks": [
+                    "比较同名同类型的递归及 AA 权威回答，保留未知与时间差。 "
+                  ]
+                },
+                {
+                  "code": "RECURSIVE_AUTH_MISMATCH",
+                  "stage": "recursive-authoritative",
+                  "status": "observed",
+                  "evidence_ids": [
+                    "E1",
+                    "E4"
+                  ],
+                  "explanation": "递归与 AA 权威回答有差异；缓存及正常调度仍可能解释差异。",
+                  "limitations": [
+                    "单次观测不证明唯一根因；缓存、CDN、策略、路径与时间差仍需核实。"
+                  ],
+                  "next_checks": [
+                    "比较同名同类型的递归及 AA 权威回答，保留未知与时间差。 "
+                  ]
+                },
+                {
+                  "code": "RECURSIVE_AUTH_MISMATCH",
+                  "stage": "recursive-authoritative",
+                  "status": "observed",
+                  "evidence_ids": [
+                    "E2",
+                    "E3"
+                  ],
+                  "explanation": "递归与 AA 权威回答有差异；缓存及正常调度仍可能解释差异。",
+                  "limitations": [
+                    "单次观测不证明唯一根因；缓存、CDN、策略、路径与时间差仍需核实。"
+                  ],
+                  "next_checks": [
+                    "比较同名同类型的递归及 AA 权威回答，保留未知与时间差。 "
+                  ]
+                },
+                {
+                  "code": "RECURSIVE_AUTH_MISMATCH",
+                  "stage": "recursive-authoritative",
+                  "status": "observed",
+                  "evidence_ids": [
+                    "E2",
+                    "E4"
+                  ],
+                  "explanation": "递归与 AA 权威回答有差异；缓存及正常调度仍可能解释差异。",
+                  "limitations": [
+                    "单次观测不证明唯一根因；缓存、CDN、策略、路径与时间差仍需核实。"
+                  ],
+                  "next_checks": [
+                    "比较同名同类型的递归及 AA 权威回答，保留未知与时间差。 "
+                  ]
+                }
+              ],
+              "evidence_ids": [
+                "E3",
+                "E4"
+              ]
+            },
+            "error": null
+          },
+          "tool_call_id": "call_00_F0TRUIywIFtredOeCj354675",
+          "tool_kind": null,
+          "metadata": null,
+          "timestamp": "2026-10-31T07:41:21.271424Z",
+          "outcome": "success",
+          "retry": null,
+          "part_kind": "tool-return"
+        }
+      ]
+    },
+    {
+      "kind": "response",
+      "parts": [
+        {
+          "tool_name": "final_result",
+          "args": "{\"request_kind\": \"investigation\", \"outcome\": \"answered\", \"observations\": [{\"evidence_id\": \"E1\", \"observation\": \"系统递归解析器 192.0.2.53 对 example.com/A 返回 NXDOMAIN，无 answer/authority 记录，flags 为 AA=false、RD=true、RA=false。\"}, {\"evidence_id\": \"E2\", \"observation\": \"公共递归解析器 1.1.1.1 对 example.com/A 同样返回 NXDOMAIN，无 answer/authority 记录，flags 为 AA=false、RD=true、RA=false。\"}, {\"evidence_id\": \"E3\", \"observation\": \"向权威地址 9.9.9.9 直接查询 example.com/A 得到 NOERROR，AA=true，answer 为 A 192.0.2.10，TTL 60。\"}, {\"evidence_id\": \"E4\", \"observation\": \"向权威地址 8.8.4.4 直接查询 example.com/A 同样得到 NOERROR，AA=true，answer 为 A 192.0.2.10，TTL 60。\"}, {\"evidence_id\": \"E5\", \"observation\": \"SOA 查询未获得事实：工具返回 FIXTURE_NOT_COVERED，表示测试数据未覆盖该项，不是 DNS 无记录、NXDOMAIN 或真实网络失败，且不可重试。\"}], \"hypotheses\": [{\"id\": \"H1\", \"statement\": \"递归侧（缓存/转发链路）返回了错误的 NXDOMAIN，而权威区实际存在 example.com 的 A 记录（192.0.2.10），即递归解析路径存在异常。\", \"status\": \"获得支持\", \"supporting_evidence_ids\": [\"E1\", \"E2\", \"E3\", \"E4\"], \"contradicting_evidence_ids\": [], \"missing_information\": [\"两个递归解析器是否共享同一上游/转发器或缓存来源\", \"NXDOMAIN 响应的负缓存 TTL 与产生时间\", \"递归解析器实际使用的权威 NS 集合与查询路径\"]}, {\"id\": \"H2\", \"statement\": \"权威侧存在配置不一致或近期变更（如 NS 委派指向不同区、部分权威节点缺记录），导致部分解析路径得到 NXDOMAIN。\", \"status\": \"无法确定\", \"supporting_evidence_ids\": [\"E1\", \"E2\"], \"contradicting_evidence_ids\": [\"E3\", \"E4\"], \"missing_information\": [\"example.com 的 NS 委派记录与全部权威节点逐一比对\", \"SOA Serial 与区文件变更历史（本次 SOA 查询无事实，E5）\", \"递归解析器实际访问的权威地址\"]}, {\"id\": \"H3\", \"statement\": \"递归解析器返回的 NXDOMAIN 是本地策略/过滤（如拦截、DNSSEC 验证失败或策略性 NXDOMAIN）造成，而非真实域名不存在。\", \"status\": \"无法确定\", \"supporting_evidence_ids\": [\"E1\", \"E2\"], \"contradicting_evidence_ids\": [], \"missing_information\": [\"递归解析器是否启用过滤/拦截策略\", \"是否配置 DNSSEC 验证及是否存在 DS/DNSKEY 链问题\", \"递归解析器返回的 EDE（扩展错误码）信息\"]}], \"conclusion\": \"本次测量显示递归与权威结果存在实质差异：两个递归解析器（192.0.2.53、1.1.1.1）对 example.com/A 均返回 NXDOMAIN（E1、E2），而两个权威地址（9.9.9.9、8.8.4.4）均以 AA=true 返回 NOERROR 及 A 192.0.2.10（E3、E4）。因此可以确认“递归侧返回 NXDOMAIN 而权威区存在该 A 记录”这一现象，但无法据此确定唯一根因：可能是递归缓存/转发链路异常、权威侧部分节点不一致，或递归侧策略性/验证性 NXDOMAIN。SOA 信息缺失（E5），无法用于判断区一致性或变更时间。NXDOMAIN 不代表域名未注册或服务器宕机，本次也未执行 TCP/HTTP，故对网站可达性不作结论。\", \"conclusion_evidence_ids\": [\"E1\", \"E2\", \"E3\", \"E4\", \"E5\"], \"limitations\": [\"测量来自程序所在电脑的合成环境（synthetic），不代表浏览器缓存、hosts、代理或 DoH 路径。\", \"每个解析器仅单次观测，未做时间序列，无法区分瞬时故障与持续状态。\", \"SOA 查询无事实（E5），无法比较 Serial 或判断区变更。\", \"未枚举 example.com 的 NS 委派与全部权威节点，权威结论仅基于两个被查询的权威地址。\", \"未执行 TCP/HTTP，无法判断网站服务可达性；HTTP 4xx/5xx 与 DNS 失败不可混同。\", \"未获取递归解析器的 EDE、负缓存 TTL 或上游转发配置。\"], \"recommendations\": [\"查询 example.com 的 NS 记录，逐一直接向各权威节点查询 A 记录，确认是否存在权威间不一致。\", \"在递归解析器上重复查询并观察 NXDOMAIN 是否持续，检查负缓存 TTL 与是否携带 EDE 扩展错误码。\", \"确认两个递归解析器是否共享上游转发器或缓存，以判断是否为单点缓存污染/错误。\", \"检查递归解析器是否启用过滤/拦截策略或 DNSSEC 验证，并核对 DS/DNSKEY 链。\", \"补充 SOA 查询（Serial、Refresh、Minimum）以辅助判断区一致性与负缓存时长。\", \"在确认 DNS 解析正常后，再按需对 192.0.2.10:443 做 TCP/HTTPS 检查以评估网站可达性。\"]}",
+          "tool_call_id": "call_00_TNlV8qA1zOx0Mm2umkWF1034",
+          "tool_kind": null,
+          "id": null,
+          "provider_name": null,
+          "provider_details": null,
+          "part_kind": "tool-call"
+        }
+      ]
+    },
+    {
+      "kind": "request",
+      "parts": [
+        {
+          "tool_name": "final_result",
+          "content": "证据编号不存在：['E5']",
+          "tool_call_id": "call_00_TNlV8qA1zOx0Mm2umkWF1034",
+          "tool_kind": null,
+          "metadata": null,
+          "timestamp": "2026-10-31T07:41:29.445854Z",
+          "outcome": "retried",
+          "retry": {
+            "cause": "model_retry",
+            "attempt": 1,
+            "max_retries": 2
+          },
+          "part_kind": "tool-return"
+        }
+      ]
+    },
+    {
+      "kind": "response",
+      "parts": [
+        {
+          "tool_name": "final_result",
+          "args": "{\"conclusion\": \"本次测量显示递归与权威结果存在实质差异：两个递归解析器（192.0.2.53、1.1.1.1）对 example.com/A 均返回 NXDOMAIN（E1、E2），而两个权威地址（9.9.9.9、8.8.4.4）均以 AA=true 返回 NOERROR 及 A 192.0.2.10（E3、E4）。因此可以确认“递归侧返回 NXDOMAIN 而权威区存在该 A 记录”这一现象，但无法据此确定唯一根因：可能是递归缓存/转发链路异常、权威侧部分节点不一致，或递归侧策略性/验证性 NXDOMAIN。SOA 查询未获得事实（工具返回 FIXTURE_NOT_COVERED，非 DNS 无记录），无法用于判断区一致性或变更时间。NXDOMAIN 不代表域名未注册或服务器宕机，本次也未执行 TCP/HTTP，故对网站可达性不作结论。\", \"conclusion_evidence_ids\": [\"E1\", \"E2\", \"E3\", \"E4\"], \"limitations\": [\"测量来自程序所在电脑的合成环境（synthetic），不代表浏览器缓存、hosts、代理或 DoH 路径。\", \"每个解析器仅单次观测，未做时间序列，无法区分瞬时故障与持续状态。\", \"SOA 查询未获得事实（FIXTURE_NOT_COVERED，测试数据未覆盖，非 DNS 无记录），无法比较 Serial 或判断区变更。\", \"未枚举 example.com 的 NS 委派与全部权威节点，权威结论仅基于两个被查询的权威地址。\", \"未执行 TCP/HTTP，无法判断网站服务可达性；HTTP 4xx/5xx 与 DNS 失败不可混同。\", \"未获取递归解析器的 EDE、负缓存 TTL 或上游转发配置。\"], \"findings\": [{\"code\": \"RECURSIVE_NXDOMAIN\", \"stage\": \"recursive\", \"status\": \"observed\", \"evidence_ids\": [\"E1\", \"E2\"], \"explanation\": \"两个递归解析器对 example.com/A 均返回 NXDOMAIN，无 answer/authority 记录，AA=false。\", \"limitations\": [\"单次观测，不证明持续状态或唯一根因。\"], \"next_checks\": [\"重复查询观察是否持续，检查负缓存 TTL 与 EDE。\"]}, {\"code\": \"AUTHORITATIVE_NOERROR\", \"stage\": \"authoritative\", \"status\": \"observed\", \"evidence_ids\": [\"E3\", \"E4\"], \"explanation\": \"两个权威地址以 AA=true 返回 NOERROR 及 A 192.0.2.10，TTL 60。\", \"limitations\": [\"仅覆盖两个权威地址，未枚举全部 NS。\"], \"next_checks\": [\"查询 NS 并逐一比对全部权威节点。\"]}, {\"code\": \"RECURSIVE_AUTH_MISMATCH\", \"stage\": \"recursive-authoritative\", \"status\": \"observed\", \"evidence_ids\": [\"E1\", \"E2\", \"E3\", \"E4\"], \"explanation\": \"递归 NXDOMAIN 与权威 NOERROR 存在实质差异；缓存、转发链路、策略或权威不一致均可解释。\", \"limitations\": [\"单次观测不证明唯一根因。\"], \"next_checks\": [\"检查递归上游/缓存来源与过滤策略。\"]}, {\"code\": \"SOA_UNAVAILABLE\", \"stage\": \"soa\", \"status\": \"unknown\", \"evidence_ids\": [], \"explanation\": \"SOA 查询返回 FIXTURE_NOT_COVERED，测试数据未提供事实，不是 DNS 无记录或网络失败，不可重试。\", \"limitations\": [\"无 SOA 证据，无法判断区一致性与负缓存时长。\"], \"next_checks\": [\"在可用数据源下补充 SOA 查询。\"]}], \"hypotheses\": [{\"id\": \"H1\", \"statement\": \"递归侧（缓存/转发链路）返回了错误的 NXDOMAIN，而权威区实际存在 example.com 的 A 记录（192.0.2.10），即递归解析路径存在异常。\", \"status\": \"获得支持\", \"supporting_evidence_ids\": [\"E1\", \"E2\", \"E3\", \"E4\"], \"contradicting_evidence_ids\": [], \"missing_information\": [\"两个递归解析器是否共享同一上游/转发器或缓存来源\", \"NXDOMAIN 响应的负缓存 TTL 与产生时间\", \"递归解析器实际使用的权威 NS 集合与查询路径\"]}, {\"id\": \"H2\", \"statement\": \"权威侧存在配置不一致或近期变更（如 NS 委派指向不同区、部分权威节点缺记录），导致部分解析路径得到 NXDOMAIN。\", \"status\": \"无法确定\", \"supporting_evidence_ids\": [\"E1\", \"E2\"], \"contradicting_evidence_ids\": [\"E3\", \"E4\"], \"missing_information\": [\"example.com 的 NS 委派记录与全部权威节点逐一比对\", \"SOA Serial 与区文件变更历史（本次 SOA 查询无事实）\", \"递归解析器实际访问的权威地址\"]}, {\"id\": \"H3\", \"statement\": \"递归解析器返回的 NXDOMAIN 是本地策略/过滤（如拦截、DNSSEC 验证失败或策略性 NXDOMAIN）造成，而非真实域名不存在。\", \"status\": \"无法确定\", \"supporting_evidence_ids\": [\"E1\", \"E2\"], \"contradicting_evidence_ids\": [], \"missing_information\": [\"递归解析器是否启用过滤/拦截策略\", \"是否配置 DNSSEC 验证及是否存在 DS/DNSKEY 链问题\", \"递归解析器返回的 EDE（扩展错误码）信息\"]}], \"observations\": [{\"evidence_id\": \"E1\", \"observation\": \"系统递归解析器 192.0.2.53 对 example.com/A 返回 NXDOMAIN，无 answer/authority 记录，flags 为 AA=false、RD=true、RA=false。\"}, {\"evidence_id\": \"E2\", \"observation\": \"公共递归解析器 1.1.1.1 对 example.com/A 同样返回 NXDOMAIN，无 answer/authority 记录，flags 为 AA=false、RD=true、RA=false。\"}, {\"evidence_id\": \"E3\", \"observation\": \"向权威地址 9.9.9.9 直接查询 example.com/A 得到 NOERROR，AA=true，answer 为 A 192.0.2.10，TTL 60。\"}, {\"evidence_id\": \"E4\", \"observation\": \"向权威地址 8.8.4.4 直接查询 example.com/A 同样得到 NOERROR，AA=true，answer 为 A 192.0.2.10，TTL 60。\"}], \"recommendations\": [\"查询 example.com 的 NS 记录，逐一直接向各权威节点查询 A 记录，确认是否存在权威间不一致。\", \"在递归解析器上重复查询并观察 NXDOMAIN 是否持续，检查负缓存 TTL 与是否携带 EDE 扩展错误码。\", \"确认两个递归解析器是否共享上游转发器或缓存，以判断是否为单点缓存污染/错误。\", \"检查递归解析器是否启用过滤/拦截策略或 DNSSEC 验证，并核对 DS/DNSKEY 链。\", \"补充 SOA 查询（Serial、Refresh、Minimum）以辅助判断区一致性与负缓存时长。\", \"在确认 DNS 解析正常后，再按需对 192.0.2.10:443 做 TCP/HTTPS 检查以评估网站可达性。\"]}",
+          "tool_call_id": "call_00_j4YmtNvVAS0m09uBZjvW5205",
+          "tool_kind": null,
+          "id": null,
+          "provider_name": null,
+          "provider_details": null,
+          "part_kind": "tool-call"
+        }
+      ]
+    },
+    {
+      "kind": "request",
+      "parts": [
+        {
+          "tool_name": "final_result",
+          "content": "Final result processed.",
+          "tool_call_id": "call_00_j4YmtNvVAS0m09uBZjvW5205",
+          "tool_kind": null,
+          "metadata": null,
+          "timestamp": "2026-10-31T07:41:36.475737Z",
+          "outcome": "success",
+          "retry": null,
+          "part_kind": "tool-return"
+        }
+      ]
+    }
+  ],
+  "evidence": [
+    {
+      "id": "E1",
+      "tool_call_id": "A1",
+      "parent_tool_call_id": "A1",
+      "query_attempt_id": null,
+      "tool_name": "query_dns",
+      "input": {
+        "domain": "example.com",
+        "record_type": "A",
+        "resolver": "192.0.2.53"
+      },
+      "started_at": "2026-10-31T07:41:20.241915+00:00",
+      "duration_ms": 0,
+      "execution_status": "ok",
+      "data": {
+        "qname": "example.com",
+        "qtype": "A",
+        "record_type": "A",
+        "resolver": "192.0.2.53",
+        "responding_resolver": "192.0.2.53",
+        "resolver_role": "recursive",
+        "rcode": "NXDOMAIN",
+        "result_kind": "NXDOMAIN",
+        "flags": {
+          "AA": false,
+          "RD": true,
+          "RA": false,
+          "TC": false
+        },
+        "answer": [],
+        "authority": [],
+        "additional": [],
+        "records": [],
+        "cname_chain": [],
+        "canonical_name": "example.com",
+        "cname_loop": false,
+        "transport": "UDP",
+        "execution_status": "ok",
+        "error": null,
+        "soa_serials": []
+      },
+      "source_mode": "fixture",
+      "measurement_location": "synthetic",
+      "error": null
+    },
+    {
+      "id": "E2",
+      "tool_call_id": "A1",
+      "parent_tool_call_id": "A1",
+      "query_attempt_id": null,
+      "tool_name": "query_dns",
+      "input": {
+        "domain": "example.com",
+        "record_type": "A",
+        "resolver": "1.1.1.1"
+      },
+      "started_at": "2026-10-31T07:41:20.242917+00:00",
+      "duration_ms": 0,
+      "execution_status": "ok",
+      "data": {
+        "qname": "example.com",
+        "qtype": "A",
+        "record_type": "A",
+        "resolver": "1.1.1.1",
+        "responding_resolver": "1.1.1.1",
+        "resolver_role": "recursive",
+        "rcode": "NXDOMAIN",
+        "result_kind": "NXDOMAIN",
+        "flags": {
+          "AA": false,
+          "RD": true,
+          "RA": false,
+          "TC": false
+        },
+        "answer": [],
+        "authority": [],
+        "additional": [],
+        "records": [],
+        "cname_chain": [],
+        "canonical_name": "example.com",
+        "cname_loop": false,
+        "transport": "UDP",
+        "execution_status": "ok",
+        "error": null,
+        "soa_serials": []
+      },
+      "source_mode": "fixture",
+      "measurement_location": "synthetic",
+      "error": null
+    },
+    {
+      "id": "E3",
+      "tool_call_id": "A3",
+      "parent_tool_call_id": "A3",
+      "query_attempt_id": null,
+      "tool_name": "query_dns",
+      "input": {
+        "domain": "example.com",
+        "record_type": "A",
+        "resolver": "9.9.9.9"
+      },
+      "started_at": "2026-10-31T07:41:21.269420+00:00",
+      "duration_ms": 0,
+      "execution_status": "ok",
+      "data": {
+        "qname": "example.com",
+        "qtype": "A",
+        "record_type": "A",
+        "resolver": "9.9.9.9",
+        "responding_resolver": "9.9.9.9",
+        "resolver_role": "authoritative",
+        "rcode": "NOERROR",
+        "result_kind": "NOERROR",
+        "flags": {
+          "AA": true,
+          "RD": true,
+          "RA": false,
+          "TC": false
+        },
+        "answer": [
+          {
+            "name": "example.com",
+            "type": "A",
+            "ttl": 60,
+            "values": [
+              "192.0.2.10"
+            ]
+          }
+        ],
+        "authority": [],
+        "additional": [],
+        "records": [
+          {
+            "value": "192.0.2.10",
+            "ttl": 60
+          }
+        ],
+        "cname_chain": [],
+        "canonical_name": "example.com",
+        "cname_loop": false,
+        "transport": "UDP",
+        "execution_status": "ok",
+        "error": null,
+        "soa_serials": []
+      },
+      "source_mode": "fixture",
+      "measurement_location": "synthetic",
+      "error": null
+    },
+    {
+      "id": "E4",
+      "tool_call_id": "A3",
+      "parent_tool_call_id": "A3",
+      "query_attempt_id": null,
+      "tool_name": "query_dns",
+      "input": {
+        "domain": "example.com",
+        "record_type": "A",
+        "resolver": "8.8.4.4"
+      },
+      "started_at": "2026-10-31T07:41:21.270422+00:00",
+      "duration_ms": 0,
+      "execution_status": "ok",
+      "data": {
+        "qname": "example.com",
+        "qtype": "A",
+        "record_type": "A",
+        "resolver": "8.8.4.4",
+        "responding_resolver": "8.8.4.4",
+        "resolver_role": "authoritative",
+        "rcode": "NOERROR",
+        "result_kind": "NOERROR",
+        "flags": {
+          "AA": true,
+          "RD": true,
+          "RA": false,
+          "TC": false
+        },
+        "answer": [
+          {
+            "name": "example.com",
+            "type": "A",
+            "ttl": 60,
+            "values": [
+              "192.0.2.10"
+            ]
+          }
+        ],
+        "authority": [],
+        "additional": [],
+        "records": [
+          {
+            "value": "192.0.2.10",
+            "ttl": 60
+          }
+        ],
+        "cname_chain": [],
+        "canonical_name": "example.com",
+        "cname_loop": false,
+        "transport": "UDP",
+        "execution_status": "ok",
+        "error": null,
+        "soa_serials": []
+      },
+      "source_mode": "fixture",
+      "measurement_location": "synthetic",
+      "error": null
+    }
+  ],
+  "attempts": [
+    {
+      "attempt_id": "A1",
+      "tool_name": "compare_resolvers",
+      "provider_call_id": "call_00_cOLPunLA1Pf8TvhFZNYI5507",
+      "input": {
+        "domain": "example.com",
+        "record_type": "A"
+      },
+      "started_at": "2026-10-31T07:41:20.233639+00:00",
+      "status": "measured",
+      "evidence_id": null,
+      "error": null,
+      "duration_ms": 0.0,
+      "evidence_ids": [
+        "E1",
+        "E2"
+      ]
+    },
+    {
+      "attempt_id": "A2",
+      "tool_name": "query_dns",
+      "provider_call_id": "call_01_cj3TcgN956NVE09wvhMg9465",
+      "input": {
+        "domain": "example.com",
+        "record_type": "SOA"
+      },
+      "started_at": "2026-10-31T07:41:20.234640+00:00",
+      "status": "unavailable",
+      "evidence_id": null,
+      "error": {
+        "code": "FIXTURE_NOT_COVERED",
+        "message": "测试数据没有提供该项事实；不是 DNS 无记录/NXDOMAIN 或真实网络失败。不可重试；请保留未知并结束或选择其他有用检查。",
+        "retryable": false
+      },
+      "duration_ms": 0.0
+    },
+    {
+      "attempt_id": "A3",
+      "tool_name": "query_authoritative",
+      "provider_call_id": "call_00_F0TRUIywIFtredOeCj354675",
+      "input": {
+        "domain": "example.com",
+        "record_type": "A"
+      },
+      "started_at": "2026-10-31T07:41:21.267414+00:00",
+      "status": "measured",
+      "evidence_id": null,
+      "error": null,
+      "duration_ms": 0.0,
+      "evidence_ids": [
+        "E3",
+        "E4"
+      ]
+    }
+  ],
+  "dns_attempts": [],
+  "findings": [
+    {
+      "code": "NXDOMAIN_OBSERVED",
+      "stage": "recursive",
+      "status": "observed",
+      "evidence_ids": [
+        "E1"
+      ],
+      "explanation": "example.com A 本次返回 NXDOMAIN；不推断注册状态或服务器宕机。",
+      "limitations": [
+        "单次观测不证明唯一根因；缓存、CDN、策略、路径与时间差仍需核实。"
+      ],
+      "next_checks": [
+        "比较同名同类型的递归及 AA 权威回答，保留未知与时间差。 "
+      ]
+    },
+    {
+      "code": "NXDOMAIN_OBSERVED",
+      "stage": "recursive",
+      "status": "observed",
+      "evidence_ids": [
+        "E2"
+      ],
+      "explanation": "example.com A 本次返回 NXDOMAIN；不推断注册状态或服务器宕机。",
+      "limitations": [
+        "单次观测不证明唯一根因；缓存、CDN、策略、路径与时间差仍需核实。"
+      ],
+      "next_checks": [
+        "比较同名同类型的递归及 AA 权威回答，保留未知与时间差。 "
+      ]
+    },
+    {
+      "code": "RECURSIVE_AUTH_MISMATCH",
+      "stage": "recursive-authoritative",
+      "status": "observed",
+      "evidence_ids": [
+        "E1",
+        "E3"
+      ],
+      "explanation": "递归与 AA 权威回答有差异；缓存及正常调度仍可能解释差异。",
+      "limitations": [
+        "单次观测不证明唯一根因；缓存、CDN、策略、路径与时间差仍需核实。"
+      ],
+      "next_checks": [
+        "比较同名同类型的递归及 AA 权威回答，保留未知与时间差。 "
+      ]
+    },
+    {
+      "code": "RECURSIVE_AUTH_MISMATCH",
+      "stage": "recursive-authoritative",
+      "status": "observed",
+      "evidence_ids": [
+        "E1",
+        "E4"
+      ],
+      "explanation": "递归与 AA 权威回答有差异；缓存及正常调度仍可能解释差异。",
+      "limitations": [
+        "单次观测不证明唯一根因；缓存、CDN、策略、路径与时间差仍需核实。"
+      ],
+      "next_checks": [
+        "比较同名同类型的递归及 AA 权威回答，保留未知与时间差。 "
+      ]
+    },
+    {
+      "code": "RECURSIVE_AUTH_MISMATCH",
+      "stage": "recursive-authoritative",
+      "status": "observed",
+      "evidence_ids": [
+        "E2",
+        "E3"
+      ],
+      "explanation": "递归与 AA 权威回答有差异；缓存及正常调度仍可能解释差异。",
+      "limitations": [
+        "单次观测不证明唯一根因；缓存、CDN、策略、路径与时间差仍需核实。"
+      ],
+      "next_checks": [
+        "比较同名同类型的递归及 AA 权威回答，保留未知与时间差。 "
+      ]
+    },
+    {
+      "code": "RECURSIVE_AUTH_MISMATCH",
+      "stage": "recursive-authoritative",
+      "status": "observed",
+      "evidence_ids": [
+        "E2",
+        "E4"
+      ],
+      "explanation": "递归与 AA 权威回答有差异；缓存及正常调度仍可能解释差异。",
+      "limitations": [
+        "单次观测不证明唯一根因；缓存、CDN、策略、路径与时间差仍需核实。"
+      ],
+      "next_checks": [
+        "比较同名同类型的递归及 AA 权威回答，保留未知与时间差。 "
+      ]
+    }
+  ],
+  "elapsed_seconds": 17.562
+}

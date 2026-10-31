@@ -1,0 +1,1193 @@
+{
+  "run_id": "262d35eca9fd43b382e8ec0238381e66",
+  "started_at": "2026-10-31T07:41:03.523229+00:00",
+  "incident": {
+    "id": "262d35eca9fd43b382e8ec0238381e66",
+    "user_input": "调查 example.com 的 DNS 解析故障。请比较递归解析器；如存在实质响应差异可查询权威 DNS，SOA 信息也可辅助调查。根据证据承认未知，不必执行 TCP/HTTP。",
+    "target": {
+      "domain": "example.com",
+      "url": "https://example.com/",
+      "port": 443,
+      "default_https": true
+    },
+    "measurement_location": "synthetic"
+  },
+  "model": "deepseek-flash",
+  "mode": "agent",
+  "thinking": "disabled",
+  "temperature": 0,
+  "model_endpoint": "https://api.deepseek.com",
+  "schema_version": 3,
+  "attempt_accounting": "complete",
+  "request_kind": "investigation",
+  "versions": {
+    "app": "0.3.0",
+    "python": "3.12.14",
+    "pydantic-ai-slim": "2.64.0"
+  },
+  "status": "limited",
+  "execution_status": "ended",
+  "requirements_met": false,
+  "result_origin": "model",
+  "result": {
+    "findings": [
+      {
+        "code": "DNS_TIMEOUT",
+        "stage": "recursive",
+        "status": "observed",
+        "evidence_ids": [
+          "E1"
+        ],
+        "explanation": "example.com A 本次返回 TIMEOUT；不推断注册状态或服务器宕机。",
+        "limitations": [
+          "单次观测不证明唯一根因；缓存、CDN、策略、路径与时间差仍需核实。"
+        ],
+        "next_checks": [
+          "比较同名同类型的递归及 AA 权威回答，保留未知与时间差。 "
+        ]
+      },
+      {
+        "code": "RESOLVER_DISAGREEMENT",
+        "stage": "recursive",
+        "status": "observed",
+        "evidence_ids": [
+          "E1",
+          "E2"
+        ],
+        "explanation": "不同递归解析路径返回不同响应状态；建议获取权威证据。",
+        "limitations": [
+          "单次观测不证明唯一根因；缓存、CDN、策略、路径与时间差仍需核实。"
+        ],
+        "next_checks": [
+          "比较同名同类型的递归及 AA 权威回答，保留未知与时间差。 "
+        ]
+      },
+      {
+        "code": "RESOLVER_DISAGREEMENT",
+        "stage": "recursive",
+        "status": "observed",
+        "evidence_ids": [
+          "E1",
+          "E3"
+        ],
+        "explanation": "不同递归解析路径返回不同响应状态；建议获取权威证据。",
+        "limitations": [
+          "单次观测不证明唯一根因；缓存、CDN、策略、路径与时间差仍需核实。"
+        ],
+        "next_checks": [
+          "比较同名同类型的递归及 AA 权威回答，保留未知与时间差。 "
+        ]
+      },
+      {
+        "code": "RECURSIVE_AUTH_MISMATCH",
+        "stage": "recursive-authoritative",
+        "status": "observed",
+        "evidence_ids": [
+          "E1",
+          "E4"
+        ],
+        "explanation": "递归与 AA 权威回答有差异；缓存及正常调度仍可能解释差异。",
+        "limitations": [
+          "单次观测不证明唯一根因；缓存、CDN、策略、路径与时间差仍需核实。"
+        ],
+        "next_checks": [
+          "比较同名同类型的递归及 AA 权威回答，保留未知与时间差。 "
+        ]
+      },
+      {
+        "code": "RECURSIVE_AUTH_MISMATCH",
+        "stage": "recursive-authoritative",
+        "status": "observed",
+        "evidence_ids": [
+          "E1",
+          "E5"
+        ],
+        "explanation": "递归与 AA 权威回答有差异；缓存及正常调度仍可能解释差异。",
+        "limitations": [
+          "单次观测不证明唯一根因；缓存、CDN、策略、路径与时间差仍需核实。"
+        ],
+        "next_checks": [
+          "比较同名同类型的递归及 AA 权威回答，保留未知与时间差。 "
+        ]
+      }
+    ],
+    "request_kind": "investigation",
+    "outcome": "insufficient_information",
+    "observations": [
+      {
+        "evidence_id": "E1",
+        "observation": "系统配置的递归解析器 192.0.2.53 对 example.com A 查询返回 TIMEOUT（UDP，RD=1，RA=0，无 answer/authority）。这是超时，不是 NXDOMAIN、SERVFAIL 或 REFUSED，也不能证明服务器宕机。"
+      },
+      {
+        "evidence_id": "E2",
+        "observation": "递归解析器 1.1.1.1 对 example.com A 返回 NOERROR，answer 为 192.0.2.10，TTL 60，无 CNAME 链。"
+      },
+      {
+        "evidence_id": "E3",
+        "observation": "递归解析器 8.8.8.8 对 example.com A 返回 NOERROR，answer 为 192.0.2.10，TTL 60，与 1.1.1.1 一致。"
+      },
+      {
+        "evidence_id": "E4",
+        "observation": "权威查询路径中 9.9.9.9 以 AA=true 返回 NOERROR，answer 为 192.0.2.10，TTL 60。"
+      },
+      {
+        "evidence_id": "E5",
+        "observation": "权威查询路径中 8.8.4.4 以 AA=true 返回 NOERROR，answer 为 192.0.2.10，TTL 60，与 E4 一致。"
+      }
+    ],
+    "hypotheses": [
+      {
+        "id": "H1",
+        "statement": "故障局限于本机/本地网络到系统配置解析器 192.0.2.53 的路径（该解析器不可达、被过滤或自身故障），而公共递归与权威数据本身正常。",
+        "status": "获得支持",
+        "supporting_evidence_ids": [
+          "E1",
+          "E2",
+          "E3",
+          "E4",
+          "E5"
+        ],
+        "contradicting_evidence_ids": [],
+        "missing_information": [
+          "192.0.2.53 的连通性单独测试（UDP/TCP 53）",
+          "该解析器是否对其它域名也超时",
+          "本机 hosts、代理、DoH 配置",
+          "超时是否可重复"
+        ]
+      },
+      {
+        "id": "H2",
+        "statement": "example.com 权威侧存在解析异常（如权威服务器间歇不可达或应答不一致），导致部分解析路径失败。",
+        "status": "被削弱",
+        "supporting_evidence_ids": [
+          "E1"
+        ],
+        "contradicting_evidence_ids": [
+          "E2",
+          "E3",
+          "E4",
+          "E5"
+        ],
+        "missing_information": [
+          "权威服务器完整 NS 列表与逐个可达性",
+          "多次重复查询以观察间歇性",
+          "SOA Serial 与区数据一致性"
+        ]
+      },
+      {
+        "id": "H3",
+        "statement": "example.com 域名本身不存在或记录被删除（NXDOMAIN 类问题）。",
+        "status": "被削弱",
+        "supporting_evidence_ids": [],
+        "contradicting_evidence_ids": [
+          "E2",
+          "E3",
+          "E4",
+          "E5"
+        ],
+        "missing_information": [
+          "无（多个独立路径均返回 NOERROR 且有 A 记录）"
+        ]
+      }
+    ],
+    "conclusion": "本次测量中，example.com 的 A 记录在 1.1.1.1、8.8.8.8 两个递归解析器以及 9.9.9.9、8.8.4.4 两个 AA 权威回答中一致为 192.0.2.10（E2–E5），说明域名记录本身存在且权威数据一致；唯一异常是系统配置的递归解析器 192.0.2.53 返回 TIMEOUT（E1）。因此可确认的只是“该解析路径本次未得到应答”，无法确认具体根因：超时不能证明该服务器宕机，也不能排除本地网络、防火墙/策略、解析器自身故障或瞬时丢包。SOA 查询因测试数据未覆盖而未获得事实（不是 NXDOMAIN 或无记录），SOA 信息未知。结论为信息不足，不能给出确定性故障诊断。",
+    "conclusion_evidence_ids": [
+      "E1",
+      "E2",
+      "E3",
+      "E4",
+      "E5"
+    ],
+    "limitations": [
+      "测量来自程序所在电脑的合成环境，不代表浏览器缓存、hosts、代理或 DoH 行为。",
+      "每个解析器仅单次观测，无法判断超时是否可重复或间歇性。",
+      "未执行 TCP/HTTP 检查（按用户要求），因此无法判断 443 端口与网站可用性。",
+      "SOA 查询未获得事实（FIXTURE_NOT_COVERED），SOA Serial 与区一致性未知。",
+      "不同测量可能对应不同后端，权威查询为有限公共地址直查，并非完整迭代验证。"
+    ],
+    "recommendations": [
+      "对 192.0.2.53 重复多次 A 查询，并测试其它域名以区分“解析器整体故障”与“仅该域名/路径问题”。",
+      "检查本机 DNS 配置、hosts、代理与 DoH 设置，确认实际使用的解析器是否就是 192.0.2.53。",
+      "在条件允许时对 192.0.2.53 做 UDP/TCP 53 连通性测试，并检查本地防火墙/出口策略。",
+      "获取 example.com 的 NS 列表并逐个验证权威可达性，同时补充 SOA 查询以核对区数据。",
+      "如需确认网站可用性，另行对 192.0.2.10:443 做 TCP 与 https://example.com/ 的 HTTP 检查（本次未执行）。"
+    ]
+  },
+  "usage": {
+    "input_tokens": 14625,
+    "cache_write_tokens": 0,
+    "cache_write_1h_tokens": 0,
+    "cache_read_tokens": 12032,
+    "output_tokens": 2919,
+    "unmeasured_requests": 0,
+    "output_reasoning_tokens": 0,
+    "input_audio_tokens": 0,
+    "cache_audio_read_tokens": 0,
+    "output_audio_tokens": 0,
+    "audio_seconds": 0,
+    "details": {
+      "prompt_cache_hit_tokens": 12032,
+      "prompt_cache_miss_tokens": 2593
+    },
+    "cost": "0.004352892",
+    "requests": 4,
+    "tool_calls": 3
+  },
+  "visible_messages": [
+    {
+      "kind": "request",
+      "parts": []
+    },
+    {
+      "kind": "response",
+      "parts": [
+        {
+          "tool_name": "compare_resolvers",
+          "args": "{\"domain\": \"example.com\", \"record_type\": \"A\"}",
+          "tool_call_id": "call_00_9zIiamOYE0P0DkJpfVkV7252",
+          "tool_kind": null,
+          "id": null,
+          "provider_name": null,
+          "provider_details": null,
+          "part_kind": "tool-call"
+        },
+        {
+          "tool_name": "query_dns",
+          "args": "{\"domain\": \"example.com\", \"record_type\": \"SOA\"}",
+          "tool_call_id": "call_01_eoswfW862gYeCLknYIa85534",
+          "tool_kind": null,
+          "id": null,
+          "provider_name": null,
+          "provider_details": null,
+          "part_kind": "tool-call"
+        }
+      ]
+    },
+    {
+      "kind": "request",
+      "parts": [
+        {
+          "tool_name": "compare_resolvers",
+          "content": {
+            "tool_call_id": "A1",
+            "tool_name": "compare_resolvers",
+            "input": {
+              "domain": "example.com",
+              "record_type": "A",
+              "timeout": 5
+            },
+            "started_at": "2026-10-31T07:41:05.451307+00:00",
+            "source_mode": "fixture",
+            "measurement_location": "synthetic",
+            "execution_status": "ok",
+            "data": {
+              "responses": [
+                {
+                  "qname": "example.com",
+                  "qtype": "A",
+                  "record_type": "A",
+                  "resolver": "192.0.2.53",
+                  "responding_resolver": "192.0.2.53",
+                  "resolver_role": "recursive",
+                  "rcode": "TIMEOUT",
+                  "result_kind": "TIMEOUT",
+                  "flags": {
+                    "AA": false,
+                    "RD": true,
+                    "RA": false,
+                    "TC": false
+                  },
+                  "answer": [],
+                  "authority": [],
+                  "additional": [],
+                  "records": [],
+                  "cname_chain": [],
+                  "canonical_name": "example.com",
+                  "cname_loop": false,
+                  "transport": "UDP",
+                  "execution_status": "ok",
+                  "error": null,
+                  "soa_serials": []
+                },
+                {
+                  "qname": "example.com",
+                  "qtype": "A",
+                  "record_type": "A",
+                  "resolver": "1.1.1.1",
+                  "responding_resolver": "1.1.1.1",
+                  "resolver_role": "recursive",
+                  "rcode": "NOERROR",
+                  "result_kind": "NOERROR",
+                  "flags": {
+                    "AA": false,
+                    "RD": true,
+                    "RA": false,
+                    "TC": false
+                  },
+                  "answer": [
+                    {
+                      "name": "example.com",
+                      "type": "A",
+                      "ttl": 60,
+                      "values": [
+                        "192.0.2.10"
+                      ]
+                    }
+                  ],
+                  "authority": [],
+                  "additional": [],
+                  "records": [
+                    {
+                      "value": "192.0.2.10",
+                      "ttl": 60
+                    }
+                  ],
+                  "cname_chain": [],
+                  "canonical_name": "example.com",
+                  "cname_loop": false,
+                  "transport": "UDP",
+                  "execution_status": "ok",
+                  "error": null,
+                  "soa_serials": []
+                },
+                {
+                  "qname": "example.com",
+                  "qtype": "A",
+                  "record_type": "A",
+                  "resolver": "8.8.8.8",
+                  "responding_resolver": "8.8.8.8",
+                  "resolver_role": "recursive",
+                  "rcode": "NOERROR",
+                  "result_kind": "NOERROR",
+                  "flags": {
+                    "AA": false,
+                    "RD": true,
+                    "RA": false,
+                    "TC": false
+                  },
+                  "answer": [
+                    {
+                      "name": "example.com",
+                      "type": "A",
+                      "ttl": 60,
+                      "values": [
+                        "192.0.2.10"
+                      ]
+                    }
+                  ],
+                  "authority": [],
+                  "additional": [],
+                  "records": [
+                    {
+                      "value": "192.0.2.10",
+                      "ttl": 60
+                    }
+                  ],
+                  "cname_chain": [],
+                  "canonical_name": "example.com",
+                  "cname_loop": false,
+                  "transport": "UDP",
+                  "execution_status": "ok",
+                  "error": null,
+                  "soa_serials": []
+                }
+              ],
+              "findings": [
+                {
+                  "code": "DNS_TIMEOUT",
+                  "stage": "recursive",
+                  "status": "observed",
+                  "evidence_ids": [
+                    "E1"
+                  ],
+                  "explanation": "example.com A 本次返回 TIMEOUT；不推断注册状态或服务器宕机。",
+                  "limitations": [
+                    "单次观测不证明唯一根因；缓存、CDN、策略、路径与时间差仍需核实。"
+                  ],
+                  "next_checks": [
+                    "比较同名同类型的递归及 AA 权威回答，保留未知与时间差。 "
+                  ]
+                },
+                {
+                  "code": "RESOLVER_DISAGREEMENT",
+                  "stage": "recursive",
+                  "status": "observed",
+                  "evidence_ids": [
+                    "E1",
+                    "E2"
+                  ],
+                  "explanation": "不同递归解析路径返回不同响应状态；建议获取权威证据。",
+                  "limitations": [
+                    "单次观测不证明唯一根因；缓存、CDN、策略、路径与时间差仍需核实。"
+                  ],
+                  "next_checks": [
+                    "比较同名同类型的递归及 AA 权威回答，保留未知与时间差。 "
+                  ]
+                },
+                {
+                  "code": "RESOLVER_DISAGREEMENT",
+                  "stage": "recursive",
+                  "status": "observed",
+                  "evidence_ids": [
+                    "E1",
+                    "E3"
+                  ],
+                  "explanation": "不同递归解析路径返回不同响应状态；建议获取权威证据。",
+                  "limitations": [
+                    "单次观测不证明唯一根因；缓存、CDN、策略、路径与时间差仍需核实。"
+                  ],
+                  "next_checks": [
+                    "比较同名同类型的递归及 AA 权威回答，保留未知与时间差。 "
+                  ]
+                }
+              ],
+              "evidence_ids": [
+                "E1",
+                "E2",
+                "E3"
+              ]
+            },
+            "error": null
+          },
+          "tool_call_id": "call_00_9zIiamOYE0P0DkJpfVkV7252",
+          "tool_kind": null,
+          "metadata": null,
+          "timestamp": "2026-10-31T07:41:05.453520Z",
+          "outcome": "success",
+          "retry": null,
+          "part_kind": "tool-return"
+        },
+        {
+          "tool_name": "query_dns",
+          "content": {
+            "attempt_id": "A2",
+            "execution_status": "error",
+            "data": {},
+            "error": {
+              "code": "FIXTURE_NOT_COVERED",
+              "message": "测试数据没有提供该项事实；不是 DNS 无记录/NXDOMAIN 或真实网络失败。不可重试；请保留未知并结束或选择其他有用检查。",
+              "retryable": false
+            },
+            "source_mode": "fixture",
+            "budget": {
+              "remaining": 8,
+              "finish_now": false
+            }
+          },
+          "tool_call_id": "call_01_eoswfW862gYeCLknYIa85534",
+          "tool_kind": null,
+          "metadata": null,
+          "timestamp": "2026-10-31T07:41:05.455014Z",
+          "outcome": "success",
+          "retry": null,
+          "part_kind": "tool-return"
+        }
+      ]
+    },
+    {
+      "kind": "response",
+      "parts": [
+        {
+          "tool_name": "query_authoritative",
+          "args": "{\"domain\": \"example.com\", \"record_type\": \"A\"}",
+          "tool_call_id": "call_00_wyQ4qw8QgJTxD9ZnWXD08650",
+          "tool_kind": null,
+          "id": null,
+          "provider_name": null,
+          "provider_details": null,
+          "part_kind": "tool-call"
+        }
+      ]
+    },
+    {
+      "kind": "request",
+      "parts": [
+        {
+          "tool_name": "query_authoritative",
+          "content": {
+            "tool_call_id": "A3",
+            "tool_name": "query_authoritative",
+            "input": {
+              "domain": "example.com",
+              "record_type": "A",
+              "timeout": 5
+            },
+            "started_at": "2026-10-31T07:41:06.120228+00:00",
+            "source_mode": "fixture",
+            "measurement_location": "synthetic",
+            "execution_status": "ok",
+            "data": {
+              "zone": "example.com",
+              "responses": [
+                {
+                  "qname": "example.com",
+                  "qtype": "A",
+                  "record_type": "A",
+                  "resolver": "9.9.9.9",
+                  "responding_resolver": "9.9.9.9",
+                  "resolver_role": "authoritative",
+                  "rcode": "NOERROR",
+                  "result_kind": "NOERROR",
+                  "flags": {
+                    "AA": true,
+                    "RD": true,
+                    "RA": false,
+                    "TC": false
+                  },
+                  "answer": [
+                    {
+                      "name": "example.com",
+                      "type": "A",
+                      "ttl": 60,
+                      "values": [
+                        "192.0.2.10"
+                      ]
+                    }
+                  ],
+                  "authority": [],
+                  "additional": [],
+                  "records": [
+                    {
+                      "value": "192.0.2.10",
+                      "ttl": 60
+                    }
+                  ],
+                  "cname_chain": [],
+                  "canonical_name": "example.com",
+                  "cname_loop": false,
+                  "transport": "UDP",
+                  "execution_status": "ok",
+                  "error": null,
+                  "soa_serials": []
+                },
+                {
+                  "qname": "example.com",
+                  "qtype": "A",
+                  "record_type": "A",
+                  "resolver": "8.8.4.4",
+                  "responding_resolver": "8.8.4.4",
+                  "resolver_role": "authoritative",
+                  "rcode": "NOERROR",
+                  "result_kind": "NOERROR",
+                  "flags": {
+                    "AA": true,
+                    "RD": true,
+                    "RA": false,
+                    "TC": false
+                  },
+                  "answer": [
+                    {
+                      "name": "example.com",
+                      "type": "A",
+                      "ttl": 60,
+                      "values": [
+                        "192.0.2.10"
+                      ]
+                    }
+                  ],
+                  "authority": [],
+                  "additional": [],
+                  "records": [
+                    {
+                      "value": "192.0.2.10",
+                      "ttl": 60
+                    }
+                  ],
+                  "cname_chain": [],
+                  "canonical_name": "example.com",
+                  "cname_loop": false,
+                  "transport": "UDP",
+                  "execution_status": "ok",
+                  "error": null,
+                  "soa_serials": []
+                }
+              ],
+              "findings": [
+                {
+                  "code": "DNS_TIMEOUT",
+                  "stage": "recursive",
+                  "status": "observed",
+                  "evidence_ids": [
+                    "E1"
+                  ],
+                  "explanation": "example.com A 本次返回 TIMEOUT；不推断注册状态或服务器宕机。",
+                  "limitations": [
+                    "单次观测不证明唯一根因；缓存、CDN、策略、路径与时间差仍需核实。"
+                  ],
+                  "next_checks": [
+                    "比较同名同类型的递归及 AA 权威回答，保留未知与时间差。 "
+                  ]
+                },
+                {
+                  "code": "RESOLVER_DISAGREEMENT",
+                  "stage": "recursive",
+                  "status": "observed",
+                  "evidence_ids": [
+                    "E1",
+                    "E2"
+                  ],
+                  "explanation": "不同递归解析路径返回不同响应状态；建议获取权威证据。",
+                  "limitations": [
+                    "单次观测不证明唯一根因；缓存、CDN、策略、路径与时间差仍需核实。"
+                  ],
+                  "next_checks": [
+                    "比较同名同类型的递归及 AA 权威回答，保留未知与时间差。 "
+                  ]
+                },
+                {
+                  "code": "RESOLVER_DISAGREEMENT",
+                  "stage": "recursive",
+                  "status": "observed",
+                  "evidence_ids": [
+                    "E1",
+                    "E3"
+                  ],
+                  "explanation": "不同递归解析路径返回不同响应状态；建议获取权威证据。",
+                  "limitations": [
+                    "单次观测不证明唯一根因；缓存、CDN、策略、路径与时间差仍需核实。"
+                  ],
+                  "next_checks": [
+                    "比较同名同类型的递归及 AA 权威回答，保留未知与时间差。 "
+                  ]
+                },
+                {
+                  "code": "RECURSIVE_AUTH_MISMATCH",
+                  "stage": "recursive-authoritative",
+                  "status": "observed",
+                  "evidence_ids": [
+                    "E1",
+                    "E4"
+                  ],
+                  "explanation": "递归与 AA 权威回答有差异；缓存及正常调度仍可能解释差异。",
+                  "limitations": [
+                    "单次观测不证明唯一根因；缓存、CDN、策略、路径与时间差仍需核实。"
+                  ],
+                  "next_checks": [
+                    "比较同名同类型的递归及 AA 权威回答，保留未知与时间差。 "
+                  ]
+                },
+                {
+                  "code": "RECURSIVE_AUTH_MISMATCH",
+                  "stage": "recursive-authoritative",
+                  "status": "observed",
+                  "evidence_ids": [
+                    "E1",
+                    "E5"
+                  ],
+                  "explanation": "递归与 AA 权威回答有差异；缓存及正常调度仍可能解释差异。",
+                  "limitations": [
+                    "单次观测不证明唯一根因；缓存、CDN、策略、路径与时间差仍需核实。"
+                  ],
+                  "next_checks": [
+                    "比较同名同类型的递归及 AA 权威回答，保留未知与时间差。 "
+                  ]
+                }
+              ],
+              "evidence_ids": [
+                "E4",
+                "E5"
+              ]
+            },
+            "error": null
+          },
+          "tool_call_id": "call_00_wyQ4qw8QgJTxD9ZnWXD08650",
+          "tool_kind": null,
+          "metadata": null,
+          "timestamp": "2026-10-31T07:41:06.122643Z",
+          "outcome": "success",
+          "retry": null,
+          "part_kind": "tool-return"
+        }
+      ]
+    },
+    {
+      "kind": "response",
+      "parts": [
+        {
+          "tool_name": "final_result",
+          "args": "{\"request_kind\": \"investigation\", \"outcome\": \"insufficient_information\", \"observations\": [{\"evidence_id\": \"E1\", \"observation\": \"系统配置的递归解析器 192.0.2.53 对 example.com A 查询返回 TIMEOUT（UDP，RD=1，RA=0，无 answer/authority）。这是超时，不是 NXDOMAIN、SERVFAIL 或 REFUSED，也不能证明服务器宕机。\"}, {\"evidence_id\": \"E2\", \"observation\": \"递归解析器 1.1.1.1 对 example.com A 返回 NOERROR，answer 为 192.0.2.10，TTL 60，无 CNAME 链。\"}, {\"evidence_id\": \"E3\", \"observation\": \"递归解析器 8.8.8.8 对 example.com A 返回 NOERROR，answer 为 192.0.2.10，TTL 60，与 1.1.1.1 一致。\"}, {\"evidence_id\": \"E4\", \"observation\": \"权威查询路径中 9.9.9.9 以 AA=true 返回 NOERROR，answer 为 192.0.2.10，TTL 60。\"}, {\"evidence_id\": \"E5\", \"observation\": \"权威查询路径中 8.8.4.4 以 AA=true 返回 NOERROR，answer 为 192.0.2.10，TTL 60，与 E4 一致。\"}, {\"evidence_id\": \"E6\", \"observation\": \"SOA 查询未获得事实：工具返回 FIXTURE_NOT_COVERED，表示测试数据未提供该项，不是 DNS 无记录/NXDOMAIN，也不是真实网络失败；SOA Serial 等未知。\"}], \"hypotheses\": [{\"id\": \"H1\", \"statement\": \"故障局限于本机/本地网络到系统配置解析器 192.0.2.53 的路径（该解析器不可达、被过滤或自身故障），而公共递归与权威数据本身正常。\", \"status\": \"获得支持\", \"supporting_evidence_ids\": [\"E1\", \"E2\", \"E3\", \"E4\", \"E5\"], \"contradicting_evidence_ids\": [], \"missing_information\": [\"192.0.2.53 的连通性/可达性单独测试（UDP/TCP 53）\", \"该解析器是否对其它域名也超时\", \"本机 hosts、代理、DoH 配置\", \"超时是否可重复\"]}, {\"id\": \"H2\", \"statement\": \"example.com 权威侧存在解析异常（如权威服务器间歇不可达或应答不一致），导致部分解析路径失败。\", \"status\": \"被削弱\", \"supporting_evidence_ids\": [\"E1\"], \"contradicting_evidence_ids\": [\"E4\", \"E5\", \"E2\", \"E3\"], \"missing_information\": [\"权威服务器完整 NS 列表与逐个可达性\", \"多次重复查询以观察间歇性\", \"SOA Serial 与区数据一致性\"]}, {\"id\": \"H3\", \"statement\": \"example.com 域名本身不存在或记录被删除（NXDOMAIN 类问题）。\", \"status\": \"被削弱\", \"supporting_evidence_ids\": [], \"contradicting_evidence_ids\": [\"E2\", \"E3\", \"E4\", \"E5\"], \"missing_information\": [\"无（多个独立路径均返回 NOERROR 且有 A 记录）\"]}], \"conclusion\": \"本次测量中，example.com 的 A 记录在 1.1.1.1、8.8.8.8 两个递归解析器以及 9.9.9.9、8.8.4.4 两个 AA 权威回答中一致为 192.0.2.10（E2–E5），说明域名记录本身存在且权威数据一致；唯一异常是系统配置的递归解析器 192.0.2.53 返回 TIMEOUT（E1）。因此可确认的只是“该解析路径本次未得到应答”，无法确认具体根因：超时不能证明该服务器宕机，也不能排除本地网络、防火墙/策略、解析器自身故障或瞬时丢包。SOA 信息因测试数据未覆盖而未知（E6）。结论为信息不足，不能给出确定性故障诊断。\", \"conclusion_evidence_ids\": [\"E1\", \"E2\", \"E3\", \"E4\", \"E5\", \"E6\"], \"limitations\": [\"测量来自程序所在电脑的合成环境，不代表浏览器缓存、hosts、代理或 DoH 行为。\", \"每个解析器仅单次观测，无法判断超时是否可重复或间歇性。\", \"未执行 TCP/HTTP 检查（按用户要求），因此无法判断 443 端口与网站可用性。\", \"SOA 查询未获得事实（FIXTURE_NOT_COVERED），SOA Serial 与区一致性未知。\", \"不同测量可能对应不同后端，权威查询为有限公共地址直查，并非完整迭代验证。\"], \"recommendations\": [\"对 192.0.2.53 重复多次 A 查询，并测试其它域名（如另一已知域名）以区分“解析器整体故障”与“仅该域名/路径问题”。\", \"检查本机 DNS 配置、hosts、代理与 DoH 设置，确认实际使用的解析器是否就是 192.0.2.53。\", \"在条件允许时对 192.0.2.53 做 UDP/TCP 53 连通性测试，并检查本地防火墙/出口策略。\", \"获取 example.com 的 NS 列表并逐个验证权威可达性，同时补充 SOA 查询以核对区数据。\", \"如需确认网站可用性，另行对 192.0.2.10:443 做 TCP 与 https://example.com/ 的 HTTP 检查（本次未执行）。\"]}",
+          "tool_call_id": "call_00_q527wcxcR0i8eCFUDQSX7903",
+          "tool_kind": null,
+          "id": null,
+          "provider_name": null,
+          "provider_details": null,
+          "part_kind": "tool-call"
+        }
+      ]
+    },
+    {
+      "kind": "request",
+      "parts": [
+        {
+          "tool_name": "final_result",
+          "content": "证据编号不存在：['E6']",
+          "tool_call_id": "call_00_q527wcxcR0i8eCFUDQSX7903",
+          "tool_kind": null,
+          "metadata": null,
+          "timestamp": "2026-10-31T07:41:13.644318Z",
+          "outcome": "retried",
+          "retry": {
+            "cause": "model_retry",
+            "attempt": 1,
+            "max_retries": 2
+          },
+          "part_kind": "tool-return"
+        }
+      ]
+    },
+    {
+      "kind": "response",
+      "parts": [
+        {
+          "tool_name": "final_result",
+          "args": "{\"conclusion\": \"本次测量中，example.com 的 A 记录在 1.1.1.1、8.8.8.8 两个递归解析器以及 9.9.9.9、8.8.4.4 两个 AA 权威回答中一致为 192.0.2.10（E2–E5），说明域名记录本身存在且权威数据一致；唯一异常是系统配置的递归解析器 192.0.2.53 返回 TIMEOUT（E1）。因此可确认的只是“该解析路径本次未得到应答”，无法确认具体根因：超时不能证明该服务器宕机，也不能排除本地网络、防火墙/策略、解析器自身故障或瞬时丢包。SOA 查询因测试数据未覆盖而未获得事实（不是 NXDOMAIN 或无记录），SOA 信息未知。结论为信息不足，不能给出确定性故障诊断。\", \"conclusion_evidence_ids\": [\"E1\", \"E2\", \"E3\", \"E4\", \"E5\"], \"hypotheses\": [{\"id\": \"H1\", \"missing_information\": [\"192.0.2.53 的连通性单独测试（UDP/TCP 53）\", \"该解析器是否对其它域名也超时\", \"本机 hosts、代理、DoH 配置\", \"超时是否可重复\"], \"statement\": \"故障局限于本机/本地网络到系统配置解析器 192.0.2.53 的路径（该解析器不可达、被过滤或自身故障），而公共递归与权威数据本身正常。\", \"status\": \"获得支持\", \"contradicting_evidence_ids\": [], \"supporting_evidence_ids\": [\"E1\", \"E2\", \"E3\", \"E4\", \"E5\"]}, {\"id\": \"H2\", \"contradicting_evidence_ids\": [\"E2\", \"E3\", \"E4\", \"E5\"], \"missing_information\": [\"权威服务器完整 NS 列表与逐个可达性\", \"多次重复查询以观察间歇性\", \"SOA Serial 与区数据一致性\"], \"statement\": \"example.com 权威侧存在解析异常（如权威服务器间歇不可达或应答不一致），导致部分解析路径失败。\", \"status\": \"被削弱\", \"supporting_evidence_ids\": [\"E1\"]}, {\"id\": \"H3\", \"contradicting_evidence_ids\": [\"E2\", \"E3\", \"E4\", \"E5\"], \"missing_information\": [\"无（多个独立路径均返回 NOERROR 且有 A 记录）\"], \"statement\": \"example.com 域名本身不存在或记录被删除（NXDOMAIN 类问题）。\", \"status\": \"被削弱\", \"supporting_evidence_ids\": []}], \"limitations\": [\"测量来自程序所在电脑的合成环境，不代表浏览器缓存、hosts、代理或 DoH 行为。\", \"每个解析器仅单次观测，无法判断超时是否可重复或间歇性。\", \"未执行 TCP/HTTP 检查（按用户要求），因此无法判断 443 端口与网站可用性。\", \"SOA 查询未获得事实（FIXTURE_NOT_COVERED），SOA Serial 与区一致性未知。\", \"不同测量可能对应不同后端，权威查询为有限公共地址直查，并非完整迭代验证。\"], \"observations\": [{\"evidence_id\": \"E1\", \"observation\": \"系统配置的递归解析器 192.0.2.53 对 example.com A 查询返回 TIMEOUT（UDP，RD=1，RA=0，无 answer/authority）。这是超时，不是 NXDOMAIN、SERVFAIL 或 REFUSED，也不能证明服务器宕机。\"}, {\"evidence_id\": \"E2\", \"observation\": \"递归解析器 1.1.1.1 对 example.com A 返回 NOERROR，answer 为 192.0.2.10，TTL 60，无 CNAME 链。\"}, {\"evidence_id\": \"E3\", \"observation\": \"递归解析器 8.8.8.8 对 example.com A 返回 NOERROR，answer 为 192.0.2.10，TTL 60，与 1.1.1.1 一致。\"}, {\"evidence_id\": \"E4\", \"observation\": \"权威查询路径中 9.9.9.9 以 AA=true 返回 NOERROR，answer 为 192.0.2.10，TTL 60。\"}, {\"evidence_id\": \"E5\", \"observation\": \"权威查询路径中 8.8.4.4 以 AA=true 返回 NOERROR，answer 为 192.0.2.10，TTL 60，与 E4 一致。\"}], \"outcome\": \"insufficient_information\", \"recommendations\": [\"对 192.0.2.53 重复多次 A 查询，并测试其它域名以区分“解析器整体故障”与“仅该域名/路径问题”。\", \"检查本机 DNS 配置、hosts、代理与 DoH 设置，确认实际使用的解析器是否就是 192.0.2.53。\", \"在条件允许时对 192.0.2.53 做 UDP/TCP 53 连通性测试，并检查本地防火墙/出口策略。\", \"获取 example.com 的 NS 列表并逐个验证权威可达性，同时补充 SOA 查询以核对区数据。\", \"如需确认网站可用性，另行对 192.0.2.10:443 做 TCP 与 https://example.com/ 的 HTTP 检查（本次未执行）。\"], \"request_kind\": \"investigation\"}",
+          "tool_call_id": "call_00_OoDu5JxSkEQIZ7l5tBX07282",
+          "tool_kind": null,
+          "id": null,
+          "provider_name": null,
+          "provider_details": null,
+          "part_kind": "tool-call"
+        }
+      ]
+    },
+    {
+      "kind": "request",
+      "parts": [
+        {
+          "tool_name": "final_result",
+          "content": "Final result processed.",
+          "tool_call_id": "call_00_OoDu5JxSkEQIZ7l5tBX07282",
+          "tool_kind": null,
+          "metadata": null,
+          "timestamp": "2026-10-31T07:41:18.902344Z",
+          "outcome": "success",
+          "retry": null,
+          "part_kind": "tool-return"
+        }
+      ]
+    }
+  ],
+  "evidence": [
+    {
+      "id": "E1",
+      "tool_call_id": "A1",
+      "parent_tool_call_id": "A1",
+      "query_attempt_id": null,
+      "tool_name": "query_dns",
+      "input": {
+        "domain": "example.com",
+        "record_type": "A",
+        "resolver": "192.0.2.53"
+      },
+      "started_at": "2026-10-31T07:41:05.451307+00:00",
+      "duration_ms": 0,
+      "execution_status": "ok",
+      "data": {
+        "qname": "example.com",
+        "qtype": "A",
+        "record_type": "A",
+        "resolver": "192.0.2.53",
+        "responding_resolver": "192.0.2.53",
+        "resolver_role": "recursive",
+        "rcode": "TIMEOUT",
+        "result_kind": "TIMEOUT",
+        "flags": {
+          "AA": false,
+          "RD": true,
+          "RA": false,
+          "TC": false
+        },
+        "answer": [],
+        "authority": [],
+        "additional": [],
+        "records": [],
+        "cname_chain": [],
+        "canonical_name": "example.com",
+        "cname_loop": false,
+        "transport": "UDP",
+        "execution_status": "ok",
+        "error": null,
+        "soa_serials": []
+      },
+      "source_mode": "fixture",
+      "measurement_location": "synthetic",
+      "error": null
+    },
+    {
+      "id": "E2",
+      "tool_call_id": "A1",
+      "parent_tool_call_id": "A1",
+      "query_attempt_id": null,
+      "tool_name": "query_dns",
+      "input": {
+        "domain": "example.com",
+        "record_type": "A",
+        "resolver": "1.1.1.1"
+      },
+      "started_at": "2026-10-31T07:41:05.451307+00:00",
+      "duration_ms": 0,
+      "execution_status": "ok",
+      "data": {
+        "qname": "example.com",
+        "qtype": "A",
+        "record_type": "A",
+        "resolver": "1.1.1.1",
+        "responding_resolver": "1.1.1.1",
+        "resolver_role": "recursive",
+        "rcode": "NOERROR",
+        "result_kind": "NOERROR",
+        "flags": {
+          "AA": false,
+          "RD": true,
+          "RA": false,
+          "TC": false
+        },
+        "answer": [
+          {
+            "name": "example.com",
+            "type": "A",
+            "ttl": 60,
+            "values": [
+              "192.0.2.10"
+            ]
+          }
+        ],
+        "authority": [],
+        "additional": [],
+        "records": [
+          {
+            "value": "192.0.2.10",
+            "ttl": 60
+          }
+        ],
+        "cname_chain": [],
+        "canonical_name": "example.com",
+        "cname_loop": false,
+        "transport": "UDP",
+        "execution_status": "ok",
+        "error": null,
+        "soa_serials": []
+      },
+      "source_mode": "fixture",
+      "measurement_location": "synthetic",
+      "error": null
+    },
+    {
+      "id": "E3",
+      "tool_call_id": "A1",
+      "parent_tool_call_id": "A1",
+      "query_attempt_id": null,
+      "tool_name": "query_dns",
+      "input": {
+        "domain": "example.com",
+        "record_type": "A",
+        "resolver": "8.8.8.8"
+      },
+      "started_at": "2026-10-31T07:41:05.452515+00:00",
+      "duration_ms": 0,
+      "execution_status": "ok",
+      "data": {
+        "qname": "example.com",
+        "qtype": "A",
+        "record_type": "A",
+        "resolver": "8.8.8.8",
+        "responding_resolver": "8.8.8.8",
+        "resolver_role": "recursive",
+        "rcode": "NOERROR",
+        "result_kind": "NOERROR",
+        "flags": {
+          "AA": false,
+          "RD": true,
+          "RA": false,
+          "TC": false
+        },
+        "answer": [
+          {
+            "name": "example.com",
+            "type": "A",
+            "ttl": 60,
+            "values": [
+              "192.0.2.10"
+            ]
+          }
+        ],
+        "authority": [],
+        "additional": [],
+        "records": [
+          {
+            "value": "192.0.2.10",
+            "ttl": 60
+          }
+        ],
+        "cname_chain": [],
+        "canonical_name": "example.com",
+        "cname_loop": false,
+        "transport": "UDP",
+        "execution_status": "ok",
+        "error": null,
+        "soa_serials": []
+      },
+      "source_mode": "fixture",
+      "measurement_location": "synthetic",
+      "error": null
+    },
+    {
+      "id": "E4",
+      "tool_call_id": "A3",
+      "parent_tool_call_id": "A3",
+      "query_attempt_id": null,
+      "tool_name": "query_dns",
+      "input": {
+        "domain": "example.com",
+        "record_type": "A",
+        "resolver": "9.9.9.9"
+      },
+      "started_at": "2026-10-31T07:41:06.120228+00:00",
+      "duration_ms": 0,
+      "execution_status": "ok",
+      "data": {
+        "qname": "example.com",
+        "qtype": "A",
+        "record_type": "A",
+        "resolver": "9.9.9.9",
+        "responding_resolver": "9.9.9.9",
+        "resolver_role": "authoritative",
+        "rcode": "NOERROR",
+        "result_kind": "NOERROR",
+        "flags": {
+          "AA": true,
+          "RD": true,
+          "RA": false,
+          "TC": false
+        },
+        "answer": [
+          {
+            "name": "example.com",
+            "type": "A",
+            "ttl": 60,
+            "values": [
+              "192.0.2.10"
+            ]
+          }
+        ],
+        "authority": [],
+        "additional": [],
+        "records": [
+          {
+            "value": "192.0.2.10",
+            "ttl": 60
+          }
+        ],
+        "cname_chain": [],
+        "canonical_name": "example.com",
+        "cname_loop": false,
+        "transport": "UDP",
+        "execution_status": "ok",
+        "error": null,
+        "soa_serials": []
+      },
+      "source_mode": "fixture",
+      "measurement_location": "synthetic",
+      "error": null
+    },
+    {
+      "id": "E5",
+      "tool_call_id": "A3",
+      "parent_tool_call_id": "A3",
+      "query_attempt_id": null,
+      "tool_name": "query_dns",
+      "input": {
+        "domain": "example.com",
+        "record_type": "A",
+        "resolver": "8.8.4.4"
+      },
+      "started_at": "2026-10-31T07:41:06.120228+00:00",
+      "duration_ms": 0,
+      "execution_status": "ok",
+      "data": {
+        "qname": "example.com",
+        "qtype": "A",
+        "record_type": "A",
+        "resolver": "8.8.4.4",
+        "responding_resolver": "8.8.4.4",
+        "resolver_role": "authoritative",
+        "rcode": "NOERROR",
+        "result_kind": "NOERROR",
+        "flags": {
+          "AA": true,
+          "RD": true,
+          "RA": false,
+          "TC": false
+        },
+        "answer": [
+          {
+            "name": "example.com",
+            "type": "A",
+            "ttl": 60,
+            "values": [
+              "192.0.2.10"
+            ]
+          }
+        ],
+        "authority": [],
+        "additional": [],
+        "records": [
+          {
+            "value": "192.0.2.10",
+            "ttl": 60
+          }
+        ],
+        "cname_chain": [],
+        "canonical_name": "example.com",
+        "cname_loop": false,
+        "transport": "UDP",
+        "execution_status": "ok",
+        "error": null,
+        "soa_serials": []
+      },
+      "source_mode": "fixture",
+      "measurement_location": "synthetic",
+      "error": null
+    }
+  ],
+  "attempts": [
+    {
+      "attempt_id": "A1",
+      "tool_name": "compare_resolvers",
+      "provider_call_id": "call_00_9zIiamOYE0P0DkJpfVkV7252",
+      "input": {
+        "domain": "example.com",
+        "record_type": "A"
+      },
+      "started_at": "2026-10-31T07:41:05.443246+00:00",
+      "status": "measured",
+      "evidence_id": null,
+      "error": null,
+      "duration_ms": 0.0,
+      "evidence_ids": [
+        "E1",
+        "E2",
+        "E3"
+      ]
+    },
+    {
+      "attempt_id": "A2",
+      "tool_name": "query_dns",
+      "provider_call_id": "call_01_eoswfW862gYeCLknYIa85534",
+      "input": {
+        "domain": "example.com",
+        "record_type": "SOA"
+      },
+      "started_at": "2026-10-31T07:41:05.444250+00:00",
+      "status": "unavailable",
+      "evidence_id": null,
+      "error": {
+        "code": "FIXTURE_NOT_COVERED",
+        "message": "测试数据没有提供该项事实；不是 DNS 无记录/NXDOMAIN 或真实网络失败。不可重试；请保留未知并结束或选择其他有用检查。",
+        "retryable": false
+      },
+      "duration_ms": 0.0
+    },
+    {
+      "attempt_id": "A3",
+      "tool_name": "query_authoritative",
+      "provider_call_id": "call_00_wyQ4qw8QgJTxD9ZnWXD08650",
+      "input": {
+        "domain": "example.com",
+        "record_type": "A"
+      },
+      "started_at": "2026-10-31T07:41:06.117719+00:00",
+      "status": "measured",
+      "evidence_id": null,
+      "error": null,
+      "duration_ms": 0.0,
+      "evidence_ids": [
+        "E4",
+        "E5"
+      ]
+    }
+  ],
+  "dns_attempts": [],
+  "findings": [
+    {
+      "code": "DNS_TIMEOUT",
+      "stage": "recursive",
+      "status": "observed",
+      "evidence_ids": [
+        "E1"
+      ],
+      "explanation": "example.com A 本次返回 TIMEOUT；不推断注册状态或服务器宕机。",
+      "limitations": [
+        "单次观测不证明唯一根因；缓存、CDN、策略、路径与时间差仍需核实。"
+      ],
+      "next_checks": [
+        "比较同名同类型的递归及 AA 权威回答，保留未知与时间差。 "
+      ]
+    },
+    {
+      "code": "RESOLVER_DISAGREEMENT",
+      "stage": "recursive",
+      "status": "observed",
+      "evidence_ids": [
+        "E1",
+        "E2"
+      ],
+      "explanation": "不同递归解析路径返回不同响应状态；建议获取权威证据。",
+      "limitations": [
+        "单次观测不证明唯一根因；缓存、CDN、策略、路径与时间差仍需核实。"
+      ],
+      "next_checks": [
+        "比较同名同类型的递归及 AA 权威回答，保留未知与时间差。 "
+      ]
+    },
+    {
+      "code": "RESOLVER_DISAGREEMENT",
+      "stage": "recursive",
+      "status": "observed",
+      "evidence_ids": [
+        "E1",
+        "E3"
+      ],
+      "explanation": "不同递归解析路径返回不同响应状态；建议获取权威证据。",
+      "limitations": [
+        "单次观测不证明唯一根因；缓存、CDN、策略、路径与时间差仍需核实。"
+      ],
+      "next_checks": [
+        "比较同名同类型的递归及 AA 权威回答，保留未知与时间差。 "
+      ]
+    },
+    {
+      "code": "RECURSIVE_AUTH_MISMATCH",
+      "stage": "recursive-authoritative",
+      "status": "observed",
+      "evidence_ids": [
+        "E1",
+        "E4"
+      ],
+      "explanation": "递归与 AA 权威回答有差异；缓存及正常调度仍可能解释差异。",
+      "limitations": [
+        "单次观测不证明唯一根因；缓存、CDN、策略、路径与时间差仍需核实。"
+      ],
+      "next_checks": [
+        "比较同名同类型的递归及 AA 权威回答，保留未知与时间差。 "
+      ]
+    },
+    {
+      "code": "RECURSIVE_AUTH_MISMATCH",
+      "stage": "recursive-authoritative",
+      "status": "observed",
+      "evidence_ids": [
+        "E1",
+        "E5"
+      ],
+      "explanation": "递归与 AA 权威回答有差异；缓存及正常调度仍可能解释差异。",
+      "limitations": [
+        "单次观测不证明唯一根因；缓存、CDN、策略、路径与时间差仍需核实。"
+      ],
+      "next_checks": [
+        "比较同名同类型的递归及 AA 权威回答，保留未知与时间差。 "
+      ]
+    }
+  ],
+  "elapsed_seconds": 15.391
+}

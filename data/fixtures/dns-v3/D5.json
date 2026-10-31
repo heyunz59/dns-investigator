@@ -1,0 +1,282 @@
+[
+  {
+    "tool": "query_dns",
+    "match": {
+      "domain": "example.com",
+      "record_type": "A"
+    },
+    "data": {
+      "qname": "example.com",
+      "qtype": "A",
+      "record_type": "A",
+      "resolver": "192.0.2.53",
+      "responding_resolver": "192.0.2.53",
+      "resolver_role": "recursive",
+      "rcode": "NOERROR",
+      "result_kind": "NOERROR",
+      "flags": {
+        "AA": false,
+        "RD": true,
+        "RA": false,
+        "TC": false
+      },
+      "answer": [
+        {
+          "name": "example.com",
+          "type": "A",
+          "ttl": 60,
+          "values": [
+            "192.0.2.10"
+          ]
+        }
+      ],
+      "authority": [],
+      "additional": [],
+      "records": [
+        {
+          "value": "192.0.2.10",
+          "ttl": 60
+        }
+      ],
+      "cname_chain": [],
+      "canonical_name": "example.com",
+      "cname_loop": false,
+      "transport": "UDP",
+      "execution_status": "ok",
+      "error": null,
+      "soa_serials": []
+    }
+  },
+  {
+    "tool": "compare_resolvers",
+    "match": {
+      "domain": "example.com",
+      "record_type": "A"
+    },
+    "data": {
+      "responses": [
+        {
+          "qname": "example.com",
+          "qtype": "A",
+          "record_type": "A",
+          "resolver": "192.0.2.53",
+          "responding_resolver": "192.0.2.53",
+          "resolver_role": "recursive",
+          "rcode": "NOERROR",
+          "result_kind": "NOERROR",
+          "flags": {
+            "AA": false,
+            "RD": true,
+            "RA": false,
+            "TC": false
+          },
+          "answer": [
+            {
+              "name": "example.com",
+              "type": "A",
+              "ttl": 60,
+              "values": [
+                "192.0.2.10"
+              ]
+            }
+          ],
+          "authority": [],
+          "additional": [],
+          "records": [
+            {
+              "value": "192.0.2.10",
+              "ttl": 60
+            }
+          ],
+          "cname_chain": [],
+          "canonical_name": "example.com",
+          "cname_loop": false,
+          "transport": "UDP",
+          "execution_status": "ok",
+          "error": null,
+          "soa_serials": []
+        },
+        {
+          "qname": "example.com",
+          "qtype": "A",
+          "record_type": "A",
+          "resolver": "1.1.1.1",
+          "responding_resolver": "1.1.1.1",
+          "resolver_role": "recursive",
+          "rcode": "NOERROR",
+          "result_kind": "NOERROR",
+          "flags": {
+            "AA": false,
+            "RD": true,
+            "RA": false,
+            "TC": false
+          },
+          "answer": [
+            {
+              "name": "example.com",
+              "type": "A",
+              "ttl": 60,
+              "values": [
+                "192.0.2.10"
+              ]
+            }
+          ],
+          "authority": [],
+          "additional": [],
+          "records": [
+            {
+              "value": "192.0.2.10",
+              "ttl": 60
+            }
+          ],
+          "cname_chain": [],
+          "canonical_name": "example.com",
+          "cname_loop": false,
+          "transport": "UDP",
+          "execution_status": "ok",
+          "error": null,
+          "soa_serials": []
+        },
+        {
+          "qname": "example.com",
+          "qtype": "A",
+          "record_type": "A",
+          "resolver": "8.8.8.8",
+          "responding_resolver": "8.8.8.8",
+          "resolver_role": "recursive",
+          "rcode": "NOERROR",
+          "result_kind": "NOERROR",
+          "flags": {
+            "AA": false,
+            "RD": true,
+            "RA": false,
+            "TC": false
+          },
+          "answer": [
+            {
+              "name": "example.com",
+              "type": "A",
+              "ttl": 60,
+              "values": [
+                "192.0.2.10"
+              ]
+            }
+          ],
+          "authority": [],
+          "additional": [],
+          "records": [
+            {
+              "value": "192.0.2.10",
+              "ttl": 60
+            }
+          ],
+          "cname_chain": [],
+          "canonical_name": "example.com",
+          "cname_loop": false,
+          "transport": "UDP",
+          "execution_status": "ok",
+          "error": null,
+          "soa_serials": []
+        }
+      ]
+    }
+  },
+  {
+    "tool": "query_authoritative",
+    "match": {
+      "domain": "example.com",
+      "record_type": "A"
+    },
+    "data": {
+      "zone": "example.com",
+      "responses": [
+        {
+          "qname": "example.com",
+          "qtype": "SOA",
+          "record_type": "SOA",
+          "resolver": "9.9.9.9",
+          "responding_resolver": "9.9.9.9",
+          "resolver_role": "authoritative",
+          "rcode": "NOERROR",
+          "result_kind": "NOERROR",
+          "flags": {
+            "AA": true,
+            "RD": true,
+            "RA": false,
+            "TC": false
+          },
+          "answer": [
+            {
+              "name": "example.com",
+              "type": "SOA",
+              "ttl": 60,
+              "values": [
+                "ns.example.com hostmaster.example.com 1 60 60 60 60"
+              ]
+            }
+          ],
+          "authority": [],
+          "additional": [],
+          "records": [
+            {
+              "value": "ns.example.com hostmaster.example.com 1 60 60 60 60",
+              "ttl": 60
+            }
+          ],
+          "cname_chain": [],
+          "canonical_name": "example.com",
+          "cname_loop": false,
+          "transport": "UDP",
+          "execution_status": "ok",
+          "error": null,
+          "soa_serials": [
+            1
+          ]
+        },
+        {
+          "qname": "example.com",
+          "qtype": "SOA",
+          "record_type": "SOA",
+          "resolver": "8.8.4.4",
+          "responding_resolver": "8.8.4.4",
+          "resolver_role": "authoritative",
+          "rcode": "NOERROR",
+          "result_kind": "NOERROR",
+          "flags": {
+            "AA": true,
+            "RD": true,
+            "RA": false,
+            "TC": false
+          },
+          "answer": [
+            {
+              "name": "example.com",
+              "type": "SOA",
+              "ttl": 60,
+              "values": [
+                "ns.example.com hostmaster.example.com 2 60 60 60 60"
+              ]
+            }
+          ],
+          "authority": [],
+          "additional": [],
+          "records": [
+            {
+              "value": "ns.example.com hostmaster.example.com 2 60 60 60 60",
+              "ttl": 60
+            }
+          ],
+          "cname_chain": [],
+          "canonical_name": "example.com",
+          "cname_loop": false,
+          "transport": "UDP",
+          "execution_status": "ok",
+          "error": null,
+          "soa_serials": [
+            2
+          ]
+        }
+      ]
+    }
+  }
+]
