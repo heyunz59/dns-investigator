@@ -12,6 +12,17 @@
       "query_dns",
       "check_tcp",
       "check_http"
+    ],
+    "required_measurements": [
+      {
+        "tool": "query_dns"
+      },
+      {
+        "tool": "check_tcp"
+      },
+      {
+        "tool": "check_http"
+      }
     ]
   },
   {
@@ -25,6 +36,11 @@
     ],
     "required_tools": [
       "query_dns"
+    ],
+    "required_measurements": [
+      {
+        "tool": "query_dns"
+      }
     ]
   },
   {
@@ -38,6 +54,22 @@
     ],
     "required_tools": [
       "query_dns"
+    ],
+    "required_measurements": [
+      {
+        "tool": "query_dns",
+        "input": {
+          "record_type": "A",
+          "resolver": null
+        }
+      },
+      {
+        "tool": "query_dns",
+        "input": {
+          "record_type": "A",
+          "resolver": "1.1.1.1"
+        }
+      }
     ]
   },
   {
@@ -52,6 +84,14 @@
     "required_tools": [
       "query_dns",
       "check_tcp"
+    ],
+    "required_measurements": [
+      {
+        "tool": "query_dns"
+      },
+      {
+        "tool": "check_tcp"
+      }
     ]
   },
   {
@@ -66,6 +106,14 @@
     "required_tools": [
       "query_dns",
       "check_http"
+    ],
+    "required_measurements": [
+      {
+        "tool": "query_dns"
+      },
+      {
+        "tool": "check_http"
+      }
     ]
   },
   {
@@ -80,6 +128,14 @@
     "required_tools": [
       "query_dns",
       "check_http"
+    ],
+    "required_measurements": [
+      {
+        "tool": "query_dns"
+      },
+      {
+        "tool": "check_http"
+      }
     ]
   },
   {
@@ -93,6 +149,32 @@
     ],
     "required_tools": [
       "query_dns"
+    ],
+    "required_measurements": [
+      {
+        "tool": "query_dns"
+      }
+    ]
+  },
+  {
+    "id": "MISSING",
+    "question": "请调查 example.com 的 DNS 是否有故障：先查 A，再查 AAAA；若事实不足请明确无法确认，不重复请求不可重试的数据。",
+    "target": "https://example.com/",
+    "criteria": [
+      "A 记录事实得到保留",
+      "明确 AAAA 测试事实未提供，不误判为无记录或网络故障",
+      "有限结果承认信息不足，不重复不可重试请求"
+    ],
+    "required_tools": [
+      "query_dns"
+    ],
+    "required_measurements": [
+      {
+        "tool": "query_dns",
+        "input": {
+          "record_type": "A"
+        }
+      }
     ]
   }
 ]

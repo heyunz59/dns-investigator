@@ -17,12 +17,14 @@ def summarize(source, output):
         group = [r for r in rows if r["arm"] == arm]
         if not group:
             raise ValueError("必须同时有 A/B 两组")
-        total = sum(int(r["total_calls"]) for r in group)
-        if arm == "B" and any(not r["correct_calls"].isdigit() or not 0 <= int(r["correct_calls"]) <= int(r["total_calls"]) for r in group):
+        complete = all(r.get("attempt_accounting") == "complete" for r in group)
+        total = sum(int(r["total_calls"]) for r in group) if complete else 0
+        if arm == "B" and complete and any(not r["correct_calls"].isdigit() or not 0 <= int(r["correct_calls"]) <= int(r["total_calls"]) for r in group):
             raise ValueError("B 组须逐调用审核 correct_calls，且不得超过总调用数")
         result.append(dict(arm=arm, executions=len(group),
             success_rate=sum(int(r["success"]) for r in group)/len(group),
-            tool_accuracy=sum(int(r["correct_calls"]) for r in group)/total if total else "N/A",
+            tool_accuracy="INCOMPLETE" if arm == "B" and not complete else sum(int(r["correct_calls"]) for r in group)/total if total else "N/A",
+            attempt_accounting="complete" if complete else "incomplete",
             mean_seconds=statistics.mean(float(r["elapsed_seconds"]) for r in group)))
     output.mkdir(parents=True, exist_ok=True)
     with (output / "evaluation.csv").open("w", newline="", encoding="utf-8") as f:
@@ -32,7 +34,7 @@ def summarize(source, output):
     fig, ax = plt.subplots(figsize=(6, 4))
     ax.bar(["A: facts supplied", "B: agent + tools"], [r["success_rate"] for r in result])
     reviewers = {r["reviewer"] for r in rows}
-    review_label = "Codex review; human review pending" if any("Codex" in r for r in reviewers) else "Reviewed results"
+    review_label = "Automatic/AI review; human review pending" if any("Codex" in r or "automatic" in r for r in reviewers) else "Reviewed results"
     ax.set(ylim=(0, 1), ylabel="Task success rate", title=f"Same-model comparison\n{review_label}")
     fig.tight_layout()
     fig.savefig(output / "comparison.png", dpi=160)
