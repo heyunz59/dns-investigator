@@ -1,0 +1,166 @@
+[
+  {
+    "tool": "query_dns",
+    "match": {
+      "domain": "example.com",
+      "record_type": "A",
+      "resolver": null
+    },
+    "data": {
+      "rcode": "NOERROR",
+      "record_type": "A",
+      "resolvers": [
+        "192.0.2.53"
+      ],
+      "records": [
+        {
+          "value": "192.0.2.10",
+          "ttl": 60
+        }
+      ],
+      "cname_chain": []
+    }
+  },
+  {
+    "tool": "query_dns",
+    "match": {
+      "domain": "example.com",
+      "record_type": "AAAA",
+      "resolver": null
+    },
+    "data": {
+      "rcode": "NOERROR",
+      "record_type": "AAAA",
+      "resolvers": [
+        "192.0.2.53"
+      ],
+      "records": [
+        {
+          "value": "2001:db8::10",
+          "ttl": 60
+        }
+      ],
+      "cname_chain": []
+    }
+  },
+  {
+    "tool": "query_dns",
+    "match": {
+      "domain": "example.com",
+      "record_type": "A",
+      "resolver": "1.1.1.1"
+    },
+    "data": {
+      "rcode": "NOERROR",
+      "record_type": "A",
+      "resolvers": [
+        "1.1.1.1"
+      ],
+      "records": [
+        {
+          "value": "192.0.2.10",
+          "ttl": 60
+        }
+      ],
+      "cname_chain": []
+    }
+  },
+  {
+    "tool": "query_dns",
+    "match": {
+      "domain": "example.com",
+      "record_type": "AAAA",
+      "resolver": "1.1.1.1"
+    },
+    "data": {
+      "rcode": "NOERROR",
+      "record_type": "AAAA",
+      "resolvers": [
+        "1.1.1.1"
+      ],
+      "records": [
+        {
+          "value": "2001:db8::10",
+          "ttl": 60
+        }
+      ],
+      "cname_chain": []
+    }
+  },
+  {
+    "tool": "check_tcp",
+    "match": {
+      "ip": "192.0.2.10",
+      "port": 80
+    },
+    "data": {
+      "ip": "192.0.2.10",
+      "port": 80,
+      "status": "TIMEOUT"
+    }
+  },
+  {
+    "tool": "check_tcp",
+    "match": {
+      "ip": "192.0.2.10",
+      "port": 443
+    },
+    "data": {
+      "ip": "192.0.2.10",
+      "port": 443,
+      "status": "TIMEOUT"
+    }
+  },
+  {
+    "tool": "check_tcp",
+    "match": {
+      "ip": "2001:db8::10",
+      "port": 80
+    },
+    "data": {
+      "ip": "2001:db8::10",
+      "port": 80,
+      "status": "TIMEOUT"
+    }
+  },
+  {
+    "tool": "check_tcp",
+    "match": {
+      "ip": "2001:db8::10",
+      "port": 443
+    },
+    "data": {
+      "ip": "2001:db8::10",
+      "port": 443,
+      "status": "TIMEOUT"
+    }
+  },
+  {
+    "tool": "check_http",
+    "match": {
+      "url": "https://example.com/"
+    },
+    "data": {
+      "status_code": null,
+      "final_url": "https://example.com/",
+      "redirects": [],
+      "peer_ip": null,
+      "proxy_mode": "fixture",
+      "error": "TIMEOUT"
+    }
+  },
+  {
+    "tool": "check_http",
+    "match": {
+      "url": "http://example.com/"
+    },
+    "data": {
+      "status_code": null,
+      "final_url": "http://example.com/",
+      "redirects": [],
+      "peer_ip": null,
+      "proxy_mode": "fixture",
+      "error": "TIMEOUT"
+    }
+  }
+]

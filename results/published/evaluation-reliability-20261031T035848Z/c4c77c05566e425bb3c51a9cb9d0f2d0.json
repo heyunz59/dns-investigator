@@ -1,0 +1,338 @@
+{
+  "run_id": "c4c77c05566e425bb3c51a9cb9d0f2d0",
+  "started_at": "2026-10-31T04:03:27.818423+00:00",
+  "incident": {
+    "id": "c4c77c05566e425bb3c51a9cb9d0f2d0",
+    "user_input": "其他网站正常，但 https://example.com/ 打不开，请调查 DNS 或其他可能原因。必要时比较 1.1.1.1。",
+    "target": {
+      "domain": "example.com",
+      "url": "https://example.com/",
+      "port": 443,
+      "default_https": false
+    },
+    "measurement_location": "synthetic"
+  },
+  "model": "deepseek-flash",
+  "mode": "baseline",
+  "thinking": "disabled",
+  "temperature": 0,
+  "model_endpoint": "https://api.deepseek.com",
+  "schema_version": 2,
+  "attempt_accounting": "complete",
+  "request_kind": "investigation",
+  "versions": {
+    "app": "0.2.0",
+    "python": "3.12.14",
+    "pydantic-ai-slim": "2.64.0"
+  },
+  "status": "completed",
+  "execution_status": "ended",
+  "requirements_met": true,
+  "result_origin": "model",
+  "result": {
+    "request_kind": "investigation",
+    "outcome": "answered",
+    "observations": [
+      {
+        "evidence_id": "E1",
+        "observation": "本机默认解析器（192.0.2.53）对 example.com 的 A 查询返回 NXDOMAIN，无记录、无 CNAME 链。"
+      },
+      {
+        "evidence_id": "E2",
+        "observation": "同一默认解析器对 example.com 的 AAAA 查询同样返回 NXDOMAIN，无记录。"
+      },
+      {
+        "evidence_id": "E3",
+        "observation": "改用公共解析器 1.1.1.1 查询 A 记录，仍返回 NXDOMAIN，无记录。"
+      },
+      {
+        "evidence_id": "E4",
+        "observation": "1.1.1.1 查询 AAAA 记录同样返回 NXDOMAIN，无记录。"
+      },
+      {
+        "evidence_id": "E5",
+        "observation": "对 https://example.com/ 的 HTTP 检查未获得状态码，peer_ip 为空，错误为 DNS_LOOKUP_FAILED，说明请求在 DNS 解析阶段即失败，未建立连接。"
+      },
+      {
+        "evidence_id": "E6",
+        "observation": "对 http://example.com/ 的检查（明确降级为 HTTP 明文）同样返回 DNS_LOOKUP_FAILED，无状态码，说明失败与 TLS/HTTPS 层无关。"
+      }
+    ],
+    "hypotheses": [
+      {
+        "id": "H1",
+        "statement": "example.com 的域名解析在权威侧即不存在（域名未注册/已过期/被删除，或权威区中无该名称），因此所有递归解析器都返回 NXDOMAIN。",
+        "status": "获得支持",
+        "supporting_evidence_ids": [
+          "E1",
+          "E2",
+          "E3",
+          "E4",
+          "E5",
+          "E6"
+        ],
+        "contradicting_evidence_ids": [],
+        "missing_information": [
+          "权威 NS 的 SOA 响应与 SOA 负缓存 TTL",
+          "域名注册状态（WHOIS/RDAP）",
+          "该域名历史上是否曾正常解析"
+        ]
+      },
+      {
+        "id": "H2",
+        "statement": "本机默认解析器（192.0.2.53）配置错误或本地 DNS 劫持/过滤导致 NXDOMAIN，而公共解析器应能正常解析。",
+        "status": "被削弱",
+        "supporting_evidence_ids": [
+          "E1",
+          "E2"
+        ],
+        "contradicting_evidence_ids": [
+          "E3",
+          "E4"
+        ],
+        "missing_information": [
+          "默认解析器 192.0.2.53 的配置来源（DHCP/手动/VPN）",
+          "是否存在本地 hosts 或 DoH 覆盖"
+        ]
+      },
+      {
+        "id": "H3",
+        "statement": "解析正常但 HTTPS 层（TLS 握手、证书、443 端口、代理）故障导致打不开。",
+        "status": "被削弱",
+        "supporting_evidence_ids": [],
+        "contradicting_evidence_ids": [
+          "E5",
+          "E6"
+        ],
+        "missing_information": [
+          "若解析恢复后，443 端口的 TCP 连通性与 TLS 握手结果"
+        ]
+      },
+      {
+        "id": "H4",
+        "statement": "解析器侧临时故障（SERVFAIL/超时）或网络中断导致查询失败。",
+        "status": "被削弱",
+        "supporting_evidence_ids": [],
+        "contradicting_evidence_ids": [
+          "E1",
+          "E2",
+          "E3",
+          "E4"
+        ],
+        "missing_information": [
+          "多次重复查询的时间序列结果"
+        ]
+      }
+    ],
+    "conclusion": "现有证据一致指向 DNS 层面的「名称不存在」：本机默认解析器与 1.1.1.1 对 example.com 的 A 和 AAAA 查询均返回 NXDOMAIN（E1–E4），HTTP/HTTPS 检查都在 DNS 解析阶段失败（E5、E6），因此打不开的直接原因是域名无法解析，而非 TLS、端口或代理问题。由于两个独立解析器结果一致，本机解析器配置错误（H2）被削弱；但 NXDOMAIN 只说明「该名称在权威区中不存在」，无法仅凭此区分「域名未注册/过期」与「权威区配置缺失」，也无法排除本地 hosts/DoH/代理等未测量路径的影响。注意：本次测量为合成环境（fixture），不代表真实互联网上 example.com 的当前状态。",
+    "conclusion_evidence_ids": [
+      "E1",
+      "E2",
+      "E3",
+      "E4",
+      "E5",
+      "E6"
+    ],
+    "limitations": [
+      "所有测量来自程序所在电脑的合成（fixture）环境，不能代表浏览器缓存、hosts 文件、代理或 DoH 的实际行为。",
+      "NXDOMAIN 与 SERVFAIL、REFUSED、超时含义不同；本次未出现超时，因此不能推断服务器宕机。",
+      "未查询权威 NS 的 SOA、未做 WHOIS/RDAP，无法确定 NXDOMAIN 的根因是未注册、过期还是权威区缺记录。",
+      "未在解析恢复后测试 443 端口 TCP 连通性与 TLS 握手，HTTPS 层是否另有问题仍未知。",
+      "未复现历史现象不等于历史上未发生；单次测量不能排除间歇性故障。"
+    ],
+    "recommendations": [
+      "向权威 NS 直接查询 example.com 的 SOA 与 NS，确认权威区是否存在该名称及负缓存 TTL。",
+      "查询 WHOIS/RDAP 确认域名注册与到期状态。",
+      "检查本机解析器配置来源、hosts 文件、浏览器 DoH 设置与代理设置，排除本地覆盖。",
+      "若域名解析恢复，再对 443 端口做 TCP 连通性与 TLS 握手测试，确认 HTTPS 层无独立问题。",
+      "若域名确属自己所有，检查权威 DNS 区的 A/AAAA 记录是否被误删。"
+    ]
+  },
+  "usage": {
+    "input_tokens": 1900,
+    "cache_write_tokens": 0,
+    "cache_write_1h_tokens": 0,
+    "cache_read_tokens": 1664,
+    "output_tokens": 1380,
+    "unmeasured_requests": 0,
+    "output_reasoning_tokens": 0,
+    "input_audio_tokens": 0,
+    "cache_audio_read_tokens": 0,
+    "output_audio_tokens": 0,
+    "audio_seconds": 0,
+    "details": {
+      "prompt_cache_hit_tokens": 1664,
+      "prompt_cache_miss_tokens": 236
+    },
+    "cost": "0.000868392",
+    "requests": 1,
+    "tool_calls": 0
+  },
+  "visible_messages": [
+    {
+      "kind": "request",
+      "parts": []
+    },
+    {
+      "kind": "response",
+      "parts": [
+        {
+          "tool_name": "final_result",
+          "args": "{\"request_kind\": \"investigation\", \"outcome\": \"answered\", \"observations\": [{\"evidence_id\": \"E1\", \"observation\": \"本机默认解析器（192.0.2.53）对 example.com 的 A 查询返回 NXDOMAIN，无记录、无 CNAME 链。\"}, {\"evidence_id\": \"E2\", \"observation\": \"同一默认解析器对 example.com 的 AAAA 查询同样返回 NXDOMAIN，无记录。\"}, {\"evidence_id\": \"E3\", \"observation\": \"改用公共解析器 1.1.1.1 查询 A 记录，仍返回 NXDOMAIN，无记录。\"}, {\"evidence_id\": \"E4\", \"observation\": \"1.1.1.1 查询 AAAA 记录同样返回 NXDOMAIN，无记录。\"}, {\"evidence_id\": \"E5\", \"observation\": \"对 https://example.com/ 的 HTTP 检查未获得状态码，peer_ip 为空，错误为 DNS_LOOKUP_FAILED，说明请求在 DNS 解析阶段即失败，未建立连接。\"}, {\"evidence_id\": \"E6\", \"observation\": \"对 http://example.com/ 的检查（明确降级为 HTTP 明文）同样返回 DNS_LOOKUP_FAILED，无状态码，说明失败与 TLS/HTTPS 层无关。\"}], \"hypotheses\": [{\"id\": \"H1\", \"statement\": \"example.com 的域名解析在权威侧即不存在（域名未注册/已过期/被删除，或权威区中无该名称），因此所有递归解析器都返回 NXDOMAIN。\", \"status\": \"获得支持\", \"supporting_evidence_ids\": [\"E1\", \"E2\", \"E3\", \"E4\", \"E5\", \"E6\"], \"contradicting_evidence_ids\": [], \"missing_information\": [\"权威 NS 的 SOA 响应与 SOA 负缓存 TTL\", \"域名注册状态（WHOIS/RDAP）\", \"该域名历史上是否曾正常解析\"]}, {\"id\": \"H2\", \"statement\": \"本机默认解析器（192.0.2.53）配置错误或本地 DNS 劫持/过滤导致 NXDOMAIN，而公共解析器应能正常解析。\", \"status\": \"被削弱\", \"supporting_evidence_ids\": [\"E1\", \"E2\"], \"contradicting_evidence_ids\": [\"E3\", \"E4\"], \"missing_information\": [\"默认解析器 192.0.2.53 的配置来源（DHCP/手动/VPN）\", \"是否存在本地 hosts 或 DoH 覆盖\"]}, {\"id\": \"H3\", \"statement\": \"解析正常但 HTTPS 层（TLS 握手、证书、443 端口、代理）故障导致打不开。\", \"status\": \"被削弱\", \"supporting_evidence_ids\": [], \"contradicting_evidence_ids\": [\"E5\", \"E6\"], \"missing_information\": [\"若解析恢复后，443 端口的 TCP 连通性与 TLS 握手结果\"]}, {\"id\": \"H4\", \"statement\": \"解析器侧临时故障（SERVFAIL/超时）或网络中断导致查询失败。\", \"status\": \"被削弱\", \"supporting_evidence_ids\": [], \"contradicting_evidence_ids\": [\"E1\", \"E2\", \"E3\", \"E4\"], \"missing_information\": [\"多次重复查询的时间序列结果\"]}], \"conclusion\": \"现有证据一致指向 DNS 层面的「名称不存在」：本机默认解析器与 1.1.1.1 对 example.com 的 A 和 AAAA 查询均返回 NXDOMAIN（E1–E4），HTTP/HTTPS 检查都在 DNS 解析阶段失败（E5、E6），因此打不开的直接原因是域名无法解析，而非 TLS、端口或代理问题。由于两个独立解析器结果一致，本机解析器配置错误（H2）被削弱；但 NXDOMAIN 只说明「该名称在权威区中不存在」，无法仅凭此区分「域名未注册/过期」与「权威区配置缺失」，也无法排除本地 hosts/DoH/代理等未测量路径的影响。注意：本次测量为合成环境（fixture），不代表真实互联网上 example.com 的当前状态。\", \"conclusion_evidence_ids\": [\"E1\", \"E2\", \"E3\", \"E4\", \"E5\", \"E6\"], \"limitations\": [\"所有测量来自程序所在电脑的合成（fixture）环境，不能代表浏览器缓存、hosts 文件、代理或 DoH 的实际行为。\", \"NXDOMAIN 与 SERVFAIL、REFUSED、超时含义不同；本次未出现超时，因此不能推断服务器宕机。\", \"未查询权威 NS 的 SOA、未做 WHOIS/RDAP，无法确定 NXDOMAIN 的根因是未注册、过期还是权威区缺记录。\", \"未在解析恢复后测试 443 端口 TCP 连通性与 TLS 握手，HTTPS 层是否另有问题仍未知。\", \"未复现历史现象不等于历史上未发生；单次测量不能排除间歇性故障。\"], \"recommendations\": [\"向权威 NS 直接查询 example.com 的 SOA 与 NS，确认权威区是否存在该名称及负缓存 TTL。\", \"查询 WHOIS/RDAP 确认域名注册与到期状态。\", \"检查本机解析器配置来源、hosts 文件、浏览器 DoH 设置与代理设置，排除本地覆盖。\", \"若域名解析恢复，再对 443 端口做 TCP 连通性与 TLS 握手测试，确认 HTTPS 层无独立问题。\", \"若域名确属自己所有，检查权威 DNS 区的 A/AAAA 记录是否被误删。\"]}",
+          "tool_call_id": "call_00_rr9s0ZxQnVkfU7t7f5Td5234",
+          "tool_kind": null,
+          "id": null,
+          "provider_name": null,
+          "provider_details": null,
+          "part_kind": "tool-call"
+        }
+      ]
+    },
+    {
+      "kind": "request",
+      "parts": [
+        {
+          "tool_name": "final_result",
+          "content": "Final result processed.",
+          "tool_call_id": "call_00_rr9s0ZxQnVkfU7t7f5Td5234",
+          "tool_kind": null,
+          "metadata": null,
+          "timestamp": "2026-10-31T04:03:34.921526Z",
+          "outcome": "success",
+          "retry": null,
+          "part_kind": "tool-return"
+        }
+      ]
+    }
+  ],
+  "evidence": [
+    {
+      "id": "E1",
+      "tool_call_id": "F1",
+      "tool_name": "query_dns",
+      "input": {
+        "domain": "example.com",
+        "record_type": "A",
+        "resolver": null
+      },
+      "data": {
+        "rcode": "NXDOMAIN",
+        "record_type": "A",
+        "resolvers": [
+          "192.0.2.53"
+        ],
+        "records": [],
+        "cname_chain": []
+      },
+      "source_mode": "fixture",
+      "measurement_location": "synthetic",
+      "execution_status": "ok"
+    },
+    {
+      "id": "E2",
+      "tool_call_id": "F2",
+      "tool_name": "query_dns",
+      "input": {
+        "domain": "example.com",
+        "record_type": "AAAA",
+        "resolver": null
+      },
+      "data": {
+        "rcode": "NXDOMAIN",
+        "record_type": "AAAA",
+        "resolvers": [
+          "192.0.2.53"
+        ],
+        "records": [],
+        "cname_chain": []
+      },
+      "source_mode": "fixture",
+      "measurement_location": "synthetic",
+      "execution_status": "ok"
+    },
+    {
+      "id": "E3",
+      "tool_call_id": "F3",
+      "tool_name": "query_dns",
+      "input": {
+        "domain": "example.com",
+        "record_type": "A",
+        "resolver": "1.1.1.1"
+      },
+      "data": {
+        "rcode": "NXDOMAIN",
+        "record_type": "A",
+        "resolvers": [
+          "1.1.1.1"
+        ],
+        "records": [],
+        "cname_chain": []
+      },
+      "source_mode": "fixture",
+      "measurement_location": "synthetic",
+      "execution_status": "ok"
+    },
+    {
+      "id": "E4",
+      "tool_call_id": "F4",
+      "tool_name": "query_dns",
+      "input": {
+        "domain": "example.com",
+        "record_type": "AAAA",
+        "resolver": "1.1.1.1"
+      },
+      "data": {
+        "rcode": "NXDOMAIN",
+        "record_type": "AAAA",
+        "resolvers": [
+          "1.1.1.1"
+        ],
+        "records": [],
+        "cname_chain": []
+      },
+      "source_mode": "fixture",
+      "measurement_location": "synthetic",
+      "execution_status": "ok"
+    },
+    {
+      "id": "E5",
+      "tool_call_id": "F5",
+      "tool_name": "check_http",
+      "input": {
+        "url": "https://example.com/"
+      },
+      "data": {
+        "status_code": null,
+        "final_url": "https://example.com/",
+        "redirects": [],
+        "peer_ip": null,
+        "proxy_mode": "fixture",
+        "error": "DNS_LOOKUP_FAILED"
+      },
+      "source_mode": "fixture",
+      "measurement_location": "synthetic",
+      "execution_status": "ok"
+    },
+    {
+      "id": "E6",
+      "tool_call_id": "F6",
+      "tool_name": "check_http",
+      "input": {
+        "url": "http://example.com/"
+      },
+      "data": {
+        "status_code": null,
+        "final_url": "http://example.com/",
+        "redirects": [],
+        "peer_ip": null,
+        "proxy_mode": "fixture",
+        "error": "DNS_LOOKUP_FAILED"
+      },
+      "source_mode": "fixture",
+      "measurement_location": "synthetic",
+      "execution_status": "ok"
+    }
+  ],
+  "attempts": [],
+  "elapsed_seconds": 7.109
+}

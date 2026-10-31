@@ -1,0 +1,186 @@
+{
+  "run_id": "1524381767a945708640df01dc15cc24",
+  "started_at": "2026-10-31T04:00:39.566902+00:00",
+  "incident": {
+    "id": "1524381767a945708640df01dc15cc24",
+    "user_input": "请调查 example.com 的 DNS 是否有故障：先查 A，再查 AAAA；若事实不足请明确无法确认，不重复请求不可重试的数据。",
+    "target": {
+      "domain": "example.com",
+      "url": "https://example.com/",
+      "port": 443,
+      "default_https": false
+    },
+    "measurement_location": "synthetic"
+  },
+  "model": "deepseek-flash",
+  "mode": "baseline",
+  "thinking": "disabled",
+  "temperature": 0,
+  "model_endpoint": "https://api.deepseek.com",
+  "schema_version": 2,
+  "attempt_accounting": "complete",
+  "request_kind": "investigation",
+  "versions": {
+    "app": "0.2.0",
+    "python": "3.12.14",
+    "pydantic-ai-slim": "2.64.0"
+  },
+  "status": "limited",
+  "execution_status": "ended",
+  "requirements_met": false,
+  "result_origin": "model",
+  "result": {
+    "request_kind": "investigation",
+    "outcome": "insufficient_information",
+    "observations": [
+      {
+        "evidence_id": "E1",
+        "observation": "对 example.com 的 A 查询返回 NOERROR，含一条 A 记录 192.0.2.10（TTL 60），由解析器 192.0.2.53 应答；该结果来自合成 fixture（measurement_location=synthetic），执行状态 ok。"
+      }
+    ],
+    "hypotheses": [
+      {
+        "id": "H1",
+        "statement": "example.com 的 A 记录解析正常，DNS 未出现故障（至少 A 层面）。",
+        "status": "获得支持",
+        "supporting_evidence_ids": [
+          "E1"
+        ],
+        "contradicting_evidence_ids": [],
+        "missing_information": [
+          "AAAA 记录查询结果",
+          "其他解析器/其他网络位置的对照结果",
+          "历史故障现象的时间与具体表现"
+        ]
+      },
+      {
+        "id": "H2",
+        "statement": "存在仅影响 AAAA（IPv6）解析的局部故障，A 正常但 AAAA 异常。",
+        "status": "无法确定",
+        "supporting_evidence_ids": [],
+        "contradicting_evidence_ids": [],
+        "missing_information": [
+          "AAAA 查询结果（本次未提供，且本组不允许调用工具）"
+        ]
+      },
+      {
+        "id": "H3",
+        "statement": "DNS 整体正常，用户侧现象可能来自浏览器缓存、hosts、代理或 DoH 等本地因素。",
+        "status": "无法确定",
+        "supporting_evidence_ids": [
+          "E1"
+        ],
+        "contradicting_evidence_ids": [],
+        "missing_information": [
+          "用户侧实际报错信息",
+          "本地 hosts/代理/DoH 配置",
+          "浏览器缓存状态"
+        ]
+      }
+    ],
+    "conclusion": "仅能确认 A 查询成功：example.com 返回 NOERROR 且解析到 192.0.2.10（E1），因此没有证据显示 A 记录层面存在 DNS 故障。但用户要求的 AAAA 查询在本组事实中缺失，且本组不允许调用工具，故无法对 AAAA 或整体 DNS 是否故障作出确认；结论为信息不足，不能宣称具体原因已确定。另需注意该结果来自合成 fixture，不代表真实网络测量。",
+    "conclusion_evidence_ids": [
+      "E1"
+    ],
+    "limitations": [
+      "缺少 AAAA 查询结果，无法判断 IPv6 解析是否正常。",
+      "仅有单一解析器（192.0.2.53）的一次测量，无法排除其他解析器或网络位置的差异。",
+      "数据来源为合成 fixture（synthetic），非真实网络测量，不能代表实际环境。",
+      "测量来自程序所在电脑，不能反映浏览器缓存、hosts、代理或 DoH 的行为。",
+      "未提供用户侧具体故障现象与时间，无法与历史现象对照。"
+    ],
+    "recommendations": [
+      "在允许调用工具的环境中补做 example.com 的 AAAA 查询，并记录 rcode 与记录内容，区分 NXDOMAIN、无记录、SERVFAIL、REFUSED 与超时。",
+      "用第二个独立解析器重复 A 与 AAAA 查询，判断是否为解析器特定问题。",
+      "如用户侧仍有异常，收集浏览器/系统实际报错、hosts 文件、代理与 DoH 设置，并对比命令行解析结果。",
+      "若需验证服务可达性，可基于已获得的 IP 192.0.2.10 做 TCP 443 测试，并保留 https://example.com/ 路径做 HTTP 检查（HTTP 4xx/5xx 属收到响应，不等同 DNS 失败）。"
+    ]
+  },
+  "usage": {
+    "input_tokens": 1321,
+    "cache_write_tokens": 0,
+    "cache_write_1h_tokens": 0,
+    "cache_read_tokens": 896,
+    "output_tokens": 887,
+    "unmeasured_requests": 0,
+    "output_reasoning_tokens": 0,
+    "input_audio_tokens": 0,
+    "cache_audio_read_tokens": 0,
+    "output_audio_tokens": 0,
+    "audio_seconds": 0,
+    "details": {
+      "prompt_cache_hit_tokens": 896,
+      "prompt_cache_miss_tokens": 425
+    },
+    "cost": "0.000598638",
+    "requests": 1,
+    "tool_calls": 0
+  },
+  "visible_messages": [
+    {
+      "kind": "request",
+      "parts": []
+    },
+    {
+      "kind": "response",
+      "parts": [
+        {
+          "tool_name": "final_result",
+          "args": "{\"observations\": [{\"evidence_id\": \"E1\", \"observation\": \"对 example.com 的 A 查询返回 NOERROR，含一条 A 记录 192.0.2.10（TTL 60），由解析器 192.0.2.53 应答；该结果来自合成 fixture（measurement_location=synthetic），执行状态 ok。\"}], \"hypotheses\": [{\"id\": \"H1\", \"statement\": \"example.com 的 A 记录解析正常，DNS 未出现故障（至少 A 层面）。\", \"status\": \"获得支持\", \"supporting_evidence_ids\": [\"E1\"], \"contradicting_evidence_ids\": [], \"missing_information\": [\"AAAA 记录查询结果\", \"其他解析器/其他网络位置的对照结果\", \"历史故障现象的时间与具体表现\"]}, {\"id\": \"H2\", \"statement\": \"存在仅影响 AAAA（IPv6）解析的局部故障，A 正常但 AAAA 异常。\", \"status\": \"无法确定\", \"supporting_evidence_ids\": [], \"contradicting_evidence_ids\": [], \"missing_information\": [\"AAAA 查询结果（本次未提供，且本组不允许调用工具）\"]}, {\"id\": \"H3\", \"statement\": \"DNS 整体正常，用户侧现象可能来自浏览器缓存、hosts、代理或 DoH 等本地因素。\", \"status\": \"无法确定\", \"supporting_evidence_ids\": [\"E1\"], \"contradicting_evidence_ids\": [], \"missing_information\": [\"用户侧实际报错信息\", \"本地 hosts/代理/DoH 配置\", \"浏览器缓存状态\"]}], \"conclusion\": \"仅能确认 A 查询成功：example.com 返回 NOERROR 且解析到 192.0.2.10（E1），因此没有证据显示 A 记录层面存在 DNS 故障。但用户要求的 AAAA 查询在本组事实中缺失，且本组不允许调用工具，故无法对 AAAA 或整体 DNS 是否故障作出确认；结论为信息不足，不能宣称具体原因已确定。另需注意该结果来自合成 fixture，不代表真实网络测量。\", \"conclusion_evidence_ids\": [\"E1\"], \"limitations\": [\"缺少 AAAA 查询结果，无法判断 IPv6 解析是否正常。\", \"仅有单一解析器（192.0.2.53）的一次测量，无法排除其他解析器或网络位置的差异。\", \"数据来源为合成 fixture（synthetic），非真实网络测量，不能代表实际环境。\", \"测量来自程序所在电脑，不能反映浏览器缓存、hosts、代理或 DoH 的行为。\", \"未提供用户侧具体故障现象与时间，无法与历史现象对照。\"], \"recommendations\": [\"在允许调用工具的环境中补做 example.com 的 AAAA 查询，并记录 rcode 与记录内容，区分 NXDOMAIN、无记录、SERVFAIL、REFUSED 与超时。\", \"用第二个独立解析器重复 A 与 AAAA 查询，判断是否为解析器特定问题。\", \"如用户侧仍有异常，收集浏览器/系统实际报错、hosts 文件、代理与 DoH 设置，并对比命令行解析结果。\", \"若需验证服务可达性，可基于已获得的 IP 192.0.2.10 做 TCP 443 测试，并保留 https://example.com/ 路径做 HTTP 检查（HTTP 4xx/5xx 属收到响应，不等同 DNS 失败）。\"], \"request_kind\": \"investigation\", \"outcome\": \"insufficient_information\"}",
+          "tool_call_id": "call_00_JqxC5XdA4s7ailAWwpJy4943",
+          "tool_kind": null,
+          "id": null,
+          "provider_name": null,
+          "provider_details": null,
+          "part_kind": "tool-call"
+        }
+      ]
+    },
+    {
+      "kind": "request",
+      "parts": [
+        {
+          "tool_name": "final_result",
+          "content": "Final result processed.",
+          "tool_call_id": "call_00_JqxC5XdA4s7ailAWwpJy4943",
+          "tool_kind": null,
+          "metadata": null,
+          "timestamp": "2026-10-31T04:00:44.993907Z",
+          "outcome": "success",
+          "retry": null,
+          "part_kind": "tool-return"
+        }
+      ]
+    }
+  ],
+  "evidence": [
+    {
+      "id": "E1",
+      "tool_call_id": "F1",
+      "tool_name": "query_dns",
+      "input": {
+        "domain": "example.com",
+        "record_type": "A",
+        "resolver": null
+      },
+      "data": {
+        "rcode": "NOERROR",
+        "records": [
+          {
+            "value": "192.0.2.10",
+            "ttl": 60
+          }
+        ],
+        "record_type": "A",
+        "resolvers": [
+          "192.0.2.53"
+        ]
+      },
+      "source_mode": "fixture",
+      "measurement_location": "synthetic",
+      "execution_status": "ok"
+    }
+  ],
+  "attempts": [],
+  "elapsed_seconds": 5.437
+}

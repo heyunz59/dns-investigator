@@ -1,0 +1,22 @@
+[
+  {
+    "tool": "query_dns",
+    "match": {
+      "domain": "example.com",
+      "record_type": "A"
+    },
+    "data": {
+      "rcode": "NOERROR",
+      "records": [
+        {
+          "value": "192.0.2.10",
+          "ttl": 60
+        }
+      ],
+      "resolvers": [
+        "192.0.2.53"
+      ],
+      "record_type": "A"
+    }
+  }
+]

@@ -1,5 +1,7 @@
 # 实现与证据边界
 
+v0.2 更新以 [可靠性修复说明](reliability-v2.md)为准：attempts 与有效 evidence 分离，框架参数拒绝也记录；输出状态区分 completed/limited/failed。下文中原有工具日志描述指有效测量，不代表全部调用尝试；不能再用 E 编号数量计算调用正确率分母。
+
 CLI 解析域名或网址，缺目标时补充输入，非法目标在模型请求前拒绝。裸域名默认 HTTPS 并记录；原始路径保留。URL 查询值与片段在模型输入和日志中脱敏。相同 URL 的 HTTP 工具在本机恢复原始查询值，避免改变用户请求的含义；密钥不传入提示词。
 
 PydanticAI Agent 自主选择 query_dns、check_tcp、check_http，可依据结果继续调用。应用层只做参数校验和调用预算约束。--tools-only 是独立工具冒烟检查，固定顺序不能作为 Agent 智能性的证据。fixtures 只含原始事实，不含预写原因。评分文件与 Agent 运行隔离。

@@ -49,6 +49,8 @@ notepad .env
 
 旧版 14 次真实模型对照的[原始记录](results/published/evaluation-20261031/README.md)保留。旧版以 evidence 数量估计工具调用总数，遗漏校验拒绝等尝试，因此历史工具正确率不能视为完整统计。v0.2 使用独立 attempts 分母；旧日志无法补齐时输出 INCOMPLETE，不猜测。新实验结果见验证记录。
 
+v0.2 已完成 [48 次真实模型对照](results/published/evaluation-reliability-20261031T035848Z/README.md)：每场景每组 3 次。自动规则筛查 A=24/24、B=22/24；B 全部尝试 83 次，规则建议合理 78 次。**这是待人工复核的机械筛查，不能视为完整语义任务成功率**。两次 B 总结引用错误都保留为失败；新版真实 live 验证也已保存。
+
 架构见 [docs/architecture.md](docs/architecture.md)，实际公开材料在 `results/published/`。原始日志位于 `results/runs/` 和 `results/evaluation-raw/`，均被 Git 忽略；仍须自行保管。工具日志公开导出可用 `scripts/publish_tools.py`，它会隐藏本地 DNS 配置，其他用户输入、路径等仍需逐项审核。首次及后续推送前运行 `python scripts/check_public.py`，并人工检查待提交文件。
 
 ## 已知边界

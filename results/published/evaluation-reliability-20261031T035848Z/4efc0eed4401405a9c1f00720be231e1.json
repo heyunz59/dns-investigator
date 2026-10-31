@@ -1,0 +1,382 @@
+{
+  "run_id": "4efc0eed4401405a9c1f00720be231e1",
+  "started_at": "2026-10-31T04:05:12.104214+00:00",
+  "incident": {
+    "id": "4efc0eed4401405a9c1f00720be231e1",
+    "user_input": "请调查 example.com 的 DNS 是否有故障：先查 A，再查 AAAA；若事实不足请明确无法确认，不重复请求不可重试的数据。",
+    "target": {
+      "domain": "example.com",
+      "url": "https://example.com/",
+      "port": 443,
+      "default_https": false
+    },
+    "measurement_location": "synthetic"
+  },
+  "model": "deepseek-flash",
+  "mode": "agent",
+  "thinking": "disabled",
+  "temperature": 0,
+  "model_endpoint": "https://api.deepseek.com",
+  "schema_version": 2,
+  "attempt_accounting": "complete",
+  "request_kind": "investigation",
+  "versions": {
+    "app": "0.2.0",
+    "python": "3.12.14",
+    "pydantic-ai-slim": "2.64.0"
+  },
+  "status": "limited",
+  "execution_status": "ended",
+  "requirements_met": false,
+  "result_origin": "model",
+  "result": {
+    "request_kind": "investigation",
+    "outcome": "insufficient_information",
+    "observations": [
+      {
+        "evidence_id": "E1",
+        "observation": "对 example.com 的 A 查询返回 NOERROR，解析器 192.0.2.53 给出 1 条 A 记录 192.0.2.10（TTL 60）。说明该解析器对 A 查询有正常应答，未见 NXDOMAIN/SERVFAIL/REFUSED/超时。"
+      },
+      {
+        "evidence_id": "E1",
+        "observation": "对 example.com 的 AAAA 查询未获得任何事实：工具返回 FIXTURE_NOT_COVERED，明确表示测试数据未提供该项事实，不是 NXDOMAIN、无记录或真实网络失败，且不可重试。因此 AAAA 状态为未知（该次调用未产生可引用证据编号）。"
+      }
+    ],
+    "hypotheses": [
+      {
+        "id": "H1",
+        "statement": "example.com 的 DNS 解析正常，A 记录可正常返回，不存在 DNS 故障。",
+        "status": "获得支持",
+        "supporting_evidence_ids": [
+          "E1"
+        ],
+        "contradicting_evidence_ids": [],
+        "missing_information": [
+          "AAAA 记录状态未知（该查询未提供事实）",
+          "仅单一解析器、单次测量，未覆盖其他解析器/递归链路"
+        ]
+      },
+      {
+        "id": "H2",
+        "statement": "example.com 的 DNS 存在部分故障（例如仅 AAAA 查询异常或特定解析器/链路异常），A 正常不代表整体正常。",
+        "status": "无法确定",
+        "supporting_evidence_ids": [],
+        "contradicting_evidence_ids": [],
+        "missing_information": [
+          "AAAA 查询结果（该次调用为 FIXTURE_NOT_COVERED，非真实测量）",
+          "其他解析器与权威服务器的应答",
+          "历史故障现象的具体时间与查询类型"
+        ]
+      }
+    ],
+    "conclusion": "现有证据只能确认：在本次测量中，解析器 192.0.2.53 对 example.com 的 A 查询返回 NOERROR 及 192.0.2.10（E1），未出现 NXDOMAIN、SERVFAIL、REFUSED 或超时。AAAA 查询因测试数据未覆盖（工具返回 FIXTURE_NOT_COVERED）而无任何事实，不能据此判断 AAAA 是否存在、缺失或故障。因此无法确认 example.com 的 DNS 是否存在故障，尤其无法对 AAAA 侧下结论；也不能宣称已确定具体原因。",
+    "conclusion_evidence_ids": [
+      "E1"
+    ],
+    "limitations": [
+      "AAAA 查询无事实（FIXTURE_NOT_COVERED），不可重试，AAAA 状态完全未知。",
+      "测量来自程序所在电脑的单一解析器（192.0.2.53），为合成/固定数据环境，不代表浏览器缓存、hosts、代理或 DoH 路径。",
+      "未做 TCP/HTTP 检查，且 DNS 正常也不能证明网站可访问；反之未复现也不否定历史现象。",
+      "单次查询无法反映 TTL 过期后的变化或间歇性故障。"
+    ],
+    "recommendations": [
+      "在能提供真实 AAAA 数据的环境中重新查询 example.com 的 AAAA，区分 NOERROR 有记录、NOERROR 无记录（NODATA）与 NXDOMAIN。",
+      "用多个公共解析器（如 1.1.1.1、8.8.8.8）及直接查询权威 NS，比较应答一致性与 rcode。",
+      "若用户报告的是网页打不开，补充对 E1 中 IP 的 443 端口 TCP 连接与 https://example.com/ 的 HTTP 检查，以区分 DNS 与传输/应用层问题。",
+      "记录故障发生时间与查询类型，便于判断是否为间歇性问题。"
+    ]
+  },
+  "usage": {
+    "input_tokens": 9885,
+    "cache_write_tokens": 0,
+    "cache_write_1h_tokens": 0,
+    "cache_read_tokens": 8960,
+    "output_tokens": 2896,
+    "unmeasured_requests": 0,
+    "output_reasoning_tokens": 0,
+    "input_audio_tokens": 0,
+    "cache_audio_read_tokens": 0,
+    "output_audio_tokens": 0,
+    "audio_seconds": 0,
+    "details": {
+      "prompt_cache_hit_tokens": 8960,
+      "prompt_cache_miss_tokens": 925
+    },
+    "cost": "0.001903230",
+    "requests": 4,
+    "tool_calls": 2
+  },
+  "visible_messages": [
+    {
+      "kind": "request",
+      "parts": []
+    },
+    {
+      "kind": "response",
+      "parts": [
+        {
+          "tool_name": "query_dns",
+          "args": "{\"domain\": \"example.com\", \"record_type\": \"A\"}",
+          "tool_call_id": "call_00_E9mCJ9I5Obg2ny6rHo8M7598",
+          "tool_kind": null,
+          "id": null,
+          "provider_name": null,
+          "provider_details": null,
+          "part_kind": "tool-call"
+        },
+        {
+          "tool_name": "query_dns",
+          "args": "{\"domain\": \"example.com\", \"record_type\": \"AAAA\"}",
+          "tool_call_id": "call_01_h1xiOJlSLFz5d092J2Ph8664",
+          "tool_kind": null,
+          "id": null,
+          "provider_name": null,
+          "provider_details": null,
+          "part_kind": "tool-call"
+        }
+      ]
+    },
+    {
+      "kind": "request",
+      "parts": [
+        {
+          "tool_name": "query_dns",
+          "content": {
+            "tool_call_id": "A1",
+            "tool_name": "query_dns",
+            "input": {
+              "domain": "example.com",
+              "record_type": "A",
+              "resolver": null,
+              "timeout": 5
+            },
+            "started_at": "2026-10-31T04:05:13.034739+00:00",
+            "source_mode": "fixture",
+            "measurement_location": "synthetic",
+            "execution_status": "ok",
+            "data": {
+              "rcode": "NOERROR",
+              "records": [
+                {
+                  "value": "192.0.2.10",
+                  "ttl": 60
+                }
+              ],
+              "record_type": "A",
+              "resolvers": [
+                "192.0.2.53"
+              ]
+            },
+            "error": null,
+            "id": "E1",
+            "duration_ms": 0.0,
+            "budget": {
+              "remaining": 8,
+              "finish_now": false
+            }
+          },
+          "tool_call_id": "call_00_E9mCJ9I5Obg2ny6rHo8M7598",
+          "tool_kind": null,
+          "metadata": null,
+          "timestamp": "2026-10-31T04:05:13.036044Z",
+          "outcome": "success",
+          "retry": null,
+          "part_kind": "tool-return"
+        },
+        {
+          "tool_name": "query_dns",
+          "content": {
+            "attempt_id": "A2",
+            "execution_status": "error",
+            "data": {},
+            "error": {
+              "code": "FIXTURE_NOT_COVERED",
+              "message": "测试数据没有提供该项事实；不是 DNS 无记录/NXDOMAIN 或真实网络失败。不可重试；请保留未知并结束或选择其他有用检查。",
+              "retryable": false
+            },
+            "source_mode": "fixture",
+            "budget": {
+              "remaining": 8,
+              "finish_now": false
+            }
+          },
+          "tool_call_id": "call_01_h1xiOJlSLFz5d092J2Ph8664",
+          "tool_kind": null,
+          "metadata": null,
+          "timestamp": "2026-10-31T04:05:13.037051Z",
+          "outcome": "success",
+          "retry": null,
+          "part_kind": "tool-return"
+        }
+      ]
+    },
+    {
+      "kind": "response",
+      "parts": [
+        {
+          "tool_name": "final_result",
+          "args": "{\"request_kind\": \"investigation\", \"outcome\": \"insufficient_information\", \"observations\": [{\"evidence_id\": \"E1\", \"observation\": \"对 example.com 的 A 查询返回 NOERROR，解析器 192.0.2.53 给出 1 条 A 记录 192.0.2.10（TTL 60）。说明该解析器对 A 查询有正常应答，未见 NXDOMAIN/SERVFAIL/REFUSED/超时。\"}, {\"evidence_id\": \"A2\", \"observation\": \"对 example.com 的 AAAA 查询未获得任何事实：工具返回 FIXTURE_NOT_COVERED，明确表示测试数据未提供该项事实，不是 NXDOMAIN、无记录或真实网络失败，且不可重试。因此 AAAA 状态为未知。\"}], \"hypotheses\": [{\"id\": \"H1\", \"statement\": \"example.com 的 DNS 解析正常，A 记录可正常返回，不存在 DNS 故障。\", \"status\": \"获得支持\", \"supporting_evidence_ids\": [\"E1\"], \"contradicting_evidence_ids\": [], \"missing_information\": [\"AAAA 记录状态未知（A2 未提供事实）\", \"仅单一解析器、单次测量，未覆盖其他解析器/递归链路\"]}, {\"id\": \"H2\", \"statement\": \"example.com 的 DNS 存在部分故障（例如仅 AAAA 查询异常或特定解析器/链路异常），A 正常不代表整体正常。\", \"status\": \"无法确定\", \"supporting_evidence_ids\": [], \"contradicting_evidence_ids\": [], \"missing_information\": [\"AAAA 查询结果（A2 为 FIXTURE_NOT_COVERED，非真实测量）\", \"其他解析器与权威服务器的应答\", \"历史故障现象的具体时间与查询类型\"]}], \"conclusion\": \"现有证据只能确认：在本次测量中，解析器 192.0.2.53 对 example.com 的 A 查询返回 NOERROR 及 192.0.2.10（E1），未出现 NXDOMAIN、SERVFAIL、REFUSED 或超时。AAAA 查询因测试数据未覆盖（A2）而无任何事实，不能据此判断 AAAA 是否存在、缺失或故障。因此无法确认 example.com 的 DNS 是否存在故障，尤其无法对 AAAA 侧下结论；也不能宣称已确定具体原因。\", \"conclusion_evidence_ids\": [\"E1\", \"A2\"], \"limitations\": [\"AAAA 查询无事实（FIXTURE_NOT_COVERED），不可重试，AAAA 状态完全未知。\", \"测量来自程序所在电脑的单一解析器（192.0.2.53），为合成/固定数据环境，不代表浏览器缓存、hosts、代理或 DoH 路径。\", \"未做 TCP/HTTP 检查，且 DNS 正常也不能证明网站可访问；反之未复现也不否定历史现象。\", \"单次查询无法反映 TTL 过期后的变化或间歇性故障。\"], \"recommendations\": [\"在能提供真实 AAAA 数据的环境中重新查询 example.com 的 AAAA，区分 NOERROR 有记录、NOERROR 无记录（NODATA）与 NXDOMAIN。\", \"用多个公共解析器（如 1.1.1.1、8.8.8.8）及直接查询权威 NS，比较应答一致性与 rcode。\", \"若用户报告的是网页打不开，补充对 E1 中 IP 的 443 端口 TCP 连接与 https://example.com/ 的 HTTP 检查，以区分 DNS 与传输/应用层问题。\", \"记录故障发生时间与查询类型，便于判断是否为间歇性问题。\"]}",
+          "tool_call_id": "call_00_soa3e7IDylVLx8QPnmsT6542",
+          "tool_kind": null,
+          "id": null,
+          "provider_name": null,
+          "provider_details": null,
+          "part_kind": "tool-call"
+        }
+      ]
+    },
+    {
+      "kind": "request",
+      "parts": [
+        {
+          "tool_name": "final_result",
+          "content": "证据编号不存在：['A2']",
+          "tool_call_id": "call_00_soa3e7IDylVLx8QPnmsT6542",
+          "tool_kind": null,
+          "metadata": null,
+          "timestamp": "2026-10-31T04:05:17.903703Z",
+          "outcome": "retried",
+          "retry": {
+            "cause": "model_retry",
+            "attempt": 1,
+            "max_retries": 2
+          },
+          "part_kind": "tool-return"
+        }
+      ]
+    },
+    {
+      "kind": "response",
+      "parts": [
+        {
+          "tool_name": "final_result",
+          "args": "{\"conclusion\": \"现有证据只能确认：在本次测量中，解析器 192.0.2.53 对 example.com 的 A 查询返回 NOERROR 及 192.0.2.10（E1），未出现 NXDOMAIN、SERVFAIL、REFUSED 或超时。AAAA 查询因测试数据未覆盖（工具返回 FIXTURE_NOT_COVERED）而无任何事实，不能据此判断 AAAA 是否存在、缺失或故障。因此无法确认 example.com 的 DNS 是否存在故障，尤其无法对 AAAA 侧下结论；也不能宣称已确定具体原因。\", \"conclusion_evidence_ids\": [\"E1\"], \"hypotheses\": [{\"id\": \"H1\", \"statement\": \"example.com 的 DNS 解析正常，A 记录可正常返回，不存在 DNS 故障。\", \"status\": \"获得支持\", \"supporting_evidence_ids\": [\"E1\"], \"contradicting_evidence_ids\": [], \"missing_information\": [\"AAAA 记录状态未知（该查询未提供事实）\", \"仅单一解析器、单次测量，未覆盖其他解析器/递归链路\"]}, {\"id\": \"H2\", \"statement\": \"example.com 的 DNS 存在部分故障（例如仅 AAAA 查询异常或特定解析器/链路异常），A 正常不代表整体正常。\", \"status\": \"无法确定\", \"supporting_evidence_ids\": [], \"contradicting_evidence_ids\": [], \"missing_information\": [\"AAAA 查询结果（该次调用为 FIXTURE_NOT_COVERED，非真实测量）\", \"其他解析器与权威服务器的应答\", \"历史故障现象的具体时间与查询类型\"]}], \"limitations\": [\"AAAA 查询无事实（FIXTURE_NOT_COVERED），不可重试，AAAA 状态完全未知。\", \"测量来自程序所在电脑的单一解析器（192.0.2.53），为合成/固定数据环境，不代表浏览器缓存、hosts、代理或 DoH 路径。\", \"未做 TCP/HTTP 检查，且 DNS 正常也不能证明网站可访问；反之未复现也不否定历史现象。\", \"单次查询无法反映 TTL 过期后的变化或间歇性故障。\"], \"observations\": [{\"evidence_id\": \"E1\", \"observation\": \"对 example.com 的 A 查询返回 NOERROR，解析器 192.0.2.53 给出 1 条 A 记录 192.0.2.10（TTL 60）。说明该解析器对 A 查询有正常应答，未见 NXDOMAIN/SERVFAIL/REFUSED/超时。\"}, {\"evidence_id\": \"E2\", \"observation\": \"对 example.com 的 AAAA 查询未获得任何事实：工具返回 FIXTURE_NOT_COVERED，明确表示测试数据未提供该项事实，不是 NXDOMAIN、无记录或真实网络失败，且不可重试。因此 AAAA 状态为未知。\"}], \"recommendations\": [\"在能提供真实 AAAA 数据的环境中重新查询 example.com 的 AAAA，区分 NOERROR 有记录、NOERROR 无记录（NODATA）与 NXDOMAIN。\", \"用多个公共解析器（如 1.1.1.1、8.8.8.8）及直接查询权威 NS，比较应答一致性与 rcode。\", \"若用户报告的是网页打不开，补充对 E1 中 IP 的 443 端口 TCP 连接与 https://example.com/ 的 HTTP 检查，以区分 DNS 与传输/应用层问题。\", \"记录故障发生时间与查询类型，便于判断是否为间歇性问题。\"], \"request_kind\": \"investigation\", \"outcome\": \"insufficient_information\"}",
+          "tool_call_id": "call_00_i6Bcq9iyt1uQwRfs3pGA3225",
+          "tool_kind": null,
+          "id": null,
+          "provider_name": null,
+          "provider_details": null,
+          "part_kind": "tool-call"
+        }
+      ]
+    },
+    {
+      "kind": "request",
+      "parts": [
+        {
+          "tool_name": "final_result",
+          "content": "证据编号不存在：['E2']",
+          "tool_call_id": "call_00_i6Bcq9iyt1uQwRfs3pGA3225",
+          "tool_kind": null,
+          "metadata": null,
+          "timestamp": "2026-10-31T04:05:21.514327Z",
+          "outcome": "retried",
+          "retry": {
+            "cause": "model_retry",
+            "attempt": 2,
+            "max_retries": 2
+          },
+          "part_kind": "tool-return"
+        }
+      ]
+    },
+    {
+      "kind": "response",
+      "parts": [
+        {
+          "tool_name": "final_result",
+          "args": "{\"conclusion\": \"现有证据只能确认：在本次测量中，解析器 192.0.2.53 对 example.com 的 A 查询返回 NOERROR 及 192.0.2.10（E1），未出现 NXDOMAIN、SERVFAIL、REFUSED 或超时。AAAA 查询因测试数据未覆盖（工具返回 FIXTURE_NOT_COVERED）而无任何事实，不能据此判断 AAAA 是否存在、缺失或故障。因此无法确认 example.com 的 DNS 是否存在故障，尤其无法对 AAAA 侧下结论；也不能宣称已确定具体原因。\", \"conclusion_evidence_ids\": [\"E1\"], \"hypotheses\": [{\"contradicting_evidence_ids\": [], \"id\": \"H1\", \"missing_information\": [\"AAAA 记录状态未知（该查询未提供事实）\", \"仅单一解析器、单次测量，未覆盖其他解析器/递归链路\"], \"statement\": \"example.com 的 DNS 解析正常，A 记录可正常返回，不存在 DNS 故障。\", \"status\": \"获得支持\", \"supporting_evidence_ids\": [\"E1\"]}, {\"contradicting_evidence_ids\": [], \"id\": \"H2\", \"missing_information\": [\"AAAA 查询结果（该次调用为 FIXTURE_NOT_COVERED，非真实测量）\", \"其他解析器与权威服务器的应答\", \"历史故障现象的具体时间与查询类型\"], \"statement\": \"example.com 的 DNS 存在部分故障（例如仅 AAAA 查询异常或特定解析器/链路异常），A 正常不代表整体正常。\", \"status\": \"无法确定\", \"supporting_evidence_ids\": []}], \"limitations\": [\"AAAA 查询无事实（FIXTURE_NOT_COVERED），不可重试，AAAA 状态完全未知。\", \"测量来自程序所在电脑的单一解析器（192.0.2.53），为合成/固定数据环境，不代表浏览器缓存、hosts、代理或 DoH 路径。\", \"未做 TCP/HTTP 检查，且 DNS 正常也不能证明网站可访问；反之未复现也不否定历史现象。\", \"单次查询无法反映 TTL 过期后的变化或间歇性故障。\"], \"observations\": [{\"evidence_id\": \"E1\", \"observation\": \"对 example.com 的 A 查询返回 NOERROR，解析器 192.0.2.53 给出 1 条 A 记录 192.0.2.10（TTL 60）。说明该解析器对 A 查询有正常应答，未见 NXDOMAIN/SERVFAIL/REFUSED/超时。\"}, {\"evidence_id\": \"E1\", \"observation\": \"对 example.com 的 AAAA 查询未获得任何事实：工具返回 FIXTURE_NOT_COVERED，明确表示测试数据未提供该项事实，不是 NXDOMAIN、无记录或真实网络失败，且不可重试。因此 AAAA 状态为未知（该次调用未产生可引用证据编号）。\"}], \"recommendations\": [\"在能提供真实 AAAA 数据的环境中重新查询 example.com 的 AAAA，区分 NOERROR 有记录、NOERROR 无记录（NODATA）与 NXDOMAIN。\", \"用多个公共解析器（如 1.1.1.1、8.8.8.8）及直接查询权威 NS，比较应答一致性与 rcode。\", \"若用户报告的是网页打不开，补充对 E1 中 IP 的 443 端口 TCP 连接与 https://example.com/ 的 HTTP 检查，以区分 DNS 与传输/应用层问题。\", \"记录故障发生时间与查询类型，便于判断是否为间歇性问题。\"], \"request_kind\": \"investigation\", \"outcome\": \"insufficient_information\"}",
+          "tool_call_id": "call_00_STYQVRgoKGo8JFiCfKhD8094",
+          "tool_kind": null,
+          "id": null,
+          "provider_name": null,
+          "provider_details": null,
+          "part_kind": "tool-call"
+        }
+      ]
+    },
+    {
+      "kind": "request",
+      "parts": [
+        {
+          "tool_name": "final_result",
+          "content": "Final result processed.",
+          "tool_call_id": "call_00_STYQVRgoKGo8JFiCfKhD8094",
+          "tool_kind": null,
+          "metadata": null,
+          "timestamp": "2026-10-31T04:05:25.435179Z",
+          "outcome": "success",
+          "retry": null,
+          "part_kind": "tool-return"
+        }
+      ]
+    }
+  ],
+  "evidence": [
+    {
+      "tool_call_id": "A1",
+      "tool_name": "query_dns",
+      "input": {
+        "domain": "example.com",
+        "record_type": "A",
+        "resolver": null,
+        "timeout": 5
+      },
+      "started_at": "2026-10-31T04:05:13.034739+00:00",
+      "source_mode": "fixture",
+      "measurement_location": "synthetic",
+      "execution_status": "ok",
+      "data": {
+        "rcode": "NOERROR",
+        "records": [
+          {
+            "value": "192.0.2.10",
+            "ttl": 60
+          }
+        ],
+        "record_type": "A",
+        "resolvers": [
+          "192.0.2.53"
+        ]
+      },
+      "error": null,
+      "id": "E1",
+      "duration_ms": 0.0
+    }
+  ],
+  "attempts": [
+    {
+      "attempt_id": "A1",
+      "tool_name": "query_dns",
+      "provider_call_id": "call_00_E9mCJ9I5Obg2ny6rHo8M7598",
+      "input": {
+        "domain": "example.com",
+        "record_type": "A"
+      },
+      "started_at": "2026-10-31T04:05:13.029302+00:00",
+      "status": "measured",
+      "evidence_id": "E1",
+      "error": null,
+      "duration_ms": 0.0
+    },
+    {
+      "attempt_id": "A2",
+      "tool_name": "query_dns",
+      "provider_call_id": "call_01_h1xiOJlSLFz5d092J2Ph8664",
+      "input": {
+        "domain": "example.com",
+        "record_type": "AAAA"
+      },
+      "started_at": "2026-10-31T04:05:13.030605+00:00",
+      "status": "unavailable",
+      "evidence_id": null,
+      "error": {
+        "code": "FIXTURE_NOT_COVERED",
+        "message": "测试数据没有提供该项事实；不是 DNS 无记录/NXDOMAIN 或真实网络失败。不可重试；请保留未知并结束或选择其他有用检查。",
+        "retryable": false
+      },
+      "duration_ms": 0.0
+    }
+  ],
+  "elapsed_seconds": 13.328
+}

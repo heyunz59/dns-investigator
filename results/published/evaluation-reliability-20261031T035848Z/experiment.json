@@ -1,0 +1,23 @@
+{
+  "repeats_requested": 3,
+  "cases": 8,
+  "expected_executions": 48,
+  "model": "deepseek-flash",
+  "thinking": "disabled",
+  "temperature": 0,
+  "max_tool_calls": 10,
+  "model_timeout": 60.0,
+  "schema_version": 2,
+  "commit": "d6d67d86680c7e4ee2541711a70232ec50f00673",
+  "source_hashes": {
+    "src\\dns_investigator\\accounting.py": "1381e634ff329ccc4e58b0ce383ca16a49bbb16723da7d7f648b5626ca217b2d",
+    "src\\dns_investigator\\agent.py": "677cd386ca8fc420643d21ac78e79e59d92daa3694171415b9550a6565c171d8",
+    "src\\dns_investigator\\config.py": "dcf19a2ad0bb24fbae4417a059d187287ef5cbdaacca12c27adff8aad5d7c119",
+    "src\\dns_investigator\\main.py": "b811c0392375cb1f5c4846f400a4b85ada4904ec4150b19fe582be9f163c9158",
+    "src\\dns_investigator\\privacy.py": "c60a85b4e2c903e5afed81cd8afea8b1ae6a0f3200e9fec4419a1a9af41bfee7",
+    "src\\dns_investigator\\schemas.py": "23a27d7fb835b376d6efb143c748db9113226af7c40c611faae4fadab5603c1c",
+    "src\\dns_investigator\\target.py": "cc3e570dcdd7fdbe13dbd755a34ed7bf4ce7fab9cd4590dd03e918fd736d428c",
+    "src\\dns_investigator\\tools.py": "9540c29f5e8fa3e82f4887d8fbce18d0ec7b4b60a977f693d12de7a82c924ada",
+    "src\\dns_investigator\\__init__.py": "d1018ef9d51729ff0c8f5fceda9df7d1ecf7c303503e83aba625ad607f76e803"
+  }
+}

@@ -51,7 +51,6 @@ def test_investigation_hypotheses_and_refs():
     r = InvestigationResult(**answer(refs=["E1"]))
     with pytest.raises(ModelRetry, match="两个"):
         validate_references(r, {"E1"})
-    r.hypotheses = [dict()]
     # Construct validated schema for two distinct, explicitly uncertain alternatives.
     data = answer(refs=["E1"])
     data["hypotheses"] = [dict(id=f"H{i}", statement=s, status="无法确定", missing_information=["需要进一步验证"])

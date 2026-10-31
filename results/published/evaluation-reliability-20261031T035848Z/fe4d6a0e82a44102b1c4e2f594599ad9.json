@@ -1,0 +1,250 @@
+{
+  "run_id": "fe4d6a0e82a44102b1c4e2f594599ad9",
+  "started_at": "2026-10-31T04:05:03.081237+00:00",
+  "incident": {
+    "id": "fe4d6a0e82a44102b1c4e2f594599ad9",
+    "user_input": "查询 example.com 的 A 记录",
+    "target": {
+      "domain": "example.com",
+      "url": "https://example.com/",
+      "port": 443,
+      "default_https": false
+    },
+    "measurement_location": "synthetic"
+  },
+  "model": "deepseek-flash",
+  "mode": "agent",
+  "thinking": "disabled",
+  "temperature": 0,
+  "model_endpoint": "https://api.deepseek.com",
+  "schema_version": 2,
+  "attempt_accounting": "complete",
+  "request_kind": "query",
+  "versions": {
+    "app": "0.2.0",
+    "python": "3.12.14",
+    "pydantic-ai-slim": "2.64.0"
+  },
+  "status": "completed",
+  "execution_status": "ended",
+  "requirements_met": true,
+  "result_origin": "model",
+  "result": {
+    "request_kind": "query",
+    "outcome": "answered",
+    "observations": [
+      {
+        "evidence_id": "E1",
+        "observation": "对 example.com 的 A 查询返回 rcode=NOERROR，记录为 192.0.2.10，TTL 60 秒；使用的解析器为 192.0.2.53。"
+      }
+    ],
+    "hypotheses": [
+      {
+        "id": "H1",
+        "statement": "example.com 当前存在可解析的 A 记录。",
+        "status": "获得支持",
+        "supporting_evidence_ids": [
+          "E1"
+        ],
+        "contradicting_evidence_ids": [],
+        "missing_information": []
+      },
+      {
+        "id": "H2",
+        "statement": "该 A 记录可能因 TTL 较短（60 秒）而频繁变化，或存在多记录/多解析器差异。",
+        "status": "无法确定",
+        "supporting_evidence_ids": [
+          "E1"
+        ],
+        "contradicting_evidence_ids": [],
+        "missing_information": [
+          "仅查询了一个解析器，未比较其他解析器结果",
+          "未查询权威服务器以确认完整记录集"
+        ]
+      }
+    ],
+    "conclusion": "example.com 的 A 记录查询成功（NOERROR），返回 192.0.2.10，TTL 60 秒，来自解析器 192.0.2.53（E1）。",
+    "conclusion_evidence_ids": [
+      "E1"
+    ],
+    "limitations": [
+      "测量来自程序所在电脑的单一解析器，不代表浏览器缓存、hosts、代理或 DoH 的结果。",
+      "仅执行 A 查询，未涉及 AAAA、TCP 连通性或 HTTP 访问。",
+      "未查询权威服务器，无法确认是否存在其他 A 记录或负载均衡差异。"
+    ],
+    "recommendations": [
+      "如需确认记录稳定性，可换用其他公共解析器重复查询并比较结果。",
+      "如需验证服务可达性，可基于该 IP 进行 TCP 443 连接测试。"
+    ]
+  },
+  "usage": {
+    "input_tokens": 3112,
+    "cache_write_tokens": 0,
+    "cache_write_1h_tokens": 0,
+    "cache_read_tokens": 2688,
+    "output_tokens": 579,
+    "unmeasured_requests": 0,
+    "output_reasoning_tokens": 0,
+    "input_audio_tokens": 0,
+    "cache_audio_read_tokens": 0,
+    "output_audio_tokens": 0,
+    "audio_seconds": 0,
+    "details": {
+      "prompt_cache_hit_tokens": 2688,
+      "prompt_cache_miss_tokens": 424
+    },
+    "cost": "0.000419064",
+    "requests": 2,
+    "tool_calls": 1
+  },
+  "visible_messages": [
+    {
+      "kind": "request",
+      "parts": []
+    },
+    {
+      "kind": "response",
+      "parts": [
+        {
+          "tool_name": "query_dns",
+          "args": "{\"domain\": \"example.com\", \"record_type\": \"A\"}",
+          "tool_call_id": "call_00_R2elQKOwpQJS9hqANZ3F3083",
+          "tool_kind": null,
+          "id": null,
+          "provider_name": null,
+          "provider_details": null,
+          "part_kind": "tool-call"
+        }
+      ]
+    },
+    {
+      "kind": "request",
+      "parts": [
+        {
+          "tool_name": "query_dns",
+          "content": {
+            "tool_call_id": "A1",
+            "tool_name": "query_dns",
+            "input": {
+              "domain": "example.com",
+              "record_type": "A",
+              "resolver": null,
+              "timeout": 5
+            },
+            "started_at": "2026-10-31T04:05:03.982276+00:00",
+            "source_mode": "fixture",
+            "measurement_location": "synthetic",
+            "execution_status": "ok",
+            "data": {
+              "rcode": "NOERROR",
+              "records": [
+                {
+                  "value": "192.0.2.10",
+                  "ttl": 60
+                }
+              ],
+              "resolvers": [
+                "192.0.2.53"
+              ],
+              "record_type": "A"
+            },
+            "error": null,
+            "id": "E1",
+            "duration_ms": 0.0,
+            "budget": {
+              "remaining": 9,
+              "finish_now": false
+            }
+          },
+          "tool_call_id": "call_00_R2elQKOwpQJS9hqANZ3F3083",
+          "tool_kind": null,
+          "metadata": null,
+          "timestamp": "2026-10-31T04:05:03.988517Z",
+          "outcome": "success",
+          "retry": null,
+          "part_kind": "tool-return"
+        }
+      ]
+    },
+    {
+      "kind": "response",
+      "parts": [
+        {
+          "tool_name": "final_result",
+          "args": "{\"request_kind\": \"query\", \"outcome\": \"answered\", \"observations\": [{\"evidence_id\": \"E1\", \"observation\": \"对 example.com 的 A 查询返回 rcode=NOERROR，记录为 192.0.2.10，TTL 60 秒；使用的解析器为 192.0.2.53。\"}], \"hypotheses\": [{\"id\": \"H1\", \"statement\": \"example.com 当前存在可解析的 A 记录。\", \"status\": \"获得支持\", \"supporting_evidence_ids\": [\"E1\"], \"contradicting_evidence_ids\": [], \"missing_information\": []}, {\"id\": \"H2\", \"statement\": \"该 A 记录可能因 TTL 较短（60 秒）而频繁变化，或存在多记录/多解析器差异。\", \"status\": \"无法确定\", \"supporting_evidence_ids\": [\"E1\"], \"contradicting_evidence_ids\": [], \"missing_information\": [\"仅查询了一个解析器，未比较其他解析器结果\", \"未查询权威服务器以确认完整记录集\"]}], \"conclusion\": \"example.com 的 A 记录查询成功（NOERROR），返回 192.0.2.10，TTL 60 秒，来自解析器 192.0.2.53（E1）。\", \"conclusion_evidence_ids\": [\"E1\"], \"limitations\": [\"测量来自程序所在电脑的单一解析器，不代表浏览器缓存、hosts、代理或 DoH 的结果。\", \"仅执行 A 查询，未涉及 AAAA、TCP 连通性或 HTTP 访问。\", \"未查询权威服务器，无法确认是否存在其他 A 记录或负载均衡差异。\"], \"recommendations\": [\"如需确认记录稳定性，可换用其他公共解析器重复查询并比较结果。\", \"如需验证服务可达性，可基于该 IP 进行 TCP 443 连接测试。\"]}",
+          "tool_call_id": "call_00_MO9u2jBDXuZcrAqF0HuF4024",
+          "tool_kind": null,
+          "id": null,
+          "provider_name": null,
+          "provider_details": null,
+          "part_kind": "tool-call"
+        }
+      ]
+    },
+    {
+      "kind": "request",
+      "parts": [
+        {
+          "tool_name": "final_result",
+          "content": "Final result processed.",
+          "tool_call_id": "call_00_MO9u2jBDXuZcrAqF0HuF4024",
+          "tool_kind": null,
+          "metadata": null,
+          "timestamp": "2026-10-31T04:05:06.923704Z",
+          "outcome": "success",
+          "retry": null,
+          "part_kind": "tool-return"
+        }
+      ]
+    }
+  ],
+  "evidence": [
+    {
+      "tool_call_id": "A1",
+      "tool_name": "query_dns",
+      "input": {
+        "domain": "example.com",
+        "record_type": "A",
+        "resolver": null,
+        "timeout": 5
+      },
+      "started_at": "2026-10-31T04:05:03.982276+00:00",
+      "source_mode": "fixture",
+      "measurement_location": "synthetic",
+      "execution_status": "ok",
+      "data": {
+        "rcode": "NOERROR",
+        "records": [
+          {
+            "value": "192.0.2.10",
+            "ttl": 60
+          }
+        ],
+        "resolvers": [
+          "192.0.2.53"
+        ],
+        "record_type": "A"
+      },
+      "error": null,
+      "id": "E1",
+      "duration_ms": 0.0
+    }
+  ],
+  "attempts": [
+    {
+      "attempt_id": "A1",
+      "tool_name": "query_dns",
+      "provider_call_id": "call_00_R2elQKOwpQJS9hqANZ3F3083",
+      "input": {
+        "domain": "example.com",
+        "record_type": "A"
+      },
+      "started_at": "2026-10-31T04:05:03.980230+00:00",
+      "status": "measured",
+      "evidence_id": "E1",
+      "error": null,
+      "duration_ms": 0.0
+    }
+  ],
+  "elapsed_seconds": 3.844
+}

@@ -1,0 +1,435 @@
+{
+  "run_id": "db240f3a6b7d4053a78c071c777c6266",
+  "started_at": "2026-10-31T04:01:06.593327+00:00",
+  "incident": {
+    "id": "db240f3a6b7d4053a78c071c777c6266",
+    "user_input": "其他网站正常，但 https://example.com/ 打不开，请调查 DNS 或其他可能原因。必要时比较 1.1.1.1。",
+    "target": {
+      "domain": "example.com",
+      "url": "https://example.com/",
+      "port": 443,
+      "default_https": false
+    },
+    "measurement_location": "synthetic"
+  },
+  "model": "deepseek-flash",
+  "mode": "baseline",
+  "thinking": "disabled",
+  "temperature": 0,
+  "model_endpoint": "https://api.deepseek.com",
+  "schema_version": 2,
+  "attempt_accounting": "complete",
+  "request_kind": "investigation",
+  "versions": {
+    "app": "0.2.0",
+    "python": "3.12.14",
+    "pydantic-ai-slim": "2.64.0"
+  },
+  "status": "limited",
+  "execution_status": "ended",
+  "requirements_met": false,
+  "result_origin": "model",
+  "result": {
+    "request_kind": "investigation",
+    "outcome": "insufficient_information",
+    "observations": [
+      {
+        "evidence_id": "E1",
+        "observation": "本机默认解析器（192.0.2.53）对 example.com 的 A 查询返回 NOERROR，记录 192.0.2.10，TTL 60，无 CNAME 链。"
+      },
+      {
+        "evidence_id": "E2",
+        "observation": "默认解析器对 AAAA 查询返回 NOERROR，记录 2001:db8::10，TTL 60。"
+      },
+      {
+        "evidence_id": "E3",
+        "observation": "改用 1.1.1.1 查询 A 记录，结果与默认解析器一致：192.0.2.10，NOERROR。"
+      },
+      {
+        "evidence_id": "E4",
+        "observation": "1.1.1.1 查询 AAAA 记录同样返回 2001:db8::10，NOERROR。"
+      },
+      {
+        "evidence_id": "E5",
+        "observation": "到 192.0.2.10:80 的 TCP 连接成功（CONNECTED）。"
+      },
+      {
+        "evidence_id": "E6",
+        "observation": "到 192.0.2.10:443 的 TCP 连接成功（CONNECTED）。"
+      },
+      {
+        "evidence_id": "E7",
+        "observation": "到 [2001:db8::10]:80 的 TCP 连接成功（CONNECTED）。"
+      },
+      {
+        "evidence_id": "E8",
+        "observation": "到 [2001:db8::10]:443 的 TCP 连接成功（CONNECTED）。"
+      },
+      {
+        "evidence_id": "E9",
+        "observation": "对 https://example.com/ 的 HTTP 请求返回 200，final_url 与请求一致，无重定向，error 为 null；peer_ip 为 null，proxy_mode 标记为 fixture。"
+      },
+      {
+        "evidence_id": "E10",
+        "observation": "对 http://example.com/ 的 HTTP 请求返回 200，无重定向（此为明文 HTTP，仅作对照，非用户原始 URL）。"
+      }
+    ],
+    "hypotheses": [
+      {
+        "id": "H1",
+        "statement": "DNS 解析环节存在故障（解析失败、返回错误记录或被污染），导致 https://example.com/ 打不开。",
+        "status": "被削弱",
+        "supporting_evidence_ids": [],
+        "contradicting_evidence_ids": [
+          "E1",
+          "E2",
+          "E3",
+          "E4"
+        ],
+        "missing_information": [
+          "故障发生时刻的 DNS 查询结果（当前测量为合成 fixture，非故障现场）",
+          "浏览器是否启用 DoH/代理，其实际使用的解析器与结果"
+        ]
+      },
+      {
+        "id": "H2",
+        "statement": "DNS 与网络层均正常，问题出在应用层/客户端侧（TLS 握手、证书、浏览器缓存、代理、扩展或 hosts 等），或为已恢复的历史性故障。",
+        "status": "获得支持",
+        "supporting_evidence_ids": [
+          "E1",
+          "E2",
+          "E3",
+          "E4",
+          "E5",
+          "E6",
+          "E7",
+          "E8",
+          "E9"
+        ],
+        "contradicting_evidence_ids": [],
+        "missing_information": [
+          "用户端浏览器具体报错文本与错误码",
+          "TLS 证书链与握手细节（当前工具未提供）",
+          "用户机器 hosts 文件、代理设置、DoH 配置",
+          "故障是否可复现及发生时间"
+        ]
+      },
+      {
+        "id": "H3",
+        "statement": "目标服务器 443 端口不可达或服务不可用。",
+        "status": "被削弱",
+        "supporting_evidence_ids": [],
+        "contradicting_evidence_ids": [
+          "E6",
+          "E8",
+          "E9"
+        ],
+        "missing_information": [
+          "故障时刻的端口可达性测量",
+          "是否存在中间设备按源地址/地域拦截"
+        ]
+      }
+    ],
+    "conclusion": "在本次测量范围内（合成 fixture 环境），未发现 DNS 或网络层故障：默认解析器与 1.1.1.1 对 A/AAAA 均返回 NOERROR 且结果一致（E1–E4），IPv4/IPv6 的 80 与 443 端口 TCP 均可连接（E5–E8），HTTPS 请求返回 200（E9）。因此无法确认用户所述“打不开”的具体原因；DNS 故障与服务器 443 不可达两个假设均被现有证据削弱，问题更可能位于客户端/应用层或属于已恢复的历史现象，但缺少故障现场证据，不能下确定性诊断。",
+    "conclusion_evidence_ids": [
+      "E1",
+      "E2",
+      "E3",
+      "E4",
+      "E5",
+      "E6",
+      "E7",
+      "E8",
+      "E9"
+    ],
+    "limitations": [
+      "所有证据来自 fixture 合成数据，测量位置为 synthetic，不代表用户实际网络环境。",
+      "测量来自程序所在电脑，不能反映浏览器缓存、hosts 文件、代理或 DoH 的行为；未复现不否定历史现象。",
+      "HTTP 检查的 peer_ip 为 null，无法确认实际连接的对端 IP 与解析结果是否一致。",
+      "未进行 TLS 握手/证书检查，HTTP 200 不能排除特定客户端上的 TLS 或证书问题。",
+      "缺少故障发生时刻的测量，无法区分“已恢复”与“从未在本机出现”。"
+    ],
+    "recommendations": [
+      "在故障复现时，于用户机器上执行 nslookup/dig example.com A 与 AAAA，并分别指定默认解析器与 1.1.1.1，记录 rcode 与返回记录。",
+      "在用户浏览器中查看具体错误码（如 ERR_CONNECTION_TIMED_OUT、ERR_CERT_*、ERR_NAME_NOT_RESOLVED），据此区分 DNS、TCP、TLS 层问题。",
+      "检查用户机器 hosts 文件、系统代理、浏览器 DoH 设置与扩展，并尝试无痕模式/关闭代理后重试。",
+      "使用 curl -v https://example.com/ 或 openssl s_client -connect 192.0.2.10:443 观察 TLS 握手与证书链。",
+      "若问题仅出现在特定网络（如公司网/VPN），对比不同网络下的解析与连接结果，排查中间设备拦截。"
+    ]
+  },
+  "usage": {
+    "input_tokens": 2366,
+    "cache_write_tokens": 0,
+    "cache_write_1h_tokens": 0,
+    "cache_read_tokens": 2176,
+    "output_tokens": 1472,
+    "unmeasured_requests": 0,
+    "output_reasoning_tokens": 0,
+    "input_audio_tokens": 0,
+    "cache_audio_read_tokens": 0,
+    "output_audio_tokens": 0,
+    "audio_seconds": 0,
+    "details": {
+      "prompt_cache_hit_tokens": 2176,
+      "prompt_cache_miss_tokens": 190
+    },
+    "cost": "0.000918228",
+    "requests": 1,
+    "tool_calls": 0
+  },
+  "visible_messages": [
+    {
+      "kind": "request",
+      "parts": []
+    },
+    {
+      "kind": "response",
+      "parts": [
+        {
+          "tool_name": "final_result",
+          "args": "{\"request_kind\": \"investigation\", \"outcome\": \"insufficient_information\", \"observations\": [{\"evidence_id\": \"E1\", \"observation\": \"本机默认解析器（192.0.2.53）对 example.com 的 A 查询返回 NOERROR，记录 192.0.2.10，TTL 60，无 CNAME 链。\"}, {\"evidence_id\": \"E2\", \"observation\": \"默认解析器对 AAAA 查询返回 NOERROR，记录 2001:db8::10，TTL 60。\"}, {\"evidence_id\": \"E3\", \"observation\": \"改用 1.1.1.1 查询 A 记录，结果与默认解析器一致：192.0.2.10，NOERROR。\"}, {\"evidence_id\": \"E4\", \"observation\": \"1.1.1.1 查询 AAAA 记录同样返回 2001:db8::10，NOERROR。\"}, {\"evidence_id\": \"E5\", \"observation\": \"到 192.0.2.10:80 的 TCP 连接成功（CONNECTED）。\"}, {\"evidence_id\": \"E6\", \"observation\": \"到 192.0.2.10:443 的 TCP 连接成功（CONNECTED）。\"}, {\"evidence_id\": \"E7\", \"observation\": \"到 [2001:db8::10]:80 的 TCP 连接成功（CONNECTED）。\"}, {\"evidence_id\": \"E8\", \"observation\": \"到 [2001:db8::10]:443 的 TCP 连接成功（CONNECTED）。\"}, {\"evidence_id\": \"E9\", \"observation\": \"对 https://example.com/ 的 HTTP 请求返回 200，final_url 与请求一致，无重定向，error 为 null；peer_ip 为 null，proxy_mode 标记为 fixture。\"}, {\"evidence_id\": \"E10\", \"observation\": \"对 http://example.com/ 的 HTTP 请求返回 200，无重定向（此为明文 HTTP，仅作对照，非用户原始 URL）。\"}], \"hypotheses\": [{\"id\": \"H1\", \"statement\": \"DNS 解析环节存在故障（解析失败、返回错误记录或被污染），导致 https://example.com/ 打不开。\", \"status\": \"被削弱\", \"supporting_evidence_ids\": [], \"contradicting_evidence_ids\": [\"E1\", \"E2\", \"E3\", \"E4\"], \"missing_information\": [\"故障发生时刻的 DNS 查询结果（当前测量为合成 fixture，非故障现场）\", \"浏览器是否启用 DoH/代理，其实际使用的解析器与结果\"]}, {\"id\": \"H2\", \"statement\": \"DNS 与网络层均正常，问题出在应用层/客户端侧（TLS 握手、证书、浏览器缓存、代理、扩展或 hosts 等），或为已恢复的历史性故障。\", \"status\": \"获得支持\", \"supporting_evidence_ids\": [\"E1\", \"E2\", \"E3\", \"E4\", \"E5\", \"E6\", \"E7\", \"E8\", \"E9\"], \"contradicting_evidence_ids\": [], \"missing_information\": [\"用户端浏览器具体报错文本与错误码\", \"TLS 证书链与握手细节（当前工具未提供）\", \"用户机器 hosts 文件、代理设置、DoH 配置\", \"故障是否可复现及发生时间\"]}, {\"id\": \"H3\", \"statement\": \"目标服务器 443 端口不可达或服务不可用。\", \"status\": \"被削弱\", \"supporting_evidence_ids\": [], \"contradicting_evidence_ids\": [\"E6\", \"E8\", \"E9\"], \"missing_information\": [\"故障时刻的端口可达性测量\", \"是否存在中间设备按源地址/地域拦截\"]}], \"conclusion\": \"在本次测量范围内（合成 fixture 环境），未发现 DNS 或网络层故障：默认解析器与 1.1.1.1 对 A/AAAA 均返回 NOERROR 且结果一致（E1–E4），IPv4/IPv6 的 80 与 443 端口 TCP 均可连接（E5–E8），HTTPS 请求返回 200（E9）。因此无法确认用户所述“打不开”的具体原因；DNS 故障与服务器 443 不可达两个假设均被现有证据削弱，问题更可能位于客户端/应用层或属于已恢复的历史现象，但缺少故障现场证据，不能下确定性诊断。\", \"conclusion_evidence_ids\": [\"E1\", \"E2\", \"E3\", \"E4\", \"E5\", \"E6\", \"E7\", \"E8\", \"E9\"], \"limitations\": [\"所有证据来自 fixture 合成数据，测量位置为 synthetic，不代表用户实际网络环境。\", \"测量来自程序所在电脑，不能反映浏览器缓存、hosts 文件、代理或 DoH 的行为；未复现不否定历史现象。\", \"HTTP 检查的 peer_ip 为 null，无法确认实际连接的对端 IP 与解析结果是否一致。\", \"未进行 TLS 握手/证书检查，HTTP 200 不能排除特定客户端上的 TLS 或证书问题。\", \"缺少故障发生时刻的测量，无法区分“已恢复”与“从未在本机出现”。\"], \"recommendations\": [\"在故障复现时，于用户机器上执行 nslookup/dig example.com A 与 AAAA，并分别指定默认解析器与 1.1.1.1，记录 rcode 与返回记录。\", \"在用户浏览器中查看具体错误码（如 ERR_CONNECTION_TIMED_OUT、ERR_CERT_*、ERR_NAME_NOT_RESOLVED），据此区分 DNS、TCP、TLS 层问题。\", \"检查用户机器 hosts 文件、系统代理、浏览器 DoH 设置与扩展，并尝试无痕模式/关闭代理后重试。\", \"使用 curl -v https://example.com/ 或 openssl s_client -connect 192.0.2.10:443 观察 TLS 握手与证书链。\", \"若问题仅出现在特定网络（如公司网/VPN），对比不同网络下的解析与连接结果，排查中间设备拦截。\"]}",
+          "tool_call_id": "call_00_4IkV5pcB2kIyXqysaDIZ8787",
+          "tool_kind": null,
+          "id": null,
+          "provider_name": null,
+          "provider_details": null,
+          "part_kind": "tool-call"
+        }
+      ]
+    },
+    {
+      "kind": "request",
+      "parts": [
+        {
+          "tool_name": "final_result",
+          "content": "Final result processed.",
+          "tool_call_id": "call_00_4IkV5pcB2kIyXqysaDIZ8787",
+          "tool_kind": null,
+          "metadata": null,
+          "timestamp": "2026-10-31T04:01:14.035009Z",
+          "outcome": "success",
+          "retry": null,
+          "part_kind": "tool-return"
+        }
+      ]
+    }
+  ],
+  "evidence": [
+    {
+      "id": "E1",
+      "tool_call_id": "F1",
+      "tool_name": "query_dns",
+      "input": {
+        "domain": "example.com",
+        "record_type": "A",
+        "resolver": null
+      },
+      "data": {
+        "rcode": "NOERROR",
+        "record_type": "A",
+        "resolvers": [
+          "192.0.2.53"
+        ],
+        "records": [
+          {
+            "value": "192.0.2.10",
+            "ttl": 60
+          }
+        ],
+        "cname_chain": []
+      },
+      "source_mode": "fixture",
+      "measurement_location": "synthetic",
+      "execution_status": "ok"
+    },
+    {
+      "id": "E2",
+      "tool_call_id": "F2",
+      "tool_name": "query_dns",
+      "input": {
+        "domain": "example.com",
+        "record_type": "AAAA",
+        "resolver": null
+      },
+      "data": {
+        "rcode": "NOERROR",
+        "record_type": "AAAA",
+        "resolvers": [
+          "192.0.2.53"
+        ],
+        "records": [
+          {
+            "value": "2001:db8::10",
+            "ttl": 60
+          }
+        ],
+        "cname_chain": []
+      },
+      "source_mode": "fixture",
+      "measurement_location": "synthetic",
+      "execution_status": "ok"
+    },
+    {
+      "id": "E3",
+      "tool_call_id": "F3",
+      "tool_name": "query_dns",
+      "input": {
+        "domain": "example.com",
+        "record_type": "A",
+        "resolver": "1.1.1.1"
+      },
+      "data": {
+        "rcode": "NOERROR",
+        "record_type": "A",
+        "resolvers": [
+          "1.1.1.1"
+        ],
+        "records": [
+          {
+            "value": "192.0.2.10",
+            "ttl": 60
+          }
+        ],
+        "cname_chain": []
+      },
+      "source_mode": "fixture",
+      "measurement_location": "synthetic",
+      "execution_status": "ok"
+    },
+    {
+      "id": "E4",
+      "tool_call_id": "F4",
+      "tool_name": "query_dns",
+      "input": {
+        "domain": "example.com",
+        "record_type": "AAAA",
+        "resolver": "1.1.1.1"
+      },
+      "data": {
+        "rcode": "NOERROR",
+        "record_type": "AAAA",
+        "resolvers": [
+          "1.1.1.1"
+        ],
+        "records": [
+          {
+            "value": "2001:db8::10",
+            "ttl": 60
+          }
+        ],
+        "cname_chain": []
+      },
+      "source_mode": "fixture",
+      "measurement_location": "synthetic",
+      "execution_status": "ok"
+    },
+    {
+      "id": "E5",
+      "tool_call_id": "F5",
+      "tool_name": "check_tcp",
+      "input": {
+        "ip": "192.0.2.10",
+        "port": 80
+      },
+      "data": {
+        "ip": "192.0.2.10",
+        "port": 80,
+        "status": "CONNECTED"
+      },
+      "source_mode": "fixture",
+      "measurement_location": "synthetic",
+      "execution_status": "ok"
+    },
+    {
+      "id": "E6",
+      "tool_call_id": "F6",
+      "tool_name": "check_tcp",
+      "input": {
+        "ip": "192.0.2.10",
+        "port": 443
+      },
+      "data": {
+        "ip": "192.0.2.10",
+        "port": 443,
+        "status": "CONNECTED"
+      },
+      "source_mode": "fixture",
+      "measurement_location": "synthetic",
+      "execution_status": "ok"
+    },
+    {
+      "id": "E7",
+      "tool_call_id": "F7",
+      "tool_name": "check_tcp",
+      "input": {
+        "ip": "2001:db8::10",
+        "port": 80
+      },
+      "data": {
+        "ip": "2001:db8::10",
+        "port": 80,
+        "status": "CONNECTED"
+      },
+      "source_mode": "fixture",
+      "measurement_location": "synthetic",
+      "execution_status": "ok"
+    },
+    {
+      "id": "E8",
+      "tool_call_id": "F8",
+      "tool_name": "check_tcp",
+      "input": {
+        "ip": "2001:db8::10",
+        "port": 443
+      },
+      "data": {
+        "ip": "2001:db8::10",
+        "port": 443,
+        "status": "CONNECTED"
+      },
+      "source_mode": "fixture",
+      "measurement_location": "synthetic",
+      "execution_status": "ok"
+    },
+    {
+      "id": "E9",
+      "tool_call_id": "F9",
+      "tool_name": "check_http",
+      "input": {
+        "url": "https://example.com/"
+      },
+      "data": {
+        "status_code": 200,
+        "final_url": "https://example.com/",
+        "redirects": [],
+        "peer_ip": null,
+        "proxy_mode": "fixture",
+        "error": null
+      },
+      "source_mode": "fixture",
+      "measurement_location": "synthetic",
+      "execution_status": "ok"
+    },
+    {
+      "id": "E10",
+      "tool_call_id": "F10",
+      "tool_name": "check_http",
+      "input": {
+        "url": "http://example.com/"
+      },
+      "data": {
+        "status_code": 200,
+        "final_url": "http://example.com/",
+        "redirects": [],
+        "peer_ip": null,
+        "proxy_mode": "fixture",
+        "error": null
+      },
+      "source_mode": "fixture",
+      "measurement_location": "synthetic",
+      "execution_status": "ok"
+    }
+  ],
+  "attempts": [],
+  "elapsed_seconds": 7.438
+}

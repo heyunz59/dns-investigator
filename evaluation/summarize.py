@@ -35,7 +35,8 @@ def summarize(source, output):
     ax.bar(["A: facts supplied", "B: agent + tools"], [r["success_rate"] for r in result])
     reviewers = {r["reviewer"] for r in rows}
     review_label = "Automatic/AI review; human review pending" if any("Codex" in r or "automatic" in r for r in reviewers) else "Reviewed results"
-    ax.set(ylim=(0, 1), ylabel="Task success rate", title=f"Same-model comparison\n{review_label}")
+    ylabel = "Rule-screen pass rate (provisional)" if "pending" in review_label else "Task success rate"
+    ax.set(ylim=(0, 1), ylabel=ylabel, title=f"Same-model comparison\n{review_label}")
     fig.tight_layout()
     fig.savefig(output / "comparison.png", dpi=160)
     plt.close(fig)
