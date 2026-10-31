@@ -11,7 +11,7 @@ import matplotlib.pyplot as plt
 def summarize(source, output):
     rows = list(csv.DictReader(source.open(encoding="utf-8-sig")))
     if not rows or any(r["success"] not in {"0", "1"} or not r["reviewer"].strip() for r in rows):
-        raise ValueError("所有真实执行记录都须人工审核，success 填 0/1，reviewer 不得为空")
+        raise ValueError("每次真实执行都须标明评分来源，success 填 0/1，reviewer 不得为空；自动评分应注明待人工复核")
     result = []
     for arm in ("A", "B"):
         group = [r for r in rows if r["arm"] == arm]

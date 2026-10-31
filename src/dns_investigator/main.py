@@ -41,7 +41,7 @@ async def run(args):
         progress=lambda row: print(f"已记录 {row['id']} · {row['tool_name']} · {row['execution_status']}", flush=True))
     print(json.dumps(log.get("result", log.get("error")), ensure_ascii=False, indent=2))
     print(f"状态：{log['status']}；日志：{path.resolve()}")
-    return 0 if log["status"] == "completed" else 1
+    return 0 if log["status"] == "completed" else 3 if log["status"] == "limited" else 1
 
 
 def main():

@@ -1,5 +1,11 @@
 # 对照实验与评分
 
+v0.2：默认 8 案例 × 3 次 × 2 组，48 次真实模型运行。独立目录名含时间与随机后缀，保存源码哈希和原始数据快照。旧版 below 的 7 案例说明仅为历史背景；最新流程及计数口径见 [可靠性说明](../docs/reliability-v2.md)。`review.csv` 每完成一次运行即保存，不等整批结束。`call-review.jsonl` 的自动建议需独立人工审核。
+
+新结果可先运行 `python evaluation/publish_review.py results/evaluation-raw/实验目录 results/published/新的实验目录`，再运行 `python evaluation/summarize.py results/published/新的实验目录/review.csv --output results/published/新的实验目录`。publish_review 的结构/执行/关键词筛查不能证明全部语义正确，生成的 reviewer 明确为 automatic_rules_pending_human_review；审核人应逐条核对原始回答。目标目录已存在时拒绝覆盖。
+
+attempt_accounting 缺失或非 complete 的旧 B 组正确率输出 INCOMPLETE；不能再用 evidence 的条数补猜总尝试数。A 零调用维持 N/A。运行完成、结构通过、案例任务成功是不同概念，例如 C1 明确未复现且证据充分可以满足案例，但唯一根因仍未知。
+
 从项目根目录运行 `python evaluation/run_eval.py --repeats 3`。这将产生 7 案例 × 3 次 × 2 组模型运行，会消耗实际 API 额度。需要最小验证时先用 `--repeats 1`。没有密钥时退出，不生成模拟成绩。
 
 A 组直接获得对应 fixture 的全部原始事实，不能调用工具。B 组只通过工具按需获取事实。两组使用同一配置、相同问题、temperature=0、非思考模式，重复间交替先后顺序。A 组可能知道 B 组没有查询的事实；原始日志完整保留这一区别，不能将差异完全归因于推理水平。

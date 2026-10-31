@@ -46,9 +46,10 @@ class ToolBackend:
         self.emit("attempt_started", row)
         return row
 
-    def reject(self, row, code, message, retryable=False, status="rejected"):
+    def reject(self, row, code, message, retryable=False, status="rejected", emit=True):
         row.update(status=status, error=dict(code=code, message=message, retryable=retryable))
-        self.emit("attempt_finished", row)
+        if emit:
+            self.emit("attempt_finished", row)
         return dict(attempt_id=row["attempt_id"], execution_status="error", data={},
                     error=row["error"], source_mode="fixture" if self.fixture is not None else "live",
                     budget={"remaining": max(0, self.max_calls-len(self.attempts)),
@@ -99,7 +100,7 @@ class ToolBackend:
                     self.blocked.add(fingerprint)
                     return self.reject(attempt, "FIXTURE_NOT_COVERED",
                         "测试数据没有提供该项事实；不是 DNS 无记录/NXDOMAIN 或真实网络失败。不可重试；请保留未知并结束或选择其他有用检查。",
-                        status="unavailable")
+                        status="unavailable", emit=False)
                 row["data"] = matches[0]["data"].copy()
             else:
                 if name == "check_http" and safe_url(args["url"]) == safe_url(self.target.url):
@@ -110,10 +111,11 @@ class ToolBackend:
             self.calls.append(row)
             attempt.update(status="measured", evidence_id=row["id"])
         except asyncio.CancelledError:
-            self.reject(attempt, "CANCELLED", "测量被取消；没有取得有效事实。", status="cancelled")
+            self.reject(attempt, "CANCELLED", "测量被取消；没有取得有效事实。", status="cancelled", emit=False)
             raise
         except Exception:
-            return self.reject(attempt, "INTERNAL_EXECUTION_ERROR", "工具内部执行失败；没有取得有效测量，不能据此判断目标故障。", status="execution_error")
+            self.blocked.add(fingerprint)
+            return self.reject(attempt, "INTERNAL_EXECUTION_ERROR", "工具内部执行失败；没有取得有效测量，不能据此判断目标故障。", status="execution_error", emit=False)
         finally:
             attempt["duration_ms"] = round((time.monotonic()-started)*1000, 2)
             self.emit("attempt_finished", attempt)

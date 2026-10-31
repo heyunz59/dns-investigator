@@ -2,7 +2,7 @@
 
 基于 DeepSeek 和 PydanticAI 的命令行单 Agent。工具与证据来自运行程序的电脑；外部网络状态不能保证可复现。
 
-实现：三个网络工具、模型自主工具循环、CLI、证据引用校验、JSON/JSONL 日志、受限超时与调用预算、七个可重放场景、离线 CI 和同模型 A/B 实验入口。验证状态见 [docs/validation.md](docs/validation.md)。课程报告不在本项目范围内。
+实现：三个网络工具、模型自主工具循环、CLI、诊断结构与证据校验、独立调用尝试日志、受限超时与调用预算、八个可重放场景、离线 CI 和同模型 A/B 实验入口。v0.2 修复说明见 [docs/reliability-v2.md](docs/reliability-v2.md)，验证状态见 [docs/validation.md](docs/validation.md)。课程报告不在本项目范围内。
 
 需求见 [docs/PRD.md](docs/PRD.md)。真实密钥仅存放在本地 `.env`，不要提交原始运行日志。
 
@@ -47,7 +47,7 @@ notepad .env
 
 具体评分、调用遗漏、零调用 N/A 与信息差异见 [evaluation/README.md](evaluation/README.md)。同模型对照必须是真实运行，CSV 和图表仅在实际运行并人工评分后生成。不要把 fixture 设计或框架测试的通过率当成模型效果。
 
-本次已完成 14 次真实模型对照运行；[原始回答、初步复核表和图表](results/published/evaluation-20261031/README.md)均已保留。Codex 规则辅助复核结果为 A 组 6/7、B 组 4/7，**待独立人工复核**，未证明 Agent 优于直接接收事实的模型。每场景只重复 1 次，稀疏 fixture 和重复无效调用限制了解释力度。
+旧版 14 次真实模型对照的[原始记录](results/published/evaluation-20261031/README.md)保留。旧版以 evidence 数量估计工具调用总数，遗漏校验拒绝等尝试，因此历史工具正确率不能视为完整统计。v0.2 使用独立 attempts 分母；旧日志无法补齐时输出 INCOMPLETE，不猜测。新实验结果见验证记录。
 
 架构见 [docs/architecture.md](docs/architecture.md)，实际公开材料在 `results/published/`。原始日志位于 `results/runs/` 和 `results/evaluation-raw/`，均被 Git 忽略；仍须自行保管。工具日志公开导出可用 `scripts/publish_tools.py`，它会隐藏本地 DNS 配置，其他用户输入、路径等仍需逐项审核。首次及后续推送前运行 `python scripts/check_public.py`，并人工检查待提交文件。
 
@@ -59,4 +59,7 @@ notepad .env
 - HTTP 总预算 15 秒、单次 DNS/TCP 最多 5 秒，默认最多 10 次工具调用；模型调用有单次超时和整次运行预算。
 - 重定向最多 5 次、正文最多读取 64 KiB；不渲染网页、不读取正文给模型、不执行修复或扫描无关端口。
 - 证据编号验证不能保证语义正确；质量以保留原始回答的人工案例评分为准。
+- `status=completed` 表示模型输出通过本地结构和证据要求，`limited` 表示信息不足，`failed` 表示执行失败；另记 execution_status、requirements_met、result_origin。结构检查不能保证假设合理性和全部语义判断正确。
+- CLI 退出码：0=通过本地结构要求，3=信息不足的有限结果，1=运行失败，2=输入/配置错误。有限结果不会被伪装成确定性根因诊断。
+- 原始记录格式 v2 的 attempts 是全部已观察到的网络工具调用尝试，evidence 仅含有效测量。框架参数拒绝、工具内部失败、重复与预算拒绝仍计入尝试；结构化最终输出不计入网络工具分母。
 - 网络测量具有时效性，公开仓库只存代码和材料，不会自动部署在线服务。
