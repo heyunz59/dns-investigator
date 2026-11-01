@@ -30,6 +30,12 @@ def now():
     return datetime.now(timezone.utc).isoformat()
 
 
+class InputRejected(ValueError):
+    def __init__(self,reason,message):
+        self.reason=reason
+        super().__init__(message)
+
+
 class ToolBackend:
     """Per-investigation evidence ledger. Fixture backend never falls through to live."""
     def __init__(self, target, fixture: Path | None = None, max_calls=10, on_evidence=None):
@@ -96,8 +102,9 @@ class ToolBackend:
         self.emit("attempt_started", row)
         return row
 
-    def reject(self, row, code, message, retryable=False, status="rejected", emit=True):
+    def reject(self, row, code, message, retryable=False, status="rejected", emit=True, reason=None):
         row.update(status=status, error=dict(code=code, message=message, retryable=retryable))
+        if reason:row["error"]["reason"]=reason
         if code in {"CANCELLED","DNS_TOOL_TIMEOUT"} and row.get("authority_state"):
             state=row["authority_state"]
             state.update(discovery_status="INTERRUPTED",completed=False,
@@ -142,6 +149,9 @@ class ToolBackend:
             return self.reject(attempt,"INVALID_INPUT",f"timeout 必须大于0且不超过{upper}秒；此次未执行。")
         try:
             self._validate(name, args)
+        except InputRejected as exc:
+            self.blocked.add(fingerprint)
+            return self.reject(attempt,"INVALID_INPUT",str(exc),reason=exc.reason)
         except (ValueError, KeyError, TypeError, UnicodeError):
             self.blocked.add(fingerprint)
             return self.reject(attempt, "INVALID_INPUT", "参数非法或不在本次调查范围；检查目标、端口、类型和已有 DNS 证据。")
@@ -240,13 +250,13 @@ class ToolBackend:
         if name in {"query_dns","compare_resolvers","query_authoritative"}:
             requested=domain(args["domain"])
             if requested != self.target.domain and (name!="query_dns" or requested not in alias_paths(self)):
-                raise ValueError("DNS 查询仅限本次调查域名")
+                raise InputRejected("DNS_TARGET_NOT_AUTHORIZED","独立 DNS 查询仅限原目标；query_dns 可跟进已观测且授权的 CNAME。NS 发现中的名称不自动成为独立目标，不要更换类型重试同一未授权名称。")
             if args.get("record_type", "A") not in TYPES:
                 raise ValueError("不支持该 DNS 类型")
             if args.get("resolver"):
                 ipaddress.ip_address(args["resolver"])
                 if self.fixture is None and not self.dns.permitted(args["resolver"]):
-                    raise ValueError("未经配置授权的私有 DNS 地址")
+                    raise InputRejected("DNS_RESOLVER_NOT_AUTHORIZED","显式 resolver 地址未经授权；不要更换类型或超时重试同一地址。系统 DNS 使用 resolver=None；配置的公共递归路径见 query_scope。权威对照使用 query_authoritative。")
         elif name == "check_tcp":
             ipaddress.ip_address(args["ip"])
             if args["port"] not in {80, 443, self.target.port}:
@@ -303,7 +313,7 @@ class ToolBackend:
     async def check_http(self, url, timeout=15):
         data = dict(status_code=None, final_url=safe_url(url), redirects=[], peer_ip=None,
                     proxy_mode="disabled (trust_env=False)", bytes_read=0, error=None,
-                    body_state="not_read",body_complete=False,body_limit_bytes=65536)
+                    body_state="not_read",body_complete=None,body_limit_bytes=65536)
         transport=None
         try:
             # Outer deadline includes all redirects, DNS, TLS and body reads.
@@ -356,6 +366,6 @@ class ToolBackend:
             if data["status_code"] is None:
                 data.update(execution_status="error",error=dict(code=code,retryable=False))
         finally:
-            if data["body_state"]=="reading":data["body_state"]="read_error"
+            if data["body_state"]=="reading":data.update(body_state="read_error",body_complete=False)
             data["connection_attempts"]=transport.backend.events if transport is not None and hasattr(transport,"backend") else []
         return data

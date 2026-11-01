@@ -24,7 +24,7 @@ QUESTIONS=dict(serial="调查 probe.example 的权威 DNS 回答是否一致，�
     normal="查询 probe.example 的 A 记录。")
 
 
-async def run(out,arm,ref,repeats):
+async def run(out,arm,ref,repeats,logical_identities=False):
     out.mkdir(parents=True,exist_ok=False)
     config=Config.load()
     if not config.api_key:
@@ -34,18 +34,19 @@ async def run(out,arm,ref,repeats):
     metadata=dict(arm=arm,source_ref=ref,model=config.model,temperature=0,thinking="disabled",tool_budget=8,
         dns_budget=24,model_timeout=45,controlled_dns_timeout=.3,repeats_critical=repeats,repeats_control=1,
         start_utc=datetime.now(timezone.utc).isoformat(),source_hashes={p.name:hashlib.sha256(p.read_bytes()).hexdigest() for p in source.glob("*.py")},
-        mode="real_deepseek_with_controlled_loopback_dns",public_network_targets=False,scoring_not_in_prompt=True)
+        mode="real_deepseek_with_controlled_loopback_dns",public_network_targets=False,scoring_not_in_prompt=True,
+        controlled_logical_identities=logical_identities)
     (out/"experiment.json").write_text(json.dumps(metadata,indent=2),encoding="utf-8")
     manifest=[]
     for repeat in range(1,repeats+1):
         for scenario in ("serial","ns_timeout"):
             started=time.monotonic()
-            async with controlled(scenario) as environment:
+            async with controlled(scenario,logical_identities=logical_identities) as environment:
                 log,path=await investigate(QUESTIONS[scenario],parse_target("probe.example"),config,log_dir=out)
             row=review(log,path,arm,scenario,repeat,started,environment)
             manifest.append(row);persist(out,manifest,row)
             if (log.get("error") or {}).get("category") in {"ModelHTTPError","AuthenticationError"}:return
-    async with controlled("normal") as environment:
+    async with controlled("normal",logical_identities=logical_identities) as environment:
         started=time.monotonic();log,path=await investigate(QUESTIONS["normal"],parse_target("probe.example"),config,log_dir=out)
     row=review(log,path,arm,"normal",1,started,environment);manifest.append(row);persist(out,manifest,row)
 
@@ -72,6 +73,7 @@ def persist(out,manifest,row):
 if __name__=="__main__":
     parser=argparse.ArgumentParser();parser.add_argument("out",type=Path);parser.add_argument("--arm",required=True)
     parser.add_argument("--source-ref",required=True);parser.add_argument("--repeats",type=int,default=3)
+    parser.add_argument("--logical-identities",action="store_true")
     args=parser.parse_args()
     if not 1<=args.repeats<=5:parser.error("repeats must be 1..5")
-    asyncio.run(run(args.out,args.arm,args.source_ref,args.repeats))
+    asyncio.run(run(args.out,args.arm,args.source_ref,args.repeats,args.logical_identities))

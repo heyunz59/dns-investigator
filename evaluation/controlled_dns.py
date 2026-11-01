@@ -43,32 +43,52 @@ class Server(asyncio.DatagramProtocol):
             r.answer.append(dns.rrset.from_text(name+".",60,"IN","NS",*hosts))
         elif typ=="A":
             value="9.9.9.9" if name=="ns1.test.example" else "8.8.4.4" if name=="ns2.test.example" else "192.0.2.11" if self.scenario=="serial" and self.index==4 else "192.0.2.10"
+            if self.scenario=="ns_many" and name=="ns3.test.example":value="8.8.4.4"
             r.answer.append(dns.rrset.from_text(name+".",60,"IN","A",value))
         self.transport.sendto(r.to_wire(),addr)
 
 
 @asynccontextmanager
-async def controlled(scenario):
+async def controlled(scenario, logical_identities=False):
     transports=[];endpoints={}
-    original_query=DNSClient.query;original_call=ToolBackend.call
+    original_query=DNSClient.query;original_call=ToolBackend.call;original_add=ToolBackend.add_dns_evidence
     for index,identity in enumerate((None,"1.1.1.1","8.8.8.8","9.9.9.9","8.8.4.4")):
         host=f"127.0.0.{index+1}"
         t,_=await asyncio.get_running_loop().create_datagram_endpoint(lambda i=index:Server(i,scenario),local_addr=(host,0))
         transports.append(t);endpoints[identity]=(host,t.get_extra_info("sockname")[1])
     async def query(client,name,typ="A",resolver=None,timeout=5,parent=None,role="recursive",port=53):
+        if logical_identities and resolver=="1.0.0.1":resolver=None
         if resolver not in endpoints:
             return dict(qname=name,qtype=typ,execution_status="error",error=dict(code="CONTROLLED_PATH_NOT_PROVIDED",retryable=False))
         host,port=endpoints[resolver]
-        return await original_query(client,name,typ,host,min(timeout,.3),parent,role,port)
+        result=await original_query(client,name,typ,host,min(timeout,.3),parent,role,port)
+        if logical_identities:
+            if result.get("resolver")==host:result["resolver"]=resolver or "1.0.0.1"
+            result["resolvers"]=[resolver or "1.0.0.1"]
+            result["system_resolver_configuration"]=["1.0.0.1"] if resolver is None else None
+        return result
+    def add(backend,data,parent,query_id=None):
+        if logical_identities:
+            # Q.server/port and responding_resolver keep the actual loopback endpoint.
+            # resolver is the configured logical identity, not a new authorized IP.
+            physical=data.get("resolver")
+            identity=next((k for k,v in endpoints.items() if v[0]==physical),None)
+            if any(v[0]==physical for v in endpoints.values()):
+                data["resolver"]=identity or "1.0.0.1"
+                data["controlled_network_endpoint"]=dict(host=physical,port=endpoints[identity][1])
+        return original_add(backend,data,parent,query_id)
     async def call(backend,name,provider_id=None,**args):
+        if logical_identities:backend.dns.system=["1.0.0.1"]
         if name not in {"query_dns","compare_resolvers","query_authoritative"}:
             attempt=next((a for a in backend.attempts if provider_id and a.get("provider_call_id")==provider_id and a["status"]=="pending"),None)
             return backend.reject(attempt or backend.register(name,args,provider_id),"CONTROLLED_NON_DNS_DISABLED","本次受控实验只提供 DNS 网络路径。")
         return await original_call(backend,name,provider_id=provider_id,**args)
     try:
-        with patch.object(DNSClient,"query",query),patch.object(ToolBackend,"call",call):
+        with patch.object(DNSClient,"query",query),patch.object(ToolBackend,"call",call),patch.object(ToolBackend,"add_dns_evidence",add):
             yield dict(scenario=scenario,endpoints=[dict(configured_identity=k,host=v[0],port=v[1]) for k,v in endpoints.items()],
-                timeout_seconds=.3,network_scope="loopback_only",limitation="Synthetic DNS wire server; no full recursive cache/delegation/DNSSEC behavior")
+                timeout_seconds=.3,network_scope="loopback_only",logical_identities=logical_identities,
+                system_logical_identity="1.0.0.1" if logical_identities else None,
+                limitation="Synthetic DNS wire server; Q endpoints are loopback; optional logical resolver identities do not relax production permissions; no full recursive cache/delegation/DNSSEC behavior")
     finally:
         for t in transports:t.close()
 

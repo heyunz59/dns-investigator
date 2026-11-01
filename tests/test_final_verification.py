@@ -22,7 +22,7 @@ async def test_body_completion_is_distinct_from_limit_and_read_error(mode):
     fact = result.measured_facts[0]
     expected = {"complete": "complete", "limit": "limit_reached", "timeout": "read_error"}[mode]
     assert returned["data"].get("body_state") == fact.get("body_state") == expected
-    assert fact.get("body_complete") == (mode == "complete")
+    assert fact.get("body_complete") is ({"complete":True,"limit":None,"timeout":False}[mode])
     assert fact["status_code"] == 200 and expected in result.observations[0].observation
     assert (fact["error"] == "TIMEOUT") == (mode == "timeout")
     if mode == "limit":
