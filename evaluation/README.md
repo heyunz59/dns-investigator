@@ -21,3 +21,8 @@ A 组直接获得对应 fixture 的全部原始事实，不能调用工具。B �
 所有运行与评分表默认在被忽略的 results/evaluation-raw/。公开前逐个检查域名、网址路径、输入与输出，复制可公开样本到 results/published/。不得预填成功率；未执行不算失败，也不算成功。截图必须来自实际运行；尚未获得的截图不能以示意图冒充。
 
 本次已实际执行的初步实验在 `results/published/evaluation-20261031/`，每组每案例 1 次。评分由 Codex 根据保存的真实回答逐项复核，并辅以执行状态、必要工具与参数的程序检查，**未经过独立人工盲评**。review.csv 与 call-review.csv 可逐项修改并重算；不要将该初步评分描述为人工评测。正式人工审核时建议核对全量回答，并补到 3 次重复。
+# DNS 判断专项评测（2026-11-01）
+
+使用 accuracy_cases.py 的固定事实，标准答案独立存于 accuracy_expectations.json，不提供给 Agent。capture_accuracy.py 是固定证据回放；controlled_dns.py 是仅测试用回环依赖注入，正式私有地址权限不放宽；accuracy_model_run.py 是真实 DeepSeek + 受控 DNS，不是公网验证，也不是 fixture 测试。summarize_accuracy.py 输出分母、A/Q/E、时间、失败、源码哈希和待人工复核标记。
+
+新评测日志 v5；review_rules 的假设数量只作观察，不参与成功门槛。dns_v3_metrics 按日志版本选历史/当前代码名，不能把不同口径数字直接混算。历史 cases.json 的“至少两个”评分文字保留为旧口径，不作为新程序完成门槛。新实验和历史报告均保留，不修改旧评分。

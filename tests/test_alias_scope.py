@@ -102,3 +102,27 @@ def test_one_deep_chain_and_total_branch_cap(tmp_path):
     b.calls=[]
     for i in range(12):alias(b,target=f"branch{i}.other")
     assert len(alias_paths(b))==1+MAX_ALIAS_TARGETS
+
+
+async def test_agent_can_select_connected_followup_without_extra_tool(tmp_path):
+    from pydantic_ai.models.function import FunctionModel
+    from pydantic_ai.messages import ModelResponse,ToolCallPart
+    from dns_investigator.agent import investigate
+    from dns_investigator.config import Config
+    fixture=tmp_path/"agent-alias.json"
+    fixture.write_text(json.dumps([
+        dict(tool="query_dns",match=dict(domain="probe.example"),data=dict(rcode="NOERROR",result_kind="ALIAS_INCOMPLETE",records=[],
+            cname_chain=[dict(name="probe.example",target="target.other")])),
+        dict(tool="query_dns",match=dict(domain="target.other"),data=dict(rcode="NOERROR",result_kind="NOERROR",records=[dict(value="192.0.2.10",ttl=60)]))
+    ]),encoding="utf-8")
+    def model(messages,info):
+        returns=[p.content for m in messages for p in m.parts if getattr(p,"part_kind",None)=="tool-return" and getattr(p,"tool_name",None)=="query_dns"]
+        assert len(info.function_tools)==5
+        if len(returns)<2:
+            if returns:assert any(t["target"]=="target.other" for t in returns[0]["allowed_dns_targets"])
+            return ModelResponse(parts=[ToolCallPart("query_dns",{"domain":"probe.example" if not returns else "target.other"})])
+        return ModelResponse(parts=[ToolCallPart(info.output_tools[0].name,dict(request_kind="investigation",observations=[dict(evidence_id="E2",observation="已取得末端记录")],
+            hypotheses=[],conclusion="本次取得别名末端记录，未确认其他原因",conclusion_evidence_ids=["E2"],limitations=["脚本模型测试"],recommendations=[]))])
+    log,_=await investigate("调查 probe.example",parse_target("probe.example"),Config("test"),fixture=fixture,model=FunctionModel(model),log_dir=tmp_path/"logs")
+    assert log["status"]=="completed" and [a["input"]["domain"] for a in log["attempts"]]==["probe.example","target.other"]
+    assert log["result"]["measured_facts"][1]["target_authorization"]["evidence_ids"]==["E1"]

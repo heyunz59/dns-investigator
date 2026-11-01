@@ -45,7 +45,7 @@ async def run(out,arm,scenarios,wire_only=False):
             source_hashes={p.name:hashlib.sha256(p.read_bytes()).hexdigest() for p in source.glob("*.py")},
             semantic_review="AI_assisted_pending_independent_human_review")
         manifest.append(row)
-        (out/f"{arm}-manifest.json").write_text(json.dumps(manifest,ensure_ascii=False,indent=2),encoding="utf-8")
+        (out/f"{arm}{'-wire' if wire_only else ''}-manifest.json").write_text(json.dumps(manifest,ensure_ascii=False,indent=2),encoding="utf-8")
         print(arm,scenario,row.get("status","measured"),row["A"],row["Q"],row["E"],flush=True)
         if log.get("error",{}).get("category") in {"ModelHTTPError","AuthenticationError"}:break
 

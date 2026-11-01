@@ -71,6 +71,7 @@ def evidence_bound_report(result,backend):
         source_mode="fixture" if backend.fixture is not None else "live",execution_status="error",
         parent_tool_call_id=q.get("parent_tool_call_id"),query_attempt_id=q.get("query_attempt_id"),
         error={"code":q["status"]}) for q in backend.dns.attempts if q["status"] not in {"measured","running"}]
+    failures += [r for a in backend.attempts for r in a.get("dns_execution_issues",[])]
     result.dns_comparison=compare_details(dns_rows+failures)
     result.diagnostic_assessment,result.assessment_level=assessment(result,measured)
     def describe(f):
@@ -191,4 +192,6 @@ def assessment(result,measured):
         if http_errors:parts=["已取得 HTTP 层响应或请求错误，详情见事实表；这不直接证明 DNS 故障或客户端问题。"]
         elif dns and all(r.get("result")=="NOERROR" and r.get("records") for r in dns):parts=["本次已测 DNS 查询取得记录，未发现该范围的解析状态异常；不能据此确认用户客户端原因。"]
         else:parts=["已有测量不足以定位 DNS 异常范围；未测路径保持未知。"]
+    if result.execution_issues:
+        parts.append("另有调用执行问题（"+"、".join(i.attempt_id+":"+i.error_code for i in result.execution_issues)+"）；这些不是 DNS 应答，不能当作 NXDOMAIN；有效测量子集仍保留。")
     return " ".join(parts),"scope_localized" if localized else "measured_without_root_cause"

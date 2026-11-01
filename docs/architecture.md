@@ -1,6 +1,16 @@
 # 实现与证据边界
 
-## v0.3 当前架构（优先于以下历史描述）
+## 2026-11-01：DNS 范围定位与日志 v5
+
+单 Agent 与五个正式 Tool 保持不变；A/Q/E、ContextVar 调用归属、并发、双层预算及 HTTP/TLS/IPv6 逻辑保留。新增模块 alias_scope.py 是普通授权规则，不是工具或 Agent。只有 query_dns 可跟进同模式有效 DNS 证据连接到原始目标的 CNAME，其他工具仍限原目标。跟进 E 保存 target_authorization 链及父 E；完整末端已有同类型记录时拒绝重复跟进。深度/目标数上限均8，既有 A/Q/时间/重复预算继续生效。网页跳转、模型文本、无关 Additional 不授权；观测链路不表示 DNSSEC 验证。
+
+DNSClient → transport_status / dns_rcode / result_kind → compare_details（路径、逐对资格、排除原因、TTL/耗时观察）→ diagnose（查询范围与时间窗口聚合）→ 程序事实表 / Findings / 受约束范围摘要 / 建议。Agent 每次得到最新 Finding 和 allowed_dns_targets，自主决定继续或停止。规则不自动发查询。所有 root_cause_confirmed 固定 false；不声称已实现直接根因验证规则。
+
+比较窗口最多300秒；来源、目标、类型不同或否定回答适用名不同不做内容冲突比较；非 AA 权威候选不当作已确认权威。未知来源/时间保留限制；没有把历史 TIMEOUT 适配为收到的报文。失败 A/Q 与有效 E 分离，局部失败留在结构中，成功子集继续比较。TIMEOUT 仍是 E 测量，但 dns_rcode=null。旧 rcode=TIMEOUT 只通过非修改适配函数读取。TTL/耗时不生成故障告警。
+
+日志 v5 增加 diagnosis_policy=scoped_dns_v2、report_policy=scoped_evidence_bound_v2。模型草稿保持独立，模型事实声明若不匹配则重试；最终失败由程序保留事实、Finding 和摘要，report_fallback_reason 说明原因，状态仍 failed。hypotheses 数量只作观察，不决定 completed；completed 也不代表根因确认或语义准确。旧 schema 的新增字段均有默认值，旧报告不自动改写。[实验与边界](dns-accuracy-upgrade.md)。
+
+## v0.3 原始架构（历史描述，以上文日志 v5 为准）
 
 用户输入 → 唯一 DeepSeek/PydanticAI Agent → 五个正式工具 → ToolBackend → DNSClient / 现有 TCP、HTTP → E 测量 → 确定性 Diagnosis Engine → Finding 返回给 Agent → 模型选择下一项工具或输出有限结果。
 

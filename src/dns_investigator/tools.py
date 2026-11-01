@@ -182,6 +182,11 @@ class ToolBackend:
                 measured=evidence_rows(self.owned_evidence(attempt["attempt_id"]))
                 failures=[{**r,"source_mode":row["source_mode"],"parent_tool_call_id":attempt["attempt_id"]}
                           for r in row["data"].get("responses",[]) if r.get("execution_status")=="error"]
+                if self.fixture is not None and failures:
+                    # No packet was sent: retain typed A-linked subquery issues, never Q/E.
+                    attempt["dns_execution_issues"]=copy.deepcopy(failures)
+                if failures:
+                    attempt["error"]=dict(code="PARTIAL_DNS_EXECUTION_ERROR",message="部分 DNS 子查询执行失败；有效子集仍保留，详见 comparison。",retryable=False)
                 row["data"]["comparison"]=compare_details(measured+failures)
                 row["data"]["differences"]=row["data"]["comparison"]["differences"]
                 attempt.update(status="measured" if ids else "unavailable",evidence_ids=ids)

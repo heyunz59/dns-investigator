@@ -17,21 +17,22 @@ from dns_investigator.tools import ToolBackend
 from dns_investigator.target import parse_target
 
 
-def capture(destination):
+def capture(destination,source_ref=None):
     source=ROOT/"results/published/dns-v3/live-agent.json"
     historical=json.loads(source.read_text(encoding="utf-8"))
     inputs={**cases(),"historical_live_agent":historical["evidence"]}
     rows={}
     for name,evidence in inputs.items():
         finding=diagnose(evidence)
-        backend=ToolBackend(parse_target("probe.example"));backend.calls=evidence
+        target=historical["incident"]["target"]["domain"] if name=="historical_live_agent" else "probe.example"
+        backend=ToolBackend(parse_target(target));backend.calls=evidence
         result=InvestigationResult(observations=[],hypotheses=[],conclusion="draft",conclusion_evidence_ids=[],limitations=[],recommendations=[],
             outcome="answered" if evidence else "insufficient_information",findings=[Finding(**f) for f in finding])
         report=evidence_bound_report(result,backend)
         rows[name]=dict(evidence=evidence,comparison=compare([e["data"] for e in evidence]),findings=finding,report=report.model_dump())
     payload=dict(mode="fixed_evidence_replay",paid_model=False,new_network_measurements=False,
-        commit=subprocess.check_output(["git","rev-parse","HEAD"],text=True).strip(),
-        source_hashes={p.name:hashlib.sha256(p.read_bytes()).hexdigest() for p in (ROOT/"src/dns_investigator").glob("*.py")},
+        commit=source_ref or subprocess.check_output(["git","rev-parse","HEAD"],text=True).strip(),
+        source_hashes={p.name:hashlib.sha256(p.read_bytes()).hexdigest() for p in Path(sys.modules[diagnose.__module__].__file__).parent.glob("*.py")},
         historical_source_sha256=hashlib.sha256(source.read_bytes()).hexdigest(),cases=rows)
     destination.parent.mkdir(parents=True,exist_ok=True)
     if destination.exists():raise FileExistsError("Do not overwrite a saved replay")
@@ -40,5 +41,5 @@ def capture(destination):
 
 
 if __name__=="__main__":
-    p=argparse.ArgumentParser();p.add_argument("destination",type=Path)
-    capture(p.parse_args().destination)
+    p=argparse.ArgumentParser();p.add_argument("destination",type=Path);p.add_argument("--source-ref")
+    args=p.parse_args();capture(args.destination,args.source_ref)

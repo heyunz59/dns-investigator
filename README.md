@@ -1,5 +1,7 @@
 # DNS 调查助手
 
+2026-11-01 DNS 判断与范围定位升级：区分传输结果和真实 RCODE；超时不参与内容/TTL 冲突比较，部分失败不隐藏有效子集。Finding 按目标、类型、来源及时间范围聚合；正式输出分为 measured_facts、findings、diagnostic_assessment 和 recommendations。调查不再按假设数量机械降级，保留候选身份和证据关系。仅 query_dns 可跟进已观测、同来源、与原目标连通的 CNAME 链（深度/目标数均最多8），不扩展为任意扫描。模型总结失败仍保留程序生成的事实与范围摘要。[本轮实际对照、运行方法与边界](docs/dns-accuracy-upgrade.md)。本轮仅本地提交，未推送、合并或发布；远程 Actions 未验证。
+
 报告层验收修复：.invalid 背景与实际观测分开；HTTP 摘要保留错误、跳转、最终 URL 和证书类别；假设身份不按类别重写，具体范围内的证据关系另行约束。[验证与边界](docs/report-acceptance-fixes.md)。
 
 九案例修复：正式事实与结论按实际 E 测量逐行生成，执行错误使用独立 A 引用；模型草稿另存，不作为已验证结论展示。候选原因保持待验证，单项查询简化；HTTP 安全异常链和 Windows IPv6 地址处理已修正。日志格式 v4，[逐项记录与边界](docs/manual-review-fixes.md)。
@@ -26,7 +28,7 @@ v0.3 针对性修复：并发测量按调用 ID 归属，保留独立 HTTP/DNS �
 
 基于 DeepSeek 和 PydanticAI 的命令行单 Agent。工具与证据来自运行程序的电脑；外部网络状态不能保证可复现。
 
-实现：三个网络工具、模型自主工具循环、CLI、诊断结构与证据校验、独立调用尝试日志、受限超时与调用预算、八个可重放场景、离线 CI 和同模型 A/B 实验入口。v0.2 修复说明见 [docs/reliability-v2.md](docs/reliability-v2.md)，验证状态见 [docs/validation.md](docs/validation.md)。课程报告不在本项目范围内。
+实现：五个正式工具、模型自主工具循环、CLI、诊断结构与证据校验、独立调用尝试日志、受限超时与调用预算、可重放场景、离线 CI 和同模型 A/B 实验入口。当前日志格式 v5，旧日志按读取适配，不修改原文件。v0.2 修复说明见 [docs/reliability-v2.md](docs/reliability-v2.md)，验证状态见 [docs/validation.md](docs/validation.md)。课程报告不在本项目范围内。
 
 需求见 [docs/PRD.md](docs/PRD.md)。真实密钥仅存放在本地 `.env`，不要提交原始运行日志。
 

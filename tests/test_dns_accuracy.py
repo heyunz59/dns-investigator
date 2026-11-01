@@ -137,3 +137,24 @@ def test_internal_discovery_failure_advice_does_not_expand_authorization():
     r=evidence_bound_report(r,b)
     assert all("外部专项检查" in c for f in r.findings for c in f.next_checks)
     assert "ns.internal.example A" in r.recommendations[-1]
+
+
+async def test_fixture_partial_execution_issue_survives_final_report(tmp_path):
+    from dns_investigator.schemas import InvestigationResult
+    from dns_investigator.tools import ToolBackend
+    from dns_investigator.target import parse_target
+    from dns_investigator.reporting import evidence_bound_report
+    entries=[e["data"] for e in cases()["nxdomain"]]
+    entries.append(dict(qname="probe.example",qtype="A",resolver="9.9.9.9",execution_status="error",error=dict(code="FIXTURE_PATH_NOT_PROVIDED")))
+    fixture=tmp_path/"partial.json";fixture.write_text(json.dumps([dict(tool="compare_resolvers",match=dict(domain="probe.example"),data=dict(responses=entries))]),encoding="utf-8")
+    b=ToolBackend(parse_target("probe.example"),fixture)
+    await b.call("compare_resolvers",domain="probe.example")
+    r=InvestigationResult(observations=[],hypotheses=[],conclusion="draft",conclusion_evidence_ids=[],limitations=[],recommendations=[])
+    r=evidence_bound_report(r,b)
+    assert len(b.calls)==2 and not b.dns.attempts and len(b.attempts)==1
+    assert r.execution_issues[0].attempt_id=="A1"
+    assert r.execution_issues[0].error_code=="PARTIAL_DNS_EXECUTION_ERROR"
+    failed=[p for p in r.dns_comparison["paths"] if p["execution_status"]=="error"]
+    assert len(failed)==1 and failed[0]["attempt_id"]=="A1" and failed[0]["evidence_id"] is None
+    assert "RECURSIVE_RESPONSE_DISAGREEMENT" in {f.code for f in r.findings}
+    assert "A1:PARTIAL_DNS_EXECUTION_ERROR" in r.diagnostic_assessment

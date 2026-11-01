@@ -28,7 +28,7 @@ async def run(repeats):
     out.mkdir(parents=True, exist_ok=False)
     metadata = dict(repeats_requested=repeats, cases=len(cases), expected_executions=repeats*len(cases)*2,
                     model=config.model, thinking="disabled", temperature=0, max_tool_calls=config.max_tool_calls,
-                    model_timeout=config.model_timeout, schema_version=4,
+                    model_timeout=config.model_timeout, schema_version=5,scoring_policy="scoped_v2_no_hypothesis_count_gate",
                     dns_query_budget=config.dns_query_budget,dns_tool_timeout=config.dns_tool_timeout,
                     commit=subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=ROOT, text=True).strip(),
                     source_hashes={str(p.relative_to(ROOT)): hashlib.sha256(p.read_bytes()).hexdigest()
