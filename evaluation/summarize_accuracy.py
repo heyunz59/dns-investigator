@@ -27,6 +27,10 @@ def replay_metrics(payload):
             keys.append((f["code"],scope))
         rows.append(dict(case=name,E=len(c["evidence"]),finding_count=len(c["findings"]),
             timeout_in_content_conflict_findings=false_conflicts,
+            confirmed_root_flags_true=sum(f.get("root_cause_confirmed") is True for f in c["findings"]),
+            unsupported_root_cause_assertions="PENDING_HUMAN_REVIEW",
+            localization_semantic_review="PENDING_HUMAN_REVIEW",next_step_value_review="PENDING_HUMAN_REVIEW",
+            unknown_evidence_references=sum(i not in by_id for f in c["findings"] for i in f["evidence_ids"]),
             repeated_code_query_scope_count=sum(n-1 for n in Counter(keys).values()),
             codes=dict(Counter(f["code"] for f in c["findings"]))))
     return rows
@@ -35,7 +39,7 @@ def replay_metrics(payload):
 def summarize():
     out=ROOT/"results/published/dns-accuracy-f0787c0"
     before=json.loads((out/"baseline-replay.json").read_text(encoding="utf-8"))
-    after=json.loads((out/"release-replay.json").read_text(encoding="utf-8"))
+    after=json.loads((out/"accepted-source-replay.json").read_text(encoding="utf-8"))
     expectation=json.loads((ROOT/"evaluation/accuracy_expectations.json").read_text(encoding="utf-8"))
     checks=[]
     for case,expected in expectation["cases"].items():
@@ -61,12 +65,24 @@ def summarize():
             row["source_commit"]=refs[arm]
             row["source_verification"]=verification
         executions+=manifest
+    partial_runs=[("dns-accuracy-20261101-final-partial","6e8f379","partial-before-typed"),
+                  ("dns-accuracy-20261101-final-partial-typed","4632d74","partial-current")]
+    for directory,ref,label in partial_runs:
+        source=ROOT/"results/runs"/directory;destination=out/label;destination.mkdir(exist_ok=True)
+        for file in source.glob("*.json"):export_module.export(file,destination/file.name)
+        row=json.loads((source/"manifest.json").read_text(encoding="utf-8"));row["arm"]=label;row["scenario"]="partial_fixture"
+        for name,digest in row["source_hashes"].items():
+            blob=subprocess.check_output(["git","show",f"{ref}:src/dns_investigator/{name}"])
+            assert digest in {hashlib.sha256(blob).hexdigest(),hashlib.sha256(blob.replace(b"\r\n",b"\n").replace(b"\n",b"\r\n")).hexdigest()}
+        executions.append(row)
+    current_wire=ROOT/"results/runs/dns-accuracy-20261101-accepted"
+    for file in current_wire.glob("*.json"):export_module.export(file,out/"controlled-current"/file.name)
     payload=dict(review="AI_assisted_automatic_rules_pending_independent_human_review",
-        baseline_commit="f0787c063ca11a95d9255c1e68b8b95697b9b90b",final_production_source_commit="10ccb5e",
+        baseline_commit="f0787c063ca11a95d9255c1e68b8b95697b9b90b",final_production_source_commit="4632d74",
         final_source_hashes=after["source_hashes"],
         replay_before=replay_metrics(before),replay_after=replay_metrics(after),fixed_acceptance_checks=checks,
         model_executions=executions,model_trials_per_case_per_arm=1,
-        source_phases=refs,release_paid_model_scope=["timeout"],
+        source_phases=refs,latest_paid_model_scope=["partial_fixture"],earlier_10ccb5e_model_scope=["timeout"],
         historical_live_source_unchanged=before["historical_source_sha256"]==after["historical_source_sha256"],
         limits=["Replay evaluates fixed evidence, not autonomous tool selection.",
                 "Loopback DNS is constructed wire traffic, not a complete recursive server or public network test.",
@@ -76,7 +92,7 @@ def summarize():
                 "No new public DNS/TCP/HTTP measurements or remote GitHub Actions verification in this upgrade."])
     (out/"summary.json").write_text(json.dumps(payload,ensure_ascii=False,indent=2),encoding="utf-8")
     print("Replay cases:",len(checks),"mechanical requirements met:",sum(c["required_present"] and c["forbidden_absent"] for c in checks))
-    for arm in ("old","new","final","release"):
+    for arm in ("old","new","final","release","partial-before-typed","partial-current"):
         subset=[e for e in executions if e["arm"]==arm]
         print(arm,len(subset),"A/Q/E",*(sum(e[k] for e in subset) for k in ("A","Q","E")),"seconds",round(sum(e["elapsed_seconds"] for e in subset),3))
 

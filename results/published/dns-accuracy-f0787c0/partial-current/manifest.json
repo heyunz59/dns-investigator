@@ -1,0 +1,52 @@
+{
+  "mode": "real_deepseek_with_fixture_no_network",
+  "source_commit": "4632d742e0649e05697e295dc6851f1f1875b57e",
+  "source_hashes": {
+    "accounting.py": "bb091800613b42aa22583c3873d21aac0ff7fed089afdd69a8498c46502c84a3",
+    "agent.py": "f6c4948052aec9f60edbc6f0728ccad6da3a278c0bc491c6a5d01ca471ee2d15",
+    "alias_scope.py": "70b908d9a946dcccd1bbe9aac66bdc14273465346fb08c4d542575cd65c0fa09",
+    "authority.py": "d8334dd7281ab29f23c323f7792748679aef2f6cc41d187719c9c799ca9f12f1",
+    "config.py": "70f48951131d91146a4a0a863aad461b9adb756aff01955eda439b10857f5af6",
+    "dns_compare.py": "a99844bfd1f1efca6bd506c77743fd99e2d642e0924d0af4e0c236d102af700e",
+    "dns_diagnosis.py": "ac46a9ee1efd89a00c410626978fd935301850aed6a114ac9e3d834ad331032c",
+    "dns_wire.py": "1a6e8270ae0b9eb9de8ce76842a7e38e7a3557735277fecff5df17a95590ea38",
+    "main.py": "6828a884c5dbcb0fab41f531c4290ad8b1c95ed54bda2f1f6437beefbccad5d2",
+    "network_errors.py": "df4b93832d77a43d334771706d8c03ee8b89c91ce79289586cdb76349a65adc1",
+    "privacy.py": "c60a85b4e2c903e5afed81cd8afea8b1ae6a0f3200e9fec4419a1a9af41bfee7",
+    "reporting.py": "4a50f07f06f0a516b9f566c793228c31cb617f38a8aeb27410d26ee8a570ce80",
+    "schemas.py": "02dd846333034d935b9172974451add10bb22f2639b6d4625b4eae371ba50828",
+    "target.py": "cc3e570dcdd7fdbe13dbd755a34ed7bf4ce7fab9cd4590dd03e918fd736d428c",
+    "tools.py": "a20fe263990c6fbe38e03c214f7d83c0604104f0b5b2ed4536837566d1d03ada",
+    "__init__.py": "acde81e4ea71101b9803713e101815492b576f72796438a60f27e8c3c6329544"
+  },
+  "model": "deepseek-flash",
+  "thinking": "disabled",
+  "temperature": 0,
+  "run_file": "75e327b491474a3fb56deb9630dc165a.json",
+  "status": "completed",
+  "A": 2,
+  "Q": 0,
+  "E": 2,
+  "usage": {
+    "input_tokens": 18156,
+    "cache_write_tokens": 0,
+    "cache_write_1h_tokens": 0,
+    "cache_read_tokens": 9728,
+    "output_tokens": 2504,
+    "unmeasured_requests": 0,
+    "output_reasoning_tokens": 0,
+    "input_audio_tokens": 0,
+    "cache_audio_read_tokens": 0,
+    "output_audio_tokens": 0,
+    "audio_seconds": 0,
+    "details": {
+      "prompt_cache_hit_tokens": 9728,
+      "prompt_cache_miss_tokens": 8428
+    },
+    "cost": "0.005591568",
+    "requests": 3,
+    "tool_calls": 2
+  },
+  "elapsed_seconds": 12.968,
+  "semantic_review": "AI_assisted_pending_independent_human_review"
+}

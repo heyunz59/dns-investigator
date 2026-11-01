@@ -1,0 +1,61 @@
+[
+  {
+    "tool": "compare_resolvers",
+    "match": {
+      "domain": "probe.example",
+      "record_type": "A"
+    },
+    "data": {
+      "responses": [
+        {
+          "qname": "probe.example",
+          "qtype": "A",
+          "resolver": "1.1.1.1",
+          "resolver_role": "recursive",
+          "rcode": "NXDOMAIN",
+          "result_kind": "NXDOMAIN",
+          "records": [],
+          "flags": {
+            "AA": false,
+            "TC": false
+          },
+          "execution_status": "ok",
+          "duration_ms": 10,
+          "negative_name": "probe.example"
+        },
+        {
+          "qname": "probe.example",
+          "qtype": "A",
+          "resolver": "8.8.8.8",
+          "resolver_role": "recursive",
+          "rcode": "NOERROR",
+          "result_kind": "NOERROR",
+          "records": [
+            {
+              "value": "192.0.2.10",
+              "ttl": 60
+            }
+          ],
+          "flags": {
+            "AA": false,
+            "TC": false
+          },
+          "execution_status": "ok",
+          "duration_ms": 10
+        },
+        {
+          "qname": "probe.example",
+          "qtype": "A",
+          "resolver": "9.9.9.9",
+          "resolver_role": "recursive",
+          "execution_status": "error",
+          "error": {
+            "code": "FIXTURE_PATH_NOT_PROVIDED",
+            "retryable": false
+          },
+          "records": []
+        }
+      ]
+    }
+  }
+]

@@ -1,0 +1,9 @@
+{
+  "status": "PASS",
+  "scope": "all_git_refs_and_current_tracked_files",
+  "commits": 24,
+  "unique_blobs": 382,
+  "current_files": 267,
+  "method": "same secret/path rules as check_public.py; batched immutable Git blobs",
+  "limitation": "pattern scan; manual privacy review remains required"
+}

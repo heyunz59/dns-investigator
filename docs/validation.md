@@ -2,9 +2,11 @@
 
 ## DNS 判断与范围定位专项升级（2026-11-01）
 
-起点 f0787c0，工作区仅 docs/manual-reviews/ 未跟踪。修改前 **136 passed in 8.90s**。新增比较范围、超时非内容冲突、有效子集、Finding 聚合、单候选完成、总结失败保留报告、CNAME 授权/来源/预算、受控 DNS 真报文测试；原并发、CNAME负回答、A/Q/E、TLS、HTTP、IPv6回归保留。最终 `.venv\Scripts\python.exe -m pytest -q`：**178 passed in 9.07s**，未跳过 IPv6；旧报告验收脚本继续 **9条验证通过**，另存 results/runs/report-acceptance-ea12c65ec05c4f3b821831991ed33159/。公开检查在最终本地提交前单独执行。
+起点 f0787c0，工作区仅 docs/manual-reviews/ 未跟踪。修改前 **136 passed in 8.90s**。新增比较范围、超时非内容冲突、有效子集、Finding 聚合、单候选完成、总结失败保留报告、CNAME 授权/来源/预算、受控 DNS 真报文、复合失败保存/去重与实际类型引用测试；原并发、CNAME负回答、A/Q/E、TLS、HTTP、IPv6回归保留。最终 `.venv\Scripts\python.exe -m pytest -q`：**180 passed in 8.54s**，未跳过 IPv6；旧报告验收脚本继续 **9条验证通过**，另存 results/runs/report-acceptance-017a6b7b14654057bb4c1ecbbe5b6926/。scripts/check_public.py PASS；新增文件收尾按相同规则补查，规则扫描不能保证排除全部隐私问题。
 
-13个固定场景+1份历史 replay：含超时的内容冲突 Finding 9→0，历史17条 E 全保留；13/13只表示预设机械检查满足，不是整体语义准确率。3类受控回环 DNS 实验通过。真实 DeepSeek 共13次，分4个源码阶段保留，权威差异模型总结存在失败；最新业务源码10ccb5e只额外付费验证超时案例，其余案例的模型批次对应0f9cd72，不能声称全部在最终源码验收通过。没有新增公网目标测量或远程 Actions 验证。详细计数、源码、失败、耗时、未验证能力见 [专项交付记录](dns-accuracy-upgrade.md) 和 results/published/dns-accuracy-f0787c0/summary.json。
+提交前再用同规则批量扫描全部 Git 引用及当前文件：**PASS，24个历史提交、382个唯一 blob、267个当前文件**，见新实验目录的 public-audit-latest.json（审计时快照，不冒充独立人工隐私审核）。原测试仅因明确需求更新 Finding 代码、TIMEOUT 原始 RCODE=null 及取消假设数门槛的断言；未删除并发/预算等回归或把失败简单改为接受。
+
+13个固定场景+1份历史 replay：含超时的内容冲突 Finding 9→0，历史17条 E 全保留；13/13只表示预设机械检查满足，不是整体语义准确率。3类受控回环 DNS 实验通过。真实 DeepSeek 共15次，分源码阶段保留，权威差异及部分失败模型总结曾失败。最终业务源码4632d74额外付费验证部分失败 fixture：completed，2 A / 0 Q / 2 E，12.968秒；旧四例未在最终源码全部付费重跑。没有新增公网目标测量或远程 Actions 验证。详细计数、源码、失败、耗时、未验证能力见 [专项交付记录](dns-accuracy-upgrade.md) 和 results/published/dns-accuracy-f0787c0/summary.json。
 
 ## 5223c06 报告层验收修复
 

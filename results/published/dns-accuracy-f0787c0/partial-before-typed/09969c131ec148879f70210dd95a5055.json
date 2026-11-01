@@ -1,0 +1,2090 @@
+{
+  "run_id": "09969c131ec148879f70210dd95a5055",
+  "started_at": "2026-11-01T02:48:25.396427+00:00",
+  "incident": {
+    "id": "09969c131ec148879f70210dd95a5055",
+    "user_input": "比较不同递归解析器对 probe.example A 记录的回答，调查差异及其范围；保留未获得的事实。",
+    "target": {
+      "domain": "probe.example",
+      "url": "https://probe.example/",
+      "port": 443,
+      "default_https": true
+    },
+    "measurement_location": "synthetic"
+  },
+  "model": "deepseek-flash",
+  "mode": "agent",
+  "thinking": "disabled",
+  "temperature": 0,
+  "model_endpoint": "https://api.deepseek.com",
+  "schema_version": 5,
+  "attempt_accounting": "complete",
+  "request_kind": "investigation",
+  "diagnosis_policy": "scoped_dns_v2",
+  "target_source": "api",
+  "supplement_events": [],
+  "versions": {
+    "app": "0.3.0",
+    "python": "3.12.14",
+    "pydantic-ai-slim": "2.64.0"
+  },
+  "status": "failed",
+  "execution_status": "failed",
+  "requirements_met": false,
+  "result_origin": "application_fallback",
+  "result": {
+    "diagnostic_assessment": "查询 probe.example A：1.1.1.1 对 probe.example 返回 NXDOMAIN（E1）。不推断注册状态或服务器宕机。（E1） probe.example A [来源 fixture]：recursive 1.1.1.1=NXDOMAIN、recursive 8.8.8.8=NOERROR 存在完整响应状态或记录差异；范围限于已列路径，缓存、策略、调度与时间原因尚未区分（E1、E2）。 另有调用执行问题（A1:PARTIAL_DNS_EXECUTION_ERROR、A2:FIXTURE_NOT_COVERED）；这些不是 DNS 应答，不能当作 NXDOMAIN；有效测量子集仍保留。",
+    "assessment_level": "scope_localized",
+    "report_fallback_reason": "UnexpectedModelBehavior: 未取得通过校验的模型总结；使用确定性事实与范围摘要。",
+    "dns_comparison": {
+      "scope": {
+        "max_time_gap_seconds": 300
+      },
+      "paths": [
+        {
+          "evidence_id": "E1",
+          "attempt_id": "A1",
+          "query_attempt_id": null,
+          "target": "probe.example",
+          "record_type": "A",
+          "resolver": "1.1.1.1",
+          "role": "recursive",
+          "source_mode": "fixture",
+          "measured_at": "2026-11-01T02:48:26.439893+00:00",
+          "execution_status": "ok",
+          "error": null,
+          "transport_status": "responded",
+          "dns_rcode": "NXDOMAIN",
+          "result_kind": "NXDOMAIN"
+        },
+        {
+          "evidence_id": "E2",
+          "attempt_id": "A1",
+          "query_attempt_id": null,
+          "target": "probe.example",
+          "record_type": "A",
+          "resolver": "8.8.8.8",
+          "role": "recursive",
+          "source_mode": "fixture",
+          "measured_at": "2026-11-01T02:48:26.445623+00:00",
+          "execution_status": "ok",
+          "error": null,
+          "transport_status": "responded",
+          "dns_rcode": "NOERROR",
+          "result_kind": "NOERROR"
+        },
+        {
+          "evidence_id": null,
+          "attempt_id": "A1",
+          "query_attempt_id": null,
+          "target": "probe.example",
+          "record_type": "A",
+          "resolver": "9.9.9.9",
+          "role": "recursive",
+          "source_mode": "fixture",
+          "measured_at": null,
+          "execution_status": "error",
+          "error": {
+            "code": "FIXTURE_PATH_NOT_PROVIDED",
+            "retryable": false
+          },
+          "transport_status": "network_error",
+          "dns_rcode": null,
+          "result_kind": null
+        }
+      ],
+      "pairs": [
+        {
+          "path_indices": [
+            0,
+            1
+          ],
+          "evidence_ids": [
+            "E1",
+            "E2"
+          ],
+          "codes": [
+            "RCODE_DISAGREEMENT",
+            "RECORD_PRESENCE_DISAGREEMENT",
+            "ADDRESS_SET_DIFFERENCE"
+          ],
+          "comparable": true,
+          "reason": null
+        },
+        {
+          "path_indices": [
+            0,
+            2
+          ],
+          "evidence_ids": [
+            "E1"
+          ],
+          "codes": [],
+          "comparable": false,
+          "reason": "EXECUTION_FAILED"
+        },
+        {
+          "path_indices": [
+            1,
+            2
+          ],
+          "evidence_ids": [
+            "E2"
+          ],
+          "codes": [],
+          "comparable": false,
+          "reason": "EXECUTION_FAILED"
+        }
+      ],
+      "differences": [
+        "RCODE_DISAGREEMENT",
+        "RECORD_PRESENCE_DISAGREEMENT",
+        "ADDRESS_SET_DIFFERENCE"
+      ],
+      "observations": [
+        {
+          "path_indices": [
+            0,
+            1
+          ],
+          "evidence_ids": [
+            "E1",
+            "E2"
+          ],
+          "ttl_values": [
+            [],
+            [
+              60
+            ]
+          ],
+          "duration_ms": [
+            10,
+            10
+          ],
+          "interpretation": "TTL 与耗时为单次观测，不证明缓存、配置或性能异常。"
+        }
+      ],
+      "limitations": [
+        "时间/来源缺失的旧记录不能证明同时或同源；响应差异不等于唯一根因。",
+        "记录差异可能来自 CDN、GeoDNS、负载均衡、缓存、策略和查询时间；超时没有提供记录或 TTL 事实。"
+      ]
+    },
+    "execution_issues": [
+      {
+        "attempt_id": "A1",
+        "tool_name": "compare_resolvers",
+        "target": "probe.example",
+        "record_type": null,
+        "error_code": "PARTIAL_DNS_EXECUTION_ERROR",
+        "description": "部分 DNS 子查询执行失败；有效子集仍保留，详见 comparison。"
+      },
+      {
+        "attempt_id": "A2",
+        "tool_name": "query_authoritative",
+        "target": "probe.example",
+        "record_type": null,
+        "error_code": "FIXTURE_NOT_COVERED",
+        "description": "测试数据没有提供该项事实；不是 DNS 无记录/NXDOMAIN 或真实网络失败。不可重试；请保留未知并结束或选择其他有用检查。"
+      }
+    ],
+    "measured_facts": [
+      {
+        "evidence_id": "E1",
+        "target": "probe.example",
+        "resolver": "1.1.1.1",
+        "record_type": "A",
+        "measured_at": "2026-11-01T02:48:26.439893+00:00",
+        "source_mode": "fixture",
+        "tool": "query_dns",
+        "result": "NXDOMAIN",
+        "records": [],
+        "error": null,
+        "error_detail": null,
+        "peer_ip": null,
+        "transport_status": "responded",
+        "dns_rcode": "NXDOMAIN",
+        "result_kind": "NXDOMAIN",
+        "resolver_role": "recursive",
+        "negative_name": "probe.example",
+        "cname_chain": [],
+        "canonical_name": null,
+        "query_attempt_id": null,
+        "attempt_id": "A1",
+        "target_authorization": null
+      },
+      {
+        "evidence_id": "E2",
+        "target": "probe.example",
+        "resolver": "8.8.8.8",
+        "record_type": "A",
+        "measured_at": "2026-11-01T02:48:26.445623+00:00",
+        "source_mode": "fixture",
+        "tool": "query_dns",
+        "result": "NOERROR",
+        "records": [
+          {
+            "value": "192.0.2.10",
+            "ttl": 60
+          }
+        ],
+        "error": null,
+        "error_detail": null,
+        "peer_ip": null,
+        "transport_status": "responded",
+        "dns_rcode": "NOERROR",
+        "result_kind": "NOERROR",
+        "resolver_role": "recursive",
+        "negative_name": null,
+        "cname_chain": [],
+        "canonical_name": null,
+        "query_attempt_id": null,
+        "attempt_id": "A1",
+        "target_authorization": null
+      }
+    ],
+    "findings": [
+      {
+        "scope": {
+          "target": "probe.example",
+          "record_type": "A",
+          "source_mode": "fixture",
+          "dns_followup_only": false,
+          "paths": [
+            {
+              "resolver": "1.1.1.1",
+              "role": "recursive",
+              "evidence_id": "E1"
+            }
+          ],
+          "time_start": "2026-11-01T02:48:26.439893+00:00",
+          "time_end": "2026-11-01T02:48:26.439893+00:00"
+        },
+        "observed_facts": [
+          {
+            "evidence_id": "E1",
+            "resolver": "1.1.1.1",
+            "role": "recursive",
+            "authoritative_answer": false,
+            "negative_name": "probe.example",
+            "records": [],
+            "soa_serials": [],
+            "transport_status": "responded",
+            "dns_rcode": "NXDOMAIN",
+            "result_kind": "NXDOMAIN"
+          }
+        ],
+        "localization": {
+          "affected_evidence_ids": [
+            "E1"
+          ],
+          "other_paths": [
+            {
+              "evidence_id": "E2",
+              "resolver": "8.8.8.8",
+              "transport_status": "responded",
+              "dns_rcode": "NOERROR",
+              "result_kind": "NOERROR"
+            }
+          ],
+          "interpretation": "只定位列出的查询与路径；异常不自动归因于整台解析器或整个域名。"
+        },
+        "root_cause_confirmed": false,
+        "code": "NXDOMAIN_OBSERVED",
+        "stage": "recursive",
+        "status": "observed",
+        "evidence_ids": [
+          "E1"
+        ],
+        "explanation": "查询 probe.example A：1.1.1.1 对 probe.example 返回 NXDOMAIN（E1）。不推断注册状态或服务器宕机。",
+        "limitations": [
+          "单次观测不能区分缓存、策略、调度、网络路径或服务因素；未确认唯一根因。",
+          "缺失时间/来源的旧日志保留未知；未执行 DNSSEC 验证或完整迭代解析。"
+        ],
+        "next_checks": [
+          "query_authoritative：按需检查 probe.example A，仅使用 AA 回答；一致时削弱递归独有差异解释，不一致时仍需区分缓存、策略和时间。"
+        ]
+      },
+      {
+        "scope": {
+          "target": "probe.example",
+          "record_type": "A",
+          "source_mode": "fixture",
+          "dns_followup_only": false,
+          "paths": [
+            {
+              "resolver": "1.1.1.1",
+              "role": "recursive",
+              "evidence_id": "E1"
+            },
+            {
+              "resolver": "8.8.8.8",
+              "role": "recursive",
+              "evidence_id": "E2"
+            }
+          ],
+          "time_start": "2026-11-01T02:48:26.439893+00:00",
+          "time_end": "2026-11-01T02:48:26.445623+00:00"
+        },
+        "observed_facts": [
+          {
+            "evidence_id": "E1",
+            "resolver": "1.1.1.1",
+            "role": "recursive",
+            "authoritative_answer": false,
+            "negative_name": "probe.example",
+            "records": [],
+            "soa_serials": [],
+            "transport_status": "responded",
+            "dns_rcode": "NXDOMAIN",
+            "result_kind": "NXDOMAIN"
+          },
+          {
+            "evidence_id": "E2",
+            "resolver": "8.8.8.8",
+            "role": "recursive",
+            "authoritative_answer": false,
+            "negative_name": null,
+            "records": [
+              {
+                "value": "192.0.2.10",
+                "ttl": 60
+              }
+            ],
+            "soa_serials": [],
+            "transport_status": "responded",
+            "dns_rcode": "NOERROR",
+            "result_kind": "NOERROR"
+          }
+        ],
+        "localization": {
+          "affected_evidence_ids": [
+            "E1",
+            "E2"
+          ],
+          "other_paths": [],
+          "interpretation": "只定位列出的查询与路径；异常不自动归因于整台解析器或整个域名。"
+        },
+        "root_cause_confirmed": false,
+        "code": "RECURSIVE_RESPONSE_DISAGREEMENT",
+        "stage": "dns-comparison",
+        "status": "observed",
+        "evidence_ids": [
+          "E1",
+          "E2"
+        ],
+        "explanation": "probe.example A 的完整可比较响应存在状态或记录集合差异；详见各路径结果。地址及 SOA Serial 差异只是观察，正常调度和时间变化仍可能解释。",
+        "limitations": [
+          "单次观测不能区分缓存、策略、调度、网络路径或服务因素；未确认唯一根因。",
+          "缺失时间/来源的旧日志保留未知；未执行 DNSSEC 验证或完整迭代解析。"
+        ],
+        "next_checks": [
+          "query_authoritative：按需检查 probe.example A，仅使用 AA 回答；一致时削弱递归独有差异解释，不一致时仍需区分缓存、策略和时间。"
+        ]
+      }
+    ],
+    "request_kind": "investigation",
+    "outcome": "execution_failed",
+    "observations": [
+      {
+        "evidence_id": "E1",
+        "observation": "probe.example A / 解析器 1.1.1.1：NXDOMAIN ；来源 fixture；时间 2026-11-01T02:48:26.439893+00:00（E1）"
+      },
+      {
+        "evidence_id": "E2",
+        "observation": "probe.example A / 解析器 8.8.8.8：NOERROR [{\"value\": \"192.0.2.10\", \"ttl\": 60}]；来源 fixture；时间 2026-11-01T02:48:26.445623+00:00（E2）"
+      }
+    ],
+    "hypotheses": [],
+    "conclusion": "查询 probe.example A：1.1.1.1 对 probe.example 返回 NXDOMAIN（E1）。不推断注册状态或服务器宕机。（E1） probe.example A [来源 fixture]：recursive 1.1.1.1=NXDOMAIN、recursive 8.8.8.8=NOERROR 存在完整响应状态或记录差异；范围限于已列路径，缓存、策略、调度与时间原因尚未区分（E1、E2）。 另有调用执行问题（A1:PARTIAL_DNS_EXECUTION_ERROR、A2:FIXTURE_NOT_COVERED）；这些不是 DNS 应答，不能当作 NXDOMAIN；有效测量子集仍保留。 已验证事实：probe.example A / 解析器 1.1.1.1：NXDOMAIN ；来源 fixture；时间 2026-11-01T02:48:26.439893+00:00（E1）；probe.example A / 解析器 8.8.8.8：NOERROR [{\"value\": \"192.0.2.10\", \"ttl\": 60}]；来源 fixture；时间 2026-11-01T02:48:26.445623+00:00（E2）。以上仅为已测组合，未列出的解析器×类型组合未测；不据此确认唯一根因。",
+    "conclusion_evidence_ids": [
+      "E1",
+      "E2"
+    ],
+    "limitations": [
+      "仅代表列出的测量位置、时刻、来源和组合；程序路径成功不证明用户客户端有问题。",
+      "独立 TCP 和 HTTP 是不同连接，可能使用不同后端；结果差异须先核查工具和现场。",
+      "候选解释与事实分开，结构和类型限制仍不能保证全部语义正确。"
+    ],
+    "recommendations": [
+      "本次包含 fixture/synthetic 事实。转入真实检查前先重新 live 解析，再使用真实返回地址；不要探测模拟 IP。",
+      "query_authoritative：按需检查 probe.example A，仅使用 AA 回答；一致时削弱递归独有差异解释，不一致时仍需区分缓存、策略和时间。"
+    ]
+  },
+  "error": {
+    "category": "UnexpectedModelBehavior",
+    "message": "模型或运行失败；已有证据已保存"
+  },
+  "visible_messages": [
+    {
+      "kind": "request",
+      "parts": []
+    },
+    {
+      "kind": "response",
+      "parts": [
+        {
+          "tool_name": "compare_resolvers",
+          "args": "{\"domain\": \"probe.example\", \"record_type\": \"A\"}",
+          "tool_call_id": "call_00_cfxIOGkHqdTu2Ir01E2e5999",
+          "tool_kind": null,
+          "id": null,
+          "provider_name": null,
+          "provider_details": null,
+          "part_kind": "tool-call"
+        }
+      ]
+    },
+    {
+      "kind": "request",
+      "parts": [
+        {
+          "tool_name": "compare_resolvers",
+          "content": {
+            "tool_call_id": "A1",
+            "tool_name": "compare_resolvers",
+            "input": {
+              "domain": "probe.example",
+              "record_type": "A",
+              "timeout": 5
+            },
+            "started_at": "2026-11-01T02:48:26.439893+00:00",
+            "source_mode": "fixture",
+            "measurement_location": "synthetic",
+            "execution_status": "ok",
+            "data": {
+              "responses": [
+                {
+                  "qname": "probe.example",
+                  "qtype": "A",
+                  "resolver": "1.1.1.1",
+                  "resolver_role": "recursive",
+                  "rcode": "NXDOMAIN",
+                  "result_kind": "NXDOMAIN",
+                  "records": [],
+                  "flags": {
+                    "AA": false,
+                    "TC": false
+                  },
+                  "execution_status": "ok",
+                  "duration_ms": 10,
+                  "negative_name": "probe.example",
+                  "evidence_id": "E1"
+                },
+                {
+                  "qname": "probe.example",
+                  "qtype": "A",
+                  "resolver": "8.8.8.8",
+                  "resolver_role": "recursive",
+                  "rcode": "NOERROR",
+                  "result_kind": "NOERROR",
+                  "records": [
+                    {
+                      "value": "192.0.2.10",
+                      "ttl": 60
+                    }
+                  ],
+                  "flags": {
+                    "AA": false,
+                    "TC": false
+                  },
+                  "execution_status": "ok",
+                  "duration_ms": 10,
+                  "evidence_id": "E2"
+                },
+                {
+                  "qname": "probe.example",
+                  "qtype": "A",
+                  "resolver": "9.9.9.9",
+                  "resolver_role": "recursive",
+                  "execution_status": "error",
+                  "error": {
+                    "code": "FIXTURE_PATH_NOT_PROVIDED",
+                    "retryable": false
+                  },
+                  "records": []
+                }
+              ],
+              "comparison": {
+                "scope": {
+                  "max_time_gap_seconds": 300
+                },
+                "paths": [
+                  {
+                    "evidence_id": "E1",
+                    "attempt_id": "A1",
+                    "query_attempt_id": null,
+                    "target": "probe.example",
+                    "record_type": "A",
+                    "resolver": "1.1.1.1",
+                    "role": "recursive",
+                    "source_mode": "fixture",
+                    "measured_at": "2026-11-01T02:48:26.439893+00:00",
+                    "execution_status": "ok",
+                    "error": null,
+                    "transport_status": "responded",
+                    "dns_rcode": "NXDOMAIN",
+                    "result_kind": "NXDOMAIN"
+                  },
+                  {
+                    "evidence_id": "E2",
+                    "attempt_id": "A1",
+                    "query_attempt_id": null,
+                    "target": "probe.example",
+                    "record_type": "A",
+                    "resolver": "8.8.8.8",
+                    "role": "recursive",
+                    "source_mode": "fixture",
+                    "measured_at": "2026-11-01T02:48:26.445623+00:00",
+                    "execution_status": "ok",
+                    "error": null,
+                    "transport_status": "responded",
+                    "dns_rcode": "NOERROR",
+                    "result_kind": "NOERROR"
+                  },
+                  {
+                    "evidence_id": null,
+                    "attempt_id": "A1",
+                    "query_attempt_id": null,
+                    "target": "probe.example",
+                    "record_type": "A",
+                    "resolver": "9.9.9.9",
+                    "role": "recursive",
+                    "source_mode": "fixture",
+                    "measured_at": null,
+                    "execution_status": "error",
+                    "error": {
+                      "code": "FIXTURE_PATH_NOT_PROVIDED",
+                      "retryable": false
+                    },
+                    "transport_status": "network_error",
+                    "dns_rcode": null,
+                    "result_kind": null
+                  }
+                ],
+                "pairs": [
+                  {
+                    "path_indices": [
+                      0,
+                      1
+                    ],
+                    "evidence_ids": [
+                      "E1",
+                      "E2"
+                    ],
+                    "codes": [
+                      "RCODE_DISAGREEMENT",
+                      "RECORD_PRESENCE_DISAGREEMENT",
+                      "ADDRESS_SET_DIFFERENCE"
+                    ],
+                    "comparable": true,
+                    "reason": null
+                  },
+                  {
+                    "path_indices": [
+                      0,
+                      2
+                    ],
+                    "evidence_ids": [
+                      "E1"
+                    ],
+                    "codes": [],
+                    "comparable": false,
+                    "reason": "EXECUTION_FAILED"
+                  },
+                  {
+                    "path_indices": [
+                      1,
+                      2
+                    ],
+                    "evidence_ids": [
+                      "E2"
+                    ],
+                    "codes": [],
+                    "comparable": false,
+                    "reason": "EXECUTION_FAILED"
+                  }
+                ],
+                "differences": [
+                  "RCODE_DISAGREEMENT",
+                  "RECORD_PRESENCE_DISAGREEMENT",
+                  "ADDRESS_SET_DIFFERENCE"
+                ],
+                "observations": [
+                  {
+                    "path_indices": [
+                      0,
+                      1
+                    ],
+                    "evidence_ids": [
+                      "E1",
+                      "E2"
+                    ],
+                    "ttl_values": [
+                      [],
+                      [
+                        60
+                      ]
+                    ],
+                    "duration_ms": [
+                      10,
+                      10
+                    ],
+                    "interpretation": "TTL 与耗时为单次观测，不证明缓存、配置或性能异常。"
+                  }
+                ],
+                "limitations": [
+                  "时间/来源缺失的旧记录不能证明同时或同源；响应差异不等于唯一根因。",
+                  "记录差异可能来自 CDN、GeoDNS、负载均衡、缓存、策略和查询时间；超时没有提供记录或 TTL 事实。"
+                ]
+              },
+              "differences": [
+                "RCODE_DISAGREEMENT",
+                "RECORD_PRESENCE_DISAGREEMENT",
+                "ADDRESS_SET_DIFFERENCE"
+              ],
+              "findings": [
+                {
+                  "code": "NXDOMAIN_OBSERVED",
+                  "stage": "recursive",
+                  "status": "observed",
+                  "scope": {
+                    "target": "probe.example",
+                    "record_type": "A",
+                    "source_mode": "fixture",
+                    "dns_followup_only": false,
+                    "paths": [
+                      {
+                        "resolver": "1.1.1.1",
+                        "role": "recursive",
+                        "evidence_id": "E1"
+                      }
+                    ],
+                    "time_start": "2026-11-01T02:48:26.439893+00:00",
+                    "time_end": "2026-11-01T02:48:26.439893+00:00"
+                  },
+                  "evidence_ids": [
+                    "E1"
+                  ],
+                  "observed_facts": [
+                    {
+                      "evidence_id": "E1",
+                      "resolver": "1.1.1.1",
+                      "role": "recursive",
+                      "authoritative_answer": false,
+                      "negative_name": "probe.example",
+                      "records": [],
+                      "soa_serials": [],
+                      "transport_status": "responded",
+                      "dns_rcode": "NXDOMAIN",
+                      "result_kind": "NXDOMAIN"
+                    }
+                  ],
+                  "localization": {
+                    "affected_evidence_ids": [
+                      "E1"
+                    ],
+                    "other_paths": [
+                      {
+                        "evidence_id": "E2",
+                        "resolver": "8.8.8.8",
+                        "transport_status": "responded",
+                        "dns_rcode": "NOERROR",
+                        "result_kind": "NOERROR"
+                      }
+                    ],
+                    "interpretation": "只定位列出的查询与路径；异常不自动归因于整台解析器或整个域名。"
+                  },
+                  "root_cause_confirmed": false,
+                  "explanation": "查询 probe.example A：1.1.1.1 对 probe.example 返回 NXDOMAIN（E1）。不推断注册状态或服务器宕机。",
+                  "limitations": [
+                    "单次观测不能区分缓存、策略、调度、网络路径或服务因素；未确认唯一根因。",
+                    "缺失时间/来源的旧日志保留未知；未执行 DNSSEC 验证或完整迭代解析。"
+                  ],
+                  "next_checks": [
+                    "query_authoritative：按需检查 probe.example A，仅使用 AA 回答；一致时削弱递归独有差异解释，不一致时仍需区分缓存、策略和时间。"
+                  ]
+                },
+                {
+                  "code": "RECURSIVE_RESPONSE_DISAGREEMENT",
+                  "stage": "dns-comparison",
+                  "status": "observed",
+                  "scope": {
+                    "target": "probe.example",
+                    "record_type": "A",
+                    "source_mode": "fixture",
+                    "dns_followup_only": false,
+                    "paths": [
+                      {
+                        "resolver": "1.1.1.1",
+                        "role": "recursive",
+                        "evidence_id": "E1"
+                      },
+                      {
+                        "resolver": "8.8.8.8",
+                        "role": "recursive",
+                        "evidence_id": "E2"
+                      }
+                    ],
+                    "time_start": "2026-11-01T02:48:26.439893+00:00",
+                    "time_end": "2026-11-01T02:48:26.445623+00:00"
+                  },
+                  "evidence_ids": [
+                    "E1",
+                    "E2"
+                  ],
+                  "observed_facts": [
+                    {
+                      "evidence_id": "E1",
+                      "resolver": "1.1.1.1",
+                      "role": "recursive",
+                      "authoritative_answer": false,
+                      "negative_name": "probe.example",
+                      "records": [],
+                      "soa_serials": [],
+                      "transport_status": "responded",
+                      "dns_rcode": "NXDOMAIN",
+                      "result_kind": "NXDOMAIN"
+                    },
+                    {
+                      "evidence_id": "E2",
+                      "resolver": "8.8.8.8",
+                      "role": "recursive",
+                      "authoritative_answer": false,
+                      "negative_name": null,
+                      "records": [
+                        {
+                          "value": "192.0.2.10",
+                          "ttl": 60
+                        }
+                      ],
+                      "soa_serials": [],
+                      "transport_status": "responded",
+                      "dns_rcode": "NOERROR",
+                      "result_kind": "NOERROR"
+                    }
+                  ],
+                  "localization": {
+                    "affected_evidence_ids": [
+                      "E1",
+                      "E2"
+                    ],
+                    "other_paths": [],
+                    "interpretation": "只定位列出的查询与路径；异常不自动归因于整台解析器或整个域名。"
+                  },
+                  "root_cause_confirmed": false,
+                  "explanation": "probe.example A 的完整可比较响应存在状态或记录集合差异；详见各路径结果。地址及 SOA Serial 差异只是观察，正常调度和时间变化仍可能解释。",
+                  "limitations": [
+                    "单次观测不能区分缓存、策略、调度、网络路径或服务因素；未确认唯一根因。",
+                    "缺失时间/来源的旧日志保留未知；未执行 DNSSEC 验证或完整迭代解析。"
+                  ],
+                  "next_checks": [
+                    "query_authoritative：按需检查 probe.example A，仅使用 AA 回答；一致时削弱递归独有差异解释，不一致时仍需区分缓存、策略和时间。"
+                  ]
+                }
+              ],
+              "evidence_ids": [
+                "E1",
+                "E2"
+              ]
+            },
+            "error": {
+              "code": "PARTIAL_DNS_EXECUTION_ERROR",
+              "message": "部分 DNS 子查询执行失败；有效子集仍保留，详见 comparison。",
+              "retryable": false
+            },
+            "fact_summary": [
+              {
+                "evidence_id": "E1",
+                "target": "probe.example",
+                "resolver": "1.1.1.1",
+                "record_type": "A",
+                "measured_at": "2026-11-01T02:48:26.439893+00:00",
+                "source_mode": "fixture",
+                "tool": "query_dns",
+                "result": "NXDOMAIN",
+                "records": [],
+                "error": null,
+                "error_detail": null,
+                "peer_ip": null,
+                "transport_status": "responded",
+                "dns_rcode": "NXDOMAIN",
+                "result_kind": "NXDOMAIN",
+                "resolver_role": "recursive",
+                "negative_name": "probe.example",
+                "cname_chain": [],
+                "canonical_name": null,
+                "query_attempt_id": null,
+                "attempt_id": "A1",
+                "target_authorization": null
+              },
+              {
+                "evidence_id": "E2",
+                "target": "probe.example",
+                "resolver": "8.8.8.8",
+                "record_type": "A",
+                "measured_at": "2026-11-01T02:48:26.445623+00:00",
+                "source_mode": "fixture",
+                "tool": "query_dns",
+                "result": "NOERROR",
+                "records": [
+                  {
+                    "value": "192.0.2.10",
+                    "ttl": 60
+                  }
+                ],
+                "error": null,
+                "error_detail": null,
+                "peer_ip": null,
+                "transport_status": "responded",
+                "dns_rcode": "NOERROR",
+                "result_kind": "NOERROR",
+                "resolver_role": "recursive",
+                "negative_name": null,
+                "cname_chain": [],
+                "canonical_name": null,
+                "query_attempt_id": null,
+                "attempt_id": "A1",
+                "target_authorization": null
+              }
+            ],
+            "current_findings": [
+              {
+                "code": "NXDOMAIN_OBSERVED",
+                "stage": "recursive",
+                "status": "observed",
+                "scope": {
+                  "target": "probe.example",
+                  "record_type": "A",
+                  "source_mode": "fixture",
+                  "dns_followup_only": false,
+                  "paths": [
+                    {
+                      "resolver": "1.1.1.1",
+                      "role": "recursive",
+                      "evidence_id": "E1"
+                    }
+                  ],
+                  "time_start": "2026-11-01T02:48:26.439893+00:00",
+                  "time_end": "2026-11-01T02:48:26.439893+00:00"
+                },
+                "evidence_ids": [
+                  "E1"
+                ],
+                "observed_facts": [
+                  {
+                    "evidence_id": "E1",
+                    "resolver": "1.1.1.1",
+                    "role": "recursive",
+                    "authoritative_answer": false,
+                    "negative_name": "probe.example",
+                    "records": [],
+                    "soa_serials": [],
+                    "transport_status": "responded",
+                    "dns_rcode": "NXDOMAIN",
+                    "result_kind": "NXDOMAIN"
+                  }
+                ],
+                "localization": {
+                  "affected_evidence_ids": [
+                    "E1"
+                  ],
+                  "other_paths": [
+                    {
+                      "evidence_id": "E2",
+                      "resolver": "8.8.8.8",
+                      "transport_status": "responded",
+                      "dns_rcode": "NOERROR",
+                      "result_kind": "NOERROR"
+                    }
+                  ],
+                  "interpretation": "只定位列出的查询与路径；异常不自动归因于整台解析器或整个域名。"
+                },
+                "root_cause_confirmed": false,
+                "explanation": "查询 probe.example A：1.1.1.1 对 probe.example 返回 NXDOMAIN（E1）。不推断注册状态或服务器宕机。",
+                "limitations": [
+                  "单次观测不能区分缓存、策略、调度、网络路径或服务因素；未确认唯一根因。",
+                  "缺失时间/来源的旧日志保留未知；未执行 DNSSEC 验证或完整迭代解析。"
+                ],
+                "next_checks": [
+                  "query_authoritative：按需检查 probe.example A，仅使用 AA 回答；一致时削弱递归独有差异解释，不一致时仍需区分缓存、策略和时间。"
+                ]
+              },
+              {
+                "code": "RECURSIVE_RESPONSE_DISAGREEMENT",
+                "stage": "dns-comparison",
+                "status": "observed",
+                "scope": {
+                  "target": "probe.example",
+                  "record_type": "A",
+                  "source_mode": "fixture",
+                  "dns_followup_only": false,
+                  "paths": [
+                    {
+                      "resolver": "1.1.1.1",
+                      "role": "recursive",
+                      "evidence_id": "E1"
+                    },
+                    {
+                      "resolver": "8.8.8.8",
+                      "role": "recursive",
+                      "evidence_id": "E2"
+                    }
+                  ],
+                  "time_start": "2026-11-01T02:48:26.439893+00:00",
+                  "time_end": "2026-11-01T02:48:26.445623+00:00"
+                },
+                "evidence_ids": [
+                  "E1",
+                  "E2"
+                ],
+                "observed_facts": [
+                  {
+                    "evidence_id": "E1",
+                    "resolver": "1.1.1.1",
+                    "role": "recursive",
+                    "authoritative_answer": false,
+                    "negative_name": "probe.example",
+                    "records": [],
+                    "soa_serials": [],
+                    "transport_status": "responded",
+                    "dns_rcode": "NXDOMAIN",
+                    "result_kind": "NXDOMAIN"
+                  },
+                  {
+                    "evidence_id": "E2",
+                    "resolver": "8.8.8.8",
+                    "role": "recursive",
+                    "authoritative_answer": false,
+                    "negative_name": null,
+                    "records": [
+                      {
+                        "value": "192.0.2.10",
+                        "ttl": 60
+                      }
+                    ],
+                    "soa_serials": [],
+                    "transport_status": "responded",
+                    "dns_rcode": "NOERROR",
+                    "result_kind": "NOERROR"
+                  }
+                ],
+                "localization": {
+                  "affected_evidence_ids": [
+                    "E1",
+                    "E2"
+                  ],
+                  "other_paths": [],
+                  "interpretation": "只定位列出的查询与路径；异常不自动归因于整台解析器或整个域名。"
+                },
+                "root_cause_confirmed": false,
+                "explanation": "probe.example A 的完整可比较响应存在状态或记录集合差异；详见各路径结果。地址及 SOA Serial 差异只是观察，正常调度和时间变化仍可能解释。",
+                "limitations": [
+                  "单次观测不能区分缓存、策略、调度、网络路径或服务因素；未确认唯一根因。",
+                  "缺失时间/来源的旧日志保留未知；未执行 DNSSEC 验证或完整迭代解析。"
+                ],
+                "next_checks": [
+                  "query_authoritative：按需检查 probe.example A，仅使用 AA 回答；一致时削弱递归独有差异解释，不一致时仍需区分缓存、策略和时间。"
+                ]
+              }
+            ],
+            "allowed_dns_targets": [
+              {
+                "target": "probe.example",
+                "depth": 0,
+                "links": [],
+                "evidence_ids": []
+              }
+            ]
+          },
+          "tool_call_id": "call_00_cfxIOGkHqdTu2Ir01E2e5999",
+          "tool_kind": null,
+          "metadata": null,
+          "timestamp": "2026-11-01T02:48:26.447786Z",
+          "outcome": "success",
+          "retry": null,
+          "part_kind": "tool-return"
+        }
+      ]
+    },
+    {
+      "kind": "response",
+      "parts": [
+        {
+          "tool_name": "query_authoritative",
+          "args": "{\"domain\": \"probe.example\", \"record_type\": \"A\"}",
+          "tool_call_id": "call_00_0BLn7E3gYN60HevseAVe1654",
+          "tool_kind": null,
+          "id": null,
+          "provider_name": null,
+          "provider_details": null,
+          "part_kind": "tool-call"
+        }
+      ]
+    },
+    {
+      "kind": "request",
+      "parts": [
+        {
+          "tool_name": "query_authoritative",
+          "content": {
+            "attempt_id": "A2",
+            "execution_status": "error",
+            "data": {},
+            "partial_evidence": [],
+            "findings": [
+              {
+                "code": "NXDOMAIN_OBSERVED",
+                "stage": "recursive",
+                "status": "observed",
+                "scope": {
+                  "target": "probe.example",
+                  "record_type": "A",
+                  "source_mode": "fixture",
+                  "dns_followup_only": false,
+                  "paths": [
+                    {
+                      "resolver": "1.1.1.1",
+                      "role": "recursive",
+                      "evidence_id": "E1"
+                    }
+                  ],
+                  "time_start": "2026-11-01T02:48:26.439893+00:00",
+                  "time_end": "2026-11-01T02:48:26.439893+00:00"
+                },
+                "evidence_ids": [
+                  "E1"
+                ],
+                "observed_facts": [
+                  {
+                    "evidence_id": "E1",
+                    "resolver": "1.1.1.1",
+                    "role": "recursive",
+                    "authoritative_answer": false,
+                    "negative_name": "probe.example",
+                    "records": [],
+                    "soa_serials": [],
+                    "transport_status": "responded",
+                    "dns_rcode": "NXDOMAIN",
+                    "result_kind": "NXDOMAIN"
+                  }
+                ],
+                "localization": {
+                  "affected_evidence_ids": [
+                    "E1"
+                  ],
+                  "other_paths": [
+                    {
+                      "evidence_id": "E2",
+                      "resolver": "8.8.8.8",
+                      "transport_status": "responded",
+                      "dns_rcode": "NOERROR",
+                      "result_kind": "NOERROR"
+                    }
+                  ],
+                  "interpretation": "只定位列出的查询与路径；异常不自动归因于整台解析器或整个域名。"
+                },
+                "root_cause_confirmed": false,
+                "explanation": "查询 probe.example A：1.1.1.1 对 probe.example 返回 NXDOMAIN（E1）。不推断注册状态或服务器宕机。",
+                "limitations": [
+                  "单次观测不能区分缓存、策略、调度、网络路径或服务因素；未确认唯一根因。",
+                  "缺失时间/来源的旧日志保留未知；未执行 DNSSEC 验证或完整迭代解析。"
+                ],
+                "next_checks": [
+                  "query_authoritative：按需检查 probe.example A，仅使用 AA 回答；一致时削弱递归独有差异解释，不一致时仍需区分缓存、策略和时间。"
+                ]
+              },
+              {
+                "code": "RECURSIVE_RESPONSE_DISAGREEMENT",
+                "stage": "dns-comparison",
+                "status": "observed",
+                "scope": {
+                  "target": "probe.example",
+                  "record_type": "A",
+                  "source_mode": "fixture",
+                  "dns_followup_only": false,
+                  "paths": [
+                    {
+                      "resolver": "1.1.1.1",
+                      "role": "recursive",
+                      "evidence_id": "E1"
+                    },
+                    {
+                      "resolver": "8.8.8.8",
+                      "role": "recursive",
+                      "evidence_id": "E2"
+                    }
+                  ],
+                  "time_start": "2026-11-01T02:48:26.439893+00:00",
+                  "time_end": "2026-11-01T02:48:26.445623+00:00"
+                },
+                "evidence_ids": [
+                  "E1",
+                  "E2"
+                ],
+                "observed_facts": [
+                  {
+                    "evidence_id": "E1",
+                    "resolver": "1.1.1.1",
+                    "role": "recursive",
+                    "authoritative_answer": false,
+                    "negative_name": "probe.example",
+                    "records": [],
+                    "soa_serials": [],
+                    "transport_status": "responded",
+                    "dns_rcode": "NXDOMAIN",
+                    "result_kind": "NXDOMAIN"
+                  },
+                  {
+                    "evidence_id": "E2",
+                    "resolver": "8.8.8.8",
+                    "role": "recursive",
+                    "authoritative_answer": false,
+                    "negative_name": null,
+                    "records": [
+                      {
+                        "value": "192.0.2.10",
+                        "ttl": 60
+                      }
+                    ],
+                    "soa_serials": [],
+                    "transport_status": "responded",
+                    "dns_rcode": "NOERROR",
+                    "result_kind": "NOERROR"
+                  }
+                ],
+                "localization": {
+                  "affected_evidence_ids": [
+                    "E1",
+                    "E2"
+                  ],
+                  "other_paths": [],
+                  "interpretation": "只定位列出的查询与路径；异常不自动归因于整台解析器或整个域名。"
+                },
+                "root_cause_confirmed": false,
+                "explanation": "probe.example A 的完整可比较响应存在状态或记录集合差异；详见各路径结果。地址及 SOA Serial 差异只是观察，正常调度和时间变化仍可能解释。",
+                "limitations": [
+                  "单次观测不能区分缓存、策略、调度、网络路径或服务因素；未确认唯一根因。",
+                  "缺失时间/来源的旧日志保留未知；未执行 DNSSEC 验证或完整迭代解析。"
+                ],
+                "next_checks": [
+                  "query_authoritative：按需检查 probe.example A，仅使用 AA 回答；一致时削弱递归独有差异解释，不一致时仍需区分缓存、策略和时间。"
+                ]
+              }
+            ],
+            "error": {
+              "code": "FIXTURE_NOT_COVERED",
+              "message": "测试数据没有提供该项事实；不是 DNS 无记录/NXDOMAIN 或真实网络失败。不可重试；请保留未知并结束或选择其他有用检查。",
+              "retryable": false
+            },
+            "source_mode": "fixture",
+            "budget": {
+              "remaining": 6,
+              "finish_now": false
+            },
+            "fact_summary": [
+              {
+                "evidence_id": "E1",
+                "target": "probe.example",
+                "resolver": "1.1.1.1",
+                "record_type": "A",
+                "measured_at": "2026-11-01T02:48:26.439893+00:00",
+                "source_mode": "fixture",
+                "tool": "query_dns",
+                "result": "NXDOMAIN",
+                "records": [],
+                "error": null,
+                "error_detail": null,
+                "peer_ip": null,
+                "transport_status": "responded",
+                "dns_rcode": "NXDOMAIN",
+                "result_kind": "NXDOMAIN",
+                "resolver_role": "recursive",
+                "negative_name": "probe.example",
+                "cname_chain": [],
+                "canonical_name": null,
+                "query_attempt_id": null,
+                "attempt_id": "A1",
+                "target_authorization": null
+              },
+              {
+                "evidence_id": "E2",
+                "target": "probe.example",
+                "resolver": "8.8.8.8",
+                "record_type": "A",
+                "measured_at": "2026-11-01T02:48:26.445623+00:00",
+                "source_mode": "fixture",
+                "tool": "query_dns",
+                "result": "NOERROR",
+                "records": [
+                  {
+                    "value": "192.0.2.10",
+                    "ttl": 60
+                  }
+                ],
+                "error": null,
+                "error_detail": null,
+                "peer_ip": null,
+                "transport_status": "responded",
+                "dns_rcode": "NOERROR",
+                "result_kind": "NOERROR",
+                "resolver_role": "recursive",
+                "negative_name": null,
+                "cname_chain": [],
+                "canonical_name": null,
+                "query_attempt_id": null,
+                "attempt_id": "A1",
+                "target_authorization": null
+              }
+            ],
+            "current_findings": [
+              {
+                "code": "NXDOMAIN_OBSERVED",
+                "stage": "recursive",
+                "status": "observed",
+                "scope": {
+                  "target": "probe.example",
+                  "record_type": "A",
+                  "source_mode": "fixture",
+                  "dns_followup_only": false,
+                  "paths": [
+                    {
+                      "resolver": "1.1.1.1",
+                      "role": "recursive",
+                      "evidence_id": "E1"
+                    }
+                  ],
+                  "time_start": "2026-11-01T02:48:26.439893+00:00",
+                  "time_end": "2026-11-01T02:48:26.439893+00:00"
+                },
+                "evidence_ids": [
+                  "E1"
+                ],
+                "observed_facts": [
+                  {
+                    "evidence_id": "E1",
+                    "resolver": "1.1.1.1",
+                    "role": "recursive",
+                    "authoritative_answer": false,
+                    "negative_name": "probe.example",
+                    "records": [],
+                    "soa_serials": [],
+                    "transport_status": "responded",
+                    "dns_rcode": "NXDOMAIN",
+                    "result_kind": "NXDOMAIN"
+                  }
+                ],
+                "localization": {
+                  "affected_evidence_ids": [
+                    "E1"
+                  ],
+                  "other_paths": [
+                    {
+                      "evidence_id": "E2",
+                      "resolver": "8.8.8.8",
+                      "transport_status": "responded",
+                      "dns_rcode": "NOERROR",
+                      "result_kind": "NOERROR"
+                    }
+                  ],
+                  "interpretation": "只定位列出的查询与路径；异常不自动归因于整台解析器或整个域名。"
+                },
+                "root_cause_confirmed": false,
+                "explanation": "查询 probe.example A：1.1.1.1 对 probe.example 返回 NXDOMAIN（E1）。不推断注册状态或服务器宕机。",
+                "limitations": [
+                  "单次观测不能区分缓存、策略、调度、网络路径或服务因素；未确认唯一根因。",
+                  "缺失时间/来源的旧日志保留未知；未执行 DNSSEC 验证或完整迭代解析。"
+                ],
+                "next_checks": [
+                  "query_authoritative：按需检查 probe.example A，仅使用 AA 回答；一致时削弱递归独有差异解释，不一致时仍需区分缓存、策略和时间。"
+                ]
+              },
+              {
+                "code": "RECURSIVE_RESPONSE_DISAGREEMENT",
+                "stage": "dns-comparison",
+                "status": "observed",
+                "scope": {
+                  "target": "probe.example",
+                  "record_type": "A",
+                  "source_mode": "fixture",
+                  "dns_followup_only": false,
+                  "paths": [
+                    {
+                      "resolver": "1.1.1.1",
+                      "role": "recursive",
+                      "evidence_id": "E1"
+                    },
+                    {
+                      "resolver": "8.8.8.8",
+                      "role": "recursive",
+                      "evidence_id": "E2"
+                    }
+                  ],
+                  "time_start": "2026-11-01T02:48:26.439893+00:00",
+                  "time_end": "2026-11-01T02:48:26.445623+00:00"
+                },
+                "evidence_ids": [
+                  "E1",
+                  "E2"
+                ],
+                "observed_facts": [
+                  {
+                    "evidence_id": "E1",
+                    "resolver": "1.1.1.1",
+                    "role": "recursive",
+                    "authoritative_answer": false,
+                    "negative_name": "probe.example",
+                    "records": [],
+                    "soa_serials": [],
+                    "transport_status": "responded",
+                    "dns_rcode": "NXDOMAIN",
+                    "result_kind": "NXDOMAIN"
+                  },
+                  {
+                    "evidence_id": "E2",
+                    "resolver": "8.8.8.8",
+                    "role": "recursive",
+                    "authoritative_answer": false,
+                    "negative_name": null,
+                    "records": [
+                      {
+                        "value": "192.0.2.10",
+                        "ttl": 60
+                      }
+                    ],
+                    "soa_serials": [],
+                    "transport_status": "responded",
+                    "dns_rcode": "NOERROR",
+                    "result_kind": "NOERROR"
+                  }
+                ],
+                "localization": {
+                  "affected_evidence_ids": [
+                    "E1",
+                    "E2"
+                  ],
+                  "other_paths": [],
+                  "interpretation": "只定位列出的查询与路径；异常不自动归因于整台解析器或整个域名。"
+                },
+                "root_cause_confirmed": false,
+                "explanation": "probe.example A 的完整可比较响应存在状态或记录集合差异；详见各路径结果。地址及 SOA Serial 差异只是观察，正常调度和时间变化仍可能解释。",
+                "limitations": [
+                  "单次观测不能区分缓存、策略、调度、网络路径或服务因素；未确认唯一根因。",
+                  "缺失时间/来源的旧日志保留未知；未执行 DNSSEC 验证或完整迭代解析。"
+                ],
+                "next_checks": [
+                  "query_authoritative：按需检查 probe.example A，仅使用 AA 回答；一致时削弱递归独有差异解释，不一致时仍需区分缓存、策略和时间。"
+                ]
+              }
+            ],
+            "allowed_dns_targets": [
+              {
+                "target": "probe.example",
+                "depth": 0,
+                "links": [],
+                "evidence_ids": []
+              }
+            ]
+          },
+          "tool_call_id": "call_00_0BLn7E3gYN60HevseAVe1654",
+          "tool_kind": null,
+          "metadata": null,
+          "timestamp": "2026-11-01T02:48:27.004042Z",
+          "outcome": "success",
+          "retry": null,
+          "part_kind": "tool-return"
+        }
+      ]
+    },
+    {
+      "kind": "response",
+      "parts": [
+        {
+          "tool_name": "final_result",
+          "args": "{\"request_kind\": \"investigation\", \"outcome\": \"answered\", \"assessment_level\": \"partial\", \"observations\": [{\"evidence_id\": \"E1\", \"observation\": \"1.1.1.1（递归）对 probe.example A 返回 NXDOMAIN，无记录，AA=false，transport_status=responded（fixture，2026-11-01T02:48:26.439893Z）。\"}, {\"evidence_id\": \"E2\", \"observation\": \"8.8.8.8（递归）对 probe.example A 返回 NOERROR，含 192.0.2.10，TTL=60，AA=false，transport_status=responded（fixture，2026-11-01T02:48:26.445623Z）。\"}, {\"evidence_id\": \"E1\", \"observation\": \"两个可比较路径之间出现 RCODE_DISAGREEMENT、RECORD_PRESENCE_DISAGREEMENT、ADDRESS_SET_DIFFERENCE；TTL 与耗时均为单次观测，不证明缓存或性能异常。\"}], \"measured_facts\": [{\"evidence_id\": \"E1\", \"target\": \"probe.example\", \"resolver\": \"1.1.1.1\", \"record_type\": \"A\", \"source_mode\": \"fixture\", \"measured_at\": \"2026-11-01T02:48:26.439893+00:00\", \"result\": \"NXDOMAIN\", \"records\": [], \"transport_status\": \"responded\", \"dns_rcode\": \"NXDOMAIN\", \"resolver_role\": \"recursive\", \"authoritative_answer\": false}, {\"evidence_id\": \"E2\", \"target\": \"probe.example\", \"resolver\": \"8.8.8.8\", \"record_type\": \"A\", \"source_mode\": \"fixture\", \"measured_at\": \"2026-11-01T02:48:26.445623+00:00\", \"result\": \"NOERROR\", \"records\": [{\"value\": \"192.0.2.10\", \"ttl\": 60}], \"transport_status\": \"responded\", \"dns_rcode\": \"NOERROR\", \"resolver_role\": \"recursive\", \"authoritative_answer\": false}], \"dns_comparison\": {\"target\": \"probe.example\", \"record_type\": \"A\", \"source_mode\": \"fixture\", \"paths\": [{\"evidence_id\": \"E1\", \"resolver\": \"1.1.1.1\", \"role\": \"recursive\", \"dns_rcode\": \"NXDOMAIN\", \"records\": []}, {\"evidence_id\": \"E2\", \"resolver\": \"8.8.8.8\", \"role\": \"recursive\", \"dns_rcode\": \"NOERROR\", \"records\": [{\"value\": \"192.0.2.10\", \"ttl\": 60}]}, {\"resolver\": \"9.9.9.9\", \"role\": \"recursive\", \"execution_status\": \"error\", \"error_code\": \"FIXTURE_PATH_NOT_PROVIDED\", \"evidence_id\": null}], \"differences\": [\"RCODE_DISAGREEMENT\", \"RECORD_PRESENCE_DISAGREEMENT\", \"ADDRESS_SET_DIFFERENCE\"], \"comparable_pairs\": [[\"E1\", \"E2\"]], \"non_comparable_pairs\": [\"E1 vs 9.9.9.9（执行失败）\", \"E2 vs 9.9.9.9（执行失败）\"]}, \"findings\": [{\"code\": \"RECURSIVE_RESPONSE_DISAGREEMENT\", \"stage\": \"dns-comparison\", \"status\": \"observed\", \"evidence_ids\": [\"E1\", \"E2\"], \"explanation\": \"同一目标 probe.example A 在两个递归解析器上得到不同 RCODE 与记录集合：1.1.1.1 为 NXDOMAIN 无记录，8.8.8.8 为 NOERROR 且返回 192.0.2.10（TTL 60）。两次测量时间相差约 6ms，属同一 fixture 批次。\", \"scope\": {\"target\": \"probe.example\", \"record_type\": \"A\", \"source_mode\": \"fixture\", \"paths\": [{\"resolver\": \"1.1.1.1\", \"evidence_id\": \"E1\"}, {\"resolver\": \"8.8.8.8\", \"evidence_id\": \"E2\"}]}, \"localization\": {\"affected_evidence_ids\": [\"E1\", \"E2\"], \"interpretation\": \"差异仅定位到这两个递归路径的这一次查询，不能推广到整台解析器或整个域名。\"}, \"root_cause_confirmed\": false, \"limitations\": [\"单次观测无法区分缓存、策略、GeoDNS/CDN 调度、时间变化或解析器实现差异。\", \"未取得权威（AA）回答，无法判断哪一侧与权威区一致。\", \"未执行 DNSSEC 验证。\"], \"next_checks\": [\"在真实环境重复多轮、多解析器查询并记录时间戳，观察差异是否稳定。\", \"查询权威服务器（仅采信 AA 回答）确认 probe.example A 是否存在。\"]}, {\"code\": \"NXDOMAIN_OBSERVED\", \"stage\": \"recursive\", \"status\": \"observed\", \"evidence_ids\": [\"E1\"], \"explanation\": \"1.1.1.1 对 probe.example A 返回 NXDOMAIN（AA=false），仅说明该递归路径给出否定回答，不推断注册状态或服务器宕机。\", \"scope\": {\"target\": \"probe.example\", \"record_type\": \"A\", \"source_mode\": \"fixture\", \"paths\": [{\"resolver\": \"1.1.1.1\", \"evidence_id\": \"E1\"}]}, \"localization\": {\"affected_evidence_ids\": [\"E1\"], \"other_paths\": [{\"evidence_id\": \"E2\", \"dns_rcode\": \"NOERROR\"}], \"interpretation\": \"否定回答只出现在 1.1.1.1 这一路径。\"}, \"root_cause_confirmed\": false, \"limitations\": [\"NXDOMAIN 与 NOERROR/NODATA、SERVFAIL、超时不可混同；此处确为 NXDOMAIN 响应。\", \"未取得 SOA 或权威回答，无法判断否定缓存来源。\"], \"next_checks\": [\"向权威服务器查询以确认名称是否存在。\"]}], \"hypotheses\": [{\"id\": \"H1\", \"statement\": \"两个递归解析器对 probe.example A 的回答存在真实差异（一侧否定、一侧有记录），可能源于缓存状态或解析器策略不同。\", \"category\": \"dns_resolution\", \"status\": \"获得支持\", \"supporting_evidence_ids\": [\"E1\", \"E2\"], \"contradicting_evidence_ids\": [], \"missing_information\": [\"权威区实际记录\", \"各解析器缓存状态与查询历史\", \"多轮重复测量\"], \"evidence_review_notes\": [\"E1 与 E2 在同一批次、相隔约 6ms 取得，RCODE 与记录集合均不同。\"], \"testable_claim\": \"dns_query_failure\", \"measurement_scope\": {\"target\": \"probe.example\", \"record_type\": \"A\", \"source_mode\": \"fixture\", \"resolvers\": [\"1.1.1.1\", \"8.8.8.8\"]}}, {\"id\": \"H2\", \"statement\": \"差异由正常调度/负载均衡（如 GeoDNS、CDN 按解析器出口返回不同地址）造成，而非故障。\", \"category\": \"endpoint_intent\", \"status\": \"无法确定\", \"supporting_evidence_ids\": [], \"contradicting_evidence_ids\": [], \"missing_information\": [\"权威区配置与调度策略\", \"不同出口 IP 的对照查询\", \"CNAME 链信息（本次无 CNAME）\"], \"evidence_review_notes\": [\"调度通常解释地址集合差异，但本次一侧为 NXDOMAIN 而非不同地址，调度解释力有限；仍无法排除。\"], \"testable_claim\": null, \"measurement_scope\": {\"target\": \"probe.example\", \"record_type\": \"A\", \"source_mode\": \"fixture\"}}, {\"id\": \"H3\", \"statement\": \"9.9.9.9 路径存在解析失败（超时/网络错误等）。\", \"category\": \"dns_resolution\", \"status\": \"无法确定\", \"supporting_evidence_ids\": [], \"contradicting_evidence_ids\": [], \"missing_information\": [\"9.9.9.9 的实际响应或错误类型\"], \"evidence_review_notes\": [\"该路径返回 FIXTURE_PATH_NOT_PROVIDED（fixture 未提供事实），不是 DNS 失败或超时，不能据此判断 9.9.9.9 行为。\"], \"testable_claim\": null, \"measurement_scope\": {\"target\": \"probe.example\", \"record_type\": \"A\", \"resolver\": \"9.9.9.9\", \"source_mode\": \"fixture\"}}], \"execution_issues\": [{\"attempt_id\": \"A1\", \"tool_name\": \"compare_resolvers\", \"target\": \"probe.example\", \"record_type\": \"A\", \"error_code\": \"FIXTURE_PATH_NOT_PROVIDED\", \"description\": \"9.9.9.9 子查询在 fixture 中无对应数据，execution_status=error，不可重试；该路径不产生证据，也不代表真实网络失败。\"}, {\"attempt_id\": \"A2\", \"tool_name\": \"query_authoritative\", \"target\": \"probe.example\", \"record_type\": \"A\", \"error_code\": \"FIXTURE_NOT_COVERED\", \"description\": \"权威查询未被测试数据覆盖，未取得任何 AA 回答；不可重试，权威侧事实保留为未知。\"}], \"conclusion\": \"在 fixture 数据下，probe.example A 的递归回答确实不一致：1.1.1.1 返回 NXDOMAIN 且无记录（E1），8.8.8.8 返回 NOERROR 且含 192.0.2.10、TTL 60（E2），两次测量相隔约 6ms，差异类型为 RCODE、记录存在性与地址集合差异。差异范围仅限这两个递归路径的这一次查询，不能推广到整台解析器或整个域名。9.9.9.9 路径因 fixture 未提供数据而无结果，权威（AA）回答也未取得，因此无法确认哪一侧与权威区一致，也无法确定唯一根因（缓存、策略、调度或时间变化均未被排除）。\", \"conclusion_evidence_ids\": [\"E1\", \"E2\"], \"limitations\": [\"全部测量来自 fixture（synthetic），不代表真实网络；不能据此判断真实 probe.example 的解析状态。\", \"每个解析器仅一次观测，无法区分缓存、策略、调度与时间变化。\", \"未取得权威（AA）回答，无法判断哪一侧正确。\", \"9.9.9.9 路径无数据（FIXTURE_PATH_NOT_PROVIDED），其行为未知。\", \"未执行 DNSSEC 验证，也未检查浏览器缓存、hosts、代理或 DoH 影响。\"], \"recommendations\": [\"在真实环境用多个递归解析器（含系统解析器）重复多轮查询 probe.example A，记录时间戳与出口 IP，观察差异是否稳定复现。\", \"向 probe.example 的权威服务器直接查询 A（仅采信 AA 回答），确认名称是否存在及实际地址集合。\", \"若权威存在记录，检查 1.1.1.1 侧是否存在否定缓存（可查 SOA 负缓存 TTL 或换用不同 qname 对照）。\", \"在客户端侧核对 hosts、浏览器缓存、代理/DoH 配置，排除本地覆盖导致的差异。\"]}",
+          "tool_call_id": "call_00_08GN4Od3FlYsKW5T54MY2216",
+          "tool_kind": null,
+          "id": null,
+          "provider_name": null,
+          "provider_details": null,
+          "part_kind": "tool-call"
+        }
+      ]
+    },
+    {
+      "kind": "request",
+      "parts": [
+        {
+          "tool_name": "final_result",
+          "content": "执行问题引用必须匹配实际 A 调用的工具、目标、类型与错误码。",
+          "tool_call_id": "call_00_08GN4Od3FlYsKW5T54MY2216",
+          "tool_kind": null,
+          "metadata": null,
+          "timestamp": "2026-11-01T02:48:39.689120Z",
+          "outcome": "retried",
+          "retry": {
+            "cause": "model_retry",
+            "attempt": 1,
+            "max_retries": 2
+          },
+          "part_kind": "tool-return"
+        }
+      ]
+    },
+    {
+      "kind": "response",
+      "parts": [
+        {
+          "tool_name": "final_result",
+          "args": "{\"assessment_level\": \"partial\", \"conclusion\": \"在 fixture 数据下，probe.example A 的递归回答确实不一致：1.1.1.1 返回 NXDOMAIN 且无记录（E1），8.8.8.8 返回 NOERROR 且含 192.0.2.10、TTL 60（E2），两次测量相隔约 6ms，差异类型为 RCODE、记录存在性与地址集合差异。差异范围仅限这两个递归路径的这一次查询，不能推广到整台解析器或整个域名。9.9.9.9 路径因 fixture 未提供数据而无结果，权威（AA）回答也未取得，因此无法确认哪一侧与权威区一致，也无法确定唯一根因（缓存、策略、调度或时间变化均未被排除）。\", \"conclusion_evidence_ids\": [\"E1\", \"E2\"], \"dns_comparison\": {\"comparable_pairs\": [[\"E1\", \"E2\"]], \"differences\": [\"RCODE_DISAGREEMENT\", \"RECORD_PRESENCE_DISAGREEMENT\", \"ADDRESS_SET_DIFFERENCE\"], \"non_comparable_pairs\": [\"E1 vs 9.9.9.9（执行失败）\", \"E2 vs 9.9.9.9（执行失败）\"], \"paths\": [{\"dns_rcode\": \"NXDOMAIN\", \"evidence_id\": \"E1\", \"records\": [], \"resolver\": \"1.1.1.1\", \"role\": \"recursive\"}, {\"dns_rcode\": \"NOERROR\", \"evidence_id\": \"E2\", \"records\": [{\"ttl\": 60, \"value\": \"192.0.2.10\"}], \"resolver\": \"8.8.8.8\", \"role\": \"recursive\"}, {\"error_code\": \"FIXTURE_PATH_NOT_PROVIDED\", \"evidence_id\": null, \"execution_status\": \"error\", \"resolver\": \"9.9.9.9\", \"role\": \"recursive\"}], \"record_type\": \"A\", \"source_mode\": \"fixture\", \"target\": \"probe.example\"}, \"execution_issues\": [{\"attempt_id\": \"A1\", \"description\": \"9.9.9.9 子查询在 fixture 中无对应数据，execution_status=error，不可重试；该路径不产生证据，也不代表真实网络失败。\", \"error_code\": \"FIXTURE_PATH_NOT_PROVIDED\", \"record_type\": \"A\", \"target\": \"probe.example\", \"tool_name\": \"compare_resolvers\"}, {\"attempt_id\": \"A2\", \"description\": \"权威查询未被测试数据覆盖，未取得任何 AA 回答；不可重试，权威侧事实保留为未知。\", \"error_code\": \"FIXTURE_NOT_COVERED\", \"record_type\": \"A\", \"target\": \"probe.example\", \"tool_name\": \"query_authoritative\"}], \"findings\": [{\"code\": \"RECURSIVE_RESPONSE_DISAGREEMENT\", \"evidence_ids\": [\"E1\", \"E2\"], \"explanation\": \"同一目标 probe.example A 在两个递归解析器上得到不同 RCODE 与记录集合：1.1.1.1 为 NXDOMAIN 无记录，8.8.8.8 为 NOERROR 且返回 192.0.2.10（TTL 60）。两次测量时间相差约 6ms，属同一 fixture 批次。\", \"limitations\": [\"单次观测无法区分缓存、策略、GeoDNS/CDN 调度、时间变化或解析器实现差异。\", \"未取得权威（AA）回答，无法判断哪一侧与权威区一致。\", \"未执行 DNSSEC 验证。\"], \"localization\": {\"affected_evidence_ids\": [\"E1\", \"E2\"], \"interpretation\": \"差异仅定位到这两个递归路径的这一次查询，不能推广到整台解析器或整个域名。\"}, \"next_checks\": [\"在真实环境重复多轮、多解析器查询并记录时间戳，观察差异是否稳定。\", \"查询权威服务器（仅采信 AA 回答）确认 probe.example A 是否存在。\"], \"observed_facts\": [{\"dns_rcode\": \"NXDOMAIN\", \"evidence_id\": \"E1\", \"records\": [], \"resolver\": \"1.1.1.1\"}, {\"dns_rcode\": \"NOERROR\", \"evidence_id\": \"E2\", \"records\": [{\"ttl\": 60, \"value\": \"192.0.2.10\"}], \"resolver\": \"8.8.8.8\"}], \"root_cause_confirmed\": false, \"scope\": {\"paths\": [{\"evidence_id\": \"E1\", \"resolver\": \"1.1.1.1\"}, {\"evidence_id\": \"E2\", \"resolver\": \"8.8.8.8\"}], \"record_type\": \"A\", \"source_mode\": \"fixture\", \"target\": \"probe.example\"}, \"stage\": \"dns-comparison\", \"status\": \"observed\"}, {\"code\": \"NXDOMAIN_OBSERVED\", \"evidence_ids\": [\"E1\"], \"explanation\": \"1.1.1.1 对 probe.example A 返回 NXDOMAIN（AA=false），仅说明该递归路径给出否定回答，不推断注册状态或服务器宕机。\", \"limitations\": [\"NXDOMAIN 与 NOERROR/NODATA、SERVFAIL、超时不可混同；此处确为 NXDOMAIN 响应。\", \"未取得 SOA 或权威回答，无法判断否定缓存来源。\"], \"localization\": {\"affected_evidence_ids\": [\"E1\"], \"interpretation\": \"否定回答只出现在 1.1.1.1 这一路径。\", \"other_paths\": [{\"dns_rcode\": \"NOERROR\", \"evidence_id\": \"E2\"}]}, \"next_checks\": [\"向权威服务器查询以确认名称是否存在。\"], \"observed_facts\": [{\"dns_rcode\": \"NXDOMAIN\", \"evidence_id\": \"E1\", \"negative_name\": \"probe.example\", \"records\": [], \"resolver\": \"1.1.1.1\"}], \"root_cause_confirmed\": false, \"scope\": {\"paths\": [{\"evidence_id\": \"E1\", \"resolver\": \"1.1.1.1\"}], \"record_type\": \"A\", \"source_mode\": \"fixture\", \"target\": \"probe.example\"}, \"stage\": \"recursive\", \"status\": \"observed\"}], \"hypotheses\": [{\"category\": \"dns_resolution\", \"contradicting_evidence_ids\": [], \"evidence_review_notes\": [\"E1 与 E2 在同一批次、相隔约 6ms 取得，RCODE 与记录集合均不同。\"], \"id\": \"H1\", \"measurement_scope\": {\"record_type\": \"A\", \"resolvers\": [\"1.1.1.1\", \"8.8.8.8\"], \"source_mode\": \"fixture\", \"target\": \"probe.example\"}, \"missing_information\": [\"权威区实际记录\", \"各解析器缓存状态与查询历史\", \"多轮重复测量\"], \"statement\": \"两个递归解析器对 probe.example A 的回答存在真实差异（一侧否定、一侧有记录），可能源于缓存状态或解析器策略不同。\", \"status\": \"获得支持\", \"supporting_evidence_ids\": [\"E1\", \"E2\"], \"testable_claim\": \"dns_query_failure\"}, {\"category\": \"endpoint_intent\", \"contradicting_evidence_ids\": [], \"evidence_review_notes\": [\"调度通常解释地址集合差异，但本次一侧为 NXDOMAIN 而非不同地址，调度解释力有限；仍无法排除。\"], \"id\": \"H2\", \"measurement_scope\": {\"record_type\": \"A\", \"source_mode\": \"fixture\", \"target\": \"probe.example\"}, \"missing_information\": [\"权威区配置与调度策略\", \"不同出口 IP 的对照查询\", \"CNAME 链信息（本次无 CNAME）\"], \"statement\": \"差异由正常调度/负载均衡（如 GeoDNS、CDN 按解析器出口返回不同地址）造成，而非故障。\", \"status\": \"无法确定\", \"supporting_evidence_ids\": [], \"testable_claim\": null}, {\"category\": \"dns_resolution\", \"contradicting_evidence_ids\": [], \"evidence_review_notes\": [\"该路径返回 FIXTURE_PATH_NOT_PROVIDED（fixture 未提供事实），不是 DNS 失败或超时，不能据此判断 9.9.9.9 行为。\"], \"id\": \"H3\", \"measurement_scope\": {\"record_type\": \"A\", \"resolver\": \"9.9.9.9\", \"source_mode\": \"fixture\", \"target\": \"probe.example\"}, \"missing_information\": [\"9.9.9.9 的实际响应或错误类型\"], \"statement\": \"9.9.9.9 路径存在解析失败（超时/网络错误等）。\", \"status\": \"无法确定\", \"supporting_evidence_ids\": [], \"testable_claim\": null}], \"limitations\": [\"全部测量来自 fixture（synthetic），不代表真实网络；不能据此判断真实 probe.example 的解析状态。\", \"每个解析器仅一次观测，无法区分缓存、策略、调度与时间变化。\", \"未取得权威（AA）回答，无法判断哪一侧正确。\", \"9.9.9.9 路径无数据（FIXTURE_PATH_NOT_PROVIDED），其行为未知。\", \"未执行 DNSSEC 验证，也未检查浏览器缓存、hosts、代理或 DoH 影响。\"], \"measured_facts\": [{\"authoritative_answer\": false, \"dns_rcode\": \"NXDOMAIN\", \"evidence_id\": \"E1\", \"measured_at\": \"2026-11-01T02:48:26.439893+00:00\", \"record_type\": \"A\", \"records\": [], \"resolver\": \"1.1.1.1\", \"resolver_role\": \"recursive\", \"result\": \"NXDOMAIN\", \"source_mode\": \"fixture\", \"target\": \"probe.example\", \"transport_status\": \"responded\"}, {\"authoritative_answer\": false, \"dns_rcode\": \"NOERROR\", \"evidence_id\": \"E2\", \"measured_at\": \"2026-11-01T02:48:26.445623+00:00\", \"record_type\": \"A\", \"records\": [{\"ttl\": 60, \"value\": \"192.0.2.10\"}], \"resolver\": \"8.8.8.8\", \"resolver_role\": \"recursive\", \"result\": \"NOERROR\", \"source_mode\": \"fixture\", \"target\": \"probe.example\", \"transport_status\": \"responded\"}], \"observations\": [{\"evidence_id\": \"E1\", \"observation\": \"1.1.1.1（递归）对 probe.example A 返回 NXDOMAIN，无记录，AA=false，transport_status=responded（fixture，2026-11-01T02:48:26.439893Z）。\"}, {\"evidence_id\": \"E2\", \"observation\": \"8.8.8.8（递归）对 probe.example A 返回 NOERROR，含 192.0.2.10，TTL=60，AA=false，transport_status=responded（fixture，2026-11-01T02:48:26.445623Z）。\"}, {\"evidence_id\": \"E1\", \"observation\": \"两个可比较路径之间出现 RCODE_DISAGREEMENT、RECORD_PRESENCE_DISAGREEMENT、ADDRESS_SET_DIFFERENCE；TTL 与耗时均为单次观测，不证明缓存或性能异常。\"}], \"outcome\": \"answered\", \"recommendations\": [\"在真实环境用多个递归解析器（含系统解析器）重复多轮查询 probe.example A，记录时间戳与出口 IP，观察差异是否稳定复现。\", \"向 probe.example 的权威服务器直接查询 A（仅采信 AA 回答），确认名称是否存在及实际地址集合。\", \"若权威存在记录，检查 1.1.1.1 侧是否存在否定缓存（可查 SOA 负缓存 TTL 或换用不同 qname 对照）。\", \"在客户端侧核对 hosts、浏览器缓存、代理/DoH 配置，排除本地覆盖导致的差异。\"], \"request_kind\": \"investigation\"}",
+          "tool_call_id": "call_00_5d6rzrZmourjraQmgFC70646",
+          "tool_kind": null,
+          "id": null,
+          "provider_name": null,
+          "provider_details": null,
+          "part_kind": "tool-call"
+        }
+      ]
+    },
+    {
+      "kind": "request",
+      "parts": [
+        {
+          "tool_name": "final_result",
+          "content": "执行问题引用必须匹配实际 A 调用的工具、目标、类型与错误码。",
+          "tool_call_id": "call_00_5d6rzrZmourjraQmgFC70646",
+          "tool_kind": null,
+          "metadata": null,
+          "timestamp": "2026-11-01T02:48:49.657638Z",
+          "outcome": "retried",
+          "retry": {
+            "cause": "model_retry",
+            "attempt": 2,
+            "max_retries": 2
+          },
+          "part_kind": "tool-return"
+        }
+      ]
+    },
+    {
+      "kind": "response",
+      "parts": [
+        {
+          "tool_name": "final_result",
+          "args": "{\"assessment_level\": \"partial\", \"conclusion\": \"在 fixture 数据下，probe.example A 的递归回答确实不一致：1.1.1.1 返回 NXDOMAIN 且无记录（E1），8.8.8.8 返回 NOERROR 且含 192.0.2.10、TTL 60（E2），两次测量相隔约 6ms，差异类型为 RCODE、记录存在性与地址集合差异。差异范围仅限这两个递归路径的这一次查询，不能推广到整台解析器或整个域名。9.9.9.9 路径因 fixture 未提供数据而无结果，权威（AA）回答也未取得，因此无法确认哪一侧与权威区一致，也无法确定唯一根因（缓存、策略、调度或时间变化均未被排除）。\", \"conclusion_evidence_ids\": [\"E1\", \"E2\"], \"dns_comparison\": {\"comparable_pairs\": [[\"E1\", \"E2\"]], \"differences\": [\"RCODE_DISAGREEMENT\", \"RECORD_PRESENCE_DISAGREEMENT\", \"ADDRESS_SET_DIFFERENCE\"], \"non_comparable_pairs\": [\"E1 vs 9.9.9.9（执行失败）\", \"E2 vs 9.9.9.9（执行失败）\"], \"paths\": [{\"dns_rcode\": \"NXDOMAIN\", \"evidence_id\": \"E1\", \"records\": [], \"resolver\": \"1.1.1.1\", \"role\": \"recursive\"}, {\"dns_rcode\": \"NOERROR\", \"evidence_id\": \"E2\", \"records\": [{\"ttl\": 60, \"value\": \"192.0.2.10\"}], \"resolver\": \"8.8.8.8\", \"role\": \"recursive\"}, {\"error_code\": \"FIXTURE_PATH_NOT_PROVIDED\", \"evidence_id\": null, \"execution_status\": \"error\", \"resolver\": \"9.9.9.9\", \"role\": \"recursive\"}], \"record_type\": \"A\", \"source_mode\": \"fixture\", \"target\": \"probe.example\"}, \"execution_issues\": [{\"attempt_id\": \"A1\", \"description\": \"9.9.9.9 子查询在 fixture 中无对应数据，execution_status=error，不可重试；该路径不产生证据，也不代表真实网络失败。\", \"error_code\": \"FIXTURE_PATH_NOT_PROVIDED\", \"record_type\": \"A\", \"target\": \"probe.example\", \"tool_name\": \"compare_resolvers\"}, {\"attempt_id\": \"A2\", \"description\": \"权威查询未被测试数据覆盖，未取得任何 AA 回答；不可重试，权威侧事实保留为未知。\", \"error_code\": \"FIXTURE_NOT_COVERED\", \"record_type\": \"A\", \"target\": \"probe.example\", \"tool_name\": \"query_authoritative\"}], \"findings\": [{\"code\": \"RECURSIVE_RESPONSE_DISAGREEMENT\", \"evidence_ids\": [\"E1\", \"E2\"], \"explanation\": \"同一目标 probe.example A 在两个递归解析器上得到不同 RCODE 与记录集合：1.1.1.1 为 NXDOMAIN 无记录，8.8.8.8 为 NOERROR 且返回 192.0.2.10（TTL 60）。两次测量时间相差约 6ms，属同一 fixture 批次。\", \"limitations\": [\"单次观测无法区分缓存、策略、GeoDNS/CDN 调度、时间变化或解析器实现差异。\", \"未取得权威（AA）回答，无法判断哪一侧与权威区一致。\", \"未执行 DNSSEC 验证。\"], \"localization\": {\"affected_evidence_ids\": [\"E1\", \"E2\"], \"interpretation\": \"差异仅定位到这两个递归路径的这一次查询，不能推广到整台解析器或整个域名。\"}, \"next_checks\": [\"在真实环境重复多轮、多解析器查询并记录时间戳，观察差异是否稳定。\", \"查询权威服务器（仅采信 AA 回答）确认 probe.example A 是否存在。\"], \"observed_facts\": [{\"dns_rcode\": \"NXDOMAIN\", \"evidence_id\": \"E1\", \"records\": [], \"resolver\": \"1.1.1.1\"}, {\"dns_rcode\": \"NOERROR\", \"evidence_id\": \"E2\", \"records\": [{\"ttl\": 60, \"value\": \"192.0.2.10\"}], \"resolver\": \"8.8.8.8\"}], \"root_cause_confirmed\": false, \"scope\": {\"paths\": [{\"evidence_id\": \"E1\", \"resolver\": \"1.1.1.1\"}, {\"evidence_id\": \"E2\", \"resolver\": \"8.8.8.8\"}], \"record_type\": \"A\", \"source_mode\": \"fixture\", \"target\": \"probe.example\"}, \"stage\": \"dns-comparison\", \"status\": \"observed\"}, {\"code\": \"NXDOMAIN_OBSERVED\", \"evidence_ids\": [\"E1\"], \"explanation\": \"1.1.1.1 对 probe.example A 返回 NXDOMAIN（AA=false），仅说明该递归路径给出否定回答，不推断注册状态或服务器宕机。\", \"limitations\": [\"NXDOMAIN 与 NOERROR/NODATA、SERVFAIL、超时不可混同；此处确为 NXDOMAIN 响应。\", \"未取得 SOA 或权威回答，无法判断否定缓存来源。\"], \"localization\": {\"affected_evidence_ids\": [\"E1\"], \"interpretation\": \"否定回答只出现在 1.1.1.1 这一路径。\", \"other_paths\": [{\"dns_rcode\": \"NOERROR\", \"evidence_id\": \"E2\"}]}, \"next_checks\": [\"向权威服务器查询以确认名称是否存在。\"], \"observed_facts\": [{\"dns_rcode\": \"NXDOMAIN\", \"evidence_id\": \"E1\", \"negative_name\": \"probe.example\", \"records\": [], \"resolver\": \"1.1.1.1\"}], \"root_cause_confirmed\": false, \"scope\": {\"paths\": [{\"evidence_id\": \"E1\", \"resolver\": \"1.1.1.1\"}], \"record_type\": \"A\", \"source_mode\": \"fixture\", \"target\": \"probe.example\"}, \"stage\": \"recursive\", \"status\": \"observed\"}], \"hypotheses\": [{\"category\": \"dns_resolution\", \"contradicting_evidence_ids\": [], \"evidence_review_notes\": [\"E1 与 E2 在同一批次、相隔约 6ms 取得，RCODE 与记录集合均不同。\"], \"id\": \"H1\", \"measurement_scope\": {\"record_type\": \"A\", \"resolvers\": [\"1.1.1.1\", \"8.8.8.8\"], \"source_mode\": \"fixture\", \"target\": \"probe.example\"}, \"missing_information\": [\"权威区实际记录\", \"各解析器缓存状态与查询历史\", \"多轮重复测量\"], \"statement\": \"两个递归解析器对 probe.example A 的回答存在真实差异（一侧否定、一侧有记录），可能源于缓存状态或解析器策略不同。\", \"status\": \"获得支持\", \"supporting_evidence_ids\": [\"E1\", \"E2\"], \"testable_claim\": \"dns_query_failure\"}, {\"category\": \"endpoint_intent\", \"contradicting_evidence_ids\": [], \"evidence_review_notes\": [\"调度通常解释地址集合差异，但本次一侧为 NXDOMAIN 而非不同地址，调度解释力有限；仍无法排除。\"], \"id\": \"H2\", \"measurement_scope\": {\"record_type\": \"A\", \"source_mode\": \"fixture\", \"target\": \"probe.example\"}, \"missing_information\": [\"权威区配置与调度策略\", \"不同出口 IP 的对照查询\", \"CNAME 链信息（本次无 CNAME）\"], \"statement\": \"差异由正常调度/负载均衡（如 GeoDNS、CDN 按解析器出口返回不同地址）造成，而非故障。\", \"status\": \"无法确定\", \"supporting_evidence_ids\": [], \"testable_claim\": null}, {\"category\": \"dns_resolution\", \"contradicting_evidence_ids\": [], \"evidence_review_notes\": [\"该路径返回 FIXTURE_PATH_NOT_PROVIDED（fixture 未提供事实），不是 DNS 失败或超时，不能据此判断 9.9.9.9 行为。\"], \"id\": \"H3\", \"measurement_scope\": {\"record_type\": \"A\", \"resolver\": \"9.9.9.9\", \"source_mode\": \"fixture\", \"target\": \"probe.example\"}, \"missing_information\": [\"9.9.9.9 的实际响应或错误类型\"], \"statement\": \"9.9.9.9 路径存在解析失败（超时/网络错误等）。\", \"status\": \"无法确定\", \"supporting_evidence_ids\": [], \"testable_claim\": null}], \"limitations\": [\"全部测量来自 fixture（synthetic），不代表真实网络；不能据此判断真实 probe.example 的解析状态。\", \"每个解析器仅一次观测，无法区分缓存、策略、调度与时间变化。\", \"未取得权威（AA）回答，无法判断哪一侧正确。\", \"9.9.9.9 路径无数据（FIXTURE_PATH_NOT_PROVIDED），其行为未知。\", \"未执行 DNSSEC 验证，也未检查浏览器缓存、hosts、代理或 DoH 影响。\"], \"measured_facts\": [{\"authoritative_answer\": false, \"dns_rcode\": \"NXDOMAIN\", \"evidence_id\": \"E1\", \"measured_at\": \"2026-11-01T02:48:26.439893+00:00\", \"record_type\": \"A\", \"records\": [], \"resolver\": \"1.1.1.1\", \"resolver_role\": \"recursive\", \"result\": \"NXDOMAIN\", \"source_mode\": \"fixture\", \"target\": \"probe.example\", \"transport_status\": \"responded\"}, {\"authoritative_answer\": false, \"dns_rcode\": \"NOERROR\", \"evidence_id\": \"E2\", \"measured_at\": \"2026-11-01T02:48:26.445623+00:00\", \"record_type\": \"A\", \"records\": [{\"ttl\": 60, \"value\": \"192.0.2.10\"}], \"resolver\": \"8.8.8.8\", \"resolver_role\": \"recursive\", \"result\": \"NOERROR\", \"source_mode\": \"fixture\", \"target\": \"probe.example\", \"transport_status\": \"responded\"}], \"observations\": [{\"evidence_id\": \"E1\", \"observation\": \"1.1.1.1（递归）对 probe.example A 返回 NXDOMAIN，无记录，AA=false，transport_status=responded（fixture，2026-11-01T02:48:26.439893Z）。\"}, {\"evidence_id\": \"E2\", \"observation\": \"8.8.8.8（递归）对 probe.example A 返回 NOERROR，含 192.0.2.10，TTL=60，AA=false，transport_status=responded（fixture，2026-11-01T02:48:26.445623Z）。\"}, {\"evidence_id\": \"E1\", \"observation\": \"两个可比较路径之间出现 RCODE_DISAGREEMENT、RECORD_PRESENCE_DISAGREEMENT、ADDRESS_SET_DIFFERENCE；TTL 与耗时均为单次观测，不证明缓存或性能异常。\"}], \"outcome\": \"answered\", \"recommendations\": [\"在真实环境用多个递归解析器（含系统解析器）重复多轮查询 probe.example A，记录时间戳与出口 IP，观察差异是否稳定复现。\", \"向 probe.example 的权威服务器直接查询 A（仅采信 AA 回答），确认名称是否存在及实际地址集合。\", \"若权威存在记录，检查 1.1.1.1 侧是否存在否定缓存（可查 SOA 负缓存 TTL 或换用不同 qname 对照）。\", \"在客户端侧核对 hosts、浏览器缓存、代理/DoH 配置，排除本地覆盖导致的差异。\"], \"request_kind\": \"investigation\"}",
+          "tool_call_id": "call_00_pXaJxwgfeowWPzANfpA49705",
+          "tool_kind": null,
+          "id": null,
+          "provider_name": null,
+          "provider_details": null,
+          "part_kind": "tool-call"
+        }
+      ]
+    },
+    {
+      "kind": "request",
+      "parts": []
+    }
+  ],
+  "evidence": [
+    {
+      "tool_call_id": "A1",
+      "parent_tool_call_id": "A1",
+      "query_attempt_id": null,
+      "tool_name": "query_dns",
+      "input": {
+        "domain": "probe.example",
+        "record_type": "A",
+        "resolver": "1.1.1.1"
+      },
+      "started_at": "2026-11-01T02:48:26.439893+00:00",
+      "duration_ms": 10,
+      "execution_status": "ok",
+      "data": {
+        "qname": "probe.example",
+        "qtype": "A",
+        "resolver": "1.1.1.1",
+        "resolver_role": "recursive",
+        "rcode": "NXDOMAIN",
+        "result_kind": "NXDOMAIN",
+        "records": [],
+        "flags": {
+          "AA": false,
+          "TC": false
+        },
+        "execution_status": "ok",
+        "duration_ms": 10,
+        "negative_name": "probe.example"
+      },
+      "source_mode": "fixture",
+      "measurement_location": "synthetic",
+      "error": null,
+      "id": "E1"
+    },
+    {
+      "tool_call_id": "A1",
+      "parent_tool_call_id": "A1",
+      "query_attempt_id": null,
+      "tool_name": "query_dns",
+      "input": {
+        "domain": "probe.example",
+        "record_type": "A",
+        "resolver": "8.8.8.8"
+      },
+      "started_at": "2026-11-01T02:48:26.445623+00:00",
+      "duration_ms": 10,
+      "execution_status": "ok",
+      "data": {
+        "qname": "probe.example",
+        "qtype": "A",
+        "resolver": "8.8.8.8",
+        "resolver_role": "recursive",
+        "rcode": "NOERROR",
+        "result_kind": "NOERROR",
+        "records": [
+          {
+            "value": "192.0.2.10",
+            "ttl": 60
+          }
+        ],
+        "flags": {
+          "AA": false,
+          "TC": false
+        },
+        "execution_status": "ok",
+        "duration_ms": 10
+      },
+      "source_mode": "fixture",
+      "measurement_location": "synthetic",
+      "error": null,
+      "id": "E2"
+    }
+  ],
+  "attempts": [
+    {
+      "attempt_id": "A1",
+      "tool_name": "compare_resolvers",
+      "provider_call_id": "call_00_cfxIOGkHqdTu2Ir01E2e5999",
+      "input": {
+        "domain": "probe.example",
+        "record_type": "A"
+      },
+      "started_at": "2026-11-01T02:48:26.437485+00:00",
+      "status": "measured",
+      "evidence_id": null,
+      "error": {
+        "code": "PARTIAL_DNS_EXECUTION_ERROR",
+        "message": "部分 DNS 子查询执行失败；有效子集仍保留，详见 comparison。",
+        "retryable": false
+      },
+      "duration_ms": 16.0,
+      "dns_execution_issues": [
+        {
+          "qname": "probe.example",
+          "qtype": "A",
+          "resolver": "9.9.9.9",
+          "resolver_role": "recursive",
+          "execution_status": "error",
+          "error": {
+            "code": "FIXTURE_PATH_NOT_PROVIDED",
+            "retryable": false
+          },
+          "records": [],
+          "source_mode": "fixture",
+          "parent_tool_call_id": "A1"
+        }
+      ],
+      "evidence_ids": [
+        "E1",
+        "E2"
+      ]
+    },
+    {
+      "attempt_id": "A2",
+      "tool_name": "query_authoritative",
+      "provider_call_id": "call_00_0BLn7E3gYN60HevseAVe1654",
+      "input": {
+        "domain": "probe.example",
+        "record_type": "A"
+      },
+      "started_at": "2026-11-01T02:48:27.000662+00:00",
+      "status": "unavailable",
+      "evidence_id": null,
+      "error": {
+        "code": "FIXTURE_NOT_COVERED",
+        "message": "测试数据没有提供该项事实；不是 DNS 无记录/NXDOMAIN 或真实网络失败。不可重试；请保留未知并结束或选择其他有用检查。",
+        "retryable": false
+      },
+      "duration_ms": 0.0,
+      "evidence_ids": []
+    }
+  ],
+  "model_draft": {
+    "diagnostic_assessment": "",
+    "assessment_level": "partial",
+    "report_fallback_reason": null,
+    "dns_comparison": {
+      "comparable_pairs": [
+        [
+          "E1",
+          "E2"
+        ]
+      ],
+      "differences": [
+        "RCODE_DISAGREEMENT",
+        "RECORD_PRESENCE_DISAGREEMENT",
+        "ADDRESS_SET_DIFFERENCE"
+      ],
+      "non_comparable_pairs": [
+        "E1 vs 9.9.9.9（执行失败）",
+        "E2 vs 9.9.9.9（执行失败）"
+      ],
+      "paths": [
+        {
+          "dns_rcode": "NXDOMAIN",
+          "evidence_id": "E1",
+          "records": [],
+          "resolver": "1.1.1.1",
+          "role": "recursive"
+        },
+        {
+          "dns_rcode": "NOERROR",
+          "evidence_id": "E2",
+          "records": [
+            {
+              "ttl": 60,
+              "value": "192.0.2.10"
+            }
+          ],
+          "resolver": "8.8.8.8",
+          "role": "recursive"
+        },
+        {
+          "error_code": "FIXTURE_PATH_NOT_PROVIDED",
+          "evidence_id": null,
+          "execution_status": "error",
+          "resolver": "9.9.9.9",
+          "role": "recursive"
+        }
+      ],
+      "record_type": "A",
+      "source_mode": "fixture",
+      "target": "probe.example"
+    },
+    "execution_issues": [
+      {
+        "attempt_id": "A1",
+        "tool_name": "compare_resolvers",
+        "target": "probe.example",
+        "record_type": "A",
+        "error_code": "FIXTURE_PATH_NOT_PROVIDED",
+        "description": "9.9.9.9 子查询在 fixture 中无对应数据，execution_status=error，不可重试；该路径不产生证据，也不代表真实网络失败。"
+      },
+      {
+        "attempt_id": "A2",
+        "tool_name": "query_authoritative",
+        "target": "probe.example",
+        "record_type": "A",
+        "error_code": "FIXTURE_NOT_COVERED",
+        "description": "权威查询未被测试数据覆盖，未取得任何 AA 回答；不可重试，权威侧事实保留为未知。"
+      }
+    ],
+    "measured_facts": [
+      {
+        "authoritative_answer": false,
+        "dns_rcode": "NXDOMAIN",
+        "evidence_id": "E1",
+        "measured_at": "2026-11-01T02:48:26.439893+00:00",
+        "record_type": "A",
+        "records": [],
+        "resolver": "1.1.1.1",
+        "resolver_role": "recursive",
+        "result": "NXDOMAIN",
+        "source_mode": "fixture",
+        "target": "probe.example",
+        "transport_status": "responded"
+      },
+      {
+        "authoritative_answer": false,
+        "dns_rcode": "NOERROR",
+        "evidence_id": "E2",
+        "measured_at": "2026-11-01T02:48:26.445623+00:00",
+        "record_type": "A",
+        "records": [
+          {
+            "ttl": 60,
+            "value": "192.0.2.10"
+          }
+        ],
+        "resolver": "8.8.8.8",
+        "resolver_role": "recursive",
+        "result": "NOERROR",
+        "source_mode": "fixture",
+        "target": "probe.example",
+        "transport_status": "responded"
+      }
+    ],
+    "findings": [
+      {
+        "scope": {
+          "paths": [
+            {
+              "evidence_id": "E1",
+              "resolver": "1.1.1.1"
+            },
+            {
+              "evidence_id": "E2",
+              "resolver": "8.8.8.8"
+            }
+          ],
+          "record_type": "A",
+          "source_mode": "fixture",
+          "target": "probe.example"
+        },
+        "observed_facts": [
+          {
+            "dns_rcode": "NXDOMAIN",
+            "evidence_id": "E1",
+            "records": [],
+            "resolver": "1.1.1.1"
+          },
+          {
+            "dns_rcode": "NOERROR",
+            "evidence_id": "E2",
+            "records": [
+              {
+                "ttl": 60,
+                "value": "192.0.2.10"
+              }
+            ],
+            "resolver": "8.8.8.8"
+          }
+        ],
+        "localization": {
+          "affected_evidence_ids": [
+            "E1",
+            "E2"
+          ],
+          "interpretation": "差异仅定位到这两个递归路径的这一次查询，不能推广到整台解析器或整个域名。"
+        },
+        "root_cause_confirmed": false,
+        "code": "RECURSIVE_RESPONSE_DISAGREEMENT",
+        "stage": "dns-comparison",
+        "status": "observed",
+        "evidence_ids": [
+          "E1",
+          "E2"
+        ],
+        "explanation": "同一目标 probe.example A 在两个递归解析器上得到不同 RCODE 与记录集合：1.1.1.1 为 NXDOMAIN 无记录，8.8.8.8 为 NOERROR 且返回 192.0.2.10（TTL 60）。两次测量时间相差约 6ms，属同一 fixture 批次。",
+        "limitations": [
+          "单次观测无法区分缓存、策略、GeoDNS/CDN 调度、时间变化或解析器实现差异。",
+          "未取得权威（AA）回答，无法判断哪一侧与权威区一致。",
+          "未执行 DNSSEC 验证。"
+        ],
+        "next_checks": [
+          "在真实环境重复多轮、多解析器查询并记录时间戳，观察差异是否稳定。",
+          "查询权威服务器（仅采信 AA 回答）确认 probe.example A 是否存在。"
+        ]
+      },
+      {
+        "scope": {
+          "paths": [
+            {
+              "evidence_id": "E1",
+              "resolver": "1.1.1.1"
+            }
+          ],
+          "record_type": "A",
+          "source_mode": "fixture",
+          "target": "probe.example"
+        },
+        "observed_facts": [
+          {
+            "dns_rcode": "NXDOMAIN",
+            "evidence_id": "E1",
+            "negative_name": "probe.example",
+            "records": [],
+            "resolver": "1.1.1.1"
+          }
+        ],
+        "localization": {
+          "affected_evidence_ids": [
+            "E1"
+          ],
+          "interpretation": "否定回答只出现在 1.1.1.1 这一路径。",
+          "other_paths": [
+            {
+              "dns_rcode": "NOERROR",
+              "evidence_id": "E2"
+            }
+          ]
+        },
+        "root_cause_confirmed": false,
+        "code": "NXDOMAIN_OBSERVED",
+        "stage": "recursive",
+        "status": "observed",
+        "evidence_ids": [
+          "E1"
+        ],
+        "explanation": "1.1.1.1 对 probe.example A 返回 NXDOMAIN（AA=false），仅说明该递归路径给出否定回答，不推断注册状态或服务器宕机。",
+        "limitations": [
+          "NXDOMAIN 与 NOERROR/NODATA、SERVFAIL、超时不可混同；此处确为 NXDOMAIN 响应。",
+          "未取得 SOA 或权威回答，无法判断否定缓存来源。"
+        ],
+        "next_checks": [
+          "向权威服务器查询以确认名称是否存在。"
+        ]
+      }
+    ],
+    "request_kind": "investigation",
+    "outcome": "answered",
+    "observations": [
+      {
+        "evidence_id": "E1",
+        "observation": "1.1.1.1（递归）对 probe.example A 返回 NXDOMAIN，无记录，AA=false，transport_status=responded（fixture，2026-11-01T02:48:26.439893Z）。"
+      },
+      {
+        "evidence_id": "E2",
+        "observation": "8.8.8.8（递归）对 probe.example A 返回 NOERROR，含 192.0.2.10，TTL=60，AA=false，transport_status=responded（fixture，2026-11-01T02:48:26.445623Z）。"
+      },
+      {
+        "evidence_id": "E1",
+        "observation": "两个可比较路径之间出现 RCODE_DISAGREEMENT、RECORD_PRESENCE_DISAGREEMENT、ADDRESS_SET_DIFFERENCE；TTL 与耗时均为单次观测，不证明缓存或性能异常。"
+      }
+    ],
+    "hypotheses": [
+      {
+        "testable_claim": "dns_query_failure",
+        "measurement_scope": {
+          "record_type": "A",
+          "resolvers": [
+            "1.1.1.1",
+            "8.8.8.8"
+          ],
+          "source_mode": "fixture",
+          "target": "probe.example"
+        },
+        "evidence_review_notes": [
+          "E1 与 E2 在同一批次、相隔约 6ms 取得，RCODE 与记录集合均不同。"
+        ],
+        "category": "dns_resolution",
+        "id": "H1",
+        "statement": "两个递归解析器对 probe.example A 的回答存在真实差异（一侧否定、一侧有记录），可能源于缓存状态或解析器策略不同。",
+        "status": "获得支持",
+        "supporting_evidence_ids": [
+          "E1",
+          "E2"
+        ],
+        "contradicting_evidence_ids": [],
+        "missing_information": [
+          "权威区实际记录",
+          "各解析器缓存状态与查询历史",
+          "多轮重复测量"
+        ]
+      },
+      {
+        "testable_claim": null,
+        "measurement_scope": {
+          "record_type": "A",
+          "source_mode": "fixture",
+          "target": "probe.example"
+        },
+        "evidence_review_notes": [
+          "调度通常解释地址集合差异，但本次一侧为 NXDOMAIN 而非不同地址，调度解释力有限；仍无法排除。"
+        ],
+        "category": "endpoint_intent",
+        "id": "H2",
+        "statement": "差异由正常调度/负载均衡（如 GeoDNS、CDN 按解析器出口返回不同地址）造成，而非故障。",
+        "status": "无法确定",
+        "supporting_evidence_ids": [],
+        "contradicting_evidence_ids": [],
+        "missing_information": [
+          "权威区配置与调度策略",
+          "不同出口 IP 的对照查询",
+          "CNAME 链信息（本次无 CNAME）"
+        ]
+      },
+      {
+        "testable_claim": null,
+        "measurement_scope": {
+          "record_type": "A",
+          "resolver": "9.9.9.9",
+          "source_mode": "fixture",
+          "target": "probe.example"
+        },
+        "evidence_review_notes": [
+          "该路径返回 FIXTURE_PATH_NOT_PROVIDED（fixture 未提供事实），不是 DNS 失败或超时，不能据此判断 9.9.9.9 行为。"
+        ],
+        "category": "dns_resolution",
+        "id": "H3",
+        "statement": "9.9.9.9 路径存在解析失败（超时/网络错误等）。",
+        "status": "无法确定",
+        "supporting_evidence_ids": [],
+        "contradicting_evidence_ids": [],
+        "missing_information": [
+          "9.9.9.9 的实际响应或错误类型"
+        ]
+      }
+    ],
+    "conclusion": "在 fixture 数据下，probe.example A 的递归回答确实不一致：1.1.1.1 返回 NXDOMAIN 且无记录（E1），8.8.8.8 返回 NOERROR 且含 192.0.2.10、TTL 60（E2），两次测量相隔约 6ms，差异类型为 RCODE、记录存在性与地址集合差异。差异范围仅限这两个递归路径的这一次查询，不能推广到整台解析器或整个域名。9.9.9.9 路径因 fixture 未提供数据而无结果，权威（AA）回答也未取得，因此无法确认哪一侧与权威区一致，也无法确定唯一根因（缓存、策略、调度或时间变化均未被排除）。",
+    "conclusion_evidence_ids": [
+      "E1",
+      "E2"
+    ],
+    "limitations": [
+      "全部测量来自 fixture（synthetic），不代表真实网络；不能据此判断真实 probe.example 的解析状态。",
+      "每个解析器仅一次观测，无法区分缓存、策略、调度与时间变化。",
+      "未取得权威（AA）回答，无法判断哪一侧正确。",
+      "9.9.9.9 路径无数据（FIXTURE_PATH_NOT_PROVIDED），其行为未知。",
+      "未执行 DNSSEC 验证，也未检查浏览器缓存、hosts、代理或 DoH 影响。"
+    ],
+    "recommendations": [
+      "在真实环境用多个递归解析器（含系统解析器）重复多轮查询 probe.example A，记录时间戳与出口 IP，观察差异是否稳定复现。",
+      "向 probe.example 的权威服务器直接查询 A（仅采信 AA 回答），确认名称是否存在及实际地址集合。",
+      "若权威存在记录，检查 1.1.1.1 侧是否存在否定缓存（可查 SOA 负缓存 TTL 或换用不同 qname 对照）。",
+      "在客户端侧核对 hosts、浏览器缓存、代理/DoH 配置，排除本地覆盖导致的差异。"
+    ]
+  },
+  "report_policy": "scoped_evidence_bound_v2",
+  "dns_attempts": [],
+  "findings": [
+    {
+      "code": "NXDOMAIN_OBSERVED",
+      "stage": "recursive",
+      "status": "observed",
+      "scope": {
+        "target": "probe.example",
+        "record_type": "A",
+        "source_mode": "fixture",
+        "dns_followup_only": false,
+        "paths": [
+          {
+            "resolver": "1.1.1.1",
+            "role": "recursive",
+            "evidence_id": "E1"
+          }
+        ],
+        "time_start": "2026-11-01T02:48:26.439893+00:00",
+        "time_end": "2026-11-01T02:48:26.439893+00:00"
+      },
+      "evidence_ids": [
+        "E1"
+      ],
+      "observed_facts": [
+        {
+          "evidence_id": "E1",
+          "resolver": "1.1.1.1",
+          "role": "recursive",
+          "authoritative_answer": false,
+          "negative_name": "probe.example",
+          "records": [],
+          "soa_serials": [],
+          "transport_status": "responded",
+          "dns_rcode": "NXDOMAIN",
+          "result_kind": "NXDOMAIN"
+        }
+      ],
+      "localization": {
+        "affected_evidence_ids": [
+          "E1"
+        ],
+        "other_paths": [
+          {
+            "evidence_id": "E2",
+            "resolver": "8.8.8.8",
+            "transport_status": "responded",
+            "dns_rcode": "NOERROR",
+            "result_kind": "NOERROR"
+          }
+        ],
+        "interpretation": "只定位列出的查询与路径；异常不自动归因于整台解析器或整个域名。"
+      },
+      "root_cause_confirmed": false,
+      "explanation": "查询 probe.example A：1.1.1.1 对 probe.example 返回 NXDOMAIN（E1）。不推断注册状态或服务器宕机。",
+      "limitations": [
+        "单次观测不能区分缓存、策略、调度、网络路径或服务因素；未确认唯一根因。",
+        "缺失时间/来源的旧日志保留未知；未执行 DNSSEC 验证或完整迭代解析。"
+      ],
+      "next_checks": [
+        "query_authoritative：按需检查 probe.example A，仅使用 AA 回答；一致时削弱递归独有差异解释，不一致时仍需区分缓存、策略和时间。"
+      ]
+    },
+    {
+      "code": "RECURSIVE_RESPONSE_DISAGREEMENT",
+      "stage": "dns-comparison",
+      "status": "observed",
+      "scope": {
+        "target": "probe.example",
+        "record_type": "A",
+        "source_mode": "fixture",
+        "dns_followup_only": false,
+        "paths": [
+          {
+            "resolver": "1.1.1.1",
+            "role": "recursive",
+            "evidence_id": "E1"
+          },
+          {
+            "resolver": "8.8.8.8",
+            "role": "recursive",
+            "evidence_id": "E2"
+          }
+        ],
+        "time_start": "2026-11-01T02:48:26.439893+00:00",
+        "time_end": "2026-11-01T02:48:26.445623+00:00"
+      },
+      "evidence_ids": [
+        "E1",
+        "E2"
+      ],
+      "observed_facts": [
+        {
+          "evidence_id": "E1",
+          "resolver": "1.1.1.1",
+          "role": "recursive",
+          "authoritative_answer": false,
+          "negative_name": "probe.example",
+          "records": [],
+          "soa_serials": [],
+          "transport_status": "responded",
+          "dns_rcode": "NXDOMAIN",
+          "result_kind": "NXDOMAIN"
+        },
+        {
+          "evidence_id": "E2",
+          "resolver": "8.8.8.8",
+          "role": "recursive",
+          "authoritative_answer": false,
+          "negative_name": null,
+          "records": [
+            {
+              "value": "192.0.2.10",
+              "ttl": 60
+            }
+          ],
+          "soa_serials": [],
+          "transport_status": "responded",
+          "dns_rcode": "NOERROR",
+          "result_kind": "NOERROR"
+        }
+      ],
+      "localization": {
+        "affected_evidence_ids": [
+          "E1",
+          "E2"
+        ],
+        "other_paths": [],
+        "interpretation": "只定位列出的查询与路径；异常不自动归因于整台解析器或整个域名。"
+      },
+      "root_cause_confirmed": false,
+      "explanation": "probe.example A 的完整可比较响应存在状态或记录集合差异；详见各路径结果。地址及 SOA Serial 差异只是观察，正常调度和时间变化仍可能解释。",
+      "limitations": [
+        "单次观测不能区分缓存、策略、调度、网络路径或服务因素；未确认唯一根因。",
+        "缺失时间/来源的旧日志保留未知；未执行 DNSSEC 验证或完整迭代解析。"
+      ],
+      "next_checks": [
+        "query_authoritative：按需检查 probe.example A，仅使用 AA 回答；一致时削弱递归独有差异解释，不一致时仍需区分缓存、策略和时间。"
+      ]
+    }
+  ],
+  "elapsed_seconds": 33.734
+}

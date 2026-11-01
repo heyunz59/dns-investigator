@@ -8,6 +8,7 @@
 - dns_compare.py：compare_details 返回实际路径、E/A/Q、比较资格、排除原因及原始 TTL/耗时；compare 保留代码列表接口。目标、类型、来源、否定回答适用名、AA 和最多300秒时间窗口受约束。未知时间/来源明确有限。逐对比较保留可用子集，失败项独立保留；不比较超时的记录、地址或 TTL。正常微小耗时/TTL差不生成功能故障告警。
 - dns_diagnosis.py、schemas.py：按查询/来源/时间窗口聚合，不按两两数量输出重复告警。scope、observed_facts、localization 保留参与结果、例外路径与证据；超时的 affected_evidence_ids 只包含超时路径，不把正常响应者说成故障。RECURSIVE_QUERY_TIMEOUT、RECURSIVE_RESPONSE_DISAGREEMENT、RECURSIVE_AUTH_RESPONSE_MISMATCH、AUTHORITATIVE_RESPONSE_DISAGREEMENT、ALIAS_RESOLUTION_INCOMPLETE，以及原有 NXDOMAIN/NODATA/SERVFAIL/REFUSED；地址集合差异单列 RECORD_SET_DIFFERENCE。权威超时单列 AUTHORITATIVE_QUERY_TIMEOUT。root_cause_confirmed 固定 false，没有直接根因确认规则。
 - reporting.py：保留程序事实、HTTP 状态/读取错误/跳转/最终 URL、TCP 端口及证书错误。新增 diagnostic_assessment、assessment_level、dns_comparison；摘要区分观测、路径范围及待验证原因，结论保留可读事实。正常查询不制造异常；未分类空 NOERROR 不宣称取得记录。内部发现的非授权名称仅建议外部专项检查，不暗示五工具已能独立查询它。
+- 复合工具的部分执行失败/预算拒绝另存 A.dns_execution_issues，与已执行失败 Q 去重；fixture 或请求发出前的拒绝不造 Q/E。正式报告保留失败路径和可比较子集。三个 DNS 工具的执行问题都保留实际记录类型，工具返回 execution_issue_summary；外层 A 错误码不与某子路径错误码互换。错误码/目标/类型的校验保持严格。
 - agent.py：工具返回最新 Finding 和 allowed_dns_targets，继续动态选择，不固定流水线。取消假设数量完成门槛；保留身份、category、testable_claim、measurement_scope、支持/反面引用、missing_information、evidence_review_notes 和最终去重。模型范围或 A/E 引用不合格仍重试；总结最终失败时，状态保持 failed，程序报告保留全部有效事实与 Finding、退回原因及原模型草稿。
 - alias_scope.py、tools.py：仅 query_dns 可扩展至有效同来源 DNS 证据中与原目标连通的 CNAME 链。E2 保存 target_authorization 引用 E1；深度/目标数最多8，保留 A/Q 总预算、重复及时间限制。无关 Answer/Additional、网页重定向和模型文本不授权。已有同类型完整末端记录会拒绝无理由跟进；fixture 不回退网络，fixture/live 不能相互授权。不是 DNSSEC 或任意域名扫描；其他工具仍限原目标。
 - accounting.py、evaluation/：拒绝和重复继续算 A，不算有效执行；评测假设数只作观察。日志 v5、scoped_dns_v2 与旧版本口径分开。旧对照数字和原始评分不修改。
@@ -35,7 +36,7 @@
 
 ## 同证据的新旧对照
 
-before.json 为修改前原始快照；after.json、final-after.json 保留过程快照。收尾时用隔离的 f0787c0 源码另存 **baseline-replay.json**，补正早期回放脚本给历史日志报告使用固定 probe.example 目标的上下文问题（原证据/诊断不变，不拿该脚本建议问题归罪于旧产品）；**release-replay.json 为最终业务源码 10ccb5e 的回放**，两者按历史日志实际目标比较。全部明确 replay，不是新 live 或模型运行；未覆盖原快照。summary.json 给出分母、代码和引用，13/13 只表示预设机械规则满足，不是语义准确率。
+before.json 为修改前原始快照；after.json、final-after.json、release-replay.json、delivery-replay.json 保留过程快照。收尾时用隔离的 f0787c0 源码另存 **baseline-replay.json**，补正早期回放脚本给历史日志报告使用固定 probe.example 目标的上下文问题（原证据/诊断不变，不拿该脚本建议问题归罪于旧产品）；**accepted-source-replay.json 为最终业务源码 4632d74 的回放**，两者按历史日志实际目标比较。文件名不是人工验收结论。全部明确 replay，不是新 live 或模型运行；未覆盖原快照。summary.json 给出分母、代码和引用，13/13 只表示预设机械规则满足，不是语义准确率。
 
 | 固定证据 | 旧规则 | 当前规则 |
 |---|---|---|
@@ -60,9 +61,11 @@ before.json 为修改前原始快照；after.json、final-after.json 保留过�
 | 权威记录/Serial差异 | failed；6/17/17；40.765 | failed；5/14/14；53.031 |
 | 单项 A | completed；1/1/1；3.844 | completed；1/1/1；4.906 |
 
-以上升级批次在收尾建议权限修正之前。**最终业务源码 10ccb5e 另做超时案例真实模型验证：completed，3/11/11，15.187秒，只有 RECURSIVE_QUERY_TIMEOUT，无内容冲突**；其余三例没有在10ccb5e重新付费执行，只做最终规则/报告回放和离线/受控测试。不能把0f9cd72四例说成最终提交的完整模型验收。
+以上升级批次在收尾修正之前。10ccb5e 另做超时案例真实模型验证：completed，3/11/11，15.187秒，只有 RECURSIVE_QUERY_TIMEOUT，无内容冲突。最终业务源码 **4632d74** 又做真实 DeepSeek + 部分失败 fixture：**completed，A/Q/E=2/0/2，12.968秒**，两条有效响应保留差异，失败子路径引用 A1，缺失权威事实引用 A2，没有伪造 E 或访问公网。该场景修正前6e8f379实际运行 failed，2/0/2，33.734秒，记录保留在 partial-before-typed；修正后为 partial-current。typed 摘要与实际类型对齐后未再用子错误码冒充外层 A 错误码。这只是一个模型个例，不能证明所有引用语义均正确。
 
-old、intermediate（d0857cd）、final（0f9cd72，是实验阶段名，不表示最新最终提交）、release（10ccb5e）四阶段共13次模型执行全部保留，目录对应 controlled-old/intermediate/final/release。不同阶段不可合并成重复试验来算准确率。每份 manifest 有业务源码 SHA256；summary 将其与对应 Git blob 或其确切 CRLF 形式校验，不把换行转换冒充代码差异。最终本地交付提交仅在10ccb5e后增加测试、评测和文档，业务源码哈希一致。
+4632d74 的三类受控报文与固定证据回放已执行；没有在这个最终源码重新付费跑旧四例，也没有做新的公网目标测量。不能把0f9cd72或10ccb5e的模型运行说成最终提交的完整验收。
+
+old、intermediate（d0857cd）、final（0f9cd72，是实验阶段名，不表示最新最终提交）、release（10ccb5e）及两次部分失败复测共 **15次**真实模型执行全部保留。目录为 controlled-old/intermediate/final/release、partial-before-typed、partial-current，最终受控报文为 controlled-current。不同阶段不可合并成重复试验来算准确率。每份 manifest 有业务源码 SHA256；summary 将其与对应 Git blob 或其确切 CRLF 形式校验，不把换行转换冒充代码差异。最终本地交付提交仅在4632d74后增加评测与文档，业务源码哈希一致。
 
 权威场景新旧均有模型执行问题引用不匹配，重试后失败。升级结果仍保留14条 measured_facts、3条 Findings、范围摘要与 report_fallback_reason，原模型草稿保留；没有将失败标为完成。部分模型尝试用实验回环地址显式复查，被正式地址权限拒绝；这些 A 计入分母，不计执行或 Q，不能解释为 DNS 故障。失败运行没有 SDK 完整 usage，记为未知，不能当作0成本。已取得的 usage 逐例保留，SDK估算不等于账单。
 
@@ -90,7 +93,7 @@ capture_accuracy 拒绝覆盖已有快照。wire-only 是工具实验固定检�
 
 第一条通常仅需 query_dns，报告实际地址/TTL；第二条由模型自主决定，不要求全部工具。正常、超时、部分失败都不直接确认唯一根因。
 
-完整最终离线结果 **178 passed in 9.07s**；旧9项报告验收脚本仍通过（新日志另存）。公开文件检查是密钥/路径规则扫描，仍需人工复核自由文本；未验证远程 GitHub Actions。本轮未新增公网 DNS/TCP/HTTP 测量。原始日志留在忽略目录，公开候选为单独脱敏副本，未经自动发布。
+完整最终离线结果 **180 passed in 8.54s**；旧9项报告验收脚本仍通过（新日志另存）。scripts/check_public.py 已 PASS，收尾新文件另按相同规则检查；这仍是密钥/路径规则扫描，需人工复核自由文本。未验证远程 GitHub Actions。本轮未新增公网 DNS/TCP/HTTP 测量。原始日志留在忽略目录，公开候选为单独脱敏副本，未经自动发布。
 
 ## 仍不能确认的故障
 

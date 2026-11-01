@@ -1,23 +1,23 @@
 {
   "review": "AI_assisted_automatic_rules_pending_independent_human_review",
   "baseline_commit": "f0787c063ca11a95d9255c1e68b8b95697b9b90b",
-  "final_production_source_commit": "10ccb5e",
+  "final_production_source_commit": "4632d74",
   "final_source_hashes": {
     "accounting.py": "bb091800613b42aa22583c3873d21aac0ff7fed089afdd69a8498c46502c84a3",
-    "agent.py": "e46eb4b9215e558117f34a914016d1426a6d71264b31f742976c28c7afd231d4",
+    "agent.py": "f6c4948052aec9f60edbc6f0728ccad6da3a278c0bc491c6a5d01ca471ee2d15",
     "alias_scope.py": "70b908d9a946dcccd1bbe9aac66bdc14273465346fb08c4d542575cd65c0fa09",
     "authority.py": "d8334dd7281ab29f23c323f7792748679aef2f6cc41d187719c9c799ca9f12f1",
     "config.py": "70f48951131d91146a4a0a863aad461b9adb756aff01955eda439b10857f5af6",
     "dns_compare.py": "a99844bfd1f1efca6bd506c77743fd99e2d642e0924d0af4e0c236d102af700e",
     "dns_diagnosis.py": "ac46a9ee1efd89a00c410626978fd935301850aed6a114ac9e3d834ad331032c",
-    "dns_wire.py": "b5ce5f94a6907c885d1839a1ea936cbb8b9414ef6c6fe19056ec3f274c12f15e",
+    "dns_wire.py": "1a6e8270ae0b9eb9de8ce76842a7e38e7a3557735277fecff5df17a95590ea38",
     "main.py": "6828a884c5dbcb0fab41f531c4290ad8b1c95ed54bda2f1f6437beefbccad5d2",
     "network_errors.py": "df4b93832d77a43d334771706d8c03ee8b89c91ce79289586cdb76349a65adc1",
     "privacy.py": "c60a85b4e2c903e5afed81cd8afea8b1ae6a0f3200e9fec4419a1a9af41bfee7",
-    "reporting.py": "9b94210139dd4c5417e88d1a28795cb1cc65f6e22cdebcbb1910cbf8018fdbf3",
+    "reporting.py": "4a50f07f06f0a516b9f566c793228c31cb617f38a8aeb27410d26ee8a570ce80",
     "schemas.py": "02dd846333034d935b9172974451add10bb22f2639b6d4625b4eae371ba50828",
     "target.py": "cc3e570dcdd7fdbe13dbd755a34ed7bf4ce7fab9cd4590dd03e918fd736d428c",
-    "tools.py": "0fa61a1a62bc11e58c4c0c93c09ebc7e5036d84a75ff94ca8cac3f57d55bd9a5",
+    "tools.py": "a20fe263990c6fbe38e03c214f7d83c0604104f0b5b2ed4536837566d1d03ada",
     "__init__.py": "acde81e4ea71101b9803713e101815492b576f72796438a60f27e8c3c6329544"
   },
   "replay_before": [
@@ -26,6 +26,11 @@
       "E": 2,
       "finding_count": 2,
       "timeout_in_content_conflict_findings": 1,
+      "confirmed_root_flags_true": 0,
+      "unsupported_root_cause_assertions": "PENDING_HUMAN_REVIEW",
+      "localization_semantic_review": "PENDING_HUMAN_REVIEW",
+      "next_step_value_review": "PENDING_HUMAN_REVIEW",
+      "unknown_evidence_references": 0,
       "repeated_code_query_scope_count": 0,
       "codes": {
         "DNS_TIMEOUT": 1,
@@ -37,6 +42,11 @@
       "E": 2,
       "finding_count": 2,
       "timeout_in_content_conflict_findings": 0,
+      "confirmed_root_flags_true": 0,
+      "unsupported_root_cause_assertions": "PENDING_HUMAN_REVIEW",
+      "localization_semantic_review": "PENDING_HUMAN_REVIEW",
+      "next_step_value_review": "PENDING_HUMAN_REVIEW",
+      "unknown_evidence_references": 0,
       "repeated_code_query_scope_count": 0,
       "codes": {
         "NXDOMAIN_OBSERVED": 1,
@@ -48,6 +58,11 @@
       "E": 2,
       "finding_count": 2,
       "timeout_in_content_conflict_findings": 0,
+      "confirmed_root_flags_true": 0,
+      "unsupported_root_cause_assertions": "PENDING_HUMAN_REVIEW",
+      "localization_semantic_review": "PENDING_HUMAN_REVIEW",
+      "next_step_value_review": "PENDING_HUMAN_REVIEW",
+      "unknown_evidence_references": 0,
       "repeated_code_query_scope_count": 0,
       "codes": {
         "DNS_SERVFAIL": 1,
@@ -59,6 +74,11 @@
       "E": 2,
       "finding_count": 1,
       "timeout_in_content_conflict_findings": 0,
+      "confirmed_root_flags_true": 0,
+      "unsupported_root_cause_assertions": "PENDING_HUMAN_REVIEW",
+      "localization_semantic_review": "PENDING_HUMAN_REVIEW",
+      "next_step_value_review": "PENDING_HUMAN_REVIEW",
+      "unknown_evidence_references": 0,
       "repeated_code_query_scope_count": 0,
       "codes": {
         "DNS_INCONCLUSIVE": 1
@@ -69,6 +89,11 @@
       "E": 2,
       "finding_count": 1,
       "timeout_in_content_conflict_findings": 0,
+      "confirmed_root_flags_true": 0,
+      "unsupported_root_cause_assertions": "PENDING_HUMAN_REVIEW",
+      "localization_semantic_review": "PENDING_HUMAN_REVIEW",
+      "next_step_value_review": "PENDING_HUMAN_REVIEW",
+      "unknown_evidence_references": 0,
       "repeated_code_query_scope_count": 0,
       "codes": {
         "DNS_INCONCLUSIVE": 1
@@ -79,6 +104,11 @@
       "E": 2,
       "finding_count": 1,
       "timeout_in_content_conflict_findings": 0,
+      "confirmed_root_flags_true": 0,
+      "unsupported_root_cause_assertions": "PENDING_HUMAN_REVIEW",
+      "localization_semantic_review": "PENDING_HUMAN_REVIEW",
+      "next_step_value_review": "PENDING_HUMAN_REVIEW",
+      "unknown_evidence_references": 0,
       "repeated_code_query_scope_count": 0,
       "codes": {
         "DNS_INCONCLUSIVE": 1
@@ -89,6 +119,11 @@
       "E": 1,
       "finding_count": 1,
       "timeout_in_content_conflict_findings": 0,
+      "confirmed_root_flags_true": 0,
+      "unsupported_root_cause_assertions": "PENDING_HUMAN_REVIEW",
+      "localization_semantic_review": "PENDING_HUMAN_REVIEW",
+      "next_step_value_review": "PENDING_HUMAN_REVIEW",
+      "unknown_evidence_references": 0,
       "repeated_code_query_scope_count": 0,
       "codes": {
         "DNS_INCONCLUSIVE": 1
@@ -99,6 +134,11 @@
       "E": 2,
       "finding_count": 1,
       "timeout_in_content_conflict_findings": 0,
+      "confirmed_root_flags_true": 0,
+      "unsupported_root_cause_assertions": "PENDING_HUMAN_REVIEW",
+      "localization_semantic_review": "PENDING_HUMAN_REVIEW",
+      "next_step_value_review": "PENDING_HUMAN_REVIEW",
+      "unknown_evidence_references": 0,
       "repeated_code_query_scope_count": 0,
       "codes": {
         "NXDOMAIN_OBSERVED": 1
@@ -109,6 +149,11 @@
       "E": 2,
       "finding_count": 1,
       "timeout_in_content_conflict_findings": 0,
+      "confirmed_root_flags_true": 0,
+      "unsupported_root_cause_assertions": "PENDING_HUMAN_REVIEW",
+      "localization_semantic_review": "PENDING_HUMAN_REVIEW",
+      "next_step_value_review": "PENDING_HUMAN_REVIEW",
+      "unknown_evidence_references": 0,
       "repeated_code_query_scope_count": 0,
       "codes": {
         "AUTH_SERVER_DISAGREEMENT": 1
@@ -119,6 +164,11 @@
       "E": 3,
       "finding_count": 5,
       "timeout_in_content_conflict_findings": 2,
+      "confirmed_root_flags_true": 0,
+      "unsupported_root_cause_assertions": "PENDING_HUMAN_REVIEW",
+      "localization_semantic_review": "PENDING_HUMAN_REVIEW",
+      "next_step_value_review": "PENDING_HUMAN_REVIEW",
+      "unknown_evidence_references": 0,
       "repeated_code_query_scope_count": 2,
       "codes": {
         "DNS_TIMEOUT": 1,
@@ -131,6 +181,11 @@
       "E": 0,
       "finding_count": 1,
       "timeout_in_content_conflict_findings": 0,
+      "confirmed_root_flags_true": 0,
+      "unsupported_root_cause_assertions": "PENDING_HUMAN_REVIEW",
+      "localization_semantic_review": "PENDING_HUMAN_REVIEW",
+      "next_step_value_review": "PENDING_HUMAN_REVIEW",
+      "unknown_evidence_references": 0,
       "repeated_code_query_scope_count": 0,
       "codes": {
         "DNS_INCONCLUSIVE": 1
@@ -141,6 +196,11 @@
       "E": 2,
       "finding_count": 1,
       "timeout_in_content_conflict_findings": 0,
+      "confirmed_root_flags_true": 0,
+      "unsupported_root_cause_assertions": "PENDING_HUMAN_REVIEW",
+      "localization_semantic_review": "PENDING_HUMAN_REVIEW",
+      "next_step_value_review": "PENDING_HUMAN_REVIEW",
+      "unknown_evidence_references": 0,
       "repeated_code_query_scope_count": 0,
       "codes": {
         "DNS_INCONCLUSIVE": 1
@@ -151,6 +211,11 @@
       "E": 2,
       "finding_count": 2,
       "timeout_in_content_conflict_findings": 0,
+      "confirmed_root_flags_true": 0,
+      "unsupported_root_cause_assertions": "PENDING_HUMAN_REVIEW",
+      "localization_semantic_review": "PENDING_HUMAN_REVIEW",
+      "next_step_value_review": "PENDING_HUMAN_REVIEW",
+      "unknown_evidence_references": 0,
       "repeated_code_query_scope_count": 0,
       "codes": {
         "NXDOMAIN_OBSERVED": 1,
@@ -162,6 +227,11 @@
       "E": 17,
       "finding_count": 12,
       "timeout_in_content_conflict_findings": 6,
+      "confirmed_root_flags_true": 0,
+      "unsupported_root_cause_assertions": "PENDING_HUMAN_REVIEW",
+      "localization_semantic_review": "PENDING_HUMAN_REVIEW",
+      "next_step_value_review": "PENDING_HUMAN_REVIEW",
+      "unknown_evidence_references": 0,
       "repeated_code_query_scope_count": 5,
       "codes": {
         "DNS_TIMEOUT": 6,
@@ -175,6 +245,11 @@
       "E": 2,
       "finding_count": 1,
       "timeout_in_content_conflict_findings": 0,
+      "confirmed_root_flags_true": 0,
+      "unsupported_root_cause_assertions": "PENDING_HUMAN_REVIEW",
+      "localization_semantic_review": "PENDING_HUMAN_REVIEW",
+      "next_step_value_review": "PENDING_HUMAN_REVIEW",
+      "unknown_evidence_references": 0,
       "repeated_code_query_scope_count": 0,
       "codes": {
         "RECURSIVE_QUERY_TIMEOUT": 1
@@ -185,6 +260,11 @@
       "E": 2,
       "finding_count": 2,
       "timeout_in_content_conflict_findings": 0,
+      "confirmed_root_flags_true": 0,
+      "unsupported_root_cause_assertions": "PENDING_HUMAN_REVIEW",
+      "localization_semantic_review": "PENDING_HUMAN_REVIEW",
+      "next_step_value_review": "PENDING_HUMAN_REVIEW",
+      "unknown_evidence_references": 0,
       "repeated_code_query_scope_count": 0,
       "codes": {
         "NXDOMAIN_OBSERVED": 1,
@@ -196,6 +276,11 @@
       "E": 2,
       "finding_count": 2,
       "timeout_in_content_conflict_findings": 0,
+      "confirmed_root_flags_true": 0,
+      "unsupported_root_cause_assertions": "PENDING_HUMAN_REVIEW",
+      "localization_semantic_review": "PENDING_HUMAN_REVIEW",
+      "next_step_value_review": "PENDING_HUMAN_REVIEW",
+      "unknown_evidence_references": 0,
       "repeated_code_query_scope_count": 0,
       "codes": {
         "DNS_SERVFAIL": 1,
@@ -207,6 +292,11 @@
       "E": 2,
       "finding_count": 1,
       "timeout_in_content_conflict_findings": 0,
+      "confirmed_root_flags_true": 0,
+      "unsupported_root_cause_assertions": "PENDING_HUMAN_REVIEW",
+      "localization_semantic_review": "PENDING_HUMAN_REVIEW",
+      "next_step_value_review": "PENDING_HUMAN_REVIEW",
+      "unknown_evidence_references": 0,
       "repeated_code_query_scope_count": 0,
       "codes": {
         "RECORD_SET_DIFFERENCE": 1
@@ -217,6 +307,11 @@
       "E": 2,
       "finding_count": 1,
       "timeout_in_content_conflict_findings": 0,
+      "confirmed_root_flags_true": 0,
+      "unsupported_root_cause_assertions": "PENDING_HUMAN_REVIEW",
+      "localization_semantic_review": "PENDING_HUMAN_REVIEW",
+      "next_step_value_review": "PENDING_HUMAN_REVIEW",
+      "unknown_evidence_references": 0,
       "repeated_code_query_scope_count": 0,
       "codes": {
         "DNS_INCONCLUSIVE": 1
@@ -227,6 +322,11 @@
       "E": 2,
       "finding_count": 1,
       "timeout_in_content_conflict_findings": 0,
+      "confirmed_root_flags_true": 0,
+      "unsupported_root_cause_assertions": "PENDING_HUMAN_REVIEW",
+      "localization_semantic_review": "PENDING_HUMAN_REVIEW",
+      "next_step_value_review": "PENDING_HUMAN_REVIEW",
+      "unknown_evidence_references": 0,
       "repeated_code_query_scope_count": 0,
       "codes": {
         "ALIAS_RESOLUTION_INCOMPLETE": 1
@@ -237,6 +337,11 @@
       "E": 1,
       "finding_count": 1,
       "timeout_in_content_conflict_findings": 0,
+      "confirmed_root_flags_true": 0,
+      "unsupported_root_cause_assertions": "PENDING_HUMAN_REVIEW",
+      "localization_semantic_review": "PENDING_HUMAN_REVIEW",
+      "next_step_value_review": "PENDING_HUMAN_REVIEW",
+      "unknown_evidence_references": 0,
       "repeated_code_query_scope_count": 0,
       "codes": {
         "ALIAS_RESOLUTION_INCOMPLETE": 1
@@ -247,6 +352,11 @@
       "E": 2,
       "finding_count": 1,
       "timeout_in_content_conflict_findings": 0,
+      "confirmed_root_flags_true": 0,
+      "unsupported_root_cause_assertions": "PENDING_HUMAN_REVIEW",
+      "localization_semantic_review": "PENDING_HUMAN_REVIEW",
+      "next_step_value_review": "PENDING_HUMAN_REVIEW",
+      "unknown_evidence_references": 0,
       "repeated_code_query_scope_count": 0,
       "codes": {
         "NXDOMAIN_OBSERVED": 1
@@ -257,6 +367,11 @@
       "E": 2,
       "finding_count": 1,
       "timeout_in_content_conflict_findings": 0,
+      "confirmed_root_flags_true": 0,
+      "unsupported_root_cause_assertions": "PENDING_HUMAN_REVIEW",
+      "localization_semantic_review": "PENDING_HUMAN_REVIEW",
+      "next_step_value_review": "PENDING_HUMAN_REVIEW",
+      "unknown_evidence_references": 0,
       "repeated_code_query_scope_count": 0,
       "codes": {
         "AUTHORITATIVE_RESPONSE_DISAGREEMENT": 1
@@ -267,6 +382,11 @@
       "E": 3,
       "finding_count": 3,
       "timeout_in_content_conflict_findings": 0,
+      "confirmed_root_flags_true": 0,
+      "unsupported_root_cause_assertions": "PENDING_HUMAN_REVIEW",
+      "localization_semantic_review": "PENDING_HUMAN_REVIEW",
+      "next_step_value_review": "PENDING_HUMAN_REVIEW",
+      "unknown_evidence_references": 0,
       "repeated_code_query_scope_count": 0,
       "codes": {
         "RECURSIVE_QUERY_TIMEOUT": 1,
@@ -279,6 +399,11 @@
       "E": 0,
       "finding_count": 1,
       "timeout_in_content_conflict_findings": 0,
+      "confirmed_root_flags_true": 0,
+      "unsupported_root_cause_assertions": "PENDING_HUMAN_REVIEW",
+      "localization_semantic_review": "PENDING_HUMAN_REVIEW",
+      "next_step_value_review": "PENDING_HUMAN_REVIEW",
+      "unknown_evidence_references": 0,
       "repeated_code_query_scope_count": 0,
       "codes": {
         "DNS_INCONCLUSIVE": 1
@@ -289,6 +414,11 @@
       "E": 2,
       "finding_count": 1,
       "timeout_in_content_conflict_findings": 0,
+      "confirmed_root_flags_true": 0,
+      "unsupported_root_cause_assertions": "PENDING_HUMAN_REVIEW",
+      "localization_semantic_review": "PENDING_HUMAN_REVIEW",
+      "next_step_value_review": "PENDING_HUMAN_REVIEW",
+      "unknown_evidence_references": 0,
       "repeated_code_query_scope_count": 0,
       "codes": {
         "DNS_INCONCLUSIVE": 1
@@ -299,6 +429,11 @@
       "E": 2,
       "finding_count": 2,
       "timeout_in_content_conflict_findings": 0,
+      "confirmed_root_flags_true": 0,
+      "unsupported_root_cause_assertions": "PENDING_HUMAN_REVIEW",
+      "localization_semantic_review": "PENDING_HUMAN_REVIEW",
+      "next_step_value_review": "PENDING_HUMAN_REVIEW",
+      "unknown_evidence_references": 0,
       "repeated_code_query_scope_count": 0,
       "codes": {
         "NXDOMAIN_OBSERVED": 1,
@@ -310,6 +445,11 @@
       "E": 17,
       "finding_count": 5,
       "timeout_in_content_conflict_findings": 0,
+      "confirmed_root_flags_true": 0,
+      "unsupported_root_cause_assertions": "PENDING_HUMAN_REVIEW",
+      "localization_semantic_review": "PENDING_HUMAN_REVIEW",
+      "next_step_value_review": "PENDING_HUMAN_REVIEW",
+      "unknown_evidence_references": 0,
       "repeated_code_query_scope_count": 0,
       "codes": {
         "RECURSIVE_QUERY_TIMEOUT": 5
@@ -1748,6 +1888,95 @@
         "tools.py": "git_blob_with_CRLF",
         "__init__.py": "git_blob"
       }
+    },
+    {
+      "mode": "real_deepseek_with_fixture_no_network",
+      "source_commit": "6e8f379b2f2459b111218ba678da37ef0f113fc4",
+      "source_hashes": {
+        "accounting.py": "bb091800613b42aa22583c3873d21aac0ff7fed089afdd69a8498c46502c84a3",
+        "agent.py": "e46eb4b9215e558117f34a914016d1426a6d71264b31f742976c28c7afd231d4",
+        "alias_scope.py": "70b908d9a946dcccd1bbe9aac66bdc14273465346fb08c4d542575cd65c0fa09",
+        "authority.py": "d8334dd7281ab29f23c323f7792748679aef2f6cc41d187719c9c799ca9f12f1",
+        "config.py": "70f48951131d91146a4a0a863aad461b9adb756aff01955eda439b10857f5af6",
+        "dns_compare.py": "a99844bfd1f1efca6bd506c77743fd99e2d642e0924d0af4e0c236d102af700e",
+        "dns_diagnosis.py": "ac46a9ee1efd89a00c410626978fd935301850aed6a114ac9e3d834ad331032c",
+        "dns_wire.py": "1a6e8270ae0b9eb9de8ce76842a7e38e7a3557735277fecff5df17a95590ea38",
+        "main.py": "6828a884c5dbcb0fab41f531c4290ad8b1c95ed54bda2f1f6437beefbccad5d2",
+        "network_errors.py": "df4b93832d77a43d334771706d8c03ee8b89c91ce79289586cdb76349a65adc1",
+        "privacy.py": "c60a85b4e2c903e5afed81cd8afea8b1ae6a0f3200e9fec4419a1a9af41bfee7",
+        "reporting.py": "f96018730f7c8047312edb043b3cb5448e6c53934c453d1b867a91e5fe7a013e",
+        "schemas.py": "02dd846333034d935b9172974451add10bb22f2639b6d4625b4eae371ba50828",
+        "target.py": "cc3e570dcdd7fdbe13dbd755a34ed7bf4ce7fab9cd4590dd03e918fd736d428c",
+        "tools.py": "a20fe263990c6fbe38e03c214f7d83c0604104f0b5b2ed4536837566d1d03ada",
+        "__init__.py": "acde81e4ea71101b9803713e101815492b576f72796438a60f27e8c3c6329544"
+      },
+      "model": "deepseek-flash",
+      "thinking": "disabled",
+      "temperature": 0,
+      "run_file": "09969c131ec148879f70210dd95a5055.json",
+      "status": "failed",
+      "A": 2,
+      "Q": 0,
+      "E": 2,
+      "usage": null,
+      "elapsed_seconds": 33.734,
+      "semantic_review": "AI_assisted_pending_independent_human_review",
+      "arm": "partial-before-typed",
+      "scenario": "partial_fixture"
+    },
+    {
+      "mode": "real_deepseek_with_fixture_no_network",
+      "source_commit": "4632d742e0649e05697e295dc6851f1f1875b57e",
+      "source_hashes": {
+        "accounting.py": "bb091800613b42aa22583c3873d21aac0ff7fed089afdd69a8498c46502c84a3",
+        "agent.py": "f6c4948052aec9f60edbc6f0728ccad6da3a278c0bc491c6a5d01ca471ee2d15",
+        "alias_scope.py": "70b908d9a946dcccd1bbe9aac66bdc14273465346fb08c4d542575cd65c0fa09",
+        "authority.py": "d8334dd7281ab29f23c323f7792748679aef2f6cc41d187719c9c799ca9f12f1",
+        "config.py": "70f48951131d91146a4a0a863aad461b9adb756aff01955eda439b10857f5af6",
+        "dns_compare.py": "a99844bfd1f1efca6bd506c77743fd99e2d642e0924d0af4e0c236d102af700e",
+        "dns_diagnosis.py": "ac46a9ee1efd89a00c410626978fd935301850aed6a114ac9e3d834ad331032c",
+        "dns_wire.py": "1a6e8270ae0b9eb9de8ce76842a7e38e7a3557735277fecff5df17a95590ea38",
+        "main.py": "6828a884c5dbcb0fab41f531c4290ad8b1c95ed54bda2f1f6437beefbccad5d2",
+        "network_errors.py": "df4b93832d77a43d334771706d8c03ee8b89c91ce79289586cdb76349a65adc1",
+        "privacy.py": "c60a85b4e2c903e5afed81cd8afea8b1ae6a0f3200e9fec4419a1a9af41bfee7",
+        "reporting.py": "4a50f07f06f0a516b9f566c793228c31cb617f38a8aeb27410d26ee8a570ce80",
+        "schemas.py": "02dd846333034d935b9172974451add10bb22f2639b6d4625b4eae371ba50828",
+        "target.py": "cc3e570dcdd7fdbe13dbd755a34ed7bf4ce7fab9cd4590dd03e918fd736d428c",
+        "tools.py": "a20fe263990c6fbe38e03c214f7d83c0604104f0b5b2ed4536837566d1d03ada",
+        "__init__.py": "acde81e4ea71101b9803713e101815492b576f72796438a60f27e8c3c6329544"
+      },
+      "model": "deepseek-flash",
+      "thinking": "disabled",
+      "temperature": 0,
+      "run_file": "75e327b491474a3fb56deb9630dc165a.json",
+      "status": "completed",
+      "A": 2,
+      "Q": 0,
+      "E": 2,
+      "usage": {
+        "input_tokens": 18156,
+        "cache_write_tokens": 0,
+        "cache_write_1h_tokens": 0,
+        "cache_read_tokens": 9728,
+        "output_tokens": 2504,
+        "unmeasured_requests": 0,
+        "output_reasoning_tokens": 0,
+        "input_audio_tokens": 0,
+        "cache_audio_read_tokens": 0,
+        "output_audio_tokens": 0,
+        "audio_seconds": 0,
+        "details": {
+          "prompt_cache_hit_tokens": 9728,
+          "prompt_cache_miss_tokens": 8428
+        },
+        "cost": "0.005591568",
+        "requests": 3,
+        "tool_calls": 2
+      },
+      "elapsed_seconds": 12.968,
+      "semantic_review": "AI_assisted_pending_independent_human_review",
+      "arm": "partial-current",
+      "scenario": "partial_fixture"
     }
   ],
   "model_trials_per_case_per_arm": 1,
@@ -1757,7 +1986,10 @@
     "final": "0f9cd72",
     "release": "10ccb5e"
   },
-  "release_paid_model_scope": [
+  "latest_paid_model_scope": [
+    "partial_fixture"
+  ],
+  "earlier_10ccb5e_model_scope": [
     "timeout"
   ],
   "historical_live_source_unchanged": true,
