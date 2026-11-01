@@ -1,0 +1,19 @@
+{
+  "review_status": "automatic_rules_pending_human_review",
+  "scope": "probe.example A, synthetic at one timestamp unless explicitly SOA; no unique root cause is established",
+  "cases": {
+    "timeout": {"required": ["RECURSIVE_QUERY_TIMEOUT"], "forbidden": ["RECURSIVE_RESPONSE_DISAGREEMENT", "RECURSIVE_AUTH_RESPONSE_MISMATCH"], "next": "repeat same scoped query or compare reachable path; distinguish server from network"},
+    "nxdomain": {"required": ["NXDOMAIN_OBSERVED", "RECURSIVE_RESPONSE_DISAGREEMENT"], "next": "query_authoritative for same name/type; cache versus policy remains unknown"},
+    "servfail": {"required": ["DNS_SERVFAIL", "RECURSIVE_RESPONSE_DISAGREEMENT"], "next": "authority comparison; DNSSEC validation not implemented"},
+    "cdn": {"required": ["RECORD_SET_DIFFERENCE"], "forbidden": ["RECURSIVE_RESPONSE_DISAGREEMENT"], "next": "no automatic fault; scheduling/time unknown"},
+    "ttl": {"forbidden": ["RECURSIVE_RESPONSE_DISAGREEMENT", "RECORD_SET_DIFFERENCE"], "next": "no fault from TTL 60 vs 58"},
+    "referral": {"forbidden": ["NODATA_OBSERVED", "RECURSIVE_RESPONSE_DISAGREEMENT"], "next": "follow connected alias only if incomplete"},
+    "alias": {"required": ["ALIAS_RESOLUTION_INCOMPLETE"], "forbidden": ["NODATA_OBSERVED"], "next": "bounded connected CNAME target query; terminal unknown"},
+    "non_aa": {"forbidden": ["RECURSIVE_AUTH_RESPONSE_MISMATCH"], "next": "obtain AA answer, not confirmed authority"},
+    "serial": {"required": ["AUTHORITATIVE_RESPONSE_DISAGREEMENT"], "next": "repeat bounded same-zone SOA; no confirmed synchronization fault"},
+    "partial": {"required": ["RECURSIVE_QUERY_TIMEOUT", "RECURSIVE_RESPONSE_DISAGREEMENT"], "next": "keep timeout and compare two responding paths"},
+    "no_measurement": {"required": ["DNS_INCONCLUSIVE"], "next": "measure authorized target; no observed failure"},
+    "normal": {"forbidden": ["RECURSIVE_QUERY_TIMEOUT", "RECURSIVE_RESPONSE_DISAGREEMENT", "RECORD_SET_DIFFERENCE"], "next": "stop DNS checks if task answered; do not require TCP/HTTP"},
+    "recursive_auth": {"required": ["RECURSIVE_AUTH_RESPONSE_MISMATCH"], "next": "bounded repeat of same recursive/AA paths; cache/policy/time unknown"}
+  }
+}

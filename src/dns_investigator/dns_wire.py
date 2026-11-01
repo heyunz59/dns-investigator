@@ -14,12 +14,26 @@ TYPES = {"A", "AAAA", "CNAME", "NS", "SOA"}
 INCOMPLETE_KINDS = {"REFERRAL", "ALIAS_INCOMPLETE", "TRUNCATED", "INDETERMINATE"}
 
 
+def dns_outcome(row):
+    """Non-mutating legacy adapter; timeout never invents a received RCODE."""
+    raw=row.get("rcode")
+    status=row.get("transport_status")
+    if status is None:
+        status="timeout" if raw=="TIMEOUT" or row.get("result_kind")=="TIMEOUT" else "network_error" if row.get("execution_status")=="error" else "responded" if raw is not None else "unknown"
+    rcode=row.get("dns_rcode",raw if status=="responded" and raw!="TIMEOUT" else None)
+    return dict(transport_status=status,dns_rcode=rcode,
+                result_kind=row.get("result_kind", "TIMEOUT" if status=="timeout" else rcode))
+
+
 def comparable_response(row):
     # Old facts without a classification are usable for their explicit RCODE/records,
     # but must not be promoted to a newly established NODATA result.
     if row.get("rcode")=="NOERROR" and not row.get("records") and row.get("result_kind")!="NODATA":
         return False
-    return row.get("result_kind") not in INCOMPLETE_KINDS and not row.get("flags",{}).get("TC")
+    state=dns_outcome(row)
+    return (state["transport_status"]=="responded" and state["dns_rcode"] is not None
+        and row.get("execution_status","ok")=="ok"
+        and state["result_kind"] not in INCOMPLETE_KINDS and not row.get("flags",{}).get("TC"))
 
 
 def classify_response(qname, qtype, rcode, flags, answer, authority):
@@ -95,7 +109,7 @@ def parse_response(message, qname, qtype, server, role="recursive", transport="U
     flags = {name: bool(message.flags & getattr(dns.flags, name)) for name in ("AA", "RD", "RA", "TC")}
     classification=classify_response(qname,qtype,rcode,flags,answer,authority)
     return dict(qname=qname, qtype=qtype, record_type=qtype, resolver=server,
-        responding_resolver=server, resolver_role=role, rcode=rcode,
+        responding_resolver=server, resolver_role=role, rcode=rcode,dns_rcode=rcode,transport_status="responded",
         flags=flags, answer=answer, authority=authority, additional=section(message.additional),
         transport=transport, execution_status="ok", error=None,
         **classification,
@@ -133,7 +147,7 @@ class DNSClient:
             row["status"]="measured"
         except (dns.exception.Timeout, TimeoutError):
             data=dict(qname=name,qtype=typ,record_type=typ,resolver=server,resolver_role=role,
-                      rcode="TIMEOUT",result_kind="TIMEOUT",records=[],execution_status="ok",error=None,transport=row["transport"])
+                      rcode=None,dns_rcode=None,transport_status="timeout",result_kind="TIMEOUT",records=[],execution_status="ok",error=None,transport=row["transport"])
             row["status"]="measured"
         except asyncio.CancelledError:
             row["status"]="cancelled"
@@ -141,6 +155,7 @@ class DNSClient:
         except Exception:
             row["status"]="execution_error"
             data=dict(qname=name,qtype=typ,resolver=server,resolver_role=role,execution_status="error",
+                      dns_rcode=None,rcode=None,transport_status="network_error",result_kind="EXECUTION_ERROR",
                       error={"code":"DNS_NETWORK_OR_PROTOCOL_ERROR","retryable":False},records=[])
         finally:
             row["duration_ms"]=round((time.monotonic()-start)*1000,2)
@@ -168,6 +183,6 @@ class DNSClient:
                 if remaining > 0:
                     last=await self.packet(name,typ,server,role,remaining,parent,tcp=True,port=port)
                     history.append(last.get("evidence_id"))
-            if last.get("rcode") not in (None,"TIMEOUT","SERVFAIL","REFUSED"):
+            if dns_outcome(last)["result_kind"] not in (None,"TIMEOUT","SERVFAIL","REFUSED","EXECUTION_ERROR"):
                 break
         return {**last,"resolvers":servers,"system_resolver_configuration":self.system if resolver is None else None,"query_evidence_ids":[e for e in history if e]}

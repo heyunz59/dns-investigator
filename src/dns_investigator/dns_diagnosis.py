@@ -13,7 +13,8 @@ def diagnose(evidence):
             explanation=explanation,limitations=["单次观测不证明唯一根因；缓存、CDN、策略、路径与时间差仍需核实。"],
             next_checks=["比较同名同类型的递归及 AA 权威回答，保留未知与时间差。 "]))
     for e,r in rows:
-        code={"NXDOMAIN":"NXDOMAIN_OBSERVED","TIMEOUT":"DNS_TIMEOUT","SERVFAIL":"DNS_SERVFAIL","REFUSED":"DNS_REFUSED"}.get(r.get("result_kind",r.get("rcode"))) if comparable_response(r) else None
+        kind=r.get("result_kind",r.get("rcode"))
+        code="DNS_TIMEOUT" if kind=="TIMEOUT" else {"NXDOMAIN":"NXDOMAIN_OBSERVED","SERVFAIL":"DNS_SERVFAIL","REFUSED":"DNS_REFUSED"}.get(kind) if comparable_response(r) else None
         if r.get("result_kind")=="NODATA":
             code="NODATA_OBSERVED"
         if code:

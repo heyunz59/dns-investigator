@@ -16,7 +16,7 @@ import httpx
 from .privacy import redact, safe_url
 from .target import domain, parse_target
 from .dns_wire import DNSClient, TYPES
-from .dns_compare import compare
+from .dns_compare import compare,compare_details,evidence_rows
 from .dns_diagnosis import diagnose
 from .authority import investigate_authority
 from .network_errors import describe
@@ -167,6 +167,11 @@ class ToolBackend:
                             evidence=self.add_dns_evidence(data,attempt["attempt_id"])
                             data["evidence_id"]=evidence["id"]
                 ids=[e["id"] for e in self.owned_evidence(attempt["attempt_id"])]
+                measured=evidence_rows(self.owned_evidence(attempt["attempt_id"]))
+                failures=[{**r,"source_mode":row["source_mode"],"parent_tool_call_id":attempt["attempt_id"]}
+                          for r in row["data"].get("responses",[]) if r.get("execution_status")=="error"]
+                row["data"]["comparison"]=compare_details(measured+failures)
+                row["data"]["differences"]=row["data"]["comparison"]["differences"]
                 attempt.update(status="measured" if ids else "unavailable",evidence_ids=ids)
                 row["data"]["findings"]=diagnose(self.calls)
                 row["data"]["evidence_ids"]=ids
