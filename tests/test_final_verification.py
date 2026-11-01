@@ -127,3 +127,18 @@ async def test_query_observer_cannot_absorb_parallel_tool_attempts():
     assert p["target_queries_executed"]==2 and len(observed)==2
     assert all(q["parent_tool_call_id"]=="A1" and q["resolver_role"]=="authoritative" for q in b.dns.attempts if q["query_attempt_id"] in observed)
     assert {e["id"] for e in b.owned_evidence("A1")}.isdisjoint(e["id"] for e in b.owned_evidence("A2"))
+
+
+async def test_address_budget_and_outer_deadline_prevent_unbounded_fallback():
+    import asyncio
+    b,c,_=backend([],answers=[[f"8.8.8.{i}" for i in range(1,18)]])
+    rejected=await b.call("check_http",url=b.target.url)
+    assert rejected["error"]["code"]=="HTTP_ADDRESS_BUDGET_EXHAUSTED" and not c.calls and not b.calls
+    b,c,_=backend([],answers=[["1.1.1.1","8.8.8.8"]])
+    entered=asyncio.Event();release=asyncio.Event()
+    async def blocked(ip,port,**kwargs):
+        c.calls.append((ip,port));entered.set();await release.wait()
+    c.connect_tcp=blocked
+    r=await b.check_http(b.target.url,timeout=.05)
+    assert entered.is_set() and r["error"]=="TIMEOUT" and c.calls==[("1.1.1.1",443)]
+    assert r["body_complete"] is not True

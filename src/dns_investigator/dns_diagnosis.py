@@ -34,10 +34,11 @@ def diagnose(evidence):
             selected=list(dict.fromkeys(selected));facts=[all_by_id[eid] for eid in selected]
             paths=[dict(resolver=r.get("resolver"),role=r.get("resolver_role","recursive"),evidence_id=r["evidence_id"]) for r in facts]
             affected=selected if affected is None else affected
+            timed=sorted((r for r in facts if measured_time(r) is not None),key=measured_time)
             scope=dict(target=normal(first["qname"]),record_type=first.get("qtype"),source_mode=first.get("source_mode"),
-                dns_followup_only=any(r.get("target_authorization") for r in facts),
-                paths=paths,time_start=min((r["measured_at"] for r in facts if r.get("measured_at")),default=None),
-                time_end=max((r["measured_at"] for r in facts if r.get("measured_at")),default=None))
+                dns_followup_only=any(r.get("target_authorization") for r in facts),paths=paths,
+                time_start=timed[0]["measured_at"] if timed else None,
+                time_end=timed[-1]["measured_at"] if timed else None)
             observed=[dict(evidence_id=r["evidence_id"],qname=r["qname"],qtype=r.get("qtype"),measured_at=r.get("measured_at"),source_mode=r.get("source_mode"),resolver=r.get("resolver"),role=r.get("resolver_role","recursive"),
                 authoritative_answer=r.get("flags",{}).get("AA",False),negative_name=r.get("negative_name"),
                 records=r.get("records",[]),soa_serials=r.get("soa_serials",[]),**dns_outcome(r)) for r in facts]

@@ -39,3 +39,14 @@ def test_no_transitive_five_minute_window_chain():
     for e,t in zip(evidence,["00:00:00","00:04:00","00:08:00"]):e["started_at"]="2026-11-01T"+t+"+00:00"
     for finding in diagnose(evidence):
         if finding["code"]=="RECURSIVE_RESPONSE_DISAGREEMENT":assert not {"E1","E3"}<=set(finding["evidence_ids"])
+
+
+def test_finding_time_bounds_follow_instants_not_timezone_string_order():
+    from datetime import datetime
+    evidence=cases()["nxdomain"]
+    evidence[0]["started_at"]="2026-11-01T00:01:00+00:00"
+    evidence[1]["started_at"]="2026-11-01T08:00:00+08:00"
+    original=copy.deepcopy(evidence)
+    f=next(f for f in diagnose(evidence) if f["code"]=="RECURSIVE_RESPONSE_DISAGREEMENT")
+    assert datetime.fromisoformat(f["scope"]["time_start"])<=datetime.fromisoformat(f["scope"]["time_end"])
+    assert f["scope"]["time_start"]==evidence[1]["started_at"] and evidence==original
