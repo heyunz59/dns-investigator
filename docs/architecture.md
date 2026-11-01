@@ -1,5 +1,15 @@
 # 实现与证据边界
 
+## 最终核验补修（2026-11-01）
+
+架构仍为单Agent、五工具、双预算与显式A/Q/E归属。http_safety.py的授权/连接实现本轮未重写；HTTP证据新增body_state、body_complete、body_limit_bytes。观察到完整结束为true；读取错误为false；到达64KiB上限或尚未读取为null，不能把HTTP200或达到上限当作完整响应。旧日志缺字段按unknown_legacy展示。
+
+authority.py用任务隔离的ATTEMPT_OBSERVER，在dns_wire实际分配Q时记录当前目标操作的query_attempt_ids；即使随后取消也能保留已发起查询数。并行任务不会写入同一observer；UDP/TCP回退仍是多个Q、同一个目标操作。中断保存INTERRUPTED与原阶段/原因。报告始终显示发现/选中/地址/已查询/收到响应/AA数量，完成仅限选中子集。
+
+别名收敛与超时对照也必须满足带时区时间资格；未知时间的成功E仍展示，但不作为超时的同期对照。Finding起止按实际时刻选择原测量时间，不能按ISO字符串排序导致时区边界反转。原始时间不改写。
+
+compact_v2补query_scope、不可重试请求/子路径、复合权威工具已有覆盖、AA/negative_scope。超过16条记录时摘要包含全集计数、唯一值集合SHA256、TTL范围及可解析SOA Serial，完整E不删。模型仍可能选择错误参数；拒绝继续计A，不伪造E或宣称自然语言已被完全验证。[实际核验及未通过项](final-verification.md)。
+
 ## 2026-11-01：HTTP 连接安全、权威阶段、时间资格与日志 v6
 
 仍是单 PydanticAI Agent + 五个正式工具，build_agent 注册机制与动态选择不变。DNS Diagnosis Engine、HTTPPolicy、PinnedTransport 和 agent_summary 都是普通模块，不新增 Agent 或 Tool。并发 A/Q/E 归属继续通过显式调用 ID，预算与 fixture/live 隔离保留。

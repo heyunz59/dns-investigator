@@ -1,0 +1,1135 @@
+[
+  {
+    "arm": "current",
+    "scenario": "serial",
+    "repeat": 1,
+    "run_file": "0a53f42ee08148bc8f256d287f299766.json",
+    "status": "completed",
+    "validated_agent_output": true,
+    "report_has_measurements": true,
+    "fallback": false,
+    "A": 4,
+    "Q": 13,
+    "E": 13,
+    "output_attempts": 1,
+    "output_resubmissions": 0,
+    "usage": {
+      "input_tokens": 25952,
+      "cache_write_tokens": 0,
+      "cache_write_1h_tokens": 0,
+      "cache_read_tokens": 9856,
+      "output_tokens": 2191,
+      "unmeasured_requests": 0,
+      "output_reasoning_tokens": 0,
+      "input_audio_tokens": 0,
+      "cache_audio_read_tokens": 0,
+      "output_audio_tokens": 0,
+      "audio_seconds": 0,
+      "details": {
+        "prompt_cache_hit_tokens": 9856,
+        "prompt_cache_miss_tokens": 16096
+      },
+      "cost": "0.003758568",
+      "requests": 3,
+      "tool_calls": 4
+    },
+    "elapsed_seconds": 12.75,
+    "finding_codes": [
+      "RECURSIVE_AUTH_RESPONSE_MISMATCH",
+      "RECORD_SET_DIFFERENCE",
+      "AUTHORITATIVE_RESPONSE_DISAGREEMENT",
+      "RECURSIVE_AUTH_RESPONSE_MISMATCH",
+      "AUTHORITATIVE_RESPONSE_DISAGREEMENT"
+    ],
+    "authority_states": [
+      {
+        "attempt_id": "A1",
+        "target": "probe.example",
+        "record_type": "A",
+        "discovery_status": "AUTHORITATIVE_QUERY_COMPLETED",
+        "completed": true,
+        "zone": "probe.example",
+        "progress": {
+          "zone_found": true,
+          "ns_found": true,
+          "ns_total": 2,
+          "ns_selected": 2,
+          "addressed_servers": 2,
+          "target_queries_executed": 2,
+          "target_responses_received": 2,
+          "authoritative_answers": 2,
+          "servers": [
+            {
+              "ns_name": "ns1.test.example",
+              "address_found": true,
+              "query_executed": true,
+              "response_received": true,
+              "aa": true,
+              "target_complete": true,
+              "soa_complete": true,
+              "ip": "9.9.9.9",
+              "query_attempt_ids": [
+                "Q7"
+              ],
+              "target_evidence_id": "E7",
+              "status": "ANSWERED"
+            },
+            {
+              "ns_name": "ns2.test.example",
+              "address_found": true,
+              "query_executed": true,
+              "response_received": true,
+              "aa": true,
+              "target_complete": true,
+              "soa_complete": true,
+              "ip": "8.8.4.4",
+              "query_attempt_ids": [
+                "Q10"
+              ],
+              "target_evidence_id": "E10",
+              "status": "ANSWERED"
+            }
+          ],
+          "stage": "AUTHORITATIVE_SOA_QUERY"
+        }
+      }
+    ],
+    "environment": {
+      "scenario": "serial",
+      "endpoints": [
+        {
+          "configured_identity": null,
+          "host": "127.0.0.1",
+          "port": 65067
+        },
+        {
+          "configured_identity": "1.1.1.1",
+          "host": "127.0.0.2",
+          "port": 65068
+        },
+        {
+          "configured_identity": "8.8.8.8",
+          "host": "127.0.0.3",
+          "port": 65069
+        },
+        {
+          "configured_identity": "9.9.9.9",
+          "host": "127.0.0.4",
+          "port": 65070
+        },
+        {
+          "configured_identity": "8.8.4.4",
+          "host": "127.0.0.5",
+          "port": 65071
+        }
+      ],
+      "timeout_seconds": 0.3,
+      "network_scope": "loopback_only",
+      "logical_identities": true,
+      "system_logical_identity": "1.0.0.1",
+      "limitation": "Synthetic DNS wire server; Q endpoints are loopback; optional logical resolver identities do not relax production permissions; no full recursive cache/delegation/DNSSEC behavior"
+    },
+    "diagnosis_correctness": "PENDING_HUMAN_REVIEW",
+    "root_cause_assertions": "PENDING_HUMAN_REVIEW",
+    "localization_correctness": "PENDING_HUMAN_REVIEW",
+    "error": null,
+    "review": {
+      "measured_scope_matches_evidence": true,
+      "mechanical_key_measurement_coverage": true,
+      "independent_semantic_review": "PENDING",
+      "root_cause_assertion_count": null,
+      "AI_assisted_semantic_review": {
+        "reviewer": "development_assistant_not_independent_human",
+        "notes": [
+          "测量支持选中路径的A/SOA差异；不能从Serial断定复制故障。",
+          "模型候选中缓存/同步/调度等因果措辞仍可能过强，即使status为无法确定。",
+          "检查建议是否将次要重复发现失败误写为整次权威调查未完成。"
+        ],
+        "disposition": "测量范围可核对；候选因果文字和建议另行复核"
+      },
+      "hypothesis_statements": [
+        {
+          "id": "H1",
+          "statement": "probe.example 的两台权威服务器（ns1.test.example=9.9.9.9、ns2.test.example=8.8.4.4）对 A 记录返回不一致的地址集合，属于权威侧数据不一致。",
+          "status": "无法确定",
+          "supporting_evidence_ids": []
+        },
+        {
+          "id": "H2",
+          "statement": "两台权威服务器对 probe.example SOA 的 Serial 不同（1 与 2），提示区数据版本不同步。",
+          "status": "无法确定",
+          "supporting_evidence_ids": []
+        },
+        {
+          "id": "H3",
+          "statement": "递归解析器返回的 A 记录与权威不一致，说明递归侧缓存/策略导致客户端看到不同地址。",
+          "status": "无法确定",
+          "supporting_evidence_ids": []
+        },
+        {
+          "id": "H4",
+          "statement": "probe.example 的权威 DNS 存在解析失败（SERVFAIL/REFUSED/超时/NXDOMAIN）类故障。",
+          "status": "无法确定",
+          "supporting_evidence_ids": []
+        }
+      ]
+    },
+    "error_categories": {
+      "none": 4
+    },
+    "rejection_reasons": {}
+  },
+  {
+    "arm": "current",
+    "scenario": "ns_timeout",
+    "repeat": 1,
+    "run_file": "0ded012c1d0c4ff68e662e2ca279da3a.json",
+    "status": "limited",
+    "validated_agent_output": true,
+    "report_has_measurements": true,
+    "fallback": false,
+    "A": 7,
+    "Q": 9,
+    "E": 9,
+    "output_attempts": 1,
+    "output_resubmissions": 0,
+    "usage": {
+      "input_tokens": 43211,
+      "cache_write_tokens": 0,
+      "cache_write_1h_tokens": 0,
+      "cache_read_tokens": 19200,
+      "output_tokens": 2297,
+      "unmeasured_requests": 0,
+      "output_reasoning_tokens": 0,
+      "input_audio_tokens": 0,
+      "cache_audio_read_tokens": 0,
+      "output_audio_tokens": 0,
+      "audio_seconds": 0,
+      "details": {
+        "prompt_cache_hit_tokens": 19200,
+        "prompt_cache_miss_tokens": 24011
+      },
+      "cost": "0.005037450",
+      "requests": 5,
+      "tool_calls": 7
+    },
+    "elapsed_seconds": 14.688,
+    "finding_codes": [
+      "RECURSIVE_QUERY_TIMEOUT"
+    ],
+    "authority_states": [
+      {
+        "attempt_id": "A1",
+        "target": "probe.example",
+        "record_type": "A",
+        "discovery_status": "NS_DISCOVERY_TIMEOUT",
+        "completed": false,
+        "zone": "probe.example",
+        "progress": {
+          "zone_found": true,
+          "ns_found": false,
+          "ns_total": 0,
+          "ns_selected": 0,
+          "addressed_servers": 0,
+          "target_queries_executed": 0,
+          "target_responses_received": 0,
+          "authoritative_answers": 0,
+          "servers": [],
+          "stage": "NS_DISCOVERY"
+        }
+      },
+      {
+        "attempt_id": "A5",
+        "target": "probe.example",
+        "record_type": "A",
+        "discovery_status": "NS_DISCOVERY_TIMEOUT",
+        "completed": false,
+        "zone": "probe.example",
+        "progress": {
+          "zone_found": true,
+          "ns_found": false,
+          "ns_total": 0,
+          "ns_selected": 0,
+          "addressed_servers": 0,
+          "target_queries_executed": 0,
+          "target_responses_received": 0,
+          "authoritative_answers": 0,
+          "servers": [],
+          "stage": "NS_DISCOVERY"
+        }
+      }
+    ],
+    "environment": {
+      "scenario": "ns_timeout",
+      "endpoints": [
+        {
+          "configured_identity": null,
+          "host": "127.0.0.1",
+          "port": 65390
+        },
+        {
+          "configured_identity": "1.1.1.1",
+          "host": "127.0.0.2",
+          "port": 65391
+        },
+        {
+          "configured_identity": "8.8.8.8",
+          "host": "127.0.0.3",
+          "port": 65392
+        },
+        {
+          "configured_identity": "9.9.9.9",
+          "host": "127.0.0.4",
+          "port": 65393
+        },
+        {
+          "configured_identity": "8.8.4.4",
+          "host": "127.0.0.5",
+          "port": 65394
+        }
+      ],
+      "timeout_seconds": 0.3,
+      "network_scope": "loopback_only",
+      "logical_identities": true,
+      "system_logical_identity": "1.0.0.1",
+      "limitation": "Synthetic DNS wire server; Q endpoints are loopback; optional logical resolver identities do not relax production permissions; no full recursive cache/delegation/DNSSEC behavior"
+    },
+    "diagnosis_correctness": "PENDING_HUMAN_REVIEW",
+    "root_cause_assertions": "PENDING_HUMAN_REVIEW",
+    "localization_correctness": "PENDING_HUMAN_REVIEW",
+    "error": null,
+    "review": {
+      "measured_scope_matches_evidence": true,
+      "mechanical_key_measurement_coverage": true,
+      "independent_semantic_review": "PENDING",
+      "root_cause_assertion_count": null,
+      "AI_assisted_semantic_review": {
+        "reviewer": "development_assistant_not_independent_human",
+        "notes": [
+          "可支持系统NS查询超时及未取得直接权威回答；未证明权威不可用或注册失败。",
+          "公共NS成功不验证权威连通性；宽泛的权威/注册候选及而非域名侧措辞仍需复核。"
+        ],
+        "disposition": "测量范围可核对；候选因果文字和建议另行复核"
+      },
+      "hypothesis_statements": [
+        {
+          "id": "H1",
+          "statement": "权威 DNS 查询未能完成，原因是权威服务器发现阶段（NS 发现）在 1.0.0.1 路径上超时，导致未选出任何权威服务器、未发出任何权威查询。",
+          "status": "无法确定",
+          "supporting_evidence_ids": []
+        },
+        {
+          "id": "H2",
+          "statement": "probe.example 的权威 DNS 服务本身不可用（权威服务器宕机或拒绝服务），导致权威查询无法完成。",
+          "status": "无法确定",
+          "supporting_evidence_ids": []
+        },
+        {
+          "id": "H3",
+          "statement": "probe.example 的 A 记录解析在递归侧正常（192.0.2.10，TTL 60），因此问题不在递归解析结果缺失。",
+          "status": "无法确定",
+          "supporting_evidence_ids": []
+        },
+        {
+          "id": "H4",
+          "statement": "1.0.0.1 对 probe.example 的 NS 查询超时属于该解析器/路径的局部现象，而非 probe.example 全域 DNS 故障。",
+          "status": "无法确定",
+          "supporting_evidence_ids": []
+        }
+      ]
+    },
+    "error_categories": {
+      "none": 5,
+      "INVALID_INPUT": 2
+    },
+    "rejection_reasons": {
+      "DNS_TARGET_NOT_AUTHORIZED": 2
+    }
+  },
+  {
+    "arm": "current",
+    "scenario": "serial",
+    "repeat": 2,
+    "run_file": "fefcf3988aac4ef187a875269080c635.json",
+    "status": "completed",
+    "validated_agent_output": true,
+    "report_has_measurements": true,
+    "fallback": false,
+    "A": 6,
+    "Q": 15,
+    "E": 15,
+    "output_attempts": 1,
+    "output_resubmissions": 0,
+    "usage": {
+      "input_tokens": 35492,
+      "cache_write_tokens": 0,
+      "cache_write_1h_tokens": 0,
+      "cache_read_tokens": 5888,
+      "output_tokens": 2198,
+      "unmeasured_requests": 0,
+      "output_reasoning_tokens": 0,
+      "input_audio_tokens": 0,
+      "cache_audio_read_tokens": 0,
+      "output_audio_tokens": 0,
+      "audio_seconds": 0,
+      "details": {
+        "prompt_cache_hit_tokens": 5888,
+        "prompt_cache_miss_tokens": 29604
+      },
+      "cost": "0.005777064",
+      "requests": 3,
+      "tool_calls": 6
+    },
+    "elapsed_seconds": 13.062,
+    "finding_codes": [
+      "RECURSIVE_AUTH_RESPONSE_MISMATCH",
+      "RECORD_SET_DIFFERENCE",
+      "AUTHORITATIVE_RESPONSE_DISAGREEMENT",
+      "RECURSIVE_AUTH_RESPONSE_MISMATCH",
+      "RECORD_SET_DIFFERENCE",
+      "AUTHORITATIVE_RESPONSE_DISAGREEMENT"
+    ],
+    "authority_states": [
+      {
+        "attempt_id": "A1",
+        "target": "probe.example",
+        "record_type": "A",
+        "discovery_status": "AUTHORITATIVE_QUERY_COMPLETED",
+        "completed": true,
+        "zone": "probe.example",
+        "progress": {
+          "zone_found": true,
+          "ns_found": true,
+          "ns_total": 2,
+          "ns_selected": 2,
+          "addressed_servers": 2,
+          "target_queries_executed": 2,
+          "target_responses_received": 2,
+          "authoritative_answers": 2,
+          "servers": [
+            {
+              "ns_name": "ns1.test.example",
+              "address_found": true,
+              "query_executed": true,
+              "response_received": true,
+              "aa": true,
+              "target_complete": true,
+              "soa_complete": true,
+              "ip": "9.9.9.9",
+              "query_attempt_ids": [
+                "Q7"
+              ],
+              "target_evidence_id": "E7",
+              "status": "ANSWERED"
+            },
+            {
+              "ns_name": "ns2.test.example",
+              "address_found": true,
+              "query_executed": true,
+              "response_received": true,
+              "aa": true,
+              "target_complete": true,
+              "soa_complete": true,
+              "ip": "8.8.4.4",
+              "query_attempt_ids": [
+                "Q10"
+              ],
+              "target_evidence_id": "E10",
+              "status": "ANSWERED"
+            }
+          ],
+          "stage": "AUTHORITATIVE_SOA_QUERY"
+        }
+      }
+    ],
+    "environment": {
+      "scenario": "serial",
+      "endpoints": [
+        {
+          "configured_identity": null,
+          "host": "127.0.0.1",
+          "port": 55954
+        },
+        {
+          "configured_identity": "1.1.1.1",
+          "host": "127.0.0.2",
+          "port": 55955
+        },
+        {
+          "configured_identity": "8.8.8.8",
+          "host": "127.0.0.3",
+          "port": 55956
+        },
+        {
+          "configured_identity": "9.9.9.9",
+          "host": "127.0.0.4",
+          "port": 55957
+        },
+        {
+          "configured_identity": "8.8.4.4",
+          "host": "127.0.0.5",
+          "port": 55958
+        }
+      ],
+      "timeout_seconds": 0.3,
+      "network_scope": "loopback_only",
+      "logical_identities": true,
+      "system_logical_identity": "1.0.0.1",
+      "limitation": "Synthetic DNS wire server; Q endpoints are loopback; optional logical resolver identities do not relax production permissions; no full recursive cache/delegation/DNSSEC behavior"
+    },
+    "diagnosis_correctness": "PENDING_HUMAN_REVIEW",
+    "root_cause_assertions": "PENDING_HUMAN_REVIEW",
+    "localization_correctness": "PENDING_HUMAN_REVIEW",
+    "error": null,
+    "review": {
+      "measured_scope_matches_evidence": true,
+      "mechanical_key_measurement_coverage": true,
+      "independent_semantic_review": "PENDING",
+      "root_cause_assertion_count": null,
+      "AI_assisted_semantic_review": {
+        "reviewer": "development_assistant_not_independent_human",
+        "notes": [
+          "测量支持选中路径的A/SOA差异；不能从Serial断定复制故障。",
+          "模型候选中缓存/同步/调度等因果措辞仍可能过强，即使status为无法确定。",
+          "检查建议是否将次要重复发现失败误写为整次权威调查未完成。"
+        ],
+        "disposition": "测量范围可核对；候选因果文字和建议另行复核"
+      },
+      "hypothesis_statements": [
+        {
+          "id": "H1",
+          "statement": "probe.example 的两个权威服务器（ns1.test.example=9.9.9.9、ns2.test.example=8.8.4.4）对 A 记录不一致：9.9.9.9 返回 192.0.2.10，8.8.4.4 返回 192.0.2.11。",
+          "status": "无法确定",
+          "supporting_evidence_ids": []
+        },
+        {
+          "id": "H2",
+          "statement": "两个权威服务器的 SOA 不一致：9.9.9.9 返回 Serial=1，8.8.4.4 返回 Serial=2，其余字段（ns1.test.example. host.test.example.，60/60/60/60）相同。",
+          "status": "无法确定",
+          "supporting_evidence_ids": []
+        },
+        {
+          "id": "H3",
+          "statement": "递归解析器（1.0.0.1、1.1.1.1、8.8.8.8）返回的 A 记录与权威侧存在差异，可能由缓存或不同权威后端导致。",
+          "status": "无法确定",
+          "supporting_evidence_ids": []
+        },
+        {
+          "id": "H4",
+          "statement": "该差异由权威服务器间 zone 数据未同步（主从复制滞后/配置漂移）导致。",
+          "status": "无法确定",
+          "supporting_evidence_ids": []
+        }
+      ]
+    },
+    "error_categories": {
+      "none": 6
+    },
+    "rejection_reasons": {}
+  },
+  {
+    "arm": "current",
+    "scenario": "ns_timeout",
+    "repeat": 2,
+    "run_file": "d59a255c5c594a2caa1b8e2aca65dca2.json",
+    "status": "limited",
+    "validated_agent_output": true,
+    "report_has_measurements": true,
+    "fallback": false,
+    "A": 7,
+    "Q": 8,
+    "E": 8,
+    "output_attempts": 1,
+    "output_resubmissions": 0,
+    "usage": {
+      "input_tokens": 43359,
+      "cache_write_tokens": 0,
+      "cache_write_1h_tokens": 0,
+      "cache_read_tokens": 19968,
+      "output_tokens": 2149,
+      "unmeasured_requests": 0,
+      "output_reasoning_tokens": 0,
+      "input_audio_tokens": 0,
+      "cache_audio_read_tokens": 0,
+      "output_audio_tokens": 0,
+      "audio_seconds": 0,
+      "details": {
+        "prompt_cache_hit_tokens": 19968,
+        "prompt_cache_miss_tokens": 23391
+      },
+      "cost": "0.004857954",
+      "requests": 5,
+      "tool_calls": 7
+    },
+    "elapsed_seconds": 13.938,
+    "finding_codes": [
+      "RECURSIVE_QUERY_TIMEOUT"
+    ],
+    "authority_states": [
+      {
+        "attempt_id": "A1",
+        "target": "probe.example",
+        "record_type": "A",
+        "discovery_status": "NS_DISCOVERY_TIMEOUT",
+        "completed": false,
+        "zone": "probe.example",
+        "progress": {
+          "zone_found": true,
+          "ns_found": false,
+          "ns_total": 0,
+          "ns_selected": 0,
+          "addressed_servers": 0,
+          "target_queries_executed": 0,
+          "target_responses_received": 0,
+          "authoritative_answers": 0,
+          "servers": [],
+          "stage": "NS_DISCOVERY"
+        }
+      },
+      {
+        "attempt_id": "A5",
+        "target": "probe.example",
+        "record_type": "A",
+        "discovery_status": "NS_DISCOVERY_FAILED",
+        "completed": false,
+        "zone": "probe.example",
+        "progress": {
+          "zone_found": true,
+          "ns_found": false,
+          "ns_total": 0,
+          "ns_selected": 0,
+          "addressed_servers": 0,
+          "target_queries_executed": 0,
+          "target_responses_received": 0,
+          "authoritative_answers": 0,
+          "servers": [],
+          "stage": "NS_DISCOVERY"
+        }
+      }
+    ],
+    "environment": {
+      "scenario": "ns_timeout",
+      "endpoints": [
+        {
+          "configured_identity": null,
+          "host": "127.0.0.1",
+          "port": 55976
+        },
+        {
+          "configured_identity": "1.1.1.1",
+          "host": "127.0.0.2",
+          "port": 55977
+        },
+        {
+          "configured_identity": "8.8.8.8",
+          "host": "127.0.0.3",
+          "port": 55978
+        },
+        {
+          "configured_identity": "9.9.9.9",
+          "host": "127.0.0.4",
+          "port": 55979
+        },
+        {
+          "configured_identity": "8.8.4.4",
+          "host": "127.0.0.5",
+          "port": 55980
+        }
+      ],
+      "timeout_seconds": 0.3,
+      "network_scope": "loopback_only",
+      "logical_identities": true,
+      "system_logical_identity": "1.0.0.1",
+      "limitation": "Synthetic DNS wire server; Q endpoints are loopback; optional logical resolver identities do not relax production permissions; no full recursive cache/delegation/DNSSEC behavior"
+    },
+    "diagnosis_correctness": "PENDING_HUMAN_REVIEW",
+    "root_cause_assertions": "PENDING_HUMAN_REVIEW",
+    "localization_correctness": "PENDING_HUMAN_REVIEW",
+    "error": null,
+    "review": {
+      "measured_scope_matches_evidence": true,
+      "mechanical_key_measurement_coverage": true,
+      "independent_semantic_review": "PENDING",
+      "root_cause_assertion_count": null,
+      "AI_assisted_semantic_review": {
+        "reviewer": "development_assistant_not_independent_human",
+        "notes": [
+          "可支持系统NS查询超时及未取得直接权威回答；未证明权威不可用或注册失败。",
+          "公共NS成功不验证权威连通性；宽泛的权威/注册候选及而非域名侧措辞仍需复核。"
+        ],
+        "disposition": "测量范围可核对；候选因果文字和建议另行复核"
+      },
+      "hypothesis_statements": [
+        {
+          "id": "H1",
+          "statement": "权威 DNS 查询未能完成，原因是权威服务器发现阶段（NS 发现）在系统/递归解析器 1.0.0.1 上超时，导致无法选出权威服务器并发出目标类型查询。",
+          "status": "无法确定",
+          "supporting_evidence_ids": []
+        },
+        {
+          "id": "H2",
+          "statement": "probe.example 的权威 DNS 服务本身不可用（权威服务器宕机或未响应）。",
+          "status": "无法确定",
+          "supporting_evidence_ids": []
+        },
+        {
+          "id": "H3",
+          "statement": "probe.example 的 A 记录解析在递归层面正常，问题不涉及 A 记录缺失或 NXDOMAIN。",
+          "status": "无法确定",
+          "supporting_evidence_ids": []
+        }
+      ]
+    },
+    "error_categories": {
+      "none": 4,
+      "PARTIAL_DNS_EXECUTION_ERROR": 1,
+      "INVALID_INPUT": 2
+    },
+    "rejection_reasons": {
+      "unspecified": 1,
+      "DNS_TARGET_NOT_AUTHORIZED": 2
+    }
+  },
+  {
+    "arm": "current",
+    "scenario": "serial",
+    "repeat": 3,
+    "run_file": "e1f1101febf542b891ec508b3869bb7f.json",
+    "status": "completed",
+    "validated_agent_output": true,
+    "report_has_measurements": true,
+    "fallback": false,
+    "A": 6,
+    "Q": 15,
+    "E": 15,
+    "output_attempts": 1,
+    "output_resubmissions": 0,
+    "usage": {
+      "input_tokens": 36177,
+      "cache_write_tokens": 0,
+      "cache_write_1h_tokens": 0,
+      "cache_read_tokens": 6144,
+      "output_tokens": 2475,
+      "unmeasured_requests": 0,
+      "output_reasoning_tokens": 0,
+      "input_audio_tokens": 0,
+      "cache_audio_read_tokens": 0,
+      "output_audio_tokens": 0,
+      "audio_seconds": 0,
+      "details": {
+        "prompt_cache_hit_tokens": 6144,
+        "prompt_cache_miss_tokens": 30033
+      },
+      "cost": "0.006008382",
+      "requests": 3,
+      "tool_calls": 6
+    },
+    "elapsed_seconds": 14.25,
+    "finding_codes": [
+      "RECURSIVE_AUTH_RESPONSE_MISMATCH",
+      "RECORD_SET_DIFFERENCE",
+      "AUTHORITATIVE_RESPONSE_DISAGREEMENT",
+      "RECURSIVE_AUTH_RESPONSE_MISMATCH",
+      "RECORD_SET_DIFFERENCE",
+      "AUTHORITATIVE_RESPONSE_DISAGREEMENT"
+    ],
+    "authority_states": [
+      {
+        "attempt_id": "A1",
+        "target": "probe.example",
+        "record_type": "A",
+        "discovery_status": "AUTHORITATIVE_QUERY_COMPLETED",
+        "completed": true,
+        "zone": "probe.example",
+        "progress": {
+          "zone_found": true,
+          "ns_found": true,
+          "ns_total": 2,
+          "ns_selected": 2,
+          "addressed_servers": 2,
+          "target_queries_executed": 2,
+          "target_responses_received": 2,
+          "authoritative_answers": 2,
+          "servers": [
+            {
+              "ns_name": "ns2.test.example",
+              "address_found": true,
+              "query_executed": true,
+              "response_received": true,
+              "aa": true,
+              "target_complete": true,
+              "soa_complete": true,
+              "ip": "8.8.4.4",
+              "query_attempt_ids": [
+                "Q7"
+              ],
+              "target_evidence_id": "E7",
+              "status": "ANSWERED"
+            },
+            {
+              "ns_name": "ns1.test.example",
+              "address_found": true,
+              "query_executed": true,
+              "response_received": true,
+              "aa": true,
+              "target_complete": true,
+              "soa_complete": true,
+              "ip": "9.9.9.9",
+              "query_attempt_ids": [
+                "Q10"
+              ],
+              "target_evidence_id": "E10",
+              "status": "ANSWERED"
+            }
+          ],
+          "stage": "AUTHORITATIVE_SOA_QUERY"
+        }
+      }
+    ],
+    "environment": {
+      "scenario": "serial",
+      "endpoints": [
+        {
+          "configured_identity": null,
+          "host": "127.0.0.1",
+          "port": 55991
+        },
+        {
+          "configured_identity": "1.1.1.1",
+          "host": "127.0.0.2",
+          "port": 55992
+        },
+        {
+          "configured_identity": "8.8.8.8",
+          "host": "127.0.0.3",
+          "port": 55993
+        },
+        {
+          "configured_identity": "9.9.9.9",
+          "host": "127.0.0.4",
+          "port": 55994
+        },
+        {
+          "configured_identity": "8.8.4.4",
+          "host": "127.0.0.5",
+          "port": 55995
+        }
+      ],
+      "timeout_seconds": 0.3,
+      "network_scope": "loopback_only",
+      "logical_identities": true,
+      "system_logical_identity": "1.0.0.1",
+      "limitation": "Synthetic DNS wire server; Q endpoints are loopback; optional logical resolver identities do not relax production permissions; no full recursive cache/delegation/DNSSEC behavior"
+    },
+    "diagnosis_correctness": "PENDING_HUMAN_REVIEW",
+    "root_cause_assertions": "PENDING_HUMAN_REVIEW",
+    "localization_correctness": "PENDING_HUMAN_REVIEW",
+    "error": null,
+    "review": {
+      "measured_scope_matches_evidence": true,
+      "mechanical_key_measurement_coverage": true,
+      "independent_semantic_review": "PENDING",
+      "root_cause_assertion_count": null,
+      "AI_assisted_semantic_review": {
+        "reviewer": "development_assistant_not_independent_human",
+        "notes": [
+          "测量支持选中路径的A/SOA差异；不能从Serial断定复制故障。",
+          "模型候选中缓存/同步/调度等因果措辞仍可能过强，即使status为无法确定。",
+          "检查建议是否将次要重复发现失败误写为整次权威调查未完成。"
+        ],
+        "disposition": "测量范围可核对；候选因果文字和建议另行复核"
+      },
+      "hypothesis_statements": [
+        {
+          "id": "H1",
+          "statement": "probe.example 的两个权威服务器（ns2.test.example=8.8.4.4、ns1.test.example=9.9.9.9）对 A 记录不一致：8.8.4.4 返回 192.0.2.11，9.9.9.9 返回 192.0.2.10。",
+          "status": "无法确定",
+          "supporting_evidence_ids": []
+        },
+        {
+          "id": "H2",
+          "statement": "probe.example 的两个权威服务器对 SOA 不一致：8.8.4.4 返回 Serial 2，9.9.9.9 返回 Serial 1（其余字段 ns1.test.example. host.test.example. 与 60/60/60/60 相同）。",
+          "status": "无法确定",
+          "supporting_evidence_ids": []
+        },
+        {
+          "id": "H3",
+          "statement": "递归解析器（1.0.0.1、1.1.1.1、8.8.8.8）返回的 A 记录（192.0.2.10）与权威 8.8.4.4 的 A（192.0.2.11）不同，属于缓存/调度差异而非解析失败。",
+          "status": "无法确定",
+          "supporting_evidence_ids": []
+        },
+        {
+          "id": "H4",
+          "statement": "权威服务器之间存在主从复制延迟或配置不同步，导致 A 与 SOA 同时出现差异。",
+          "status": "无法确定",
+          "supporting_evidence_ids": []
+        }
+      ]
+    },
+    "error_categories": {
+      "none": 6
+    },
+    "rejection_reasons": {}
+  },
+  {
+    "arm": "current",
+    "scenario": "ns_timeout",
+    "repeat": 3,
+    "run_file": "c6fe948d820346c597cb8963213204df.json",
+    "status": "limited",
+    "validated_agent_output": true,
+    "report_has_measurements": true,
+    "fallback": false,
+    "A": 7,
+    "Q": 8,
+    "E": 8,
+    "output_attempts": 1,
+    "output_resubmissions": 0,
+    "usage": {
+      "input_tokens": 43359,
+      "cache_write_tokens": 0,
+      "cache_write_1h_tokens": 0,
+      "cache_read_tokens": 19968,
+      "output_tokens": 2156,
+      "unmeasured_requests": 0,
+      "output_reasoning_tokens": 0,
+      "input_audio_tokens": 0,
+      "cache_audio_read_tokens": 0,
+      "output_audio_tokens": 0,
+      "audio_seconds": 0,
+      "details": {
+        "prompt_cache_hit_tokens": 19968,
+        "prompt_cache_miss_tokens": 23391
+      },
+      "cost": "0.004862154",
+      "requests": 5,
+      "tool_calls": 7
+    },
+    "elapsed_seconds": 14.422,
+    "finding_codes": [
+      "RECURSIVE_QUERY_TIMEOUT"
+    ],
+    "authority_states": [
+      {
+        "attempt_id": "A1",
+        "target": "probe.example",
+        "record_type": "A",
+        "discovery_status": "NS_DISCOVERY_TIMEOUT",
+        "completed": false,
+        "zone": "probe.example",
+        "progress": {
+          "zone_found": true,
+          "ns_found": false,
+          "ns_total": 0,
+          "ns_selected": 0,
+          "addressed_servers": 0,
+          "target_queries_executed": 0,
+          "target_responses_received": 0,
+          "authoritative_answers": 0,
+          "servers": [],
+          "stage": "NS_DISCOVERY"
+        }
+      },
+      {
+        "attempt_id": "A5",
+        "target": "probe.example",
+        "record_type": "A",
+        "discovery_status": "NS_DISCOVERY_FAILED",
+        "completed": false,
+        "zone": "probe.example",
+        "progress": {
+          "zone_found": true,
+          "ns_found": false,
+          "ns_total": 0,
+          "ns_selected": 0,
+          "addressed_servers": 0,
+          "target_queries_executed": 0,
+          "target_responses_received": 0,
+          "authoritative_answers": 0,
+          "servers": [],
+          "stage": "NS_DISCOVERY"
+        }
+      }
+    ],
+    "environment": {
+      "scenario": "ns_timeout",
+      "endpoints": [
+        {
+          "configured_identity": null,
+          "host": "127.0.0.1",
+          "port": 56011
+        },
+        {
+          "configured_identity": "1.1.1.1",
+          "host": "127.0.0.2",
+          "port": 56012
+        },
+        {
+          "configured_identity": "8.8.8.8",
+          "host": "127.0.0.3",
+          "port": 56013
+        },
+        {
+          "configured_identity": "9.9.9.9",
+          "host": "127.0.0.4",
+          "port": 56014
+        },
+        {
+          "configured_identity": "8.8.4.4",
+          "host": "127.0.0.5",
+          "port": 56015
+        }
+      ],
+      "timeout_seconds": 0.3,
+      "network_scope": "loopback_only",
+      "logical_identities": true,
+      "system_logical_identity": "1.0.0.1",
+      "limitation": "Synthetic DNS wire server; Q endpoints are loopback; optional logical resolver identities do not relax production permissions; no full recursive cache/delegation/DNSSEC behavior"
+    },
+    "diagnosis_correctness": "PENDING_HUMAN_REVIEW",
+    "root_cause_assertions": "PENDING_HUMAN_REVIEW",
+    "localization_correctness": "PENDING_HUMAN_REVIEW",
+    "error": null,
+    "review": {
+      "measured_scope_matches_evidence": true,
+      "mechanical_key_measurement_coverage": true,
+      "independent_semantic_review": "PENDING",
+      "root_cause_assertion_count": null,
+      "AI_assisted_semantic_review": {
+        "reviewer": "development_assistant_not_independent_human",
+        "notes": [
+          "可支持系统NS查询超时及未取得直接权威回答；未证明权威不可用或注册失败。",
+          "公共NS成功不验证权威连通性；宽泛的权威/注册候选及而非域名侧措辞仍需复核。"
+        ],
+        "disposition": "测量范围可核对；候选因果文字和建议另行复核"
+      },
+      "hypothesis_statements": [
+        {
+          "id": "H1",
+          "statement": "权威 DNS 查询未能完成，原因是权威服务器发现阶段（NS 发现）在系统解析器 1.0.0.1 上超时，导致未能选出任何权威服务器、未发出任何权威查询。",
+          "status": "无法确定",
+          "supporting_evidence_ids": []
+        },
+        {
+          "id": "H2",
+          "statement": "权威服务器本身不可用或权威区数据异常（如权威服务器宕机、NS 指向不可解析名称）导致权威查询无法完成。",
+          "status": "无法确定",
+          "supporting_evidence_ids": []
+        },
+        {
+          "id": "H3",
+          "statement": "递归解析器 1.0.0.1 对 NS 类型查询存在特定路径问题（策略/限速/缓存/网络路径），而非区域或权威侧故障。",
+          "status": "无法确定",
+          "supporting_evidence_ids": []
+        }
+      ]
+    },
+    "error_categories": {
+      "none": 4,
+      "PARTIAL_DNS_EXECUTION_ERROR": 1,
+      "INVALID_INPUT": 2
+    },
+    "rejection_reasons": {
+      "unspecified": 1,
+      "DNS_TARGET_NOT_AUTHORIZED": 2
+    }
+  },
+  {
+    "arm": "current",
+    "scenario": "normal",
+    "repeat": 1,
+    "run_file": "5ef0b16dd67642d2bde8e40545e8647c.json",
+    "status": "completed",
+    "validated_agent_output": true,
+    "report_has_measurements": true,
+    "fallback": false,
+    "A": 1,
+    "Q": 1,
+    "E": 1,
+    "output_attempts": 1,
+    "output_resubmissions": 0,
+    "usage": {
+      "input_tokens": 5228,
+      "cache_write_tokens": 0,
+      "cache_write_1h_tokens": 0,
+      "cache_read_tokens": 4352,
+      "output_tokens": 391,
+      "unmeasured_requests": 0,
+      "output_reasoning_tokens": 0,
+      "input_audio_tokens": 0,
+      "cache_audio_read_tokens": 0,
+      "output_audio_tokens": 0,
+      "audio_seconds": 0,
+      "details": {
+        "prompt_cache_hit_tokens": 4352,
+        "prompt_cache_miss_tokens": 876
+      },
+      "cost": "0.000379056",
+      "requests": 2,
+      "tool_calls": 1
+    },
+    "elapsed_seconds": 2.89,
+    "finding_codes": [
+      "DNS_INCONCLUSIVE"
+    ],
+    "authority_states": [],
+    "environment": {
+      "scenario": "normal",
+      "endpoints": [
+        {
+          "configured_identity": null,
+          "host": "127.0.0.1",
+          "port": 56024
+        },
+        {
+          "configured_identity": "1.1.1.1",
+          "host": "127.0.0.2",
+          "port": 56025
+        },
+        {
+          "configured_identity": "8.8.8.8",
+          "host": "127.0.0.3",
+          "port": 56026
+        },
+        {
+          "configured_identity": "9.9.9.9",
+          "host": "127.0.0.4",
+          "port": 56027
+        },
+        {
+          "configured_identity": "8.8.4.4",
+          "host": "127.0.0.5",
+          "port": 56028
+        }
+      ],
+      "timeout_seconds": 0.3,
+      "network_scope": "loopback_only",
+      "logical_identities": true,
+      "system_logical_identity": "1.0.0.1",
+      "limitation": "Synthetic DNS wire server; Q endpoints are loopback; optional logical resolver identities do not relax production permissions; no full recursive cache/delegation/DNSSEC behavior"
+    },
+    "diagnosis_correctness": "PENDING_HUMAN_REVIEW",
+    "root_cause_assertions": "PENDING_HUMAN_REVIEW",
+    "localization_correctness": "PENDING_HUMAN_REVIEW",
+    "error": null,
+    "review": {
+      "measured_scope_matches_evidence": true,
+      "mechanical_key_measurement_coverage": true,
+      "independent_semantic_review": "PENDING",
+      "root_cause_assertion_count": null,
+      "AI_assisted_semantic_review": {
+        "reviewer": "development_assistant_not_independent_human",
+        "notes": [
+          "单项A地址和TTL可对应唯一测量；不要求故障假设或全部工具。",
+          "旧建议收集故障设备信息与单项问题不符，新报告已简化。"
+        ],
+        "disposition": "单项事实可核对，不扩展为其他路径健康证明"
+      },
+      "hypothesis_statements": []
+    },
+    "error_categories": {
+      "none": 1
+    },
+    "rejection_reasons": {}
+  }
+]

@@ -1,0 +1,555 @@
+[
+  {
+    "source_file": "results/published/security-stability/real-model-comparison/baseline/ff3cd2c66f064c4b94e3dd2974ff6491.json",
+    "arm": "baseline",
+    "scenario": "serial",
+    "repeat": 1,
+    "status": "completed",
+    "review": {
+      "measured_scope_matches_evidence": true,
+      "mechanical_key_measurement_coverage": true,
+      "independent_semantic_review": "PENDING",
+      "root_cause_assertion_count": null,
+      "AI_assisted_semantic_review": {
+        "reviewer": "development_assistant_not_independent_human",
+        "notes": [
+          "测量支持选中路径的A/SOA差异；不能从Serial断定复制故障。",
+          "模型候选中缓存/同步/调度等因果措辞仍可能过强，即使status为无法确定。",
+          "检查建议是否将次要重复发现失败误写为整次权威调查未完成。"
+        ],
+        "disposition": "测量范围可核对；候选因果文字和建议另行复核"
+      },
+      "hypothesis_statements": [
+        {
+          "id": "H1",
+          "statement": "两台权威服务器对 probe.example 的 A 与 SOA 记录内容不一致（配置/发布不同步）。",
+          "status": "无法确定",
+          "supporting_evidence_ids": []
+        },
+        {
+          "id": "H2",
+          "statement": "差异来自正常的 GeoDNS/负载均衡/多后端调度，而非故障。",
+          "status": "无法确定",
+          "supporting_evidence_ids": []
+        },
+        {
+          "id": "H3",
+          "statement": "递归解析器 [local-resolver-1] 的 SOA 缓存导致与 [local-resolver-3] 权威不一致。",
+          "status": "无法确定",
+          "supporting_evidence_ids": []
+        },
+        {
+          "id": "H4",
+          "statement": "probe.example 的 NS 委派本身异常（如 NS 集合不一致或缺失）。",
+          "status": "无法确定",
+          "supporting_evidence_ids": []
+        }
+      ]
+    }
+  },
+  {
+    "source_file": "results/published/security-stability/real-model-comparison/baseline/043fec0176cb49e6b34f6493d4888f32.json",
+    "arm": "baseline",
+    "scenario": "ns_timeout",
+    "repeat": 1,
+    "status": "limited",
+    "review": {
+      "measured_scope_matches_evidence": true,
+      "mechanical_key_measurement_coverage": true,
+      "independent_semantic_review": "PENDING",
+      "root_cause_assertion_count": null,
+      "AI_assisted_semantic_review": {
+        "reviewer": "development_assistant_not_independent_human",
+        "notes": [
+          "可支持系统NS查询超时及未取得直接权威回答；未证明权威不可用或注册失败。",
+          "公共NS成功不验证权威连通性；宽泛的权威/注册候选及而非域名侧措辞仍需复核。"
+        ],
+        "disposition": "测量范围可核对；候选因果文字和建议另行复核"
+      },
+      "hypothesis_statements": [
+        {
+          "id": "H1",
+          "statement": "probe.example 的权威 DNS 查询无法完成（权威服务器不可达或不应答）",
+          "status": "无法确定",
+          "supporting_evidence_ids": []
+        },
+        {
+          "id": "H2",
+          "statement": "递归解析器 [local-resolver-1] 对 NS 类型查询存在局部异常（缓存/策略/转发路径），而非域名权威侧故障",
+          "status": "无法确定",
+          "supporting_evidence_ids": []
+        },
+        {
+          "id": "H3",
+          "statement": "域名解析整体正常，A 记录在多个解析器一致可用",
+          "status": "无法确定",
+          "supporting_evidence_ids": []
+        }
+      ]
+    }
+  },
+  {
+    "source_file": "results/published/security-stability/real-model-comparison/baseline/9f43d9b2fbab411c88b752c9fe47602e.json",
+    "arm": "baseline",
+    "scenario": "serial",
+    "repeat": 2,
+    "status": "completed",
+    "review": {
+      "measured_scope_matches_evidence": true,
+      "mechanical_key_measurement_coverage": true,
+      "independent_semantic_review": "PENDING",
+      "root_cause_assertion_count": null,
+      "AI_assisted_semantic_review": {
+        "reviewer": "development_assistant_not_independent_human",
+        "notes": [
+          "测量支持选中路径的A/SOA差异；不能从Serial断定复制故障。",
+          "模型候选中缓存/同步/调度等因果措辞仍可能过强，即使status为无法确定。",
+          "检查建议是否将次要重复发现失败误写为整次权威调查未完成。"
+        ],
+        "disposition": "测量范围可核对；候选因果文字和建议另行复核"
+      },
+      "hypothesis_statements": [
+        {
+          "id": "H1",
+          "statement": "两台权威服务器（[local-resolver-5] / [local-resolver-6]）对 probe.example 的 A 记录与 SOA 内容不一致，即权威间数据未完全同步或配置不同。",
+          "status": "无法确定",
+          "supporting_evidence_ids": []
+        },
+        {
+          "id": "H2",
+          "statement": "A 记录差异来自正常的流量调度（CDN/GeoDNS/负载均衡/多值轮询），而非故障。",
+          "status": "无法确定",
+          "supporting_evidence_ids": []
+        },
+        {
+          "id": "H3",
+          "statement": "递归解析器 [local-resolver-4] 返回的 SOA Serial=1 是缓存了 [local-resolver-5] 的旧/较新副本，导致递归与 [local-resolver-6] 权威不一致。",
+          "status": "无法确定",
+          "supporting_evidence_ids": []
+        },
+        {
+          "id": "H4",
+          "statement": "DNS 解析本身失败（NXDOMAIN/SERVFAIL/超时等）导致 probe.example 不可用。",
+          "status": "无法确定",
+          "supporting_evidence_ids": []
+        }
+      ]
+    }
+  },
+  {
+    "source_file": "results/published/security-stability/real-model-comparison/baseline/cf907c1e66c44901b535957d422f70f3.json",
+    "arm": "baseline",
+    "scenario": "ns_timeout",
+    "repeat": 2,
+    "status": "limited",
+    "review": {
+      "measured_scope_matches_evidence": true,
+      "mechanical_key_measurement_coverage": true,
+      "independent_semantic_review": "PENDING",
+      "root_cause_assertion_count": null,
+      "AI_assisted_semantic_review": {
+        "reviewer": "development_assistant_not_independent_human",
+        "notes": [
+          "可支持系统NS查询超时及未取得直接权威回答；未证明权威不可用或注册失败。",
+          "公共NS成功不验证权威连通性；宽泛的权威/注册候选及而非域名侧措辞仍需复核。"
+        ],
+        "disposition": "测量范围可核对；候选因果文字和建议另行复核"
+      },
+      "hypothesis_statements": [
+        {
+          "id": "H1",
+          "statement": "probe.example 的权威 DNS 查询无法完成（权威服务器不可达或不应答）",
+          "status": "无法确定",
+          "supporting_evidence_ids": []
+        },
+        {
+          "id": "H2",
+          "statement": "递归解析路径基本正常，probe.example 可被解析（A/SOA 均 NOERROR 且多解析器一致）",
+          "status": "无法确定",
+          "supporting_evidence_ids": []
+        },
+        {
+          "id": "H3",
+          "statement": "[local-resolver-1] 对 NS 类型查询超时属于该解析器/该查询路径的局部异常（缓存、策略、网络路径或瞬时因素）",
+          "status": "无法确定",
+          "supporting_evidence_ids": []
+        }
+      ]
+    }
+  },
+  {
+    "source_file": "results/published/security-stability/real-model-comparison/baseline/c7fe4d498a1e497689f2926061d180d6.json",
+    "arm": "baseline",
+    "scenario": "serial",
+    "repeat": 3,
+    "status": "completed",
+    "review": {
+      "measured_scope_matches_evidence": true,
+      "mechanical_key_measurement_coverage": true,
+      "independent_semantic_review": "PENDING",
+      "root_cause_assertion_count": null,
+      "AI_assisted_semantic_review": {
+        "reviewer": "development_assistant_not_independent_human",
+        "notes": [
+          "测量支持选中路径的A/SOA差异；不能从Serial断定复制故障。",
+          "模型候选中缓存/同步/调度等因果措辞仍可能过强，即使status为无法确定。",
+          "检查建议是否将次要重复发现失败误写为整次权威调查未完成。"
+        ],
+        "disposition": "测量范围可核对；候选因果文字和建议另行复核"
+      },
+      "hypothesis_statements": [
+        {
+          "id": "H1",
+          "statement": "probe.example 的两台权威服务器对 A 记录返回不同地址集合（192.0.2.11 vs 192.0.2.10），即权威间 A 数据不一致。",
+          "status": "无法确定",
+          "supporting_evidence_ids": []
+        },
+        {
+          "id": "H2",
+          "statement": "probe.example 的两台权威服务器 SOA Serial 不一致（[local-resolver-3] 为 2，[local-resolver-2] 为 1），提示区数据版本不同步。",
+          "status": "无法确定",
+          "supporting_evidence_ids": []
+        },
+        {
+          "id": "H3",
+          "statement": "递归解析器 [local-resolver-1] 返回的 SOA Serial=1 与权威 [local-resolver-3] 的 Serial=2 不同，说明递归侧缓存了较旧版本。",
+          "status": "无法确定",
+          "supporting_evidence_ids": []
+        },
+        {
+          "id": "H4",
+          "statement": "probe.example 的权威 NS 委派集合在两台权威间不一致。",
+          "status": "无法确定",
+          "supporting_evidence_ids": []
+        }
+      ]
+    }
+  },
+  {
+    "source_file": "results/published/security-stability/real-model-comparison/baseline/03ca3ede1f3a42c4b41aa6e6080d3e82.json",
+    "arm": "baseline",
+    "scenario": "ns_timeout",
+    "repeat": 3,
+    "status": "failed",
+    "review": {
+      "measured_scope_matches_evidence": true,
+      "mechanical_key_measurement_coverage": true,
+      "independent_semantic_review": "PENDING",
+      "root_cause_assertion_count": null,
+      "AI_assisted_semantic_review": {
+        "reviewer": "development_assistant_not_independent_human",
+        "notes": [
+          "可支持系统NS查询超时及未取得直接权威回答；未证明权威不可用或注册失败。",
+          "公共NS成功不验证权威连通性；宽泛的权威/注册候选及而非域名侧措辞仍需复核。"
+        ],
+        "disposition": "测量范围可核对；候选因果文字和建议另行复核"
+      },
+      "hypothesis_statements": []
+    }
+  },
+  {
+    "source_file": "results/published/security-stability/real-model-comparison/baseline/c449df4db2f549d0a9febe969fc7e306.json",
+    "arm": "baseline",
+    "scenario": "normal",
+    "repeat": 1,
+    "status": "completed",
+    "review": {
+      "measured_scope_matches_evidence": true,
+      "mechanical_key_measurement_coverage": true,
+      "independent_semantic_review": "PENDING",
+      "root_cause_assertion_count": null,
+      "AI_assisted_semantic_review": {
+        "reviewer": "development_assistant_not_independent_human",
+        "notes": [
+          "单项A地址和TTL可对应唯一测量；不要求故障假设或全部工具。",
+          "旧建议收集故障设备信息与单项问题不符，新报告已简化。"
+        ],
+        "disposition": "单项事实可核对，不扩展为其他路径健康证明"
+      },
+      "hypothesis_statements": []
+    }
+  },
+  {
+    "source_file": "results/published/security-stability/real-model-comparison/current/285c1b130d59402a8c5c8429b785cf11.json",
+    "arm": "current",
+    "scenario": "serial",
+    "repeat": 1,
+    "status": "completed",
+    "review": {
+      "measured_scope_matches_evidence": true,
+      "mechanical_key_measurement_coverage": true,
+      "independent_semantic_review": "PENDING",
+      "root_cause_assertion_count": null,
+      "AI_assisted_semantic_review": {
+        "reviewer": "development_assistant_not_independent_human",
+        "notes": [
+          "测量支持选中路径的A/SOA差异；不能从Serial断定复制故障。",
+          "模型候选中缓存/同步/调度等因果措辞仍可能过强，即使status为无法确定。",
+          "检查建议是否将次要重复发现失败误写为整次权威调查未完成。"
+        ],
+        "disposition": "测量范围可核对；候选因果文字和建议另行复核"
+      },
+      "hypothesis_statements": [
+        {
+          "id": "H1",
+          "statement": "probe.example 的两台权威服务器（ns2.test.example/8.8.4.4 与 ns1.test.example/9.9.9.9）对同一 qname 返回的 A 记录不一致，说明权威侧数据未完全同步或存在按服务器差异化配置。",
+          "status": "无法确定",
+          "supporting_evidence_ids": []
+        },
+        {
+          "id": "H2",
+          "statement": "两台权威服务器返回的 SOA 仅 Serial 不同（2 与 1），其余字段（MNAME ns1.test.example.、RNAME host.test.example.、60/60/60/60）一致，符合主从尚未收敛或 Serial 递增的正常时间差解释。",
+          "status": "无法确定",
+          "supporting_evidence_ids": []
+        },
+        {
+          "id": "H3",
+          "statement": "本地递归解析器 [local-resolver-1] 返回的 SOA（Serial 1）与其中一台权威（[local-resolver-2]，Serial 1）一致，与另一台权威（[local-resolver-3]，Serial 2）不同，可由缓存尚未过期解释，而非解析器故障。",
+          "status": "无法确定",
+          "supporting_evidence_ids": []
+        },
+        {
+          "id": "H4",
+          "statement": "NS 委派本身存在不一致（例如两台 NS 集合不同或委派缺失）。",
+          "status": "无法确定",
+          "supporting_evidence_ids": []
+        }
+      ]
+    }
+  },
+  {
+    "source_file": "results/published/security-stability/real-model-comparison/current/a368ef7cd3d94038b4b6ceaecaeb5192.json",
+    "arm": "current",
+    "scenario": "ns_timeout",
+    "repeat": 1,
+    "status": "limited",
+    "review": {
+      "measured_scope_matches_evidence": true,
+      "mechanical_key_measurement_coverage": true,
+      "independent_semantic_review": "PENDING",
+      "root_cause_assertion_count": null,
+      "AI_assisted_semantic_review": {
+        "reviewer": "development_assistant_not_independent_human",
+        "notes": [
+          "可支持系统NS查询超时及未取得直接权威回答；未证明权威不可用或注册失败。",
+          "公共NS成功不验证权威连通性；宽泛的权威/注册候选及而非域名侧措辞仍需复核。"
+        ],
+        "disposition": "测量范围可核对；候选因果文字和建议另行复核"
+      },
+      "hypothesis_statements": [
+        {
+          "id": "H1",
+          "statement": "权威 DNS 查询未能完成，原因是 NS 发现阶段在本地递归解析器 [local-resolver-1] 上超时，导致无法取得权威服务器地址并发出权威查询。",
+          "status": "无法确定",
+          "supporting_evidence_ids": []
+        },
+        {
+          "id": "H2",
+          "statement": "probe.example 的权威服务器本身不可达或未响应，导致权威查询无法完成。",
+          "status": "无法确定",
+          "supporting_evidence_ids": []
+        },
+        {
+          "id": "H3",
+          "statement": "本地递归解析器 [local-resolver-1] 对 NS 类型查询存在特定失败（超时），而其他解析器正常，属解析器侧/路径侧问题而非域名侧问题。",
+          "status": "无法确定",
+          "supporting_evidence_ids": []
+        }
+      ]
+    }
+  },
+  {
+    "source_file": "results/published/security-stability/real-model-comparison/current/a6cfcd2b69004029be8ae03c170e00d1.json",
+    "arm": "current",
+    "scenario": "serial",
+    "repeat": 2,
+    "status": "completed",
+    "review": {
+      "measured_scope_matches_evidence": true,
+      "mechanical_key_measurement_coverage": true,
+      "independent_semantic_review": "PENDING",
+      "root_cause_assertion_count": null,
+      "AI_assisted_semantic_review": {
+        "reviewer": "development_assistant_not_independent_human",
+        "notes": [
+          "测量支持选中路径的A/SOA差异；不能从Serial断定复制故障。",
+          "模型候选中缓存/同步/调度等因果措辞仍可能过强，即使status为无法确定。",
+          "检查建议是否将次要重复发现失败误写为整次权威调查未完成。"
+        ],
+        "disposition": "测量范围可核对；候选因果文字和建议另行复核"
+      },
+      "hypothesis_statements": [
+        {
+          "id": "H1",
+          "statement": "probe.example 的两台权威服务器（ns2.test.example/8.8.4.4 与 ns1.test.example/9.9.9.9）对同一记录返回不一致内容：A 记录分别为 192.0.2.11 与 192.0.2.10，SOA Serial 分别为 2 与 1。",
+          "status": "无法确定",
+          "supporting_evidence_ids": []
+        },
+        {
+          "id": "H2",
+          "statement": "递归解析器 [local-resolver-1] 返回的 SOA（Serial=1）与其中一台权威服务器（[local-resolver-3]，Serial=2）不同，属缓存/视图差异而非解析失败。",
+          "status": "无法确定",
+          "supporting_evidence_ids": []
+        },
+        {
+          "id": "H3",
+          "statement": "该差异由权威服务器间区域数据未同步（主从复制滞后）导致。",
+          "status": "无法确定",
+          "supporting_evidence_ids": []
+        }
+      ]
+    }
+  },
+  {
+    "source_file": "results/published/security-stability/real-model-comparison/current/3b9e00f21cb343468f8ed2895002249e.json",
+    "arm": "current",
+    "scenario": "ns_timeout",
+    "repeat": 2,
+    "status": "limited",
+    "review": {
+      "measured_scope_matches_evidence": true,
+      "mechanical_key_measurement_coverage": true,
+      "independent_semantic_review": "PENDING",
+      "root_cause_assertion_count": null,
+      "AI_assisted_semantic_review": {
+        "reviewer": "development_assistant_not_independent_human",
+        "notes": [
+          "可支持系统NS查询超时及未取得直接权威回答；未证明权威不可用或注册失败。",
+          "公共NS成功不验证权威连通性；宽泛的权威/注册候选及而非域名侧措辞仍需复核。"
+        ],
+        "disposition": "测量范围可核对；候选因果文字和建议另行复核"
+      },
+      "hypothesis_statements": [
+        {
+          "id": "H1",
+          "statement": "权威 DNS 查询未能完成，原因是系统递归解析器 [local-resolver-1] 对 probe.example 的 NS 查询超时，导致权威服务器发现阶段无法取得 NS 集合。",
+          "status": "无法确定",
+          "supporting_evidence_ids": []
+        },
+        {
+          "id": "H2",
+          "statement": "权威服务器本身不可达或未应答，导致无法获得 AA 权威回答。",
+          "status": "无法确定",
+          "supporting_evidence_ids": []
+        },
+        {
+          "id": "H3",
+          "statement": "probe.example 的解析记录本身正常（A 记录存在、SOA 存在），问题局限于 NS 类型查询路径。",
+          "status": "无法确定",
+          "supporting_evidence_ids": []
+        }
+      ]
+    }
+  },
+  {
+    "source_file": "results/published/security-stability/real-model-comparison/current/8df53450b57e440e8ac76e0abddd770e.json",
+    "arm": "current",
+    "scenario": "serial",
+    "repeat": 3,
+    "status": "completed",
+    "review": {
+      "measured_scope_matches_evidence": true,
+      "mechanical_key_measurement_coverage": true,
+      "independent_semantic_review": "PENDING",
+      "root_cause_assertion_count": null,
+      "AI_assisted_semantic_review": {
+        "reviewer": "development_assistant_not_independent_human",
+        "notes": [
+          "测量支持选中路径的A/SOA差异；不能从Serial断定复制故障。",
+          "模型候选中缓存/同步/调度等因果措辞仍可能过强，即使status为无法确定。",
+          "检查建议是否将次要重复发现失败误写为整次权威调查未完成。"
+        ],
+        "disposition": "测量范围可核对；候选因果文字和建议另行复核"
+      },
+      "hypothesis_statements": [
+        {
+          "id": "H1",
+          "statement": "probe.example 的两个权威服务器对 A 记录返回不同地址（ns1 侧 192.0.2.10，ns2 侧 192.0.2.11），即权威数据不一致。",
+          "status": "无法确定",
+          "supporting_evidence_ids": []
+        },
+        {
+          "id": "H2",
+          "statement": "两台权威服务器的 SOA 记录除 Serial 外一致（ns1.test.example. host.test.example.，刷新/重试/过期/最小 TTL 均为 60），Serial 分别为 1 与 2。",
+          "status": "无法确定",
+          "supporting_evidence_ids": []
+        },
+        {
+          "id": "H3",
+          "statement": "本地递归解析器 [local-resolver-1] 返回的 SOA（Serial=1）与 ns2 侧权威（Serial=2）不同，属缓存/上游选择造成的差异。",
+          "status": "无法确定",
+          "supporting_evidence_ids": []
+        },
+        {
+          "id": "H4",
+          "statement": "probe.example 的 NS 委派为 ns1.test.example 与 ns2.test.example 两台，递归解析器两次返回集合一致（仅顺序不同）。",
+          "status": "无法确定",
+          "supporting_evidence_ids": []
+        }
+      ]
+    }
+  },
+  {
+    "source_file": "results/published/security-stability/real-model-comparison/current/4fc472702fab470da8f1a463bf25320f.json",
+    "arm": "current",
+    "scenario": "ns_timeout",
+    "repeat": 3,
+    "status": "limited",
+    "review": {
+      "measured_scope_matches_evidence": true,
+      "mechanical_key_measurement_coverage": true,
+      "independent_semantic_review": "PENDING",
+      "root_cause_assertion_count": null,
+      "AI_assisted_semantic_review": {
+        "reviewer": "development_assistant_not_independent_human",
+        "notes": [
+          "可支持系统NS查询超时及未取得直接权威回答；未证明权威不可用或注册失败。",
+          "公共NS成功不验证权威连通性；宽泛的权威/注册候选及而非域名侧措辞仍需复核。"
+        ],
+        "disposition": "测量范围可核对；候选因果文字和建议另行复核"
+      },
+      "hypothesis_statements": [
+        {
+          "id": "H1",
+          "statement": "权威 DNS 查询未能完成，原因是 NS 发现阶段在系统解析器 [local-resolver-1] 上超时，导致无法获得 NS 集合、无法选定权威服务器、无法发出权威查询。",
+          "status": "无法确定",
+          "supporting_evidence_ids": []
+        },
+        {
+          "id": "H2",
+          "statement": "probe.example 的权威区本身不可用（无 NS、注册失效或权威服务器不响应），因此权威查询无法完成。",
+          "status": "无法确定",
+          "supporting_evidence_ids": []
+        },
+        {
+          "id": "H3",
+          "statement": "本机系统解析器 [local-resolver-1] 对 NS 类型查询存在选择性异常（A/SOA 正常、NS 超时），属本地解析器或路径问题而非目标域故障。",
+          "status": "无法确定",
+          "supporting_evidence_ids": []
+        }
+      ]
+    }
+  },
+  {
+    "source_file": "results/published/security-stability/real-model-comparison/current/3048a02d70674b4c8a5959cb6c944396.json",
+    "arm": "current",
+    "scenario": "normal",
+    "repeat": 1,
+    "status": "completed",
+    "review": {
+      "measured_scope_matches_evidence": true,
+      "mechanical_key_measurement_coverage": true,
+      "independent_semantic_review": "PENDING",
+      "root_cause_assertion_count": null,
+      "AI_assisted_semantic_review": {
+        "reviewer": "development_assistant_not_independent_human",
+        "notes": [
+          "单项A地址和TTL可对应唯一测量；不要求故障假设或全部工具。",
+          "旧建议收集故障设备信息与单项问题不符，新报告已简化。"
+        ],
+        "disposition": "单项事实可核对，不扩展为其他路径健康证明"
+      },
+      "hypothesis_statements": []
+    }
+  }
+]

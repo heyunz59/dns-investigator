@@ -1,0 +1,471 @@
+{
+  "run_id": "5ef0b16dd67642d2bde8e40545e8647c",
+  "started_at": "2026-11-01T14:32:20.416445+00:00",
+  "incident": {
+    "id": "5ef0b16dd67642d2bde8e40545e8647c",
+    "user_input": "查询 probe.example 的 A 记录。",
+    "target": {
+      "domain": "probe.example",
+      "url": "https://probe.example/",
+      "port": 443,
+      "default_https": true
+    },
+    "measurement_location": "program-host"
+  },
+  "model": "deepseek-flash",
+  "mode": "agent",
+  "thinking": "disabled",
+  "temperature": 0,
+  "model_endpoint": "https://api.deepseek.com",
+  "schema_version": 6,
+  "attempt_accounting": "complete",
+  "request_kind": "query",
+  "agent_output_schema": "decision_draft_v1",
+  "diagnosis_policy": "scoped_dns_v2",
+  "target_source": "api",
+  "supplement_events": [],
+  "versions": {
+    "app": "0.3.0",
+    "python": "3.12.14",
+    "pydantic-ai-slim": "2.64.0"
+  },
+  "status": "completed",
+  "execution_status": "ended",
+  "requirements_met": true,
+  "result_origin": "model_with_evidence_bound_report",
+  "result": {
+    "authority_investigations": [],
+    "diagnostic_assessment": "单项查询的本次结果如下；不据此诊断其他路径或唯一根因。",
+    "assessment_level": "query_measured",
+    "report_fallback_reason": null,
+    "dns_comparison": {
+      "scope": {
+        "max_time_gap_seconds": 300
+      },
+      "paths": [
+        {
+          "evidence_id": "E1",
+          "attempt_id": "A1",
+          "query_attempt_id": "Q1",
+          "target": "probe.example",
+          "record_type": "A",
+          "query_stage": null,
+          "resolver": "1.0.0.1",
+          "role": "recursive",
+          "source_mode": "live",
+          "measured_at": "2026-11-01T14:32:21.266476+00:00",
+          "execution_status": "ok",
+          "error": null,
+          "transport_status": "responded",
+          "dns_rcode": "NOERROR",
+          "result_kind": "NOERROR"
+        }
+      ],
+      "pairs": [],
+      "differences": [
+        "COMPARISON_INCONCLUSIVE"
+      ],
+      "observations": [],
+      "limitations": [
+        "时间/来源缺失的旧记录不能证明同时或同源；响应差异不等于唯一根因。",
+        "记录差异可能来自 CDN、GeoDNS、负载均衡、缓存、策略和查询时间；超时没有提供记录或 TTL 事实。"
+      ]
+    },
+    "execution_issues": [],
+    "measured_facts": [
+      {
+        "evidence_id": "E1",
+        "target": "probe.example",
+        "resolver": "1.0.0.1",
+        "record_type": "A",
+        "measured_at": "2026-11-01T14:32:21.266476+00:00",
+        "source_mode": "live",
+        "tool": "query_dns",
+        "result": "NOERROR",
+        "records": [
+          {
+            "value": "192.0.2.10",
+            "ttl": 60
+          }
+        ],
+        "error": null,
+        "error_detail": null,
+        "peer_ip": null,
+        "transport_status": "responded",
+        "dns_rcode": "NOERROR",
+        "result_kind": "NOERROR",
+        "resolver_role": "recursive",
+        "negative_name": null,
+        "cname_chain": [],
+        "negative_scope": null,
+        "authoritative_answer": false,
+        "resolution_complete": true,
+        "canonical_name": "probe.example",
+        "query_attempt_id": "Q1",
+        "attempt_id": "A1",
+        "target_authorization": null
+      }
+    ],
+    "findings": [],
+    "request_kind": "query",
+    "outcome": "answered",
+    "observations": [
+      {
+        "evidence_id": "E1",
+        "observation": "probe.example A / 解析器 1.0.0.1：NOERROR [{\"value\": \"192.0.2.10\", \"ttl\": 60}]；来源 live；时间 2026-11-01T14:32:21.266476+00:00（E1）"
+      }
+    ],
+    "hypotheses": [],
+    "conclusion": "单项查询的本次结果如下；不据此诊断其他路径或唯一根因。 已验证事实：probe.example A / 解析器 1.0.0.1：NOERROR [{\"value\": \"192.0.2.10\", \"ttl\": 60}]；来源 live；时间 2026-11-01T14:32:21.266476+00:00（E1）",
+    "conclusion_evidence_ids": [
+      "E1"
+    ],
+    "limitations": [
+      "仅报告列出的本次查询及应答 TTL，未测组合未知；没有权威对照时不判断原始 TTL。"
+    ],
+    "recommendations": [
+      "本次单项查询结果已列出；没有额外异常线索时无需继续调查。"
+    ]
+  },
+  "usage": {
+    "input_tokens": 5228,
+    "cache_write_tokens": 0,
+    "cache_write_1h_tokens": 0,
+    "cache_read_tokens": 4352,
+    "output_tokens": 391,
+    "unmeasured_requests": 0,
+    "output_reasoning_tokens": 0,
+    "input_audio_tokens": 0,
+    "cache_audio_read_tokens": 0,
+    "output_audio_tokens": 0,
+    "audio_seconds": 0,
+    "details": {
+      "prompt_cache_hit_tokens": 4352,
+      "prompt_cache_miss_tokens": 876
+    },
+    "cost": "0.000379056",
+    "requests": 2,
+    "tool_calls": 1
+  },
+  "visible_messages": [
+    {
+      "kind": "request",
+      "parts": []
+    },
+    {
+      "kind": "response",
+      "parts": [
+        {
+          "tool_name": "query_dns",
+          "args": "{\"domain\": \"probe.example\", \"record_type\": \"A\"}",
+          "tool_call_id": "call_00_Qle1YOT1YlIx2Ogt5yPO7437",
+          "tool_kind": null,
+          "id": null,
+          "provider_name": null,
+          "provider_details": null,
+          "part_kind": "tool-call"
+        }
+      ]
+    },
+    {
+      "kind": "request",
+      "parts": [
+        {
+          "tool_name": "query_dns",
+          "content": {
+            "id": "E1",
+            "tool_call_id": "A1",
+            "error": null,
+            "new_evidence_ids": [
+              "E1"
+            ],
+            "fact_summary": [
+              {
+                "evidence_id": "E1",
+                "target": "probe.example",
+                "resolver": "1.0.0.1",
+                "record_type": "A",
+                "measured_at": "2026-11-01T14:32:21.266476+00:00",
+                "source_mode": "live",
+                "tool": "query_dns",
+                "result": "NOERROR",
+                "records": [
+                  {
+                    "value": "192.0.2.10",
+                    "ttl": 60
+                  }
+                ],
+                "transport_status": "responded",
+                "dns_rcode": "NOERROR",
+                "result_kind": "NOERROR",
+                "resolver_role": "recursive",
+                "cname_chain": [],
+                "authoritative_answer": false,
+                "resolution_complete": true,
+                "canonical_name": "probe.example",
+                "query_attempt_id": "Q1",
+                "attempt_id": "A1"
+              }
+            ],
+            "current_findings": [
+              {
+                "code": "DNS_INCONCLUSIVE",
+                "status": "no_anomaly_observed",
+                "scope": {},
+                "evidence_ids": [
+                  "E1"
+                ],
+                "explanation": "本次已测 DNS 查询未发现状态异常。",
+                "limitations": [
+                  "正常查询不能排除历史或客户端差异；未知不等于正常。"
+                ],
+                "next_checks": []
+              }
+            ],
+            "execution_issue_summary": [],
+            "partial_dns_issues": [],
+            "authority_investigations": [],
+            "allowed_dns_targets": [
+              {
+                "target": "probe.example",
+                "depth": 0,
+                "links": [],
+                "evidence_ids": []
+              }
+            ],
+            "finish_now": false,
+            "query_scope": {
+              "independent_tool_targets": [
+                "probe.example"
+              ],
+              "query_dns_targets": [
+                "probe.example"
+              ],
+              "system_resolver_argument": null,
+              "configured_public_resolvers": [
+                "1.1.1.1",
+                "8.8.8.8"
+              ],
+              "resolver_policy": "系统路径用 resolver=None；其他显式地址仍须通过现有公共/系统地址策略。权威候选请用 query_authoritative，内部 NS 名称不自动授权为独立目标。"
+            },
+            "non_retryable_requests": [],
+            "non_retryable_dns_paths": [],
+            "tool_coverage": {
+              "query_authoritative": "单次已包含区域SOA/NS、NS地址、选中NS的目标类型及补充SOA；先复用这些E，再决定是否确需重采样。"
+            },
+            "budget": {
+              "tool_attempts_remaining": 7,
+              "dns_requests_remaining": 23
+            },
+            "context_policy": "compact_v2; complete raw DNS/HTTP evidence retained in JSON/JSONL; omitted records are not absent; aggregate describes the full record set, not only the 16 visible records"
+          },
+          "tool_call_id": "call_00_Qle1YOT1YlIx2Ogt5yPO7437",
+          "tool_kind": null,
+          "metadata": null,
+          "timestamp": "2026-11-01T14:32:21.266476Z",
+          "outcome": "success",
+          "retry": null,
+          "part_kind": "tool-return"
+        }
+      ]
+    },
+    {
+      "kind": "response",
+      "parts": [
+        {
+          "tool_name": "final_result",
+          "args": "{\"request_kind\": \"query\", \"outcome\": \"answered\", \"analysis_summary\": \"对 probe.example 的 A 记录查询（递归解析器 1.0.0.1，live，2026-11-01T14:32:21Z）返回 NOERROR，应答 1 条 A 记录：192.0.2.10，TTL 60 秒；无 CNAME 链，非权威应答，解析完整。本次测量未观察到 DNS 状态异常。\", \"limitations\": [\"仅测量了 A 记录，未查询 AAAA/CNAME/NS/SOA 等其他类型。\", \"仅使用一个递归解析器（1.0.0.1），未与其他解析器或权威服务器对照。\", \"测量来自本机程序，不代表浏览器缓存、hosts、代理或 DoH 路径的结果。\", \"192.0.2.0/24 属文档保留网段，该地址可能不可在公网实际路由，本次未做连通性验证。\"], \"next_directions\": [\"如需确认解析一致性，可比较其他公共解析器或直查权威服务器。\", \"如需验证可达性，可基于该 IP 做 TCP/HTTP 检查（本次查询未要求）。\"]}",
+          "tool_call_id": "call_00_wHf6wgf7DIz8dEg3ctx70422",
+          "tool_kind": null,
+          "id": null,
+          "provider_name": null,
+          "provider_details": null,
+          "part_kind": "tool-call"
+        }
+      ]
+    },
+    {
+      "kind": "request",
+      "parts": [
+        {
+          "tool_name": "final_result",
+          "content": "Final result processed.",
+          "tool_call_id": "call_00_wHf6wgf7DIz8dEg3ctx70422",
+          "tool_kind": null,
+          "metadata": null,
+          "timestamp": "2026-11-01T14:32:23.304512Z",
+          "outcome": "success",
+          "retry": null,
+          "part_kind": "tool-return"
+        }
+      ]
+    }
+  ],
+  "agent_execution_status": "completed",
+  "report_availability": "available",
+  "report_origin": "deterministic_evidence_report",
+  "fallback_reason": null,
+  "evidence": [
+    {
+      "tool_call_id": "A1",
+      "parent_tool_call_id": "A1",
+      "query_attempt_id": "Q1",
+      "tool_name": "query_dns",
+      "input": {
+        "domain": "probe.example",
+        "record_type": "A",
+        "resolver": "1.0.0.1"
+      },
+      "started_at": "2026-11-01T14:32:21.266476+00:00",
+      "duration_ms": 0.0,
+      "execution_status": "ok",
+      "data": {
+        "qname": "probe.example",
+        "qtype": "A",
+        "record_type": "A",
+        "resolver": "1.0.0.1",
+        "responding_resolver": "127.0.0.1",
+        "resolver_role": "recursive",
+        "rcode": "NOERROR",
+        "dns_rcode": "NOERROR",
+        "transport_status": "responded",
+        "flags": {
+          "AA": false,
+          "RD": true,
+          "RA": true,
+          "TC": false
+        },
+        "answer": [
+          {
+            "name": "probe.example",
+            "type": "A",
+            "ttl": 60,
+            "values": [
+              "192.0.2.10"
+            ]
+          }
+        ],
+        "authority": [],
+        "additional": [],
+        "transport": "UDP",
+        "execution_status": "ok",
+        "error": null,
+        "records": [
+          {
+            "value": "192.0.2.10",
+            "ttl": 60
+          }
+        ],
+        "result_kind": "NOERROR",
+        "cname_loop": false,
+        "cname_chain": [],
+        "canonical_name": "probe.example",
+        "negative_name": null,
+        "negative_scope": null,
+        "resolution_complete": true,
+        "soa_serials": [],
+        "duration_ms": 0.0,
+        "query_attempt_id": "Q1",
+        "controlled_network_endpoint": {
+          "host": "127.0.0.1",
+          "port": 56024
+        }
+      },
+      "source_mode": "live",
+      "measurement_location": "program-host",
+      "error": null,
+      "id": "E1"
+    }
+  ],
+  "attempts": [
+    {
+      "attempt_id": "A1",
+      "tool_name": "query_dns",
+      "provider_call_id": "call_00_Qle1YOT1YlIx2Ogt5yPO7437",
+      "input": {
+        "domain": "probe.example",
+        "record_type": "A"
+      },
+      "started_at": "2026-11-01T14:32:21.259553+00:00",
+      "status": "measured",
+      "evidence_id": "E1",
+      "error": null,
+      "duration_ms": 0.0,
+      "evidence_ids": [
+        "E1"
+      ]
+    }
+  ],
+  "model_draft": {
+    "request_kind": "query",
+    "outcome": "answered",
+    "hypotheses": [],
+    "analysis_summary": "对 probe.example 的 A 记录查询（递归解析器 1.0.0.1，live，2026-11-01T14:32:21Z）返回 NOERROR，应答 1 条 A 记录：192.0.2.10，TTL 60 秒；无 CNAME 链，非权威应答，解析完整。本次测量未观察到 DNS 状态异常。",
+    "limitations": [
+      "仅测量了 A 记录，未查询 AAAA/CNAME/NS/SOA 等其他类型。",
+      "仅使用一个递归解析器（1.0.0.1），未与其他解析器或权威服务器对照。",
+      "测量来自本机程序，不代表浏览器缓存、hosts、代理或 DoH 路径的结果。",
+      "192.0.2.0/24 属文档保留网段，该地址可能不可在公网实际路由，本次未做连通性验证。"
+    ],
+    "next_directions": [
+      "如需确认解析一致性，可比较其他公共解析器或直查权威服务器。",
+      "如需验证可达性，可基于该 IP 做 TCP/HTTP 检查（本次查询未要求）。"
+    ]
+  },
+  "report_policy": "scoped_evidence_bound_v2",
+  "raw_model_drafts": [
+    {
+      "request_kind": "query",
+      "outcome": "answered",
+      "analysis_summary": "对 probe.example 的 A 记录查询（递归解析器 1.0.0.1，live，2026-11-01T14:32:21Z）返回 NOERROR，应答 1 条 A 记录：192.0.2.10，TTL 60 秒；无 CNAME 链，非权威应答，解析完整。本次测量未观察到 DNS 状态异常。",
+      "limitations": [
+        "仅测量了 A 记录，未查询 AAAA/CNAME/NS/SOA 等其他类型。",
+        "仅使用一个递归解析器（1.0.0.1），未与其他解析器或权威服务器对照。",
+        "测量来自本机程序，不代表浏览器缓存、hosts、代理或 DoH 路径的结果。",
+        "192.0.2.0/24 属文档保留网段，该地址可能不可在公网实际路由，本次未做连通性验证。"
+      ],
+      "next_directions": [
+        "如需确认解析一致性，可比较其他公共解析器或直查权威服务器。",
+        "如需验证可达性，可基于该 IP 做 TCP/HTTP 检查（本次查询未要求）。"
+      ]
+    }
+  ],
+  "validation_errors": [],
+  "dns_attempts": [
+    {
+      "query_attempt_id": "Q1",
+      "parent_tool_call_id": "A1",
+      "qname": "probe.example",
+      "qtype": "A",
+      "server": "127.0.0.1",
+      "port": 56024,
+      "resolver_role": "recursive",
+      "transport": "UDP",
+      "status": "measured",
+      "duration_ms": 0.0,
+      "evidence_id": "E1"
+    }
+  ],
+  "findings": [
+    {
+      "code": "DNS_INCONCLUSIVE",
+      "stage": "dns",
+      "status": "no_anomaly_observed",
+      "scope": {},
+      "evidence_ids": [
+        "E1"
+      ],
+      "observed_facts": [],
+      "localization": {},
+      "root_cause_confirmed": false,
+      "explanation": "本次已测 DNS 查询未发现状态异常。",
+      "limitations": [
+        "正常查询不能排除历史或客户端差异；未知不等于正常。"
+      ],
+      "next_checks": []
+    }
+  ],
+  "elapsed_seconds": 2.89,
+  "output_attempt_count": 1,
+  "output_resubmissions": 0
+}
