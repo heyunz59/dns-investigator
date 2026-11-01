@@ -1,0 +1,868 @@
+[
+  {
+    "arm": "current",
+    "scenario": "serial",
+    "repeat": 1,
+    "run_file": "285c1b130d59402a8c5c8429b785cf11.json",
+    "status": "completed",
+    "validated_agent_output": true,
+    "report_has_measurements": true,
+    "fallback": false,
+    "A": 7,
+    "Q": 10,
+    "E": 10,
+    "output_attempts": 2,
+    "output_resubmissions": 1,
+    "usage": {
+      "input_tokens": 55111,
+      "cache_write_tokens": 0,
+      "cache_write_1h_tokens": 0,
+      "cache_read_tokens": 26112,
+      "output_tokens": 4744,
+      "unmeasured_requests": 0,
+      "output_reasoning_tokens": 0,
+      "input_audio_tokens": 0,
+      "cache_audio_read_tokens": 0,
+      "output_audio_tokens": 0,
+      "audio_seconds": 0,
+      "details": {
+        "prompt_cache_hit_tokens": 26112,
+        "prompt_cache_miss_tokens": 28999
+      },
+      "cost": "0.007274586",
+      "requests": 4,
+      "tool_calls": 7
+    },
+    "elapsed_seconds": 21.797,
+    "finding_codes": [
+      "RECURSIVE_AUTH_RESPONSE_MISMATCH",
+      "AUTHORITATIVE_RESPONSE_DISAGREEMENT",
+      "AUTHORITATIVE_RESPONSE_DISAGREEMENT"
+    ],
+    "authority_states": [
+      {
+        "attempt_id": "A1",
+        "target": "probe.example",
+        "record_type": "A",
+        "discovery_status": "AUTHORITATIVE_QUERY_COMPLETED",
+        "completed": true,
+        "zone": "probe.example",
+        "progress": {
+          "zone_found": true,
+          "ns_found": true,
+          "ns_total": 2,
+          "ns_selected": 2,
+          "addressed_servers": 2,
+          "target_queries_executed": 2,
+          "target_responses_received": 2,
+          "authoritative_answers": 2,
+          "servers": [
+            {
+              "ns_name": "ns2.test.example",
+              "address_found": true,
+              "query_executed": true,
+              "response_received": true,
+              "aa": true,
+              "target_complete": true,
+              "soa_complete": true,
+              "ip": "8.8.4.4",
+              "target_evidence_id": "E6",
+              "status": "ANSWERED"
+            },
+            {
+              "ns_name": "ns1.test.example",
+              "address_found": true,
+              "query_executed": true,
+              "response_received": true,
+              "aa": true,
+              "target_complete": true,
+              "soa_complete": true,
+              "ip": "9.9.9.9",
+              "target_evidence_id": "E9",
+              "status": "ANSWERED"
+            }
+          ],
+          "stage": "AUTHORITATIVE_SOA_QUERY"
+        }
+      },
+      {
+        "attempt_id": "A2",
+        "target": "probe.example",
+        "record_type": "SOA",
+        "discovery_status": "NS_DISCOVERY_FAILED",
+        "completed": false,
+        "zone": "probe.example",
+        "progress": {
+          "zone_found": true,
+          "ns_found": false,
+          "ns_total": 0,
+          "ns_selected": 0,
+          "addressed_servers": 0,
+          "target_queries_executed": 0,
+          "target_responses_received": 0,
+          "authoritative_answers": 0,
+          "servers": [],
+          "stage": "NS_DISCOVERY"
+        }
+      }
+    ],
+    "environment": {
+      "scenario": "serial",
+      "endpoints": [
+        {
+          "configured_identity": null,
+          "host": "127.0.0.1",
+          "port": 50060
+        },
+        {
+          "configured_identity": "1.1.1.1",
+          "host": "127.0.0.2",
+          "port": 50061
+        },
+        {
+          "configured_identity": "8.8.8.8",
+          "host": "127.0.0.3",
+          "port": 50062
+        },
+        {
+          "configured_identity": "9.9.9.9",
+          "host": "127.0.0.4",
+          "port": 50063
+        },
+        {
+          "configured_identity": "8.8.4.4",
+          "host": "127.0.0.5",
+          "port": 50064
+        }
+      ],
+      "timeout_seconds": 0.3,
+      "network_scope": "loopback_only",
+      "limitation": "Synthetic DNS wire server; no full recursive cache/delegation/DNSSEC behavior"
+    },
+    "diagnosis_correctness": "PENDING_HUMAN_REVIEW",
+    "root_cause_assertions": "PENDING_HUMAN_REVIEW",
+    "localization_correctness": "PENDING_HUMAN_REVIEW",
+    "error": null
+  },
+  {
+    "arm": "current",
+    "scenario": "ns_timeout",
+    "repeat": 1,
+    "run_file": "a368ef7cd3d94038b4b6ceaecaeb5192.json",
+    "status": "limited",
+    "validated_agent_output": true,
+    "report_has_measurements": true,
+    "fallback": false,
+    "A": 6,
+    "Q": 6,
+    "E": 6,
+    "output_attempts": 1,
+    "output_resubmissions": 0,
+    "usage": {
+      "input_tokens": 31802,
+      "cache_write_tokens": 0,
+      "cache_write_1h_tokens": 0,
+      "cache_read_tokens": 15616,
+      "output_tokens": 2183,
+      "unmeasured_requests": 0,
+      "output_reasoning_tokens": 0,
+      "input_audio_tokens": 0,
+      "cache_audio_read_tokens": 0,
+      "output_audio_tokens": 0,
+      "audio_seconds": 0,
+      "details": {
+        "prompt_cache_hit_tokens": 15616,
+        "prompt_cache_miss_tokens": 16186
+      },
+      "cost": "0.003784548",
+      "requests": 5,
+      "tool_calls": 6
+    },
+    "elapsed_seconds": 13.75,
+    "finding_codes": [
+      "RECURSIVE_QUERY_TIMEOUT"
+    ],
+    "authority_states": [
+      {
+        "attempt_id": "A1",
+        "target": "probe.example",
+        "record_type": "A",
+        "discovery_status": "NS_DISCOVERY_TIMEOUT",
+        "completed": false,
+        "zone": "probe.example",
+        "progress": {
+          "zone_found": true,
+          "ns_found": false,
+          "ns_total": 0,
+          "ns_selected": 0,
+          "addressed_servers": 0,
+          "target_queries_executed": 0,
+          "target_responses_received": 0,
+          "authoritative_answers": 0,
+          "servers": [],
+          "stage": "NS_DISCOVERY"
+        }
+      },
+      {
+        "attempt_id": "A4",
+        "target": "probe.example",
+        "record_type": "A",
+        "discovery_status": "NS_DISCOVERY_FAILED",
+        "completed": false,
+        "zone": "probe.example",
+        "progress": {
+          "zone_found": true,
+          "ns_found": false,
+          "ns_total": 0,
+          "ns_selected": 0,
+          "addressed_servers": 0,
+          "target_queries_executed": 0,
+          "target_responses_received": 0,
+          "authoritative_answers": 0,
+          "servers": [],
+          "stage": "NS_DISCOVERY"
+        }
+      }
+    ],
+    "environment": {
+      "scenario": "ns_timeout",
+      "endpoints": [
+        {
+          "configured_identity": null,
+          "host": "127.0.0.1",
+          "port": 50101
+        },
+        {
+          "configured_identity": "1.1.1.1",
+          "host": "127.0.0.2",
+          "port": 50102
+        },
+        {
+          "configured_identity": "8.8.8.8",
+          "host": "127.0.0.3",
+          "port": 50103
+        },
+        {
+          "configured_identity": "9.9.9.9",
+          "host": "127.0.0.4",
+          "port": 50104
+        },
+        {
+          "configured_identity": "8.8.4.4",
+          "host": "127.0.0.5",
+          "port": 50105
+        }
+      ],
+      "timeout_seconds": 0.3,
+      "network_scope": "loopback_only",
+      "limitation": "Synthetic DNS wire server; no full recursive cache/delegation/DNSSEC behavior"
+    },
+    "diagnosis_correctness": "PENDING_HUMAN_REVIEW",
+    "root_cause_assertions": "PENDING_HUMAN_REVIEW",
+    "localization_correctness": "PENDING_HUMAN_REVIEW",
+    "error": null
+  },
+  {
+    "arm": "current",
+    "scenario": "serial",
+    "repeat": 2,
+    "run_file": "a6cfcd2b69004029be8ae03c170e00d1.json",
+    "status": "completed",
+    "validated_agent_output": true,
+    "report_has_measurements": true,
+    "fallback": false,
+    "A": 7,
+    "Q": 10,
+    "E": 10,
+    "output_attempts": 1,
+    "output_resubmissions": 0,
+    "usage": {
+      "input_tokens": 31615,
+      "cache_write_tokens": 0,
+      "cache_write_1h_tokens": 0,
+      "cache_read_tokens": 6144,
+      "output_tokens": 2233,
+      "unmeasured_requests": 0,
+      "output_reasoning_tokens": 0,
+      "input_audio_tokens": 0,
+      "cache_audio_read_tokens": 0,
+      "output_audio_tokens": 0,
+      "audio_seconds": 0,
+      "details": {
+        "prompt_cache_hit_tokens": 6144,
+        "prompt_cache_miss_tokens": 25471
+      },
+      "cost": "0.005178882",
+      "requests": 3,
+      "tool_calls": 7
+    },
+    "elapsed_seconds": 11.844,
+    "finding_codes": [
+      "RECURSIVE_AUTH_RESPONSE_MISMATCH",
+      "AUTHORITATIVE_RESPONSE_DISAGREEMENT",
+      "AUTHORITATIVE_RESPONSE_DISAGREEMENT"
+    ],
+    "authority_states": [
+      {
+        "attempt_id": "A1",
+        "target": "probe.example",
+        "record_type": "A",
+        "discovery_status": "AUTHORITATIVE_QUERY_COMPLETED",
+        "completed": true,
+        "zone": "probe.example",
+        "progress": {
+          "zone_found": true,
+          "ns_found": true,
+          "ns_total": 2,
+          "ns_selected": 2,
+          "addressed_servers": 2,
+          "target_queries_executed": 2,
+          "target_responses_received": 2,
+          "authoritative_answers": 2,
+          "servers": [
+            {
+              "ns_name": "ns2.test.example",
+              "address_found": true,
+              "query_executed": true,
+              "response_received": true,
+              "aa": true,
+              "target_complete": true,
+              "soa_complete": true,
+              "ip": "8.8.4.4",
+              "target_evidence_id": "E6",
+              "status": "ANSWERED"
+            },
+            {
+              "ns_name": "ns1.test.example",
+              "address_found": true,
+              "query_executed": true,
+              "response_received": true,
+              "aa": true,
+              "target_complete": true,
+              "soa_complete": true,
+              "ip": "9.9.9.9",
+              "target_evidence_id": "E9",
+              "status": "ANSWERED"
+            }
+          ],
+          "stage": "AUTHORITATIVE_SOA_QUERY"
+        }
+      },
+      {
+        "attempt_id": "A2",
+        "target": "probe.example",
+        "record_type": "SOA",
+        "discovery_status": "NS_DISCOVERY_FAILED",
+        "completed": false,
+        "zone": "probe.example",
+        "progress": {
+          "zone_found": true,
+          "ns_found": false,
+          "ns_total": 0,
+          "ns_selected": 0,
+          "addressed_servers": 0,
+          "target_queries_executed": 0,
+          "target_responses_received": 0,
+          "authoritative_answers": 0,
+          "servers": [],
+          "stage": "NS_DISCOVERY"
+        }
+      }
+    ],
+    "environment": {
+      "scenario": "serial",
+      "endpoints": [
+        {
+          "configured_identity": null,
+          "host": "127.0.0.1",
+          "port": 50117
+        },
+        {
+          "configured_identity": "1.1.1.1",
+          "host": "127.0.0.2",
+          "port": 50118
+        },
+        {
+          "configured_identity": "8.8.8.8",
+          "host": "127.0.0.3",
+          "port": 50119
+        },
+        {
+          "configured_identity": "9.9.9.9",
+          "host": "127.0.0.4",
+          "port": 50120
+        },
+        {
+          "configured_identity": "8.8.4.4",
+          "host": "127.0.0.5",
+          "port": 50121
+        }
+      ],
+      "timeout_seconds": 0.3,
+      "network_scope": "loopback_only",
+      "limitation": "Synthetic DNS wire server; no full recursive cache/delegation/DNSSEC behavior"
+    },
+    "diagnosis_correctness": "PENDING_HUMAN_REVIEW",
+    "root_cause_assertions": "PENDING_HUMAN_REVIEW",
+    "localization_correctness": "PENDING_HUMAN_REVIEW",
+    "error": null
+  },
+  {
+    "arm": "current",
+    "scenario": "ns_timeout",
+    "repeat": 2,
+    "run_file": "3b9e00f21cb343468f8ed2895002249e.json",
+    "status": "limited",
+    "validated_agent_output": true,
+    "report_has_measurements": true,
+    "fallback": false,
+    "A": 7,
+    "Q": 7,
+    "E": 7,
+    "output_attempts": 1,
+    "output_resubmissions": 0,
+    "usage": {
+      "input_tokens": 34237,
+      "cache_write_tokens": 0,
+      "cache_write_1h_tokens": 0,
+      "cache_read_tokens": 16512,
+      "output_tokens": 2132,
+      "unmeasured_requests": 0,
+      "output_reasoning_tokens": 0,
+      "input_audio_tokens": 0,
+      "cache_audio_read_tokens": 0,
+      "output_audio_tokens": 0,
+      "audio_seconds": 0,
+      "details": {
+        "prompt_cache_hit_tokens": 16512,
+        "prompt_cache_miss_tokens": 17725
+      },
+      "cost": "0.003987486",
+      "requests": 5,
+      "tool_calls": 7
+    },
+    "elapsed_seconds": 14.281,
+    "finding_codes": [
+      "RECURSIVE_QUERY_TIMEOUT"
+    ],
+    "authority_states": [
+      {
+        "attempt_id": "A1",
+        "target": "probe.example",
+        "record_type": "A",
+        "discovery_status": "NS_DISCOVERY_TIMEOUT",
+        "completed": false,
+        "zone": "probe.example",
+        "progress": {
+          "zone_found": true,
+          "ns_found": false,
+          "ns_total": 0,
+          "ns_selected": 0,
+          "addressed_servers": 0,
+          "target_queries_executed": 0,
+          "target_responses_received": 0,
+          "authoritative_answers": 0,
+          "servers": [],
+          "stage": "NS_DISCOVERY"
+        }
+      },
+      {
+        "attempt_id": "A5",
+        "target": "probe.example",
+        "record_type": "A",
+        "discovery_status": "NS_DISCOVERY_FAILED",
+        "completed": false,
+        "zone": "probe.example",
+        "progress": {
+          "zone_found": true,
+          "ns_found": false,
+          "ns_total": 0,
+          "ns_selected": 0,
+          "addressed_servers": 0,
+          "target_queries_executed": 0,
+          "target_responses_received": 0,
+          "authoritative_answers": 0,
+          "servers": [],
+          "stage": "NS_DISCOVERY"
+        }
+      }
+    ],
+    "environment": {
+      "scenario": "ns_timeout",
+      "endpoints": [
+        {
+          "configured_identity": null,
+          "host": "127.0.0.1",
+          "port": 50142
+        },
+        {
+          "configured_identity": "1.1.1.1",
+          "host": "127.0.0.2",
+          "port": 50143
+        },
+        {
+          "configured_identity": "8.8.8.8",
+          "host": "127.0.0.3",
+          "port": 50144
+        },
+        {
+          "configured_identity": "9.9.9.9",
+          "host": "127.0.0.4",
+          "port": 50145
+        },
+        {
+          "configured_identity": "8.8.4.4",
+          "host": "127.0.0.5",
+          "port": 50146
+        }
+      ],
+      "timeout_seconds": 0.3,
+      "network_scope": "loopback_only",
+      "limitation": "Synthetic DNS wire server; no full recursive cache/delegation/DNSSEC behavior"
+    },
+    "diagnosis_correctness": "PENDING_HUMAN_REVIEW",
+    "root_cause_assertions": "PENDING_HUMAN_REVIEW",
+    "localization_correctness": "PENDING_HUMAN_REVIEW",
+    "error": null
+  },
+  {
+    "arm": "current",
+    "scenario": "serial",
+    "repeat": 3,
+    "run_file": "8df53450b57e440e8ac76e0abddd770e.json",
+    "status": "completed",
+    "validated_agent_output": true,
+    "report_has_measurements": true,
+    "fallback": false,
+    "A": 7,
+    "Q": 10,
+    "E": 10,
+    "output_attempts": 1,
+    "output_resubmissions": 0,
+    "usage": {
+      "input_tokens": 31615,
+      "cache_write_tokens": 0,
+      "cache_write_1h_tokens": 0,
+      "cache_read_tokens": 6144,
+      "output_tokens": 2172,
+      "unmeasured_requests": 0,
+      "output_reasoning_tokens": 0,
+      "input_audio_tokens": 0,
+      "cache_audio_read_tokens": 0,
+      "output_audio_tokens": 0,
+      "audio_seconds": 0,
+      "details": {
+        "prompt_cache_hit_tokens": 6144,
+        "prompt_cache_miss_tokens": 25471
+      },
+      "cost": "0.005142282",
+      "requests": 3,
+      "tool_calls": 7
+    },
+    "elapsed_seconds": 12.172,
+    "finding_codes": [
+      "RECURSIVE_AUTH_RESPONSE_MISMATCH",
+      "AUTHORITATIVE_RESPONSE_DISAGREEMENT",
+      "AUTHORITATIVE_RESPONSE_DISAGREEMENT"
+    ],
+    "authority_states": [
+      {
+        "attempt_id": "A1",
+        "target": "probe.example",
+        "record_type": "A",
+        "discovery_status": "AUTHORITATIVE_QUERY_COMPLETED",
+        "completed": true,
+        "zone": "probe.example",
+        "progress": {
+          "zone_found": true,
+          "ns_found": true,
+          "ns_total": 2,
+          "ns_selected": 2,
+          "addressed_servers": 2,
+          "target_queries_executed": 2,
+          "target_responses_received": 2,
+          "authoritative_answers": 2,
+          "servers": [
+            {
+              "ns_name": "ns1.test.example",
+              "address_found": true,
+              "query_executed": true,
+              "response_received": true,
+              "aa": true,
+              "target_complete": true,
+              "soa_complete": true,
+              "ip": "9.9.9.9",
+              "target_evidence_id": "E6",
+              "status": "ANSWERED"
+            },
+            {
+              "ns_name": "ns2.test.example",
+              "address_found": true,
+              "query_executed": true,
+              "response_received": true,
+              "aa": true,
+              "target_complete": true,
+              "soa_complete": true,
+              "ip": "8.8.4.4",
+              "target_evidence_id": "E9",
+              "status": "ANSWERED"
+            }
+          ],
+          "stage": "AUTHORITATIVE_SOA_QUERY"
+        }
+      },
+      {
+        "attempt_id": "A2",
+        "target": "probe.example",
+        "record_type": "SOA",
+        "discovery_status": "NS_DISCOVERY_FAILED",
+        "completed": false,
+        "zone": "probe.example",
+        "progress": {
+          "zone_found": true,
+          "ns_found": false,
+          "ns_total": 0,
+          "ns_selected": 0,
+          "addressed_servers": 0,
+          "target_queries_executed": 0,
+          "target_responses_received": 0,
+          "authoritative_answers": 0,
+          "servers": [],
+          "stage": "NS_DISCOVERY"
+        }
+      }
+    ],
+    "environment": {
+      "scenario": "serial",
+      "endpoints": [
+        {
+          "configured_identity": null,
+          "host": "127.0.0.1",
+          "port": 50173
+        },
+        {
+          "configured_identity": "1.1.1.1",
+          "host": "127.0.0.2",
+          "port": 50174
+        },
+        {
+          "configured_identity": "8.8.8.8",
+          "host": "127.0.0.3",
+          "port": 50175
+        },
+        {
+          "configured_identity": "9.9.9.9",
+          "host": "127.0.0.4",
+          "port": 50176
+        },
+        {
+          "configured_identity": "8.8.4.4",
+          "host": "127.0.0.5",
+          "port": 50177
+        }
+      ],
+      "timeout_seconds": 0.3,
+      "network_scope": "loopback_only",
+      "limitation": "Synthetic DNS wire server; no full recursive cache/delegation/DNSSEC behavior"
+    },
+    "diagnosis_correctness": "PENDING_HUMAN_REVIEW",
+    "root_cause_assertions": "PENDING_HUMAN_REVIEW",
+    "localization_correctness": "PENDING_HUMAN_REVIEW",
+    "error": null
+  },
+  {
+    "arm": "current",
+    "scenario": "ns_timeout",
+    "repeat": 3,
+    "run_file": "4fc472702fab470da8f1a463bf25320f.json",
+    "status": "limited",
+    "validated_agent_output": true,
+    "report_has_measurements": true,
+    "fallback": false,
+    "A": 5,
+    "Q": 7,
+    "E": 7,
+    "output_attempts": 1,
+    "output_resubmissions": 0,
+    "usage": {
+      "input_tokens": 21682,
+      "cache_write_tokens": 0,
+      "cache_write_1h_tokens": 0,
+      "cache_read_tokens": 14976,
+      "output_tokens": 1719,
+      "unmeasured_requests": 0,
+      "output_reasoning_tokens": 0,
+      "input_audio_tokens": 0,
+      "cache_audio_read_tokens": 0,
+      "output_audio_tokens": 0,
+      "audio_seconds": 0,
+      "details": {
+        "prompt_cache_hit_tokens": 14976,
+        "prompt_cache_miss_tokens": 6706
+      },
+      "cost": "0.002082228",
+      "requests": 4,
+      "tool_calls": 5
+    },
+    "elapsed_seconds": 11.266,
+    "finding_codes": [
+      "RECURSIVE_QUERY_TIMEOUT"
+    ],
+    "authority_states": [
+      {
+        "attempt_id": "A1",
+        "target": "probe.example",
+        "record_type": "A",
+        "discovery_status": "NS_DISCOVERY_TIMEOUT",
+        "completed": false,
+        "zone": "probe.example",
+        "progress": {
+          "zone_found": true,
+          "ns_found": false,
+          "ns_total": 0,
+          "ns_selected": 0,
+          "addressed_servers": 0,
+          "target_queries_executed": 0,
+          "target_responses_received": 0,
+          "authoritative_answers": 0,
+          "servers": [],
+          "stage": "NS_DISCOVERY"
+        }
+      },
+      {
+        "attempt_id": "A5",
+        "target": "probe.example",
+        "record_type": "A",
+        "discovery_status": "NS_DISCOVERY_FAILED",
+        "completed": false,
+        "zone": "probe.example",
+        "progress": {
+          "zone_found": true,
+          "ns_found": false,
+          "ns_total": 0,
+          "ns_selected": 0,
+          "addressed_servers": 0,
+          "target_queries_executed": 0,
+          "target_responses_received": 0,
+          "authoritative_answers": 0,
+          "servers": [],
+          "stage": "NS_DISCOVERY"
+        }
+      }
+    ],
+    "environment": {
+      "scenario": "ns_timeout",
+      "endpoints": [
+        {
+          "configured_identity": null,
+          "host": "127.0.0.1",
+          "port": 50188
+        },
+        {
+          "configured_identity": "1.1.1.1",
+          "host": "127.0.0.2",
+          "port": 50189
+        },
+        {
+          "configured_identity": "8.8.8.8",
+          "host": "127.0.0.3",
+          "port": 50190
+        },
+        {
+          "configured_identity": "9.9.9.9",
+          "host": "127.0.0.4",
+          "port": 50191
+        },
+        {
+          "configured_identity": "8.8.4.4",
+          "host": "127.0.0.5",
+          "port": 50192
+        }
+      ],
+      "timeout_seconds": 0.3,
+      "network_scope": "loopback_only",
+      "limitation": "Synthetic DNS wire server; no full recursive cache/delegation/DNSSEC behavior"
+    },
+    "diagnosis_correctness": "PENDING_HUMAN_REVIEW",
+    "root_cause_assertions": "PENDING_HUMAN_REVIEW",
+    "localization_correctness": "PENDING_HUMAN_REVIEW",
+    "error": null
+  },
+  {
+    "arm": "current",
+    "scenario": "normal",
+    "repeat": 1,
+    "run_file": "3048a02d70674b4c8a5959cb6c944396.json",
+    "status": "completed",
+    "validated_agent_output": true,
+    "report_has_measurements": true,
+    "fallback": false,
+    "A": 1,
+    "Q": 1,
+    "E": 1,
+    "output_attempts": 1,
+    "output_resubmissions": 0,
+    "usage": {
+      "input_tokens": 4947,
+      "cache_write_tokens": 0,
+      "cache_write_1h_tokens": 0,
+      "cache_read_tokens": 4352,
+      "output_tokens": 372,
+      "unmeasured_requests": 0,
+      "output_reasoning_tokens": 0,
+      "input_audio_tokens": 0,
+      "cache_audio_read_tokens": 0,
+      "output_audio_tokens": 0,
+      "audio_seconds": 0,
+      "details": {
+        "prompt_cache_hit_tokens": 4352,
+        "prompt_cache_miss_tokens": 595
+      },
+      "cost": "0.000325506",
+      "requests": 2,
+      "tool_calls": 1
+    },
+    "elapsed_seconds": 2.75,
+    "finding_codes": [
+      "DNS_INCONCLUSIVE"
+    ],
+    "authority_states": [],
+    "environment": {
+      "scenario": "normal",
+      "endpoints": [
+        {
+          "configured_identity": null,
+          "host": "127.0.0.1",
+          "port": 60165
+        },
+        {
+          "configured_identity": "1.1.1.1",
+          "host": "127.0.0.2",
+          "port": 60166
+        },
+        {
+          "configured_identity": "8.8.8.8",
+          "host": "127.0.0.3",
+          "port": 60167
+        },
+        {
+          "configured_identity": "9.9.9.9",
+          "host": "127.0.0.4",
+          "port": 60168
+        },
+        {
+          "configured_identity": "8.8.4.4",
+          "host": "127.0.0.5",
+          "port": 60169
+        }
+      ],
+      "timeout_seconds": 0.3,
+      "network_scope": "loopback_only",
+      "limitation": "Synthetic DNS wire server; no full recursive cache/delegation/DNSSEC behavior"
+    },
+    "diagnosis_correctness": "PENDING_HUMAN_REVIEW",
+    "root_cause_assertions": "PENDING_HUMAN_REVIEW",
+    "localization_correctness": "PENDING_HUMAN_REVIEW",
+    "error": null
+  }
+]

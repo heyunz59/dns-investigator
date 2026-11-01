@@ -1,5 +1,7 @@
 # 对照实验与评分
 
+2026-11-01 安全/稳定性专项：`security_stability_offline.py`保存14个受控DNS阶段场景、5组时间回放和HTTP mock调度；`security_stability_runs.py`在真实DeepSeek下默认每个关键场景重复3次，另1次单项对照，不是公网实验。每次使用新目录，不覆盖。`--source-ref`只记版本、不自动切换代码；基线包需独立PYTHONPATH进程加载，summarize_security_stability.py逐模块校验源码哈希后导出脱敏日志/实际分母。SDK tokens只累计已记录usage，旧失败缺失不猜补。新旧7次结果及限制见[修复记录](../docs/security-stability-fixes.md)。日志v6保留所有原始草稿/校验反馈，Agent失败与程序报告可用分开；不同版本不能把旧日志缺字段当作成功补齐。所有语义、范围定位和错误根因断言均待独立人工复核。
+
 v0.3 DNS 专项入口：`python evaluation/dns_v3.py`（10 个场景，每个实际模型运行 1 次，fixture 工具数据），随后 `python evaluation/dns_v3_metrics.py results/runs/生成目录`。保存的状态、调用次数、Q 实际 DNS 请求数、E 测量数、规则 Finding、类型和耗时均来自实际记录。metrics.json 的规则命中与结构覆盖不等于语义准确率，工具合理性、错误根因断言与语义诊断仍待独立人工评分。规则基线只分析同一份已观测证据，不额外获取事实，不宣称可证明模型提升。旧版 A/B 实验保持原样。
 
 v0.2：默认 8 案例 × 3 次 × 2 组，48 次真实模型运行。独立目录名含时间与随机后缀，保存源码哈希和原始数据快照。旧版 below 的 7 案例说明仅为历史背景；最新流程及计数口径见 [可靠性说明](../docs/reliability-v2.md)。`review.csv` 每完成一次运行即保存，不等整批结束。`call-review.jsonl` 的自动建议需独立人工审核。

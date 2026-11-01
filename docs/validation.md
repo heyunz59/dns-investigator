@@ -1,5 +1,15 @@
 # 验证记录
 
+## 安全、权威阶段、时间边界与 Agent 总结修复（2026-11-01）
+
+基线512141e，修改前完整196项通过。工作分支 fix/security-dns-agent-20261101，原始 docs/manual-reviews/ 未跟踪内容及旧实验未改写。最终业务源码4de824c：完整 **249 passed in 9.74s**，无跳过；报告验收脚本 **9条通过**（results/runs/report-acceptance-49ea513fa33b49179ec1f3cbf3130214/）。保留旧并发、CNAME、A/Q/E、TLS、IPv6及重试测试。安全子集23项含真正本机TLS握手、证书主机名失败、Host/SNI；受控DNS验证阶段进度、预算和取消。受控报文不冒充公网根因验证。
+
+新旧业务源码逐模块哈希与Git blob或Windows CRLF表示核对通过。独立14场景受控DNS、5组时间回放、HTTP mock跳转对照保存到 results/published/security-stability/{baseline,current}-offline.json；旧版NS超时标RECURSIVE_ASSISTED，新版为NS_DISCOVERY_TIMEOUT且无权威直查；两条缺时间的NXDOMAIN/NOERROR不再产生同期冲突Finding。原始响应不删除。公开检查为规则扫描，不替代人工隐私审查。
+
+真实DeepSeek + 受控回环DNS，新旧各7次（权威记录/SOA差异3、NS超时3、正常A查询1），同 deepseek-flash、thinking disabled、temperature0、8A/24Q预算。校验输出旧6/7、新7/7；serial两版均3/3；旧NS超时2/3、新3/3；旧失败保留了7E程序报告。新版也有一次输出重交，原验证规则仍生效。新A总数40高于旧31，Q/E各51低于旧60，不宣称工具选择效率全面提升。诊断语义、定位正确性和错误根因断言均待独立人工复核，不从completed或Finding命中推导准确率。
+
+完整14份脱敏模型JSON、逐次明细、源码和配置在 results/published/security-stability/real-model-comparison/；原始JSON/JSONL另存被忽略目录，不覆盖。最终源码后仅添加评测/文档/审计材料，没有把中间源码运行称为最终业务版本验证。未新增公网目标调查，本轮未推送，远程Actions未验证。[完整对照与边界](security-stability-fixes.md)。
+
 ## fcd1d52 验收补修（2026-11-01）
 
 修改前180项通过；新增反例先复现4失败/9通过。修复别名成功跟进后 Finding/摘要未收敛，以及权威 discovery 的预算/执行错误漏记后，完整 **196 passed in 8.76s**。相同复现中 E1/E2 均保留；权威预算拒绝 A/Q/E 仍为1/1/1，并明确 A1 的 NS 发现失败。本轮未执行付费模型或公网测量。before/after及源码哈希另存 results/published/fcd-acceptance/，原始人工材料与旧日志不改写。[修复和验证说明](fcd-acceptance-fixes.md)。
