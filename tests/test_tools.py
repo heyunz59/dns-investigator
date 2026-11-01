@@ -102,7 +102,10 @@ async def test_http_real_redirect_and_body_bound():
     server = await asyncio.start_server(handler, "127.0.0.1", 0)
     try:
         port = server.sockets[0].getsockname()[1]
-        result = await ToolBackend(parse_target("example.com")).check_http(f"http://127.0.0.1:{port}/start")
+        from dns_investigator.http_safety import HTTPPolicy
+        backend=ToolBackend(parse_target("example.com"));url=f"http://127.0.0.1:{port}/start"
+        backend.http_policy=HTTPPolicy(url,allowed_networks=("127.0.0.1/32",))
+        result = await backend.check_http(url)
         assert result["status_code"] == 503 and len(result["redirects"]) == 1
         assert result["bytes_read"] <= 65536
     finally:
@@ -117,7 +120,10 @@ async def test_http_deadline():
     server = await asyncio.start_server(handler, "127.0.0.1", 0)
     try:
         port = server.sockets[0].getsockname()[1]
-        result = await ToolBackend(parse_target("example.com")).check_http(f"http://127.0.0.1:{port}/", timeout=0.1)
+        from dns_investigator.http_safety import HTTPPolicy
+        backend=ToolBackend(parse_target("example.com"));url=f"http://127.0.0.1:{port}/"
+        backend.http_policy=HTTPPolicy(url,allowed_networks=("127.0.0.1/32",))
+        result = await backend.check_http(url, timeout=0.1)
         assert result["error"] == "TIMEOUT"
     finally:
         server.close()

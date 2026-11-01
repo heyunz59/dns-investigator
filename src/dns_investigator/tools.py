@@ -20,6 +20,7 @@ from .dns_compare import compare,compare_details,evidence_rows
 from .dns_diagnosis import diagnose
 from .authority import investigate_authority
 from .network_errors import describe
+from .http_safety import HTTPPolicy,PinnedTransport,HTTPRefused
 from .alias_scope import alias_paths,already_resolved
 
 PARENT = contextvars.ContextVar("dns_parent", default=None)
@@ -46,6 +47,8 @@ class ToolBackend:
         self.dns_tool_timeout = 20
         self.max_auth_servers = 2
         self.resolvers = (None,"1.1.1.1","8.8.8.8")
+        self.http_policy=HTTPPolicy(target.url)
+        self.http_transport_factory=PinnedTransport
 
     def owned_evidence(self, call_id):
         return list(self._evidence_by_call.get(call_id, ()))
@@ -195,7 +198,7 @@ class ToolBackend:
                 row["data"]["evidence_ids"]=ids
                 return row
             if row["data"].get("execution_status")=="error":
-                return self.reject(attempt,(row["data"].get("error") or {}).get("code","DNS_EXECUTION_ERROR"),"DNS 查询没有取得响应；已有子查询证据保留。",emit=False)
+                return self.reject(attempt,(row["data"].get("error") or {}).get("code","TOOL_EXECUTION_ERROR"),"工具未取得测量或被安全策略拒绝；已有证据保留。",emit=False)
             identifier=row["data"].get("evidence_id") if name=="query_dns" else None
             if identifier is not None:
                 if identifier not in {e["id"] for e in self.owned_evidence(attempt["attempt_id"])}:
@@ -294,11 +297,15 @@ class ToolBackend:
     async def check_http(self, url, timeout=15):
         data = dict(status_code=None, final_url=safe_url(url), redirects=[], peer_ip=None,
                     proxy_mode="disabled (trust_env=False)", bytes_read=0, error=None)
+        transport=None
         try:
             # Outer deadline includes all redirects, DNS, TLS and body reads.
             async with asyncio.timeout(timeout):
-                async with httpx.AsyncClient(trust_env=False, verify=True, follow_redirects=False) as client:
+                self.http_policy.authorize(url)
+                transport=self.http_transport_factory(self.http_policy)
+                async with httpx.AsyncClient(trust_env=False, verify=True, follow_redirects=False,transport=transport) as client:
                     for hop in range(6):
+                        self.http_policy.authorize(url,redirect=hop>0)
                         async with client.stream("GET", url, timeout=timeout, headers={"User-Agent": "dns-investigator/0.1"}) as response:
                             data.update(status_code=response.status_code, final_url=safe_url(str(response.url)))
                             stream = response.extensions.get("network_stream")
@@ -311,6 +318,7 @@ class ToolBackend:
                                     data["error"] = "UNSUPPORTED_REDIRECT"
                                     break
                                 data["redirects"].append(dict(status=response.status_code, url=safe_url(next_url)))
+                                self.http_policy.authorize(next_url,redirect=True)
                                 if hop == 5:
                                     data["error"] = "TOO_MANY_REDIRECTS"
                                     break
@@ -327,4 +335,11 @@ class ToolBackend:
         except httpx.RequestError as exc:
             data["error_detail"]=describe(exc)
             data["error"] = "TLS_ERROR" if data["error_detail"]["code"] in {"TLS_ERROR","CERTIFICATE_VERIFY_FAILED"} else type(exc).__name__
+        except HTTPRefused as exc:
+            data["error"]=exc.code
+            data["security_refusal"]=dict(code=exc.code,request_sent_to_rejected_target=False)
+            if data["status_code"] is None:
+                data.update(execution_status="error",error=dict(code=exc.code,retryable=False))
+        finally:
+            data["connection_attempts"]=transport.backend.events if transport is not None and hasattr(transport,"backend") else []
         return data

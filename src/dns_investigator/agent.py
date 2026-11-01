@@ -21,6 +21,7 @@ from .tools import ToolBackend, now
 from .dns_diagnosis import diagnose
 from .reporting import facts,issues,validate_issue_refs,validate_fact_claims,evidence_bound_report
 from .alias_scope import alias_paths
+from .http_safety import HTTPPolicy
 
 SYSTEM = """你是 DNS 调查助手。中文回答。只使用用户陈述与实际返回的工具证据，不编造测量。
 典型调查原则上比较多个合理原因，单项查询不需要故障假设。仅有一个合理候选或依据不足时如实说明，不为凑数添加原因。区分支持、反面、未知。
@@ -177,6 +178,7 @@ async def investigate(text, target, config, fixture=None, model=None, baseline_f
     backend.dns_tool_timeout=config.dns_tool_timeout
     backend.max_auth_servers=config.max_auth_servers
     backend.resolvers=config.dns_resolvers
+    backend.http_policy=HTTPPolicy(target.url,config.http_allowed_origins,config.http_allowed_networks)
     backend.request_kind = request_kind(text)
     if baseline_facts is not None:
         backend.calls = baseline_facts.copy()

@@ -69,6 +69,8 @@ async def test_real_local_headers_200_then_body_timeout_report():
     b=ToolBackend(parse_target("example.com"))
     try:
         url=f"http://127.0.0.1:{server.sockets[0].getsockname()[1]}/"
+        from dns_investigator.http_safety import HTTPPolicy
+        b.http_policy=HTTPPolicy(url,allowed_networks=("127.0.0.1/32",))
         data=await b.check_http(url,timeout=.3)
         assert data["status_code"]==200 and data["error"]=="TIMEOUT"
         b.calls=[evidence(data,"check_http")]
