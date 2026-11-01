@@ -175,6 +175,8 @@ class ToolBackend:
             if self.fixture is not None and name == "query_dns":
                 row["data"]={"qname":args["domain"],"qtype":args.get("record_type","A"),"resolver_role":"recursive",**row["data"]}
             if name in {"compare_resolvers","query_authoritative"}:
+                if name=="query_authoritative":
+                    attempt["authority_state"]={k:copy.deepcopy(row["data"].get(k)) for k in ("discovery_status","completed","zone","progress")}
                 # Fixture composites contain raw sub-responses, not conclusions.
                 if self.fixture is not None:
                     for data in row["data"].get("responses",[]):

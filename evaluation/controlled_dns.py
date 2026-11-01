@@ -20,10 +20,17 @@ class Server(asyncio.DatagramProtocol):
     def datagram_received(self,data,addr):
         q=dns.message.from_wire(data);name=str(q.question[0].name).rstrip(".")
         typ=dns.rdatatype.to_text(q.question[0].rdtype)
+        if self.index==0 and ((self.scenario=="soa_timeout" and typ=="SOA") or (self.scenario=="ns_timeout" and typ=="NS")):return
+        if self.index>=3 and (self.scenario=="auth_timeout" or (self.scenario=="partial_auth" and self.index==4)):return
         if self.scenario=="timeout" and self.index==0 and name=="probe.example" and typ=="A":return
         r=dns.message.make_response(q)
-        if self.index>=3:r.flags|=dns.flags.AA
+        if self.index>=3 and self.scenario!="non_aa":r.flags|=dns.flags.AA
         else:r.flags|=dns.flags.RA
+        if typ=="NS" and self.scenario in {"ns_empty","ns_refused","ns_servfail"}:
+            if self.scenario!="ns_empty":r.set_rcode(dns.rcode.REFUSED if self.scenario=="ns_refused" else dns.rcode.SERVFAIL)
+            self.transport.sendto(r.to_wire(),addr);return
+        if self.scenario=="address_failed" and name in {"ns1.test.example","ns2.test.example"}:
+            r.set_rcode(dns.rcode.NXDOMAIN);self.transport.sendto(r.to_wire(),addr);return
         if self.scenario=="mismatch" and self.index<3 and name=="probe.example" and typ=="A":
             r.set_rcode(dns.rcode.NXDOMAIN)
             r.authority.append(dns.rrset.from_text("probe.example.",60,"IN","SOA","ns1.test.example. host.test.example. 1 60 60 60 60"))

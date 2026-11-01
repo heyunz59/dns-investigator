@@ -1,7 +1,7 @@
 """Deterministic scoped observations and localization; no confirmed causal verdicts."""
 from collections import defaultdict
 from datetime import datetime
-from .dns_compare import compare_details,evidence_rows,normal
+from .dns_compare import compare_details,evidence_rows,normal,measured_time
 from .dns_wire import dns_outcome,comparable_response
 from .alias_scope import completed_followups
 
@@ -13,8 +13,8 @@ def _windows(rows):
     for group in groups.values():
         # Bound the whole window, not a transitive chain of pairwise time gaps.
         def stamp(r):
-            try:return datetime.fromisoformat(r.get("measured_at") or "").timestamp()
-            except (ValueError,TypeError):return None
+            parsed=measured_time(r)
+            return parsed.timestamp() if parsed else None
         known=sorted((r for r in group if stamp(r) is not None),key=stamp)
         while known:
             first=stamp(known[0]);part=[r for r in known if stamp(r)-first<=300]
@@ -90,6 +90,18 @@ def diagnose(evidence):
             ordered=[r["evidence_id"] for r in group if r["evidence_id"] in ids]
             add(code,"dns-comparison",ordered,
                 f"{first['qname']} {first.get('qtype')} 的完整可比较响应存在状态或记录集合差异；详见各路径结果。地址及 SOA Serial 差异只是观察，正常调度和时间变化仍可能解释。")
+    temporal=defaultdict(set)
+    for pair in compare_details(rows)["pairs"]:
+        if "NONCONTEMPORANEOUS_DIFFERENCE" in pair["codes"]:
+            a=rows[pair["path_indices"][0]]
+            temporal[(normal(a["qname"]),a.get("qtype"),a.get("source_mode"))].update(pair["evidence_ids"])
+    for (name,typ,source),ids in temporal.items():
+        findings.append(dict(code="DNS_TEMPORAL_DIFFERENCE",stage="dns-comparison",status="insufficient_time_basis",
+            scope=dict(target=name,record_type=typ,source_mode=source),evidence_ids=[r["evidence_id"] for r in rows if r["evidence_id"] in ids],
+            observed_facts=[dict(evidence_id=r["evidence_id"],qname=r["qname"],qtype=r.get("qtype"),resolver=r.get("resolver"),measured_at=r.get("measured_at"),records=r.get("records",[]),**dns_outcome(r)) for r in rows if r["evidence_id"] in ids],
+            localization={},root_cause_confirmed=False,explanation="跨时间或时间未知的响应/记录差异，不具备可靠同期定位条件。",
+            limitations=["缺失、非法或无时区时间不补造；不能由文件生成时间推断查询时间。"],
+            next_checks=[f"query_dns：按需对 {name} {typ} 在有真实测量时间的新调查中取得路径对照，避免将历史差异认作同期冲突。 "]))
     if not findings:
         complete=bool(rows) and all(comparable_response(r) and dns_outcome(r)["result_kind"]=="NOERROR" for r in rows)
         findings.append(dict(code="DNS_INCONCLUSIVE",stage="dns",status="no_anomaly_observed" if complete else "insufficient_information",

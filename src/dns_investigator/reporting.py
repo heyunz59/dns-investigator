@@ -60,6 +60,8 @@ def evidence_bound_report(result,backend):
     measured=facts(backend.calls)
     result.measured_facts=measured
     result.execution_issues=issues(backend.attempts)
+    result.authority_investigations=[dict(attempt_id=a["attempt_id"],target=a["input"].get("domain"),record_type=a["input"].get("record_type","A"),
+        **a["authority_state"]) for a in backend.attempts if a.get("authority_state")]
     result.findings=[Finding(**f) for f in diagnose(backend.calls)]
     allowed_targets=alias_paths(backend)
     for finding in result.findings:
@@ -175,6 +177,10 @@ def assessment(result,measured):
     if not measured:return "没有取得有效测量证据，无法确认故障原因。","insufficient_evidence"
     if result.request_kind=="query":return "单项查询的本次结果如下；不据此诊断其他路径或唯一根因。","query_measured"
     parts=[];localized=False
+    for state in result.authority_investigations:
+        if state.get("completed") is False:
+            progress=state.get("progress") or {}
+            parts.append(f"{state['attempt_id']} 权威调查尚未完成：{state.get('discovery_status')}；目标 {state['target']} {state['record_type']}，已取得 {progress.get('authoritative_answers',0)} 个有效 AA 回答，选中 {progress.get('ns_selected',0)} 台 NS。发现测量成功不等于权威检查完成。")
     for path in result.dns_comparison.get("paths",[]):
         if path.get("query_stage")=="discovery" and path.get("execution_status")=="error":
             parts.append(f"{path['attempt_id']} 的权威发现环节 {path['target']} {path['record_type']} 未取得事实（{(path.get('error') or {}).get('code')}）；成功的发现测量不证明该调用已完成目标权威查询。")
@@ -195,6 +201,7 @@ def assessment(result,measured):
             parts.append(f"{target}：{paths} 存在完整响应状态或记录差异；范围限于已列路径，缓存、策略、调度与时间原因尚未区分（{refs}）。")
             localized=True
         elif f.code=="RECORD_SET_DIFFERENCE":parts.append(f"{target} 的响应记录集合不同；这可来自正常 CDN/调度，当前不能据此判故障（{refs}）。")
+        elif f.code=="DNS_TEMPORAL_DIFFERENCE":parts.append(f"{target} 有跨时间或时间未知的响应/记录差异，尚不具备可靠同期定位条件（{refs}）。")
         elif f.code=="ALIAS_RESOLUTION_INCOMPLETE":parts.append(f"{target} 的该原始查询路径尚未取得可关联的完整末端回答；其他来源或路径的结果另列，不据此认定本路径已完成（{refs}）。")
         elif f.code=="ALIAS_FOLLOWUP_COMPLETED":
             origin=set(f.localization.get("affected_evidence_ids",[]))

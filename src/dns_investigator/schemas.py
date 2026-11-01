@@ -44,6 +44,7 @@ class Finding(BaseModel):
 
 
 class InvestigationResult(BaseModel):
+    authority_investigations: list[dict] = Field(default_factory=list)
     diagnostic_assessment: str = ""
     assessment_level: str = "unassessed"
     report_fallback_reason: str | None = None
