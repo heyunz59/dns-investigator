@@ -20,6 +20,7 @@ from .schemas import InvestigationResult, Finding
 from .tools import ToolBackend, now
 from .dns_diagnosis import diagnose
 from .reporting import facts,validate_issue_refs,validate_fact_claims,evidence_bound_report
+from .alias_scope import alias_paths
 
 SYSTEM = """你是 DNS 调查助手。中文回答。只使用用户陈述与实际返回的工具证据，不编造测量。
 典型调查原则上比较多个合理原因，单项查询不需要故障假设。仅有一个合理候选或依据不足时如实说明，不为凑数添加原因。区分支持、反面、未知。
@@ -81,7 +82,7 @@ def build_agent(config: Config, model=None, with_tools=True):
         @agent.tool(prepare=prepare_network)
         async def query_dns(ctx: RunContext[ToolBackend], domain: str,
                             record_type: str = "A", resolver: str | None = None, timeout: DNSSeconds = 5) -> dict:
-            """查询目标 A/AAAA/CNAME/NS/SOA，保留完整 DNS 分区与标志。"""
+            """查询原目标或 allowed_dns_targets 中的已观测 CNAME 目标；支持 A/AAAA/CNAME/NS/SOA，已有完整末端记录不重复跟进。"""
             return await invoke(ctx, "query_dns", domain=domain, record_type=record_type, resolver=resolver, timeout=timeout)
 
         @agent.tool(prepare=prepare_network)
@@ -120,7 +121,8 @@ def build_agent(config: Config, model=None, with_tools=True):
 
 async def invoke(ctx, name, **args):
     response=await ctx.deps.call(name, provider_id=ctx.tool_call_id, **args)
-    return {**response,"fact_summary":facts(ctx.deps.calls),"current_findings":diagnose(ctx.deps.calls)}
+    return {**response,"fact_summary":facts(ctx.deps.calls),"current_findings":diagnose(ctx.deps.calls),
+            "allowed_dns_targets":list(alias_paths(ctx.deps).values())}
 
 
 def validate_references(result, known, kind="investigation"):

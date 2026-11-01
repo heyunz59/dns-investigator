@@ -28,6 +28,7 @@ def facts(evidence):
             rows[-1].update(**dns_outcome(d),resolver_role=d.get("resolver_role","recursive"),
                 negative_name=d.get("negative_name"),cname_chain=d.get("cname_chain",[]),
                 canonical_name=d.get("canonical_name"),query_attempt_id=e.get("query_attempt_id"),attempt_id=e.get("tool_call_id"))
+            rows[-1]["target_authorization"]=e.get("target_authorization")
     return rows
 
 

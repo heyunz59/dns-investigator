@@ -20,6 +20,7 @@ from .dns_compare import compare,compare_details,evidence_rows
 from .dns_diagnosis import diagnose
 from .authority import investigate_authority
 from .network_errors import describe
+from .alias_scope import alias_paths,already_resolved
 
 PARENT = contextvars.ContextVar("dns_parent", default=None)
 
@@ -67,7 +68,14 @@ class ToolBackend:
                  query_attempt_id=query_id,tool_name="query_dns",input=dict(domain=data.get("qname"),record_type=data.get("qtype"),resolver=data.get("resolver")),
                  started_at=now(),duration_ms=data.get("duration_ms",0),execution_status="ok",data=data,
                  source_mode="fixture" if self.fixture is not None else "live",measurement_location="synthetic" if self.fixture is not None else "program-host",error=None)
+        self.attach_alias_scope(row)
         return self.save_evidence(row)
+
+    def attach_alias_scope(self,row):
+        name=row.get("data",{}).get("qname")
+        if name and name!=self.target.domain:
+            authorization=alias_paths(self).get(name)
+            if authorization:row["target_authorization"]=authorization
 
     @property
     def finish_now(self):
@@ -130,6 +138,10 @@ class ToolBackend:
         except (ValueError, KeyError, TypeError, UnicodeError):
             self.blocked.add(fingerprint)
             return self.reject(attempt, "INVALID_INPUT", "参数非法或不在本次调查范围；检查目标、端口、类型和已有 DNS 证据。")
+        if name=="query_dns" and domain(args["domain"])!=self.target.domain:
+            prior=already_resolved(self,domain(args["domain"]),args.get("record_type","A"))
+            if prior:
+                return self.reject(attempt,"ALIAS_ALREADY_RESOLVED",f"已有 {prior} 提供相同类型末端记录；本次不重复跟进。")
         attempt["status"] = "running"
         token=PARENT.set(attempt["attempt_id"])
         row = dict(tool_call_id=attempt["attempt_id"],
@@ -186,6 +198,7 @@ class ToolBackend:
                 return {**row,"id":identifier,"findings":diagnose(self.calls)}
             # Only an actually returned measurement earns an E identifier.
             row["duration_ms"]=round((time.monotonic()-started)*1000,2)
+            self.attach_alias_scope(row)
             row=self.save_evidence(row)
             attempt.update(status="measured", evidence_id=row["id"])
         except asyncio.CancelledError:
@@ -210,7 +223,8 @@ class ToolBackend:
         if not 0 < timeout <= (15 if name == "check_http" else 5):
             raise ValueError("工具超时参数越界")
         if name in {"query_dns","compare_resolvers","query_authoritative"}:
-            if domain(args["domain"]) != self.target.domain:
+            requested=domain(args["domain"])
+            if requested != self.target.domain and (name!="query_dns" or requested not in alias_paths(self)):
                 raise ValueError("DNS 查询仅限本次调查域名")
             if args.get("record_type", "A") not in TYPES:
                 raise ValueError("不支持该 DNS 类型")
@@ -234,6 +248,8 @@ class ToolBackend:
             raise ValueError("未知工具")
 
     async def query_dns(self, domain, record_type="A", resolver=None, timeout=5):
+        from .target import domain as normalize_domain
+        domain=normalize_domain(domain)
         return await self.dns.query(domain,record_type,resolver,timeout,PARENT.get())
 
     async def compare_resolvers(self, domain, record_type="A", timeout=5):
