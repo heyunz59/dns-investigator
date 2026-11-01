@@ -7,6 +7,7 @@ from .dns_compare import compare_details,evidence_rows
 from .dns_wire import dns_outcome
 from .dns_diagnosis import diagnose
 from .schemas import Finding
+from .alias_scope import alias_paths
 
 
 def facts(evidence):
@@ -60,6 +61,11 @@ def evidence_bound_report(result,backend):
     result.measured_facts=measured
     result.execution_issues=issues(backend.attempts)
     result.findings=[Finding(**f) for f in diagnose(backend.calls)]
+    allowed_targets=alias_paths(backend)
+    for finding in result.findings:
+        name=finding.scope.get("target")
+        if name and name!=backend.target.domain and name not in allowed_targets:
+            finding.next_checks=[f"外部专项检查：核实 {name} {finding.scope.get('record_type')}；该名称来自内部发现测量，当前五工具的独立目标授权未扩展到它。此建议尚未执行，不能描述为可直接调用现有工具。"]
     dns_rows=evidence_rows(backend.calls)
     failures=[dict(qname=q.get("qname"),qtype=q.get("qtype"),resolver=q.get("server"),
         source_mode="fixture" if backend.fixture is not None else "live",execution_status="error",
