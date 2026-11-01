@@ -33,7 +33,7 @@ class Finding(BaseModel):
     scope: dict = Field(default_factory=dict)
     observed_facts: list[dict] = Field(default_factory=list)
     localization: dict = Field(default_factory=dict)
-    root_cause_confirmed: bool = False
+    root_cause_confirmed: Literal[False] = False
     code: str
     stage: str
     status: str
@@ -44,6 +44,10 @@ class Finding(BaseModel):
 
 
 class InvestigationResult(BaseModel):
+    diagnostic_assessment: str = ""
+    assessment_level: str = "unassessed"
+    report_fallback_reason: str | None = None
+    dns_comparison: dict = Field(default_factory=dict)
     execution_issues: list[ExecutionIssue] = Field(default_factory=list)
     measured_facts: list[dict] = Field(default_factory=list)
     findings: list[Finding] = Field(default_factory=list)

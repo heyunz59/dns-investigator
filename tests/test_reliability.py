@@ -25,7 +25,8 @@ async def test_dns_exception_categories(monkeypatch, exc, expected):
     monkeypatch.setattr(dns.asyncquery, "udp", fail)
     b = ToolBackend(parse_target("example.com"))
     r = await b.call("query_dns", domain="example.com")
-    assert r["execution_status"] == "ok" and r["data"]["rcode"] == expected
+    assert r["execution_status"] == "ok" and r["data"]["result_kind"] == expected
+    assert r["data"]["dns_rcode"] == (None if expected=="TIMEOUT" else expected)
 
 
 async def test_missing_fixture_no_live_fallback():

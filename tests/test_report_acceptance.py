@@ -119,7 +119,7 @@ def test_duplicate_hypotheses_post_transform_and_unknown_refs():
     b=ToolBackend(parse_target("example.com"));b.calls=[evidence(dict(rcode="NOERROR"))]
     r=result();r.hypotheses=[Hypothesis(id=f"H{i}",statement="同一个原因",status="无法确定") for i in range(2)]
     evidence_bound_report(r,b)
-    assert len(r.hypotheses)==1 and r.outcome=="insufficient_information"
+    assert len(r.hypotheses)==1 and r.outcome=="answered"
     r.hypotheses[0].supporting_evidence_ids=["E999"]
     with pytest.raises(ModelRetry):evidence_bound_report(r,b)
 

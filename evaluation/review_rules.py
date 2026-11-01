@@ -11,9 +11,8 @@ def screen(log, case):
     calls = call_reviews(log, case)
     model_result = log.get("result_origin") in {"model","model_with_evidence_bound_report"} and log.get("execution_status") == "ended"
     enough = not stats["missing_required_measurements"]
-    hypotheses = len(result.get("hypotheses", [])) >= 2 or case["id"] in {"Q1", "MISSING"}
     checks = {"model_returned_validated_output": model_result,
-              "required_measurements_present": enough, "hypothesis_count": hypotheses}
+              "required_measurements_present": enough}
     if case["id"] == "C1":
         checks["acknowledges_not_reproduced"] = bool(re.search(r"未.{0,5}复现|无法复现|不能复现", text))
     elif case["id"] == "C2":
@@ -35,4 +34,5 @@ def screen(log, case):
             checks["requested_missing_aaaa"] = any(a["tool_name"] == "query_dns" and a["input"].get("record_type") == "AAAA" and
                 (a.get("error") or {}).get("code") == "FIXTURE_NOT_COVERED" for a in log.get("attempts", []))
     return dict(success=int(all(checks.values())), correct_calls=sum(c["suggested_correct"] for c in calls),
+                hypothesis_count_observed=len(result.get("hypotheses",[])),scoring_policy="scoped_v2_no_count_gate",
                 checks=checks, note="仅结构/执行/关键词规则筛查，不验证全部语义；待独立人工复核")

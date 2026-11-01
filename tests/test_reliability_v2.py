@@ -49,8 +49,8 @@ async def test_insufficient_flag_cannot_smuggle_no_evidence_diagnosis(tmp_path):
 
 def test_investigation_hypotheses_and_refs():
     r = InvestigationResult(**answer(refs=["E1"]))
-    with pytest.raises(ModelRetry, match="两个"):
-        validate_references(r, {"E1"})
+    # Course alternatives remain useful, but count is no longer a completion gate.
+    validate_references(r, {"E1"})
     # Construct validated schema for two distinct, explicitly uncertain alternatives.
     data = answer(refs=["E1"])
     data["hypotheses"] = [dict(id=f"H{i}", statement=s, status="无法确定", missing_information=["需要进一步验证"])
