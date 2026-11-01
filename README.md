@@ -1,6 +1,8 @@
 # DNS 调查助手
 
-2026-11-01 DNS 判断与范围定位升级：区分传输结果和真实 RCODE；超时不参与内容/TTL 冲突比较，部分失败不隐藏有效子集。Finding 按目标、类型、来源及时间范围聚合；正式输出分为 measured_facts、findings、diagnostic_assessment 和 recommendations。调查不再按假设数量机械降级，保留候选身份和证据关系。仅 query_dns 可跟进已观测、同来源、与原目标连通的 CNAME 链（深度/目标数均最多8），不扩展为任意扫描。模型总结失败仍保留程序生成的事实与范围摘要。[本轮实际对照、运行方法与边界](docs/dns-accuracy-upgrade.md)。本轮仅本地提交，未推送、合并或发布；远程 Actions 未验证。
+fcd1d52 验收补修：CNAME 后续完整回答通过证据链收敛，原始响应不改写；权威发现的预算/执行失败进入正式 A 问题、比较和摘要，不伪造 Q/E。[本轮验证与边界](docs/fcd-acceptance-fixes.md)。
+
+2026-11-01 DNS 判断与范围定位升级：区分传输结果和真实 RCODE；超时不参与内容/TTL 冲突比较，部分失败不隐藏有效子集。Finding 按目标、类型、来源及时间范围聚合；正式输出分为 measured_facts、findings、diagnostic_assessment 和 recommendations。调查不再按假设数量机械降级，保留候选身份和证据关系。仅 query_dns 可跟进已观测、同来源、与原目标连通的 CNAME 链（深度/目标数均最多8），不扩展为任意扫描。模型总结失败仍保留程序生成的事实与范围摘要。[本轮实际对照、运行方法与边界](docs/dns-accuracy-upgrade.md)。此前按要求仅本地提交；本次验收补修已获用户推送授权，远程 Actions 以实际提交运行结果为准。
 
 报告层验收修复：.invalid 背景与实际观测分开；HTTP 摘要保留错误、跳转、最终 URL 和证书类别；假设身份不按类别重写，具体范围内的证据关系另行约束。[验证与边界](docs/report-acceptance-fixes.md)。
 

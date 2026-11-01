@@ -1,5 +1,9 @@
 # 验证记录
 
+## fcd1d52 验收补修（2026-11-01）
+
+修改前180项通过；新增反例先复现4失败/9通过。修复别名成功跟进后 Finding/摘要未收敛，以及权威 discovery 的预算/执行错误漏记后，完整 **196 passed in 8.76s**。相同复现中 E1/E2 均保留；权威预算拒绝 A/Q/E 仍为1/1/1，并明确 A1 的 NS 发现失败。本轮未执行付费模型或公网测量。before/after及源码哈希另存 results/published/fcd-acceptance/，原始人工材料与旧日志不改写。[修复和验证说明](fcd-acceptance-fixes.md)。
+
 ## DNS 判断与范围定位专项升级（2026-11-01）
 
 起点 f0787c0，工作区仅 docs/manual-reviews/ 未跟踪。修改前 **136 passed in 8.90s**。新增比较范围、超时非内容冲突、有效子集、Finding 聚合、单候选完成、总结失败保留报告、CNAME 授权/来源/预算、受控 DNS 真报文、复合失败保存/去重与实际类型引用测试；原并发、CNAME负回答、A/Q/E、TLS、HTTP、IPv6回归保留。最终 `.venv\Scripts\python.exe -m pytest -q`：**180 passed in 8.54s**，未跳过 IPv6；旧报告验收脚本继续 **9条验证通过**，另存 results/runs/report-acceptance-017a6b7b14654057bb4c1ecbbe5b6926/。scripts/check_public.py PASS；新增文件收尾按相同规则补查，规则扫描不能保证排除全部隐私问题。
