@@ -73,6 +73,11 @@ def evidence_bound_report(result,backend):
         error={"code":q["status"]}) for q in backend.dns.attempts if q["status"] not in {"measured","running"}]
     key=lambda r:(r.get("parent_tool_call_id"),r.get("qname"),r.get("qtype"),r.get("resolver"))
     recorded={key(r) for r in failures}
+    for a in backend.attempts:
+        for issue in a.get("dns_execution_issues",[]):
+            for failed in failures:
+                if key(failed)==key(issue):
+                    failed.update(query_stage=issue.get("query_stage"),error=issue.get("error",failed["error"]))
     failures += [r for a in backend.attempts for r in a.get("dns_execution_issues",[]) if key(r) not in recorded]
     result.dns_comparison=compare_details(dns_rows+failures)
     result.diagnostic_assessment,result.assessment_level=assessment(result,measured)
@@ -152,6 +157,8 @@ def evidence_bound_report(result,backend):
         priority={"RECURSIVE_RESPONSE_DISAGREEMENT":0,"RECURSIVE_AUTH_RESPONSE_MISMATCH":0,"AUTHORITATIVE_RESPONSE_DISAGREEMENT":0,
                   "RECURSIVE_QUERY_TIMEOUT":1,"AUTHORITATIVE_QUERY_TIMEOUT":1,"ALIAS_RESOLUTION_INCOMPLETE":2}
         checks=list(dict.fromkeys(c for f in sorted(result.findings,key=lambda f:priority.get(f.code,3)) for c in f.next_checks))[:3]
+        if any(p.get("query_stage")=="discovery" and p.get("execution_status")=="error" for p in result.dns_comparison.get("paths",[])):
+            checks=[f"query_authoritative：本次权威发现未完成；先检查所列执行问题，在新的有预算调查中按需重新发现 {backend.target.domain} 的权威路径；不在本轮突破硬性预算，成功 SOA 不代表已完成目标权威查询。"]+checks[:2]
         if checks:recommendations=(recommendations if synthetic else [])+checks
         elif dns_rows:
             recommendations=(recommendations if synthetic else [])+["本次已测范围未发现 DNS 状态异常；若用户仍无法访问，先核对故障时间、客户端错误和测量环境，再决定是否检查 TCP/HTTP。"]
@@ -168,6 +175,9 @@ def assessment(result,measured):
     if not measured:return "没有取得有效测量证据，无法确认故障原因。","insufficient_evidence"
     if result.request_kind=="query":return "单项查询的本次结果如下；不据此诊断其他路径或唯一根因。","query_measured"
     parts=[];localized=False
+    for path in result.dns_comparison.get("paths",[]):
+        if path.get("query_stage")=="discovery" and path.get("execution_status")=="error":
+            parts.append(f"{path['attempt_id']} 的权威发现环节 {path['target']} {path['record_type']} 未取得事实（{(path.get('error') or {}).get('code')}）；成功的发现测量不证明该调用已完成目标权威查询。")
     for f in result.findings:
         scope=f.scope
         if not scope:continue
@@ -185,7 +195,13 @@ def assessment(result,measured):
             parts.append(f"{target}：{paths} 存在完整响应状态或记录差异；范围限于已列路径，缓存、策略、调度与时间原因尚未区分（{refs}）。")
             localized=True
         elif f.code=="RECORD_SET_DIFFERENCE":parts.append(f"{target} 的响应记录集合不同；这可来自正常 CDN/调度，当前不能据此判故障（{refs}）。")
-        elif f.code=="ALIAS_RESOLUTION_INCOMPLETE":parts.append(f"{target} 已观测别名但末端解析未完成；没有最终地址或否定回答的证据（{refs}）。")
+        elif f.code=="ALIAS_RESOLUTION_INCOMPLETE":parts.append(f"{target} 的该原始查询路径尚未取得可关联的完整末端回答；其他来源或路径的结果另列，不据此认定本路径已完成（{refs}）。")
+        elif f.code=="ALIAS_FOLLOWUP_COMPLETED":
+            origin=set(f.localization.get("affected_evidence_ids",[]))
+            terminal=[r for r in f.observed_facts if r["evidence_id"] not in origin and r["result_kind"] in {"NOERROR","NODATA","NXDOMAIN"}]
+            summary="、".join(f"{r['qname']} {r['qtype']}={r['result_kind']}（{r['evidence_id']}）" for r in terminal)
+            parts.append(f"{target}：原始别名响应保留；有证据关联的同路径后续查询已取得末端回答：{summary}。否定回答仅针对其实际末端名称，未确认唯一根因（{refs}）。")
+            localized=True
         elif f.code in {"NXDOMAIN_OBSERVED","NODATA_OBSERVED","DNS_SERVFAIL","DNS_REFUSED"}:
             parts.append(f.explanation+f"（{refs}）")
     if not parts:

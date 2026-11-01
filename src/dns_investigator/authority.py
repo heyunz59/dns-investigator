@@ -28,6 +28,9 @@ async def investigate_authority(backend, name, typ, timeout, parent):
                         limitation="Discovery depends on recursive DNS; not iterative validation.")
         ns=await client.query(zone,"NS",timeout=timeout,parent=parent)
         discovery.append(ns)
+        if ns.get("execution_status")=="error":
+            return dict(zone=zone,discovery=discovery,responses=[],discovery_status="NS_DISCOVERY_FAILED",
+                        limitation="NS discovery did not complete; no authoritative answer was obtained in this call.")
         hosts=[r["value"].rstrip(".") for r in ns.get("records",[])][:backend.max_auth_servers]
         for host in hosts:
             addresses=await client.query(host,"A",timeout=timeout,parent=parent)

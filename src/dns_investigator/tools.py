@@ -180,8 +180,8 @@ class ToolBackend:
                             data["evidence_id"]=evidence["id"]
                 ids=[e["id"] for e in self.owned_evidence(attempt["attempt_id"])]
                 measured=evidence_rows(self.owned_evidence(attempt["attempt_id"]))
-                failures=[{**r,"source_mode":row["source_mode"],"parent_tool_call_id":attempt["attempt_id"]}
-                          for r in row["data"].get("responses",[]) if r.get("execution_status")=="error"]
+                failures=[{**r,"query_stage":stage,"source_mode":row["source_mode"],"parent_tool_call_id":attempt["attempt_id"]}
+                          for stage in ("discovery","responses") for r in row["data"].get(stage,[]) if r.get("execution_status")=="error"]
                 if failures:
                     # Retain A-linked issues, including refusals before any Q was sent.
                     attempt["dns_execution_issues"]=copy.deepcopy(failures)

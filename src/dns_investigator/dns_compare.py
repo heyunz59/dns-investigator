@@ -19,6 +19,7 @@ def normal(value):
 def path(row):
     return dict(evidence_id=row.get("evidence_id"),attempt_id=row.get("parent_tool_call_id"),
         query_attempt_id=row.get("query_attempt_id"),target=normal(row.get("qname")),record_type=row.get("qtype"),
+        query_stage=row.get("query_stage"),
         resolver=row.get("resolver"),role=row.get("resolver_role","recursive"),
         source_mode=row.get("source_mode","unknown"),measured_at=row.get("measured_at"),
         execution_status=row.get("execution_status","ok"),error=row.get("error"),**dns_outcome(row))

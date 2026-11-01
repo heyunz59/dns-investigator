@@ -3,6 +3,7 @@ from collections import defaultdict
 from datetime import datetime
 from .dns_compare import compare_details,evidence_rows,normal
 from .dns_wire import dns_outcome,comparable_response
+from .alias_scope import completed_followups
 
 
 def _windows(rows):
@@ -25,17 +26,19 @@ def _windows(rows):
 def diagnose(evidence):
     findings=[]
     rows=evidence_rows([e for e in evidence if e.get("execution_status")=="ok"])
+    all_by_id={r["evidence_id"]:r for r in rows}
+    completed=completed_followups(rows)
     for group in _windows(rows):
         first=group[0];by_id={r["evidence_id"]:r for r in group}
         def add(code,stage,selected,explanation,affected=None):
-            selected=list(dict.fromkeys(selected));facts=[by_id[eid] for eid in selected]
+            selected=list(dict.fromkeys(selected));facts=[all_by_id[eid] for eid in selected]
             paths=[dict(resolver=r.get("resolver"),role=r.get("resolver_role","recursive"),evidence_id=r["evidence_id"]) for r in facts]
             affected=selected if affected is None else affected
             scope=dict(target=normal(first["qname"]),record_type=first.get("qtype"),source_mode=first.get("source_mode"),
                 dns_followup_only=any(r.get("target_authorization") for r in facts),
                 paths=paths,time_start=min((r["measured_at"] for r in facts if r.get("measured_at")),default=None),
                 time_end=max((r["measured_at"] for r in facts if r.get("measured_at")),default=None))
-            observed=[dict(evidence_id=r["evidence_id"],resolver=r.get("resolver"),role=r.get("resolver_role","recursive"),
+            observed=[dict(evidence_id=r["evidence_id"],qname=r["qname"],qtype=r.get("qtype"),measured_at=r.get("measured_at"),source_mode=r.get("source_mode"),resolver=r.get("resolver"),role=r.get("resolver_role","recursive"),
                 authoritative_answer=r.get("flags",{}).get("AA",False),negative_name=r.get("negative_name"),
                 records=r.get("records",[]),soa_serials=r.get("soa_serials",[]),**dns_outcome(r)) for r in facts]
             checks=next_checks(code,scope,observed)
@@ -52,13 +55,17 @@ def diagnose(evidence):
             if state["transport_status"]=="timeout":
                 unary[("RECURSIVE_QUERY_TIMEOUT" if role=="recursive" else "AUTHORITATIVE_QUERY_TIMEOUT",role)].append(r["evidence_id"])
             elif kind in {"REFERRAL","ALIAS_INCOMPLETE","INDETERMINATE"} and r.get("cname_chain"):
-                unary[("ALIAS_RESOLUTION_INCOMPLETE",role)].append(r["evidence_id"])
+                unary[("ALIAS_FOLLOWUP_COMPLETED" if r["evidence_id"] in completed else "ALIAS_RESOLUTION_INCOMPLETE",role)].append(r["evidence_id"])
             elif comparable_response(r):
                 code={"NXDOMAIN":"NXDOMAIN_OBSERVED","NODATA":"NODATA_OBSERVED","SERVFAIL":"DNS_SERVFAIL","REFUSED":"DNS_REFUSED"}.get(kind)
                 if code:unary[(code,role)].append(r["evidence_id"])
         for (code,role),ids in unary.items():
             described="；".join(f"{by_id[i].get('resolver')} 对 {by_id[i].get('negative_name') or first['qname']} 返回 {dns_outcome(by_id[i])['result_kind']}（{i}）" for i in ids)
             selected=ids[:]
+            if code=="ALIAS_FOLLOWUP_COMPLETED":
+                selected += [eid for origin in ids for proof in completed[origin] for eid in proof]
+                add(code,role,selected,"原始响应的别名解析未完成；后续同来源、同解析路径、同类型的已授权查询已取得完整末端回答。原始响应不改写，否定回答仅适用于实际末端名称。",ids)
+                continue
             if code.endswith("QUERY_TIMEOUT"):
                 selected += [r["evidence_id"] for r in group if dns_outcome(r)["transport_status"]=="responded"]
             add(code,role,selected,f"查询 {first['qname']} {first.get('qtype')}：{described}。不推断注册状态或服务器宕机。",ids)
@@ -95,6 +102,7 @@ def diagnose(evidence):
 def next_checks(code,scope,observed):
     name,typ=scope["target"],scope["record_type"]
     paths=", ".join(str(x["resolver"]) for x in observed)
+    if code=="ALIAS_FOLLOWUP_COMPLETED":return []
     if scope.get("dns_followup_only") and code!="ALIAS_RESOLUTION_INCOMPLETE":
         return [f"query_dns：可对已授权别名 {name} {typ} 有限查询；当前 compare_resolvers/query_authoritative 不接受扩展别名。别名权威对照属于外部专项检查，尚未执行，不能归属为原域名直接权威证据。"]
     if code.endswith("QUERY_TIMEOUT"):
