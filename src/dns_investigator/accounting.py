@@ -35,7 +35,7 @@ def call_reviews(log, case):
         error = (attempt.get("error") or {}).get("code")
         valid = attempt["status"] in {"measured", "unavailable", "execution_error"}
         reason = "参数有效且属于调查范围；执行失败不自动说明选择错误"
-        if error in {"INVALID_INPUT", "FRAMEWORK_ARGUMENT_REJECTED", "NON_RETRYABLE_DUPLICATE", "REDUNDANT_QUERY", "BUDGET_EXHAUSTED", "NOT_EXECUTED", "CANCELLED"}:
+        if error in {"INVALID_INPUT", "FRAMEWORK_ARGUMENT_REJECTED", "NON_RETRYABLE_DUPLICATE", "REDUNDANT_QUERY", "ALIAS_ALREADY_RESOLVED", "BUDGET_EXHAUSTED", "NOT_EXECUTED", "CANCELLED"}:
             valid, reason = False, error
         args = attempt.get("input", {})
         if case["id"] == "Q1" and (attempt["tool_name"] != "query_dns" or args.get("record_type", "A") != "A"):

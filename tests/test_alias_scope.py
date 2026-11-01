@@ -87,3 +87,13 @@ async def test_followed_dns_request_still_uses_q_budget(tmp_path):
     alias(b,mode="live");b.dns.limit=0
     r=await b.call("query_dns",domain="target.other")
     assert r["error"]["code"]=="DNS_BUDGET_EXHAUSTED" and len(b.calls)==1 and not b.dns.attempts
+
+
+def test_one_deep_chain_and_total_branch_cap(tmp_path):
+    b=fixture_backend(tmp_path);row=alias(b)
+    row["data"]["cname_chain"]=[dict(name="probe.example" if i==0 else f"d{i}.other",target=f"d{i+1}.other") for i in range(12)]
+    allowed=alias_paths(b)
+    assert "d8.other" in allowed and "d9.other" not in allowed
+    b.calls=[]
+    for i in range(12):alias(b,target=f"branch{i}.other")
+    assert len(alias_paths(b))==1+MAX_ALIAS_TARGETS

@@ -47,7 +47,10 @@ async def run(args):
     if log.get("request_kind")=="query" and log.get("result"):
         print(log["result"]["conclusion"])
         for issue in log["result"].get("execution_issues",[]):print(json.dumps(issue,ensure_ascii=False))
-    else:print(json.dumps(log.get("result", log.get("error")), ensure_ascii=False, indent=2))
+    else:
+        result=log.get("result",{})
+        print("诊断摘要："+result.get("diagnostic_assessment",result.get("conclusion","")))
+        print(json.dumps(result, ensure_ascii=False, indent=2))
     print(f"状态：{log['status']}；日志：{path.resolve()}")
     return 0 if log["status"] == "completed" else 3 if log["status"] == "limited" else 1
 
