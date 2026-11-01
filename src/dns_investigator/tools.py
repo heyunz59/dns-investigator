@@ -314,11 +314,15 @@ class ToolBackend:
                             peer = stream.get_extra_info("server_addr") if stream else None
                             data["peer_ip"] = str(peer[0]) if peer else None
                             if response.is_redirect and "location" in response.headers:
-                                next_url = str(response.url.join(response.headers["location"]))
+                                try:
+                                    next_url = str(response.url.join(response.headers["location"]))
+                                    public_url=safe_url(next_url)
+                                except (ValueError,httpx.InvalidURL):
+                                    raise HTTPRefused("HTTP_REDIRECT_TARGET_NOT_AUTHORIZED") from None
+                                data["redirects"].append(dict(status=response.status_code,url=public_url))
                                 parsed = httpx.URL(next_url)
                                 if parsed.scheme not in ("http", "https") or parsed.username or parsed.password:
                                     raise HTTPRefused("HTTP_REDIRECT_TARGET_NOT_AUTHORIZED")
-                                data["redirects"].append(dict(status=response.status_code, url=safe_url(next_url)))
                                 self.http_policy.authorize(next_url,redirect=True)
                                 if hop == 5:
                                     data["error"] = "TOO_MANY_REDIRECTS"

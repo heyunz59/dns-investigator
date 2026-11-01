@@ -32,7 +32,10 @@ class HTTPPolicy:
         except (ValueError,httpx.InvalidURL) as exc:raise HTTPRefused("HTTP_URL_NOT_AUTHORIZED") from exc
 
     def authorize(self,url,redirect=False):
-        origin=self.origin(url)
+        try:origin=self.origin(url)
+        except HTTPRefused as exc:
+            if redirect:raise HTTPRefused("HTTP_REDIRECT_TARGET_NOT_AUTHORIZED") from exc
+            raise
         if origin not in self.origins:
             raise HTTPRefused("HTTP_REDIRECT_TARGET_NOT_AUTHORIZED" if redirect else "HTTP_TARGET_NOT_AUTHORIZED")
         return origin
