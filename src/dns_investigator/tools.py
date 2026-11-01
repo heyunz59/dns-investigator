@@ -317,8 +317,7 @@ class ToolBackend:
                                 next_url = str(response.url.join(response.headers["location"]))
                                 parsed = httpx.URL(next_url)
                                 if parsed.scheme not in ("http", "https") or parsed.username or parsed.password:
-                                    data["error"] = "UNSUPPORTED_REDIRECT"
-                                    break
+                                    raise HTTPRefused("HTTP_REDIRECT_TARGET_NOT_AUTHORIZED")
                                 data["redirects"].append(dict(status=response.status_code, url=safe_url(next_url)))
                                 self.http_policy.authorize(next_url,redirect=True)
                                 if hop == 5:
@@ -337,11 +336,12 @@ class ToolBackend:
         except httpx.RequestError as exc:
             data["error_detail"]=describe(exc)
             data["error"] = "TLS_ERROR" if data["error_detail"]["code"] in {"TLS_ERROR","CERTIFICATE_VERIFY_FAILED"} else type(exc).__name__
-        except HTTPRefused as exc:
-            data["error"]=exc.code
-            data["security_refusal"]=dict(code=exc.code,request_sent_to_rejected_target=False)
+        except (HTTPRefused,httpx.InvalidURL) as exc:
+            code=exc.code if isinstance(exc,HTTPRefused) else "HTTP_REDIRECT_TARGET_NOT_AUTHORIZED"
+            data["error"]=code
+            data["security_refusal"]=dict(code=code,request_sent_to_rejected_target=False)
             if data["status_code"] is None:
-                data.update(execution_status="error",error=dict(code=exc.code,retryable=False))
+                data.update(execution_status="error",error=dict(code=code,retryable=False))
         finally:
             data["connection_attempts"]=transport.backend.events if transport is not None and hasattr(transport,"backend") else []
         return data

@@ -16,6 +16,8 @@ class HTTPRefused(Exception):
 class HTTPPolicy:
     def __init__(self,target_url,allowed_origins=(),allowed_networks=()):
         self.origins={self.origin(target_url),*(self.origin(x) for x in allowed_origins)}
+        scheme,host,port=self.origin(target_url)
+        if scheme=="http" and port==80:self.origins.add(("https",host,443))
         self.networks=tuple(ipaddress.ip_network(x,strict=True) for x in allowed_networks)
 
     @staticmethod
@@ -115,6 +117,8 @@ class PinnedTransport(httpx.AsyncBaseTransport):
 
     async def handle_async_request(self,request):
         self.policy.authorize(str(request.url))
+        if request.headers.get("host","").lower()!=request.url.netloc.decode("ascii").lower():
+            raise HTTPRefused("HTTP_HOST_OVERRIDE_NOT_AUTHORIZED")
         if "sni_hostname" in request.extensions:raise HTTPRefused("HTTP_SNI_OVERRIDE_NOT_AUTHORIZED")
         req=httpcore.Request(method=request.method,url=httpcore.URL(scheme=request.url.raw_scheme,
             host=request.url.raw_host,port=request.url.port,target=request.url.raw_path),headers=request.headers.raw,

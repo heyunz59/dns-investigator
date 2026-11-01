@@ -92,6 +92,19 @@ def test_cannot_disable_certificate_validation():
     with pytest.raises(ValueError):PinnedTransport(HTTPPolicy("https://allowed.example"),ssl_context=context)
 
 
+def test_same_host_standard_https_upgrade_is_authorized_but_downgrade_is_not():
+    from dns_investigator.http_safety import HTTPRefused
+    HTTPPolicy("http://allowed.example/").authorize("https://allowed.example/",redirect=True)
+    with pytest.raises(HTTPRefused):HTTPPolicy("https://allowed.example/").authorize("http://allowed.example/",redirect=True)
+
+
+async def test_bad_redirect_keeps_received_http_measurement():
+    b,c,_=backend([response("https://[malformed/")])
+    r=await b.call("check_http",url=b.target.url)
+    assert r["id"]=="E1" and r["data"]["status_code"]==302 and len(c.calls)==1
+    assert r["data"]["security_refusal"]["code"]=="HTTP_REDIRECT_TARGET_NOT_AUTHORIZED"
+
+
 @pytest.mark.parametrize("hostname",["allowed.example","wrong.example"])
 async def test_real_controlled_tls_validates_certificate_and_preserves_sni(tmp_path,hostname):
     import asyncio
