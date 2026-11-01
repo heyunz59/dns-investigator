@@ -19,7 +19,7 @@ from .privacy import redact
 from .schemas import InvestigationResult, Finding
 from .tools import ToolBackend, now
 from .dns_diagnosis import diagnose
-from .reporting import facts,validate_issue_refs,validate_fact_claims,evidence_bound_report
+from .reporting import facts,issues,validate_issue_refs,validate_fact_claims,evidence_bound_report
 from .alias_scope import alias_paths
 
 SYSTEM = """你是 DNS 调查助手。中文回答。只使用用户陈述与实际返回的工具证据，不编造测量。
@@ -46,6 +46,7 @@ SYSTEM += """\n每个假设填写单一 category，不合并注册、DNS、TLS�
 支持/反面列表可以为空，仅填写缺失信息；不得为凑假设数编造不适用原因。.invalid 为公网保留测试后缀，不能建议续费或等待恢复，但 hosts/私有覆盖可能不同。
 事实必须限定工具返回 fact_summary 中的 target/resolver/record_type/source_mode/time，不把部分解析器×类型扩为笛卡尔积。
 调用错误放 execution_issues，引用 A 编号及准确的工具、目标、类型、error_code；不得挂靠 E。measured_facts 留空，由程序生成。
+execution_issues 可以留空由程序生成；若填写，仅使用 execution_issue_summary 的准确字段。复合工具的外层错误与内部某条子查询错误码不同，子路径细节保留在 comparison，不把子错误码直接冒充外层 A 错误码。
 fixture 地址不可直接用于真实探测，先 live 解析。仅查询记录时简洁输出地址、应答 TTL，不添加故障假设。
 同轮不要独立查系统 A 又比较含系统的 A；工具返回可重用的实际证据，重复测量需有具体目的。HTTP 超时参数上限15秒，DNS/TCP5秒。
 TIMEOUT 是未取得报文，不是 DNS RCODE，不能与成功响应比较内容或 TTL。Finding 中的 scope/localization 限定可定位范围，root_cause_confirmed=false。
@@ -122,6 +123,7 @@ def build_agent(config: Config, model=None, with_tools=True):
 async def invoke(ctx, name, **args):
     response=await ctx.deps.call(name, provider_id=ctx.tool_call_id, **args)
     return {**response,"fact_summary":facts(ctx.deps.calls),"current_findings":diagnose(ctx.deps.calls),
+            "execution_issue_summary":[i.model_dump() for i in issues(ctx.deps.attempts)],
             "allowed_dns_targets":list(alias_paths(ctx.deps).values())}
 
 

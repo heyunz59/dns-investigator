@@ -36,7 +36,7 @@ def facts(evidence):
 def issues(attempts):
     return [ExecutionIssue(attempt_id=a["attempt_id"],tool_name=a["tool_name"],
         target=str(a.get("input",{}).get("domain",a.get("input",{}).get("url",a.get("input",{}).get("ip","unknown")))),
-        record_type=a.get("input",{}).get("record_type","A") if a["tool_name"]=="query_dns" else None,
+        record_type=a.get("input",{}).get("record_type","A") if a["tool_name"] in {"query_dns","compare_resolvers","query_authoritative"} else None,
         error_code=a["error"]["code"],description=a["error"].get("message","")) for a in attempts if a.get("error")]
 
 

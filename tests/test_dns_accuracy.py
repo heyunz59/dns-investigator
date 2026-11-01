@@ -155,10 +155,16 @@ async def test_fixture_partial_execution_issue_survives_final_report(tmp_path):
     assert len(b.calls)==2 and not b.dns.attempts and len(b.attempts)==1
     assert r.execution_issues[0].attempt_id=="A1"
     assert r.execution_issues[0].error_code=="PARTIAL_DNS_EXECUTION_ERROR"
+    assert r.execution_issues[0].record_type=="A"
     failed=[p for p in r.dns_comparison["paths"] if p["execution_status"]=="error"]
     assert len(failed)==1 and failed[0]["attempt_id"]=="A1" and failed[0]["evidence_id"] is None
     assert "RECURSIVE_RESPONSE_DISAGREEMENT" in {f.code for f in r.findings}
     assert "A1:PARTIAL_DNS_EXECUTION_ERROR" in r.diagnostic_assessment
+    from dns_investigator.reporting import validate_issue_refs
+    from pydantic_ai import ModelRetry
+    validate_issue_refs(r,b.attempts)
+    r.execution_issues[0].record_type="AAAA"
+    with pytest.raises(ModelRetry):validate_issue_refs(r,b.attempts)
 
 
 async def test_live_budget_refusal_is_A_issue_without_extra_Q_or_E(monkeypatch):
