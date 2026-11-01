@@ -22,6 +22,9 @@ QUESTIONS=dict(timeout="调查 probe.example 当前 DNS 解析是否存在异常
 
 
 async def run(out,arm,scenarios,wire_only=False):
+    manifest_file=out/f"{arm}{'-wire' if wire_only else ''}-manifest.json"
+    if manifest_file.exists() or (wire_only and any((out/f"{scenario}-wire.json").exists() for scenario in scenarios)):
+        raise FileExistsError("Use a new experiment directory; existing runs are not overwritten")
     out.mkdir(parents=True,exist_ok=True)
     config=Config.load()
     if not wire_only and not config.api_key:
@@ -45,7 +48,7 @@ async def run(out,arm,scenarios,wire_only=False):
             source_hashes={p.name:hashlib.sha256(p.read_bytes()).hexdigest() for p in source.glob("*.py")},
             semantic_review="AI_assisted_pending_independent_human_review")
         manifest.append(row)
-        (out/f"{arm}{'-wire' if wire_only else ''}-manifest.json").write_text(json.dumps(manifest,ensure_ascii=False,indent=2),encoding="utf-8")
+        manifest_file.write_text(json.dumps(manifest,ensure_ascii=False,indent=2),encoding="utf-8")
         print(arm,scenario,row.get("status","measured"),row["A"],row["Q"],row["E"],flush=True)
         if log.get("error",{}).get("category") in {"ModelHTTPError","AuthenticationError"}:break
 

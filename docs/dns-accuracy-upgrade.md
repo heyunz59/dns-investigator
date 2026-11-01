@@ -84,6 +84,8 @@ old、intermediate（d0857cd）、final（0f9cd72，是实验阶段名，不表�
 
 capture_accuracy 拒绝覆盖已有快照。wire-only 是工具实验固定检查顺序，不证明 Agent 决策。去掉 wire-only 会调用真实 DeepSeek，必须另选新目录；程序不向模型提供预期答案。
 
+accuracy_model_run 同样拒绝覆盖已有阶段 manifest 或 wire 记录；已用保留内容的临时目录核验，未调用模型/网络。完整相对文件清单见 dns-accuracy-changes.txt。
+
 公网用户复测示例（本轮未新跑公网）：
 
 ```powershell
