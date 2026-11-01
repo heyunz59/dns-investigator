@@ -71,7 +71,9 @@ def evidence_bound_report(result,backend):
         source_mode="fixture" if backend.fixture is not None else "live",execution_status="error",
         parent_tool_call_id=q.get("parent_tool_call_id"),query_attempt_id=q.get("query_attempt_id"),
         error={"code":q["status"]}) for q in backend.dns.attempts if q["status"] not in {"measured","running"}]
-    failures += [r for a in backend.attempts for r in a.get("dns_execution_issues",[])]
+    key=lambda r:(r.get("parent_tool_call_id"),r.get("qname"),r.get("qtype"),r.get("resolver"))
+    recorded={key(r) for r in failures}
+    failures += [r for a in backend.attempts for r in a.get("dns_execution_issues",[]) if key(r) not in recorded]
     result.dns_comparison=compare_details(dns_rows+failures)
     result.diagnostic_assessment,result.assessment_level=assessment(result,measured)
     def describe(f):

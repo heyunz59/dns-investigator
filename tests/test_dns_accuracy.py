@@ -148,7 +148,8 @@ async def test_fixture_partial_execution_issue_survives_final_report(tmp_path):
     entries.append(dict(qname="probe.example",qtype="A",resolver="9.9.9.9",execution_status="error",error=dict(code="FIXTURE_PATH_NOT_PROVIDED")))
     fixture=tmp_path/"partial.json";fixture.write_text(json.dumps([dict(tool="compare_resolvers",match=dict(domain="probe.example"),data=dict(responses=entries))]),encoding="utf-8")
     b=ToolBackend(parse_target("probe.example"),fixture)
-    await b.call("compare_resolvers",domain="probe.example")
+    response=await b.call("compare_resolvers",domain="probe.example")
+    assert response["error"]["code"]=="PARTIAL_DNS_EXECUTION_ERROR"
     r=InvestigationResult(observations=[],hypotheses=[],conclusion="draft",conclusion_evidence_ids=[],limitations=[],recommendations=[])
     r=evidence_bound_report(r,b)
     assert len(b.calls)==2 and not b.dns.attempts and len(b.attempts)==1
@@ -158,3 +159,21 @@ async def test_fixture_partial_execution_issue_survives_final_report(tmp_path):
     assert len(failed)==1 and failed[0]["attempt_id"]=="A1" and failed[0]["evidence_id"] is None
     assert "RECURSIVE_RESPONSE_DISAGREEMENT" in {f.code for f in r.findings}
     assert "A1:PARTIAL_DNS_EXECUTION_ERROR" in r.diagnostic_assessment
+
+
+async def test_live_budget_refusal_is_A_issue_without_extra_Q_or_E(monkeypatch):
+    import dns.asyncquery,dns.message,dns.rrset
+    from dns_investigator.tools import ToolBackend
+    from dns_investigator.target import parse_target
+    from dns_investigator.schemas import InvestigationResult
+    from dns_investigator.reporting import evidence_bound_report
+    b=ToolBackend(parse_target("probe.example"));b.dns.limit=2;b.resolvers=("1.1.1.1","8.8.8.8","9.9.9.9")
+    async def reply(q,*args,**kw):
+        r=dns.message.make_response(q);r.answer.append(dns.rrset.from_text("probe.example.",60,"IN","A","192.0.2.10"));return r
+    monkeypatch.setattr(dns.asyncquery,"udp",reply)
+    await b.call("compare_resolvers",domain="probe.example")
+    r=evidence_bound_report(InvestigationResult(observations=[],hypotheses=[],conclusion="draft",conclusion_evidence_ids=[],limitations=[],recommendations=[]),b)
+    assert len(b.attempts)==1 and len(b.dns.attempts)==len(b.calls)==2
+    failed=[p for p in r.dns_comparison["paths"] if p["execution_status"]=="error"]
+    assert len(failed)==1 and failed[0]["resolver"]=="9.9.9.9" and failed[0]["evidence_id"] is None
+    assert failed[0]["error"]["code"]=="DNS_BUDGET_EXHAUSTED"

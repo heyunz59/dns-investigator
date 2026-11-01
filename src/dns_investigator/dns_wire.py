@@ -129,10 +129,11 @@ class DNSClient:
 
     async def packet(self, name, typ, server, role, timeout, parent, tcp=False, port=53):
         key=(name.lower().rstrip("."),typ,server,role,tcp)
+        scope=dict(qname=name,qtype=typ,resolver=server,resolver_role=role,transport_status="not_executed",dns_rcode=None)
         if self.repeats.get(key,0)>=2:
-            return dict(execution_status="error",error={"code":"DNS_REPEAT_LIMIT","retryable":False},qname=name,qtype=typ)
+            return dict(execution_status="error",error={"code":"DNS_REPEAT_LIMIT","retryable":False},**scope)
         if len(self.attempts) >= self.limit:
-            return dict(execution_status="error", error={"code":"DNS_BUDGET_EXHAUSTED", "retryable":False}, qname=name,qtype=typ)
+            return dict(execution_status="error", error={"code":"DNS_BUDGET_EXHAUSTED", "retryable":False},**scope)
         self.repeats[key]=self.repeats.get(key,0)+1
         row = dict(query_attempt_id=f"Q{len(self.attempts)+1}", parent_tool_call_id=parent,
                    qname=name,qtype=typ,server=server,port=port,transport="TCP" if tcp else "UDP",status="running")
