@@ -23,7 +23,8 @@ def facts(evidence):
             records=d.get("records",[]),error=d.get("error"),error_detail=d.get("error_detail"),peer_ip=d.get("peer_ip")))
         if e["tool_name"]=="check_http":
             rows[-1].update(status_code=d.get("status_code"),final_url=d.get("final_url"),redirects=d.get("redirects",[]),
-                bytes_read=d.get("bytes_read"),request_state="incomplete" if d.get("error") else "finished_within_check_limits")
+                bytes_read=d.get("bytes_read"),request_state="incomplete" if d.get("error") else "finished_within_check_limits",
+                security_refusal=d.get("security_refusal"),connection_attempts=d.get("connection_attempts",[]))
         elif e["tool_name"]=="check_tcp":rows[-1]["port"]=d.get("port",args.get("port"))
         elif e["tool_name"]=="query_dns":
             rows[-1].update(**dns_outcome(d),resolver_role=d.get("resolver_role","recursive"),

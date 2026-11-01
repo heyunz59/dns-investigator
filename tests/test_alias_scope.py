@@ -121,8 +121,8 @@ async def test_agent_can_select_connected_followup_without_extra_tool(tmp_path):
         if len(returns)<2:
             if returns:assert any(t["target"]=="target.other" for t in returns[0]["allowed_dns_targets"])
             return ModelResponse(parts=[ToolCallPart("query_dns",{"domain":"probe.example" if not returns else "target.other"})])
-        return ModelResponse(parts=[ToolCallPart(info.output_tools[0].name,dict(request_kind="investigation",observations=[dict(evidence_id="E2",observation="已取得末端记录")],
-            hypotheses=[],conclusion="本次取得别名末端记录，未确认其他原因",conclusion_evidence_ids=["E2"],limitations=["脚本模型测试"],recommendations=[]))])
+        return ModelResponse(parts=[ToolCallPart(info.output_tools[0].name,dict(request_kind="investigation",outcome="answered",
+            hypotheses=[],analysis_summary="本次取得别名末端记录，未确认其他原因",limitations=["脚本模型测试"],next_directions=[]))])
     log,_=await investigate("调查 probe.example",parse_target("probe.example"),Config("test"),fixture=fixture,model=FunctionModel(model),log_dir=tmp_path/"logs")
     assert log["status"]=="completed" and [a["input"]["domain"] for a in log["attempts"]]==["probe.example","target.other"]
     assert log["result"]["measured_facts"][1]["target_authorization"]["evidence_ids"]==["E1"]

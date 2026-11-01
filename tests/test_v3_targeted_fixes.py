@@ -114,8 +114,7 @@ async def test_framework_parallel_calls_json_and_jsonl_mapping(monkeypatch,tmp_p
             return ModelResponse(parts=[ToolCallPart("query_dns",{"domain":"example.com"},tool_call_id="dns-id"),
                 ToolCallPart("check_http",{"url":"https://example.com/"},tool_call_id="http-id")])
         return ModelResponse(parts=[ToolCallPart(info.output_tools[0].name,dict(request_kind="investigation",
-            outcome="insufficient_information",observations=[dict(evidence_id="E1",observation="DNS record"),dict(evidence_id="E2",observation="HTTP 503")],
-            hypotheses=[],conclusion="有限证据，无法确认根因",conclusion_evidence_ids=["E1","E2"],limitations=["脚本测试"],recommendations=["人工复核"]))])
+            outcome="insufficient_information",hypotheses=[],analysis_summary="有限证据，无法确认根因",limitations=["脚本测试"],next_directions=["人工复核"]))])
     log,path=await investigate("调查 example.com",parse_target("example.com"),Config("test"),model=FunctionModel(respond),log_dir=tmp_path)
     assert log["status"]=="limited",log
     assert json.loads(path.read_text(encoding="utf-8"))["evidence"]==log["evidence"]

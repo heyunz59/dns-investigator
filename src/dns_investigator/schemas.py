@@ -1,5 +1,5 @@
 from typing import Literal
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, ConfigDict
 
 
 class Hypothesis(BaseModel):
@@ -13,6 +13,17 @@ class Hypothesis(BaseModel):
     supporting_evidence_ids: list[str] = Field(default_factory=list)
     contradicting_evidence_ids: list[str] = Field(default_factory=list)
     missing_information: list[str] = Field(default_factory=list)
+
+
+class AgentDraft(BaseModel):
+    """Model-owned decisions only. Measurement/report fields remain application-owned."""
+    model_config=ConfigDict(extra="forbid")
+    request_kind: Literal["query","investigation"]
+    outcome: Literal["answered","insufficient_information","execution_failed"]
+    hypotheses: list[Hypothesis] = Field(default_factory=list)
+    analysis_summary: str = ""
+    limitations: list[str] = Field(default_factory=list)
+    next_directions: list[str] = Field(default_factory=list)
 
 
 class Observation(BaseModel):

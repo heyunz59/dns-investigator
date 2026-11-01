@@ -41,7 +41,7 @@ async def test_full_investigate_no_measurements_invalid(tmp_path):
     def model(messages,info):
         r=result(outcome="insufficient_information")
         r.recommendations=["需要测量"];r.limitations=["无证据"]
-        return ModelResponse(parts=[ToolCallPart(info.output_tools[0].name,r.model_dump())])
+        return ModelResponse(parts=[ToolCallPart(info.output_tools[0].name,dict(request_kind=r.request_kind,outcome=r.outcome,limitations=r.limitations,next_directions=r.recommendations))])
     log,_=await investigate("调查 probe.invalid",parse_target("probe.invalid"),Config("test"),model=FunctionModel(model),log_dir=tmp_path)
     assert log["status"]=="limited" and not log["evidence"]
     assert "本次公网 NXDOMAIN" not in str(log["result"])
