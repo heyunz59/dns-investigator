@@ -2,8 +2,7 @@
 from .target import domain
 from .dns_wire import dns_outcome
 from .dns_wire import comparable_response
-from datetime import datetime
-from .dns_compare import normal,MAX_COMPARISON_SECONDS
+from .dns_compare import normal,MAX_COMPARISON_SECONDS,measured_time
 
 MAX_ALIAS_DEPTH=8
 MAX_ALIAS_TARGETS=8
@@ -22,10 +21,8 @@ def completed_followups(rows):
             and (a.get("resolver"),a.get("resolver_role","recursive"),a.get("source_mode"))==
                 (b.get("resolver"),b.get("resolver_role","recursive"),b.get("source_mode")))
     def near_after(a,b):
-        try:
-            delta=(datetime.fromisoformat(b["measured_at"])-datetime.fromisoformat(a["measured_at"])).total_seconds()
-            return 0<=delta<=MAX_COMPARISON_SECONDS
-        except (KeyError,ValueError,TypeError):return False
+        left,right=measured_time(a),measured_time(b)
+        return left is not None and right is not None and 0<=(right-left).total_seconds()<=MAX_COMPARISON_SECONDS
     for origin in rows:
         if origin.get("result_kind") not in {"REFERRAL","ALIAS_INCOMPLETE","INDETERMINATE"} or not origin.get("cname_chain") or origin.get("cname_loop"):continue
         for leaf in rows:

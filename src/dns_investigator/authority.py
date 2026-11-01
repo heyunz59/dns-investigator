@@ -1,7 +1,7 @@
 """Bounded recursive-assisted authority discovery with explicit stage completion."""
 import asyncio
 from .dns_compare import compare
-from .dns_wire import dns_outcome,comparable_response
+from .dns_wire import dns_outcome,comparable_response,ATTEMPT_OBSERVER
 
 
 def usable_answer(row):
@@ -62,12 +62,19 @@ async def investigate_authority(backend,name,typ,timeout,parent):
                 continue
             ip=ips[0];server.update(address_found=True,ip=ip);progress["addressed_servers"]+=1
             progress["stage"]="AUTHORITATIVE_TARGET_QUERY"
-            response=await client.query(name,typ,ip,timeout,parent,role="authoritative")
+            server["query_attempt_ids"]=[]
+            def allocated(query):
+                if query["parent_tool_call_id"]!=parent:return
+                server["query_attempt_ids"].append(query["query_attempt_id"])
+                if not server["query_executed"]:
+                    server["query_executed"]=True;progress["target_queries_executed"]+=1
+            token=ATTEMPT_OBSERVER.set(allocated)
+            try:response=await client.query(name,typ,ip,timeout,parent,role="authoritative")
+            finally:ATTEMPT_OBSERVER.reset(token)
             response["ns_name"]=host;answers.append(response)
-            server.update(query_executed=bool(response.get("query_attempt_ids")),response_received=dns_outcome(response)["transport_status"]=="responded",
+            server.update(response_received=dns_outcome(response)["transport_status"]=="responded",
                 aa=response.get("flags",{}).get("AA",False),target_complete=usable_answer(response),target_evidence_id=response.get("evidence_id"),
                 status="ANSWERED" if usable_answer(response) else "NO_AUTHORITATIVE_RESPONSE")
-            progress["target_queries_executed"]+=server["query_executed"]
             progress["target_responses_received"]+=server["response_received"]
             progress["authoritative_answers"]+=server["target_complete"]
             if (response.get("error") or {}).get("code")=="DNS_BUDGET_EXHAUSTED":break

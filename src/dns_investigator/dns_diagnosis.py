@@ -1,7 +1,7 @@
 """Deterministic scoped observations and localization; no confirmed causal verdicts."""
 from collections import defaultdict
 from datetime import datetime
-from .dns_compare import compare_details,evidence_rows,normal,measured_time
+from .dns_compare import compare_details,evidence_rows,normal,measured_time,time_relation
 from .dns_wire import dns_outcome,comparable_response
 from .alias_scope import completed_followups
 
@@ -67,7 +67,8 @@ def diagnose(evidence):
                 add(code,role,selected,"原始响应的别名解析未完成；后续同来源、同解析路径、同类型的已授权查询已取得完整末端回答。原始响应不改写，否定回答仅适用于实际末端名称。",ids)
                 continue
             if code.endswith("QUERY_TIMEOUT"):
-                selected += [r["evidence_id"] for r in group if dns_outcome(r)["transport_status"]=="responded"]
+                selected += [r["evidence_id"] for r in group if dns_outcome(r)["transport_status"]=="responded"
+                    and any(time_relation(by_id[i],r)=="TIME_COMPARABLE" for i in ids)]
             add(code,role,selected,f"查询 {first['qname']} {first.get('qtype')}：{described}。不推断注册状态或服务器宕机。",ids)
         buckets=defaultdict(set)
         comparison=compare_details(group)

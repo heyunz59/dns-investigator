@@ -38,7 +38,9 @@ class Server(asyncio.DatagramProtocol):
             serial=2 if self.scenario=="serial" and self.index==4 else 1
             r.answer.append(dns.rrset.from_text("probe.example.",60,"IN","SOA",f"ns1.test.example. host.test.example. {serial} 60 60 60 60"))
         elif typ=="NS":
-            r.answer.append(dns.rrset.from_text(name+".",60,"IN","NS","ns1.test.example.","ns2.test.example."))
+            hosts=["ns1.test.example.","ns2.test.example."]
+            if self.scenario=="ns_many":hosts.append("ns3.test.example.")
+            r.answer.append(dns.rrset.from_text(name+".",60,"IN","NS",*hosts))
         elif typ=="A":
             value="9.9.9.9" if name=="ns1.test.example" else "8.8.4.4" if name=="ns2.test.example" else "192.0.2.11" if self.scenario=="serial" and self.index==4 else "192.0.2.10"
             r.answer.append(dns.rrset.from_text(name+".",60,"IN","A",value))

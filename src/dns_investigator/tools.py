@@ -98,6 +98,10 @@ class ToolBackend:
 
     def reject(self, row, code, message, retryable=False, status="rejected", emit=True):
         row.update(status=status, error=dict(code=code, message=message, retryable=retryable))
+        if code in {"CANCELLED","DNS_TOOL_TIMEOUT"} and row.get("authority_state"):
+            state=row["authority_state"]
+            state.update(discovery_status="INTERRUPTED",completed=False,
+                interruption=dict(code=code,stage=(state.get("progress") or {}).get("stage")))
         if emit:
             self.emit("attempt_finished", row)
         return dict(attempt_id=row["attempt_id"], execution_status="error", data={},
@@ -298,7 +302,8 @@ class ToolBackend:
 
     async def check_http(self, url, timeout=15):
         data = dict(status_code=None, final_url=safe_url(url), redirects=[], peer_ip=None,
-                    proxy_mode="disabled (trust_env=False)", bytes_read=0, error=None)
+                    proxy_mode="disabled (trust_env=False)", bytes_read=0, error=None,
+                    body_state="not_read",body_complete=False,body_limit_bytes=65536)
         transport=None
         try:
             # Outer deadline includes all redirects, DNS, TLS and body reads.
@@ -329,10 +334,14 @@ class ToolBackend:
                                     break
                                 url = next_url
                                 continue
+                            data["body_state"]="reading"
                             async for chunk in response.aiter_raw(chunk_size=4096):
                                 data["bytes_read"] += len(chunk)
                                 if data["bytes_read"] >= 65536:
+                                    data["body_state"]="limit_reached"
                                     break
+                            else:
+                                data.update(body_state="complete",body_complete=True)
                             break
         except (TimeoutError, httpx.TimeoutException) as exc:
             data["error"] = "TIMEOUT"
@@ -347,5 +356,6 @@ class ToolBackend:
             if data["status_code"] is None:
                 data.update(execution_status="error",error=dict(code=code,retryable=False))
         finally:
+            if data["body_state"]=="reading":data["body_state"]="read_error"
             data["connection_attempts"]=transport.backend.events if transport is not None and hasattr(transport,"backend") else []
         return data

@@ -3,7 +3,7 @@ import json
 import re
 from pydantic_ai import ModelRetry
 from .schemas import Observation,ExecutionIssue
-from .dns_compare import compare_details,evidence_rows
+from .dns_compare import compare_details,evidence_rows,measured_time
 from .dns_wire import dns_outcome
 from .dns_diagnosis import diagnose
 from .schemas import Finding
@@ -22,8 +22,12 @@ def facts(evidence):
             result=next((d[k] for k in ("result_kind","rcode","status_code","status","error") if d.get(k) is not None),"UNKNOWN"),
             records=d.get("records",[]),error=d.get("error"),error_detail=d.get("error_detail"),peer_ip=d.get("peer_ip")))
         if e["tool_name"]=="check_http":
+            request_state=("blocked_by_policy" if d.get("security_refusal") else "incomplete" if d.get("error")
+                else "body_limit_reached" if d.get("body_state")=="limit_reached"
+                else "complete" if d.get("body_complete") else "finished_within_check_limits")
             rows[-1].update(status_code=d.get("status_code"),final_url=d.get("final_url"),redirects=d.get("redirects",[]),
-                bytes_read=d.get("bytes_read"),request_state="incomplete" if d.get("error") else "finished_within_check_limits",
+                bytes_read=d.get("bytes_read"),request_state=request_state,
+                body_state=d.get("body_state","unknown_legacy"),body_complete=d.get("body_complete"),body_limit_bytes=d.get("body_limit_bytes"),
                 security_refusal=d.get("security_refusal"),connection_attempts=d.get("connection_attempts",[]))
         elif e["tool_name"]=="check_tcp":rows[-1]["port"]=d.get("port",args.get("port"))
         elif e["tool_name"]=="query_dns":
@@ -87,7 +91,7 @@ def evidence_bound_report(result,backend):
     def describe(f):
         scope=f"{f['target']}"+(f" {f['record_type']} / 解析器 {f['resolver']}" if f["record_type"] else f" {f['tool']}")
         if f["tool"]=="check_http":
-            details=f"HTTP 状态码={f['status_code']}；请求状态={f['request_state']}；错误={f['error']}；读取字节={f['bytes_read']}；最终 URL={f['final_url']}；跳转={json.dumps(f['redirects'],ensure_ascii=False)}"
+            details=f"HTTP 状态码={f['status_code']}；请求状态={f['request_state']}；正文状态={f['body_state']}；正文完整={f['body_complete']}；错误={f['error']}；读取字节={f['bytes_read']}；最终 URL={f['final_url']}；跳转={json.dumps(f['redirects'],ensure_ascii=False)}"
             if f["error_detail"]:
                 details+=f"；底层错误类别={f['error_detail'].get('code')}；证书错误={json.dumps(f['error_detail'].get('certificate'),ensure_ascii=False)}"
         elif f["tool"]=="check_tcp":
@@ -96,7 +100,7 @@ def evidence_bound_report(result,backend):
         return f"{scope}：{f['result']} {details}；来源 {f['source_mode']}；时间 {f['measured_at']}（{f['evidence_id']}）"
     result.observations=[Observation(evidence_id=f["evidence_id"],observation=describe(f)) for f in measured]
     # No parser attempts or model prose are allowed to add measured combinations.
-    result.conclusion=(result.diagnostic_assessment+" 已验证事实："+"；".join(describe(f) for f in measured)) if measured else "没有取得有效测量证据，无法确认故障原因。"
+    result.conclusion=(result.diagnostic_assessment+" 已验证事实："+"；".join(describe(f) for f in measured)) if measured else result.diagnostic_assessment
     result.conclusion_evidence_ids=[f["evidence_id"] for f in measured]
     if measured and result.request_kind!="query":result.conclusion += "。以上仅为已测组合，未列出的解析器×类型组合未测；不据此确认唯一根因。"
     allowed={f["evidence_id"]:f for f in measured}
@@ -166,6 +170,8 @@ def evidence_bound_report(result,backend):
         elif dns_rows:
             recommendations=(recommendations if synthetic else [])+["本次已测范围未发现 DNS 状态异常；若用户仍无法访问，先核对故障时间、客户端错误和测量环境，再决定是否检查 TCP/HTTP。"]
     result.recommendations=recommendations
+    if any(f.get("security_refusal") for f in measured) or any(i.error_code.startswith("HTTP_") for i in result.execution_issues):
+        result.recommendations=["先核对被拒绝跳转的 origin 与地址授权；本程序未向被拒绝目标发起请求。安全策略拒绝不能证明站点、DNS或网络故障，不自动扩大授权范围。"]+(recommendations if synthetic else [])
     if result.request_kind=="query":
         result.findings=[f for f in result.findings if f.code!="DNS_INCONCLUSIVE"]
         result.limitations=["仅报告列出的本次查询及应答 TTL，未测组合未知；没有权威对照时不判断原始 TTL。"]
@@ -175,13 +181,23 @@ def evidence_bound_report(result,backend):
 
 def assessment(result,measured):
     """Constrained fact/localization templates; model causal prose is never trusted."""
-    if not measured:return "没有取得有效测量证据，无法确认故障原因。","insufficient_evidence"
+    if not measured:
+        refused=[i for i in result.execution_issues if i.error_code.startswith("HTTP_")]
+        text="没有取得有效测量证据，无法确认故障原因。"
+        if refused:text+=" HTTP 安全策略阻止请求（"+"、".join(i.attempt_id+":"+i.error_code for i in refused)+"），不是已测得的网络故障。"
+        return text,"insufficient_evidence"
     if result.request_kind=="query":return "单项查询的本次结果如下；不据此诊断其他路径或唯一根因。","query_measured"
     parts=[];localized=False
     for state in result.authority_investigations:
-        if state.get("completed") is False:
-            progress=state.get("progress") or {}
-            parts.append(f"{state['attempt_id']} 权威调查尚未完成：{state.get('discovery_status')}；目标 {state['target']} {state['record_type']}，已取得 {progress.get('authoritative_answers',0)} 个有效 AA 回答，选中 {progress.get('ns_selected',0)} 台 NS。发现测量成功不等于权威检查完成。")
+        progress=state.get("progress") or {}
+        completion="本轮选中子集检查已完成" if state.get("completed") else "权威调查尚未完成"
+        parts.append(f"{state['attempt_id']} {completion}：{state.get('discovery_status')}；目标 {state['target']} {state['record_type']}，"
+            f"发现 NS={progress.get('ns_total',0)}，选中 NS={progress.get('ns_selected',0)}，取得地址={progress.get('addressed_servers',0)}，"
+            f"实际目标查询={progress.get('target_queries_executed',0)}，收到响应={progress.get('target_responses_received',0)}，有效 AA={progress.get('authoritative_answers',0)}；"
+            f"阶段={progress.get('stage')}，中断原因={(state.get('interruption') or {}).get('code','无')}。"
+            "完成仅限所列选中服务器及本次目标/补充 SOA 检查，不代表全部权威服务器正常；发现测量成功不等于权威检查完成。")
+    if any(f.get("security_refusal") for f in measured):
+        parts.append("HTTP 安全策略拒绝后续目标，已取得的初始响应保留，被拒绝目标没有发起请求；这不是测得站点不可达、DNS失败或宕机。")
     for path in result.dns_comparison.get("paths",[]):
         if path.get("query_stage")=="discovery" and path.get("execution_status")=="error":
             parts.append(f"{path['attempt_id']} 的权威发现环节 {path['target']} {path['record_type']} 未取得事实（{(path.get('error') or {}).get('code')}）；成功的发现测量不证明该调用已完成目标权威查询。")
@@ -196,6 +212,8 @@ def assessment(result,measured):
             responded=[f"{r['resolver']}={r['result_kind']}" for r in f.observed_facts if r["transport_status"]=="responded"]
             parts.append(f"{target}：{', '.join(timed)} 本次查询超时"+(f"，其他响应路径为 {', '.join(responded)}" if responded else "，尚无足够对照")+
                 f"；线索限于这些查询路径的可用性，不能区分服务与网络问题，也没有取得超时路径的记录内容（{refs}）。")
+            if any(measured_time(r) is None for r in f.observed_facts):
+                parts.append("这些超时观测缺少有效带时区的测量时间，不能与其他记录建立同期可用性对照。")
             localized=localized or bool(responded)
         elif f.code in {"RECURSIVE_RESPONSE_DISAGREEMENT","RECURSIVE_AUTH_RESPONSE_MISMATCH","AUTHORITATIVE_RESPONSE_DISAGREEMENT"}:
             paths="、".join(f"{r['role']} {r['resolver']}={r['result_kind']}" for r in f.observed_facts)

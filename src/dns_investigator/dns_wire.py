@@ -2,6 +2,7 @@
 import asyncio
 import ipaddress
 import time
+from contextvars import ContextVar
 import dns.asyncquery
 import dns.flags
 import dns.message
@@ -10,6 +11,9 @@ import dns.resolver
 import dns.exception
 
 TYPES = {"A", "AAAA", "CNAME", "NS", "SOA"}
+# Scoped to one logical DNS operation/task. The observer records Q allocation,
+# including a query cancelled before its response; no global-list ownership guess.
+ATTEMPT_OBSERVER = ContextVar("dns_attempt_observer",default=None)
 
 INCOMPLETE_KINDS = {"REFERRAL", "ALIAS_INCOMPLETE", "TRUNCATED", "INDETERMINATE"}
 
@@ -136,8 +140,10 @@ class DNSClient:
             return dict(execution_status="error", error={"code":"DNS_BUDGET_EXHAUSTED", "retryable":False},**scope)
         self.repeats[key]=self.repeats.get(key,0)+1
         row = dict(query_attempt_id=f"Q{len(self.attempts)+1}", parent_tool_call_id=parent,
-                   qname=name,qtype=typ,server=server,port=port,transport="TCP" if tcp else "UDP",status="running")
+                   qname=name,qtype=typ,server=server,port=port,resolver_role=role,transport="TCP" if tcp else "UDP",status="running")
         self.attempts.append(row)
+        observer=ATTEMPT_OBSERVER.get()
+        if observer is not None:observer(row)
         start=time.monotonic()
         message=dns.message.make_query(name,typ)
         if role == "authoritative":
