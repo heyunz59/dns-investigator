@@ -32,6 +32,7 @@ def diagnose(evidence):
             paths=[dict(resolver=r.get("resolver"),role=r.get("resolver_role","recursive"),evidence_id=r["evidence_id"]) for r in facts]
             affected=selected if affected is None else affected
             scope=dict(target=normal(first["qname"]),record_type=first.get("qtype"),source_mode=first.get("source_mode"),
+                dns_followup_only=any(r.get("target_authorization") for r in facts),
                 paths=paths,time_start=min((r["measured_at"] for r in facts if r.get("measured_at")),default=None),
                 time_end=max((r["measured_at"] for r in facts if r.get("measured_at")),default=None))
             observed=[dict(evidence_id=r["evidence_id"],resolver=r.get("resolver"),role=r.get("resolver_role","recursive"),
@@ -94,6 +95,8 @@ def diagnose(evidence):
 def next_checks(code,scope,observed):
     name,typ=scope["target"],scope["record_type"]
     paths=", ".join(str(x["resolver"]) for x in observed)
+    if scope.get("dns_followup_only") and code!="ALIAS_RESOLUTION_INCOMPLETE":
+        return [f"query_dns：可对已授权别名 {name} {typ} 有限查询；当前 compare_resolvers/query_authoritative 不接受扩展别名。别名权威对照属于外部专项检查，尚未执行，不能归属为原域名直接权威证据。"]
     if code.endswith("QUERY_TIMEOUT"):
         return [f"query_dns：预算允许时对 {name} {typ} 的超时路径有限复测（涉及 {paths}）；若恢复则削弱持续不可用解释，若仍超时仍不能区分服务与网络。"]
     if code=="ALIAS_RESOLUTION_INCOMPLETE":

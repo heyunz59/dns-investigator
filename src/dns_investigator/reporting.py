@@ -183,6 +183,6 @@ def assessment(result,measured):
         dns=[m for m in measured if m["tool"]=="query_dns"]
         http_errors=[m for m in measured if m["tool"]=="check_http" and (m["error"] or isinstance(m["result"],int) and m["result"]>=400)]
         if http_errors:parts=["已取得 HTTP 层响应或请求错误，详情见事实表；这不直接证明 DNS 故障或客户端问题。"]
-        elif dns and all(r.get("result")=="NOERROR" for r in dns):parts=["本次已测 DNS 查询取得记录，未发现该范围的解析状态异常；不能据此确认用户客户端原因。"]
+        elif dns and all(r.get("result")=="NOERROR" and r.get("records") for r in dns):parts=["本次已测 DNS 查询取得记录，未发现该范围的解析状态异常；不能据此确认用户客户端原因。"]
         else:parts=["已有测量不足以定位 DNS 异常范围；未测路径保持未知。"]
     return " ".join(parts),"scope_localized" if localized else "measured_without_root_cause"

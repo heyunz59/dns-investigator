@@ -9,7 +9,7 @@ MAX_COMPARISON_SECONDS=300
 def evidence_rows(evidence):
     return [{**e["data"],"evidence_id":e["id"],"source_mode":e.get("source_mode","unknown"),
              "measured_at":e.get("started_at"),"parent_tool_call_id":e.get("tool_call_id"),
-             "query_attempt_id":e.get("query_attempt_id")} for e in evidence if e.get("data",{}).get("qname")]
+             "query_attempt_id":e.get("query_attempt_id"),"target_authorization":e.get("target_authorization")} for e in evidence if e.get("data",{}).get("qname")]
 
 
 def normal(value):

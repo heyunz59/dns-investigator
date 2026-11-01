@@ -26,6 +26,11 @@ async def test_cross_domain_follow_keeps_parent_evidence(tmp_path):
     assert r["target_authorization"]["evidence_ids"]==[first["id"]]
     assert r["data"]["qname"]=="target.other" and b.calls[0]["data"]["qname"]=="probe.example"
     assert not b.dns.attempts
+    from dns_investigator.dns_diagnosis import diagnose
+    b.calls[-1]["data"].update(rcode="SERVFAIL",result_kind="SERVFAIL",records=[])
+    scoped=next(f for f in diagnose(b.calls) if f["code"]=="DNS_SERVFAIL")
+    assert scoped["scope"]["target"]=="target.other" and scoped["scope"]["dns_followup_only"]
+    assert "外部专项检查" in scoped["next_checks"][0]
     denied=await b.call("query_authoritative",domain="target.other")
     assert denied["error"]["code"]=="INVALID_INPUT"  # authority scope is not silently reassigned
 

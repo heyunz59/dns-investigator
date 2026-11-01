@@ -113,3 +113,15 @@ async def test_final_model_failure_keeps_useful_scoped_report(tmp_path):
     assert log["status"]=="failed" and log["result_origin"]=="application_fallback"
     assert log["result"]["measured_facts"][0]["evidence_id"]=="E1"
     assert log["result"]["diagnostic_assessment"] and "RuntimeError" in log["result"]["report_fallback_reason"]
+
+
+def test_unclassified_empty_legacy_noerror_does_not_claim_records():
+    from dns_investigator.schemas import InvestigationResult
+    from dns_investigator.tools import ToolBackend
+    from dns_investigator.target import parse_target
+    from dns_investigator.reporting import evidence_bound_report
+    b=ToolBackend(parse_target("probe.example"));e=evidence(1);e["data"].pop("result_kind");e["data"]["records"]=[];b.calls=[e]
+    r=InvestigationResult(observations=[],hypotheses=[],conclusion="draft",conclusion_evidence_ids=[],limitations=[],recommendations=[])
+    r=evidence_bound_report(r,b)
+    assert "取得记录" not in r.diagnostic_assessment and "不足" in r.diagnostic_assessment
+    assert "NODATA_OBSERVED" not in {f.code for f in r.findings}
