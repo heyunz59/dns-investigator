@@ -167,7 +167,7 @@ def test_cname_classification_and_findings(case,kind,negative):
         full=parse_response(message("positive"),"alias.example","A","8.8.8.8",role="authoritative")
         full["flags"]["AA"]=True
         pair=diagnose([dict(id="E1",execution_status="ok",data=d),dict(id="E2",execution_status="ok",data=full)])
-        assert "RECURSIVE_AUTH_MISMATCH" not in {x["code"] for x in pair}
+        assert "RECURSIVE_AUTH_RESPONSE_MISMATCH" not in {x["code"] for x in pair}
         assert compare([d,full])==["COMPARISON_INCONCLUSIVE"]
 
 

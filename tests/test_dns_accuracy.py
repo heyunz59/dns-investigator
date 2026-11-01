@@ -53,3 +53,32 @@ def test_legacy_adapter_does_not_mutate_or_invent_rcode():
     data=rows("timeout")[0];original=copy.deepcopy(data)
     assert dns_outcome(data)==dict(transport_status="timeout",dns_rcode=None,result_kind="TIMEOUT")
     assert data==original
+
+
+@pytest.mark.parametrize("case",list(cases()))
+def test_fixed_evidence_acceptance(case):
+    expected=json.loads((ROOT/"evaluation/accuracy_expectations.json").read_text(encoding="utf-8"))["cases"][case]
+    result=diagnose(cases()[case]);codes={f["code"] for f in result}
+    assert set(expected.get("required",[]))<=codes
+    assert not set(expected.get("forbidden",[])) & codes
+    assert all(not f["root_cause_confirmed"] for f in result)
+    assert all(set(f["evidence_ids"])<={e["id"] for e in cases()[case]} for f in result)
+
+
+def test_aggregation_keeps_groups_and_exceptions():
+    data=cases()["partial"]+[evidence(4,"TIMEOUT",resolver="4.4.4.4")]
+    f=diagnose(data)
+    timeouts=[x for x in f if x["code"]=="RECURSIVE_QUERY_TIMEOUT"]
+    assert len(timeouts)==1 and timeouts[0]["localization"]["affected_evidence_ids"]==["E1","E4"]
+    assert set(timeouts[0]["evidence_ids"])=={"E1","E2","E3","E4"}
+    differences=[x for x in f if x["code"]=="RECURSIVE_RESPONSE_DISAGREEMENT"]
+    assert len(differences)==1 and differences[0]["evidence_ids"]==["E2","E3"]
+    assert {x["evidence_id"] for x in differences[0]["localization"]["other_paths"]}=={"E1","E4"}
+
+
+def test_source_time_scope_never_aggregates_unrelated_paths():
+    data=cases()["nxdomain"]
+    data[1]["source_mode"]="live"
+    assert "RECURSIVE_RESPONSE_DISAGREEMENT" not in {f["code"] for f in diagnose(data)}
+    data[1]["source_mode"]="synthetic";data[1]["started_at"]="2026-11-01T00:10:00+00:00"
+    assert "RECURSIVE_RESPONSE_DISAGREEMENT" not in {f["code"] for f in diagnose(data)}

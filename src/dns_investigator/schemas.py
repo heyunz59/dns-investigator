@@ -30,6 +30,10 @@ class ExecutionIssue(BaseModel):
 
 
 class Finding(BaseModel):
+    scope: dict = Field(default_factory=dict)
+    observed_facts: list[dict] = Field(default_factory=list)
+    localization: dict = Field(default_factory=dict)
+    root_cause_confirmed: bool = False
     code: str
     stage: str
     status: str

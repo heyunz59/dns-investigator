@@ -36,7 +36,7 @@ async def test_closest_zone_discovery_and_multiple_aa_soa(monkeypatch):
     result=await b.call("query_authoritative",domain=b.target.domain)
     assert result["data"]["zone"]=="dept.example.co.uk"
     assert len(direct)==4 and len(b.attempts)==1
-    assert any(f["code"]=="AUTH_SERVER_DISAGREEMENT" for f in diagnose(b.calls))
+    assert any(f["code"]=="AUTHORITATIVE_RESPONSE_DISAGREEMENT" for f in diagnose(b.calls))
     assert all(q["parent_tool_call_id"]=="A1" for q in b.dns.attempts)
 
 
@@ -89,4 +89,4 @@ def test_non_aa_is_not_authoritative_mismatch():
     def e(id,role,code):
         return dict(id=id,execution_status="ok",data=dict(qname="example.com",qtype="A",resolver_role=role,rcode=code,records=[],flags={"AA":False}))
     findings=diagnose([e("E1","recursive","NXDOMAIN"),e("E2","authoritative","NOERROR")])
-    assert not any(f["code"]=="RECURSIVE_AUTH_MISMATCH" for f in findings)
+    assert not any(f["code"]=="RECURSIVE_AUTH_RESPONSE_MISMATCH" for f in findings)

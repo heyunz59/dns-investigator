@@ -58,7 +58,7 @@ def test_cdn_and_ttl_do_not_become_fault():
     b=parse_response(response(values=["192.0.2.11"]),"example.com","A","8.8.8.8")
     assert "ADDRESS_SET_DIFFERENCE" in compare([a,b])
     f=diagnose([dict(id="E1",execution_status="ok",data=a),dict(id="E2",execution_status="ok",data=b)])
-    assert not any(x["code"]=="RESOLVER_DISAGREEMENT" for x in f)
+    assert not any(x["code"]=="RECURSIVE_RESPONSE_DISAGREEMENT" for x in f)
 
 
 def test_same_cname_with_ttl_difference_is_not_alias_difference():
@@ -129,7 +129,7 @@ async def test_d_cases(case):
         if case in {"D4","D5","D9"}:
             await b.call("query_authoritative",domain="example.com",record_type="A")
     codes={f["code"] for f in diagnose(b.calls)}
-    expected={"D1":"DNS_INCONCLUSIVE","D2":"RESOLVER_DISAGREEMENT","D3":"DNS_TIMEOUT","D4":"RECURSIVE_AUTH_MISMATCH","D5":"AUTH_SERVER_DISAGREEMENT","D6":"NODATA_OBSERVED","D7":"DNS_TIMEOUT","D8":"DNS_INCONCLUSIVE","D9":"DNS_TIMEOUT","D10":"DNS_INCONCLUSIVE"}
+    expected={"D1":"DNS_INCONCLUSIVE","D2":"RECURSIVE_RESPONSE_DISAGREEMENT","D3":"RECURSIVE_QUERY_TIMEOUT","D4":"RECURSIVE_AUTH_RESPONSE_MISMATCH","D5":"AUTHORITATIVE_RESPONSE_DISAGREEMENT","D6":"NODATA_OBSERVED","D7":"RECURSIVE_QUERY_TIMEOUT","D8":"RECORD_SET_DIFFERENCE","D9":"AUTHORITATIVE_QUERY_TIMEOUT","D10":"DNS_INCONCLUSIVE"}
     assert expected[case] in codes
     assert len({e["id"] for e in b.calls})==len(b.calls)
     assert all(set(f["evidence_ids"]) <= {e["id"] for e in b.calls} for f in diagnose(b.calls))
