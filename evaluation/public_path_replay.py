@@ -11,7 +11,9 @@ def save(p,d):p.write_text(json.dumps(d,ensure_ascii=False,indent=2)+'\n',encodi
 
 
 def run(out):
+    out.mkdir(parents=True,exist_ok=False) # never overwrite an earlier replay/capture
     raw=Path('data/regressions/baidu-investigation.json').read_bytes();log=json.loads(raw.decode('utf-8-sig'))
+    save(out/'before-report.json',log['result'])
     new=canonical(log);r=new['result'];view=present(new)
     for key in ['evidence','attempts','dns_attempts','validation_results']:assert log[key]==new[key]
     save(out/'after-investigation.json',new);save(out/'after-web.json',view)

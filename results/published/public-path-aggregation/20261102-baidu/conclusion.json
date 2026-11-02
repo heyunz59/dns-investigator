@@ -1,0 +1,50 @@
+{
+  "business_source_commit": "5e35797e11227fe42b5d64f2b01e27442e15316f",
+  "real_log_replay": {
+    "status": "PASS",
+    "evidence": "original-manifest.json and comparison.json; 19E/17Q/7timeouts preserved"
+  },
+  "path_groups": {
+    "status": "PASS",
+    "evidence": "group-evidence.csv; 192.168.5.1=5, 1.1.1.1=2; observations not shared causes"
+  },
+  "success_limits": {
+    "status": "PASS",
+    "evidence": "after-investigation.json diagnostic_summary; selected authoritative/TCP CONNECTED/HTTP301 and rejected redirect"
+  },
+  "remediation": {
+    "status": "PASS",
+    "evidence": "after-investigation.json; 15 steps -> 6 group-scoped steps with all branches"
+  },
+  "web_cli_json": {
+    "status": "PASS",
+    "evidence": "after-web.json / after-cli.txt / browser-check.json / baidu-after.png"
+  },
+  "local_tests": {
+    "status": "PASS",
+    "passed": 571,
+    "failed": 0,
+    "skipped": 0,
+    "seconds": 40.69
+  },
+  "ci": {
+    "status": "PASS",
+    "url": "https://github.com/heyunz59/dns-investigator/actions/runs/41445946293"
+  },
+  "protected_protocols": {
+    "status": "PASS",
+    "evidence": "protected-source-hashes.json and complete pytest"
+  },
+  "independent_human_semantic_acceptance": {
+    "status": "NOT_RUN",
+    "reason": "Developer validation is AI-assisted, not independent human assessment."
+  },
+  "new_public_measurements": 0,
+  "new_model_calls": 0,
+  "limitations": [
+    "Grouping is a scoped path phenomenon, not a proven shared or independent operational cause.",
+    "Missing source/location/time keeps fine-grained historical observations rather than forced grouping.",
+    "300-second window is a bounded comparison qualification, not proof of network causality.",
+    "Existing protocol support limits unchanged."
+  ]
+}

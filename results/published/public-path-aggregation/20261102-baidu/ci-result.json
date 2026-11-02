@@ -1,0 +1,128 @@
+{
+  "conclusion": "success",
+  "headSha": "5e35797e11227fe42b5d64f2b01e27442e15316f",
+  "jobs": [
+    {
+      "completedAt": "2026-11-02T12:37:22Z",
+      "conclusion": "success",
+      "databaseId": 125278927185,
+      "name": "test",
+      "startedAt": "2026-11-02T12:35:31Z",
+      "status": "completed",
+      "steps": [
+        {
+          "completedAt": "2026-11-02T12:35:32Z",
+          "conclusion": "success",
+          "name": "Set up job",
+          "number": 1,
+          "startedAt": "2026-11-02T12:35:32Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-02T12:35:35Z",
+          "conclusion": "success",
+          "name": "Run actions/checkout@v4",
+          "number": 2,
+          "startedAt": "2026-11-02T12:35:33Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-02T12:35:35Z",
+          "conclusion": "success",
+          "name": "Run actions/setup-python@v5",
+          "number": 3,
+          "startedAt": "2026-11-02T12:35:35Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-02T12:35:53Z",
+          "conclusion": "success",
+          "name": "Run python -m pip install -r requirements-dev.txt",
+          "number": 4,
+          "startedAt": "2026-11-02T12:35:35Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-02T12:35:55Z",
+          "conclusion": "success",
+          "name": "Run python -m pip install --no-deps -e .",
+          "number": 5,
+          "startedAt": "2026-11-02T12:35:53Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-02T12:36:32Z",
+          "conclusion": "success",
+          "name": "Run python -m pytest -q",
+          "number": 6,
+          "startedAt": "2026-11-02T12:35:55Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-02T12:36:34Z",
+          "conclusion": "success",
+          "name": "Run python -m pip wheel --no-deps . --wheel-dir dist",
+          "number": 7,
+          "startedAt": "2026-11-02T12:36:32Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-02T12:37:00Z",
+          "conclusion": "success",
+          "name": "Run python scripts/check_installation.py --wheel-dir dist --output results/runs/linux-installation.json",
+          "number": 8,
+          "startedAt": "2026-11-02T12:36:34Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-02T12:37:01Z",
+          "conclusion": "success",
+          "name": "Run actions/upload-artifact@v4",
+          "number": 9,
+          "startedAt": "2026-11-02T12:37:00Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-02T12:37:20Z",
+          "conclusion": "success",
+          "name": "Run python scripts/check_public.py",
+          "number": 10,
+          "startedAt": "2026-11-02T12:37:01Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-02T12:37:20Z",
+          "conclusion": "success",
+          "name": "Post Run actions/setup-python@v5",
+          "number": 19,
+          "startedAt": "2026-11-02T12:37:20Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-02T12:37:20Z",
+          "conclusion": "success",
+          "name": "Post Run actions/checkout@v4",
+          "number": 20,
+          "startedAt": "2026-11-02T12:37:20Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-02T12:37:20Z",
+          "conclusion": "success",
+          "name": "Complete job",
+          "number": 21,
+          "startedAt": "2026-11-02T12:37:20Z",
+          "status": "completed"
+        }
+      ],
+      "url": "https://github.com/heyunz59/dns-investigator/actions/runs/41445946293/job/125278927185"
+    }
+  ],
+  "status": "completed",
+  "url": "https://github.com/heyunz59/dns-investigator/actions/runs/41445946293",
+  "summary_lines": [
+    "test\tRun python -m pytest -q\t2026-11-02T12:36:31.9249154Z 571 passed in 35.55s",
+    "test\tRun python scripts/check_installation.py --wheel-dir dist --output results/runs/linux-installation.json\t2026-11-02T12:37:00.7382508Z Installation verification PASS: editable + wheel; both entry points; 20 strict JSON CLI cases; all module/assets match.",
+    "test\tRun python scripts/check_public.py\t2026-11-02T12:37:20.4253880Z Public audit: PASS (pattern scan; manual review still required)"
+  ]
+}

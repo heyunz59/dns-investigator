@@ -1,5 +1,9 @@
 # 验证记录
 
+## 公网日志路径聚合反例（2026-11-02）
+
+实际起点f5fa411含已有Web成果：551 passed in40.44s；本轮业务5e35797：571 passed in40.69s，新增20项，0失败/0跳过。用户investigation.json原样保存为回归样本，SHA256=d71618858ed81eb38f6113250a3910817465e5b45c63b5d901ebce391421fdd4；19E、17Q、6A、0V和原Finding均未变。五条用户诊断/15步骤变为两组路径观测/6步骤（192.168.5.1五次，1.1.1.1两次）。实际本机浏览器验三标签、17条DNS表行和6条A时间线，并保存截图；不是新公网实验。远程实际结果见[本轮验收](../results/published/public-path-aggregation/20261102-baidu/review-summary.md)。未调用DeepSeek、未新增DNS/TCP/HTTP探测，独立人工语义验收未执行。
+
 ## v0.5 最终收尾与跨平台验收（2026-11-02）
 
 基线 9e2645a 本地实际508 passed in41.30s；旧Linux Actions41414761379为501 passed/7 failed，均CLI子进程找不到未安装项目。收尾业务33450e9：Windows完整523 passed in41.74s，0失败/0跳过，新增15项，pip check通过。CI先editable安装再完整测试，再构建/真实安装wheel并验证两种入口。Windows两种安装共20例严格JSON检查及全部模块/资产字节核对通过，开发环境已恢复editable。系统DNS参数映射/显式公共/未授权私网/历史未知/复合路径重叠不改底层授权；并列TCP与HTTP各有CHECK，完整结果未变。Linux业务33450e9的实际Actions41417530424全部成功：523 passed in29.63s，editable/wheel两种安装、两种入口共20例JSON检查及模块/资产核对通过。最终Linux实际状态、日志与安装报告见 [收尾材料](../results/published/v05-finalization/20261102-crossplatform/review-summary.md)，不以本地通过替代远程验收。原审查材料和失败记录保留。

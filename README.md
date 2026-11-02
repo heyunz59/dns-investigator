@@ -1,5 +1,7 @@
 # DNS 调查助手
 
+公网日志反例修复：正式报告按实际解析器、来源、测量位置和可靠时间窗口聚合递归超时；原始名称/类型、E/Q/Finding 保留。Web、CLI 和 JSON 同时展示正常对照、TCP/HTTP 已测结果及未完成环节，不把局部路径超时说成网站整体故障。旧完整日志可在 Web 导入后只读回放；导出保留旧 result 为 original_result，原始账本不变。原 Web 进程如仍运行，重启后导入原 JSON 即可使用新逻辑。[百度样本对照、截图及验收记录](results/published/public-path-aggregation/20261102-baidu/review-summary.md)。本轮仅回放旧日志，无新增公网测量或模型调用。
+
 v0.4 有限协议诊断（2026-11-02，0.4.0.dev0）：保持一个 Agent、五个工具；query_authoritative 默认 basic，按需选择 trace/dnssec。新增 EDNS/EDE 来源分析、从 Root Hints 出发的有界 RD=0 委派追踪、认证根锚下的签名/信任链及限定 NSEC/NSEC3 证明验证。最终业务源码133b49a：356项离线通过；Unbound1.26.2对照37例，其中30个声明核心场景状态一致，其余策略/畸形差异与参考超时如实列出；真实DeepSeek受控实验逐轮保存，不是语义准确率。公网 nic.cz 完成独立路径与本地 SECURE 验证，另有路径未完成记录；不保证任意公网域名均可追踪。完整支持矩阵、失败记录、成本和复测见[v0.4验证与边界](docs/v0.4-validation.md)。本轮仅本地提交，未推送/合并/发布，远程CI未验证。
 
 不支持自动 CNAME 全链 DNSSEC、DNAME、NSEC ENT NODATA、NSEC3非零迭代/非空salt/Opt-Out及策略之外算法；未完成/能力受限保留未知。跨区 NS 循环引导可能停止，不暗中调用递归。EDE服务器自报、程序规则、本地密码学V、外部参考分开；不能据此确认运维根因。旧版本以下为历史记录，当前日志v7及支持范围以上文为准。

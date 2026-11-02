@@ -1,5 +1,13 @@
 # 实现与证据边界
 
+## 公网日志的路径级超时表达（2026-11-02）
+
+原按QNAME/QTYPE的Finding仍完整保留。path_groups.py仅在高层DiagnosticConclusion生成后、问题相关性选择前，将同reason_code、实际递归resolver、角色、来源、测量位置和可靠300秒整体窗口的超时观测归为路径组；不是根因聚类。窗口不作传递扩展。字段缺失时保留原有较细观测，不猜测来源/时间。DNSSEC、权威错误、TCP/HTTP、不同机制从不进入此归并。
+
+diagnostic_groups保存路径观测数、全部原始查询scope、真实E和已记录Q、原Finding引用；diagnostic_summary保存范围内成功DNS/选中AA权威、TCP及HTTP响应和限制。同名同类型/来源/位置/时间的成功记录才作为对照。全部高层诊断均为路径组时生成“部分路径超时”整体表述；若还有独立故障或显式关注的其他问题，保留原主次/并列机制。remediation仍按每个实际路径组生成CHECK/POSSIBLE_FIX/VERIFY与完整分支，不按每个查询重复生成。
+
+report_replay.py从已有完整E/A/Q/V只读重建正式报告，不调用工具/模型；Web的旧日志展示与导出使用此共同入口，不在JS里另作诊断。原文件不修改，导出另留original_result。CLI、新JSON和Web使用相同diagnostic_summary。新增字段均有默认值，旧不完整日志保守加载。原五工具、账本、查询/验证/授权/预算不变。
+
 ## v0.5 报告质量补修（本地，2026-11-02）
 
 新增 request_context.py 从规范化目标与用户显式协议词提取保守关注点（处理常见否定/引用，多义时未知），仅供报告排序；不作为 E/V、网络授权、验证状态或预算输入。原用户问题不重复存入新增上下文。Agent 调查与失败回退均将同一上下文交给报告。
