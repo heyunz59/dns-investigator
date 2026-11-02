@@ -1,5 +1,9 @@
 # 验证记录
 
+## v0.5 最终收尾与跨平台验收（2026-11-02）
+
+基线 9e2645a 本地实际508 passed in41.30s；旧Linux Actions41414761379为501 passed/7 failed，均CLI子进程找不到未安装项目。收尾业务33450e9：Windows完整523 passed in41.74s，0失败/0跳过，新增15项，pip check通过。CI先editable安装再完整测试，再构建/真实安装wheel并验证两种入口。Windows两种安装共20例严格JSON检查及全部模块/资产字节核对通过，开发环境已恢复editable。系统DNS参数映射/显式公共/未授权私网/历史未知/复合路径重叠不改底层授权；并列TCP与HTTP各有CHECK，完整结果未变。Linux业务33450e9的实际Actions41417530424全部成功：523 passed in29.63s，editable/wheel两种安装、两种入口共20例JSON检查及模块/资产核对通过。最终Linux实际状态、日志与安装报告见 [收尾材料](../results/published/v05-finalization/20261102-crossplatform/review-summary.md)，不以本地通过替代远程验收。原审查材料和失败记录保留。
+
 ## v0.5 定位/相关性/排障/CLI 本地补修（2026-11-02）
 
 实际基线 2fd0245：447 passed in28.52s；业务 5ce9e20：508 passed in41.53s，新增61项，0失败/0跳过，pip check通过。修改前13份原反例先保存；扩充33例从隔离归档基线实际生成旧报告并核对 import 哈希，同一原始输入在新代码回放。事实/V/Finding结构均保持一致（Finding解释按状态修正）；历史受控测量回放、人工构造输入和脚本模型明确区分，未新增公网/付费模型调用。DS实例直接V7/E7/E8，根至父区为依赖；多问题TCP/HTTP明确关注分别选择，无关注并列；分支、JSON严格解析、模型失败回退与旧字段默认兼容均覆盖。原交互测试仅补充TTY模拟，原无关注多故障测试改验并列及两项故障保留；安全、协议与预算断言未放宽。人工语义复核及远程CI未执行，本轮不推送。[材料与限制](../results/published/v05-report-quality-fixes/20261102-report-quality/review-summary.md)。

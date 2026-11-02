@@ -97,9 +97,13 @@ v0.2 已完成 [48 次真实模型对照](results/published/evaluation-reliabili
 
 ## v0.5 结构化诊断与修复建议
 
+收尾验收要求在测试前正常安装项目：`python -m pip install -e .`，不能仅依赖 pytest 的 `pythonpath`。CI 同时构建 wheel，在项目目录外、清除 `PYTHONPATH` 后验证模块入口和 `dns-investigator` 命令的 JSON 输出及全部模块/资产；本地可执行 `python scripts/check_installation.py --wheel-dir dist --output results/runs/install.json --restore-editable`（先构建 wheel；脚本实际安装 wheel 后恢复 editable）。
+
+系统 DNS 建议从父调用确认路径后使用 `resolver=None`；显式解析器按原工具准入规则检查，历史来源不全或系统/显式路径重叠时不标为当前工具可执行。`supported_by_current_tools` 表示能力/当前参数检查，不是已经执行；`can_execute_now=false`，新调查仍须重新校验目标、解析器及预算。并列摘要先为每个异常分配 CHECK，最多三项，超额明确提示；完整 JSON 不截断。v0.5 进入冻结，跨平台验收见 [最终收尾材料](results/published/v05-finalization/20261102-crossplatform/review-summary.md)。
+
 本地报告质量补修：默认 CLI 为摘要，不再重复输出完整 JSON；`--verbose` 追加详情，`--format json` 输出单一完整 JSON 对象（进度到 stderr，不能与 `--verbose` 组合）。JSON/非交互模式缺目标直接返回错误，不等待输入；`--tools-only --format json` 输出独立工具记录对象，仍不调用模型。完整日志与原退出码保留。
 
-诊断新增直接依据/验证依赖与结构化位置；明确关注点只影响展示相关性，不影响授权或验证等级。无充分主次依据时 `diagnosis_selection_mode=parallel`、`diagnostic_conclusion=null`，所有并列观测保存在 `secondary_diagnoses`，不虚构综合根因。CHECK 的 `branches` 将未来检查条件、解释、下一步和变更前提绑定；建议尚未执行。完整材料见 [本地专项修复记录](results/published/v05-report-quality-fixes/20261102-report-quality/review-summary.md)。本轮未推送，远程 CI 未执行。
+诊断新增直接依据/验证依赖与结构化位置；明确关注点只影响展示相关性，不影响授权或验证等级。无充分主次依据时 `diagnosis_selection_mode=parallel`、`diagnostic_conclusion=null`，所有并列观测保存在 `secondary_diagnoses`，不虚构综合根因。CHECK 的 `branches` 将未来检查条件、解释、下一步和变更前提绑定；建议尚未执行。完整材料见 [本地专项修复记录](results/published/v05-report-quality-fixes/20261102-report-quality/review-summary.md)。该记录保留当时的本地验收状态；后续推送及跨平台 CI 成功结果见上方最终收尾材料。
 
 调查结束后，普通 Python 规则模块从已有 Evidence/Finding/V 构造 `diagnostic_conclusion`、`secondary_diagnoses` 和 `remediation_plan`，不新增工具、网络测量或第二次模型调用。CLI 优先显示结论、位置、原因等级和行动，再显示完整调查详情；单项查询继续优先显示记录。
 

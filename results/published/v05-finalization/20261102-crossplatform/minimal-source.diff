@@ -1,0 +1,290 @@
+diff --git a/.github/workflows/tests.yml b/.github/workflows/tests.yml
+index 7cfaa1b..42df3c3 100644
+--- a/.github/workflows/tests.yml
++++ b/.github/workflows/tests.yml
+@@ -11 +11,2 @@ jobs:
+-      - run: pip install -r requirements-dev.txt
++      - run: python -m pip install -r requirements-dev.txt
++      - run: python -m pip install --no-deps -e .
+@@ -12,0 +14,6 @@ jobs:
++      - run: python -m pip wheel --no-deps . --wheel-dir dist
++      - run: python scripts/check_installation.py --wheel-dir dist --output results/runs/linux-installation.json
++      - uses: actions/upload-artifact@v4
++        with:
++          name: linux-installation
++          path: results/runs/linux-installation.json
+diff --git a/scripts/check_installation.py b/scripts/check_installation.py
+new file mode 100644
+index 0000000..d5a4e29
+--- /dev/null
++++ b/scripts/check_installation.py
+@@ -0,0 +1,72 @@
++"""Exercise real editable/wheel installations outside the checkout, without model/network probes."""
++import argparse
++import hashlib
++import json
++import os
++from pathlib import Path
++import subprocess
++import sys
++import tempfile
++
++
++def run(cmd,**kwargs):
++    env=kwargs.setdefault('env',os.environ.copy());env['PYTHONUTF8']='1'
++    return subprocess.run(cmd,text=True,encoding='utf-8',capture_output=True,timeout=180,**kwargs)
++
++
++def verify(root,kind,cwd):
++    env=os.environ.copy();env.pop('PYTHONPATH',None)
++    py=Path(sys.executable)
++    console=py.parent/('dns-investigator.exe' if os.name=='nt' else 'dns-investigator')
++    assert console.exists(), 'Installed console entry point missing'
++    probe=run([str(py),'-c','import dns_investigator; print(dns_investigator.__file__)'],cwd=cwd,env=env)
++    assert probe.returncode==0,probe.stderr
++    installed=Path(probe.stdout.strip()).resolve().parent
++    assert installed.is_relative_to(root/'src')==(kind=='editable'), 'Wrong package import location'
++    inventory={}
++    for source in (root/'src/dns_investigator').rglob('*'):
++        if not source.is_file() or '__pycache__' in source.parts or source.suffix=='.pyc':continue
++        relative=source.relative_to(root/'src/dns_investigator');target=installed/relative
++        assert target.exists(),str(relative)
++        assert target.read_bytes()==source.read_bytes(),str(relative)
++        inventory[relative.as_posix()]=hashlib.sha256(target.read_bytes()).hexdigest()
++    cases=[(['--format','json','--help'],0),(['--format','json'],2),
++        (['--format','json','--verbose'],2),(['--target','https://u:p@example.com','--format','json'],2),
++        (['query example.com A','--tools-only','--fixture',str(root/'data/fixtures/Q1.json'),'--format','json'],0)]
++    results=[]
++    for entry,prefix in [('module',[str(py),'-m','dns_investigator.main']),('console',[str(console)])]:
++        for i,(args,code) in enumerate(cases):
++            result=run(prefix+args,cwd=cwd,env=env,input='')
++            assert result.returncode==code,(kind,entry,i,result.returncode,result.stderr)
++            obj=json.loads(result.stdout) # rejects banners or a second object
++            assert isinstance(obj,dict)
++            if i==4:assert obj['mode']=='tools_only' and obj['evidence']
++            results.append(dict(entry=entry,case=i,exit_code=result.returncode,json_object=True,status=obj['status']))
++    return dict(kind=kind,import_location='checkout/src' if kind=='editable' else 'installed site-packages',
++        module_and_asset_hashes=inventory,cli_cases=results,PYTHONPATH='removed',cwd='temporary directory outside checkout')
++
++
++def main():
++    p=argparse.ArgumentParser();p.add_argument('--wheel-dir',type=Path,required=True);p.add_argument('--output',type=Path,required=True)
++    p.add_argument('--restore-editable',action='store_true');args=p.parse_args()
++    root=Path(__file__).resolve().parents[1]
++    wheels=list(args.wheel_dir.resolve().glob('dns_investigator-*.whl'));assert len(wheels)==1
++    result=dict(python=sys.version.split()[0],platform=sys.platform,model_calls=0,network_measurements=0,
++        dependency_environment='existing installed dependencies retained; actual project install replaced for each phase',
++        wheel_sha256=hashlib.sha256(wheels[0].read_bytes()).hexdigest(),phases=[])
++    with tempfile.TemporaryDirectory(prefix='dns-install-check-') as cwd:
++        result['phases'].append(verify(root,'editable',cwd))
++        installed=run([sys.executable,'-m','pip','install','--no-deps','--force-reinstall',str(wheels[0])])
++        assert installed.returncode==0,installed.stderr
++        try:result['phases'].append(verify(root,'wheel',cwd))
++        finally:
++            if args.restore_editable:
++                restored=run([sys.executable,'-m','pip','install','--no-deps','-e',str(root)])
++                assert restored.returncode==0,restored.stderr
++                result['editable_restored']=True
++    result['status']='PASS';args.output.parent.mkdir(parents=True,exist_ok=True)
++    args.output.write_text(json.dumps(result,indent=2)+'\n',encoding='utf-8')
++    print('Installation verification PASS: editable + wheel; both entry points; 20 strict JSON CLI cases; all module/assets match.')
++
++
++if __name__=='__main__':main()
+diff --git a/src/dns_investigator/main.py b/src/dns_investigator/main.py
+index 1e86083..147ecef 100644
+--- a/src/dns_investigator/main.py
++++ b/src/dns_investigator/main.py
+@@ -30 +30,6 @@ def summary(result):
+-    shown=0
++    actions=[]
++    if result.get('diagnosis_selection_mode')=='parallel':
++        for item in all_d:
++            check=next((s for s in item.get('remediation_steps',[]) if s['action_type']=='CHECK'),None)
++            if check:actions.append((item,check))
++        if len(actions)>3:print(f'检查摘要仅展示前3项，另有 {len(actions)-3} 项独立观测的 CHECK 见完整日志/--verbose；不据此确认主次。')
+@@ -33,5 +38,5 @@ def summary(result):
+-            if shown>=3:break
+-            print(step['action_type']+'（尚未执行）：'+short(step['description']));shown+=1
+-            for b in step.get('branches',[])[:2]:print('  '+short(b['condition']+' → '+b['interpretation']+' → '+b['next_action']))
+-        if item.get('verification_steps'):print('验证方式：'+short(item['verification_steps'][0]['verification_method']))
+-        if shown>=3:break
++            if not any(existing is step for _,existing in actions):actions.append((item,step))
++    for item,step in actions[:3]:
++        print('['+item['primary_issue']+'] '+step['action_type']+'（尚未执行）：'+short(step['description']))
++        for b in step.get('branches',[])[:2]:print('  '+short(b['condition']+' → '+b['interpretation']+' → '+b['next_action']))
++        print('验证方式：'+short(step['verification_method']))
+diff --git a/src/dns_investigator/remediation.py b/src/dns_investigator/remediation.py
+index 9c147c7..ae21f59 100644
+--- a/src/dns_investigator/remediation.py
++++ b/src/dns_investigator/remediation.py
+@@ -2,0 +3,38 @@ from .schemas import RemediationStep,RemediationBranch
++import ipaddress
++
++
++def dns_method(f,backend):
++    """Read original call intent, then use the existing admission check without I/O."""
++    result=dict(kind='external_read_only',supported_by_current_tools=False,parameters={},
++        parameters_constructed=False,authorization_status='unknown',can_execute_now=False,
++        description='解析器路径来源或当前授权不完整；仅外部只读核对，不扩展 DNS_RESOLVERS。')
++    if backend is None:return result
++    evidence=next((e for e in backend.calls if e['id']==f.get('evidence_id')),None)
++    if evidence is None:return result
++    parent=next((a for a in backend.attempts if a['attempt_id']==evidence.get('tool_call_id')),None)
++    if parent is None:return result
++    args=parent.get('input',{});actual=f.get('resolver')
++    if not args.get('domain') or args['domain'].lower().rstrip('.')!=f['target'].lower().rstrip('.') or args.get('record_type','A')!=f.get('record_type'):return result
++    try:
++        server=str(ipaddress.ip_address(actual))
++        if parent['tool_name']=='query_dns':
++            requested=args.get('resolver')
++            if requested is not None and str(ipaddress.ip_address(requested))!=server:return result
++            resolver=requested
++        elif parent['tool_name']=='compare_resolvers':
++            explicit={str(ipaddress.ip_address(r)) for r in backend.resolvers if r is not None}
++            system={str(ipaddress.ip_address(r)) for r in backend.dns.system[:2]} if None in backend.resolvers else set()
++            if server in explicit and server not in system:resolver=server
++            elif server in system and server not in explicit:resolver=None
++            else:return result # overlap has no per-packet original-path metadata
++        else:return result
++        parameters=dict(domain=f['target'],record_type=f['record_type'],resolver=resolver)
++        result.update(parameters=parameters,parameters_constructed=True)
++        backend._validate('query_dns',parameters)
++        if resolver is None and not backend.dns.system:return result
++    except (ValueError,TypeError):
++        result['authorization_status']='rejected';return result
++    result.update(kind='current_tool',tool_name='query_dns',supported_by_current_tools=True,
++        authorization_status='accepted_by_current_validation',
++        description='参数映射经本次工具准入检查；尚未执行，也未预留预算。新调查仍须重新校验目标、解析器和预算；系统配置可能已变化。')
++    return result
+@@ -51 +89 @@ def branches(d):
+-def plan(diagnosis, query=False):
++def plan(diagnosis, query=False,backend=None):
+@@ -123,3 +161 @@ def plan(diagnosis, query=False):
+-                step.method=dict(kind='current_tool',tool_name='query_dns',supported_by_current_tools=True,
+-                    parameters=dict(domain=f['target'],record_type=f['record_type'],resolver=f.get('resolver')),
+-                    description='后续新的授权调查中的候选检查；仍须目标、解析器、时效和预算校验，尚未执行。')
++                step.method=dns_method(f,backend)
+@@ -133 +169 @@ def plan(diagnosis, query=False):
+-def attach(result):
++def attach(result,backend=None):
+@@ -143 +179 @@ def attach(result):
+-        steps=plan(d,result.request_kind=='query')
++        steps=plan(d,result.request_kind=='query',backend)
+diff --git a/src/dns_investigator/reporting.py b/src/dns_investigator/reporting.py
+index 089d066..2ec38cb 100644
+--- a/src/dns_investigator/reporting.py
++++ b/src/dns_investigator/reporting.py
+@@ -228 +228 @@ def evidence_bound_report(result,backend):
+-    attach(result)
++    attach(result,backend)
+diff --git a/tests/test_report_quality.py b/tests/test_report_quality.py
+index b1e82bc..0cd3a00 100644
+--- a/tests/test_report_quality.py
++++ b/tests/test_report_quality.py
+@@ -104 +104,4 @@ def test_dns_timeout_is_not_a_returned_rcode():
+-    assert check['method']['tool_name']=='query_dns' and check['executed'] is False
++    # Replayed system identity lacks the original resolver configuration in this
++    # backend: do not claim the recorded numeric address is currently executable.
++    assert check['method']['supported_by_current_tools'] is False
++    assert check['method']['authorization_status']=='unknown' and check['executed'] is False
+diff --git a/tests/test_v05_closure.py b/tests/test_v05_closure.py
+new file mode 100644
+index 0000000..5f2206b
+--- /dev/null
++++ b/tests/test_v05_closure.py
+@@ -0,0 +1,94 @@
++"""Finalization tests: constructed provenance, unchanged admission, CLI allocation."""
++import copy
++import json
++from pathlib import Path
++import pytest
++from dns_investigator.remediation import dns_method
++from dns_investigator.tools import ToolBackend
++from dns_investigator.target import parse_target
++from dns_investigator.main import summary
++from evaluation.report_quality import report
++
++
++def sample(parent='query_dns',server='10.0.0.53',requested=None,explicit=True):
++    b=ToolBackend(parse_target('probe.example'));b.dns.system=['10.0.0.53','10.0.0.54']
++    args=dict(domain='probe.example',record_type='A')
++    if explicit:args['resolver']=requested
++    b.attempts=[dict(attempt_id='A1',tool_name=parent,input=args)]
++    b.calls=[dict(id='E1',tool_call_id='A1',source_mode='live')]
++    f=dict(evidence_id='E1',target='probe.example',record_type='A',resolver=server,source_mode='live')
++    return b,f
++
++
++@pytest.mark.parametrize('explicit',[True,False])
++def test_system_path_maps_none_not_private_ip(explicit):
++    b,f=sample(explicit=explicit);before=copy.deepcopy((b.calls,b.attempts,b.dns.attempts,b.dns.system,b.resolvers))
++    m=dns_method(f,b)
++    assert m['parameters']['resolver'] is None and m['supported_by_current_tools']
++    assert m['authorization_status']=='accepted_by_current_validation' and not m['can_execute_now']
++    b._validate('query_dns',m['parameters'])
++    assert before==(b.calls,b.attempts,b.dns.attempts,b.dns.system,b.resolvers)
++
++
++def test_explicit_public_maps_and_passes_existing_policy():
++    b,f=sample(server='1.1.1.1',requested='1.1.1.1');m=dns_method(f,b)
++    assert m['parameters']['resolver']=='1.1.1.1' and m['supported_by_current_tools']
++    b._validate('query_dns',m['parameters'])
++
++
++def test_other_private_rejected_without_widening_policy():
++    b,f=sample(server='10.20.0.53',requested='10.20.0.53');before=(b.dns.system[:],b.resolvers)
++    m=dns_method(f,b)
++    assert m['parameters_constructed'] and not m['supported_by_current_tools']
++    assert m['authorization_status']=='rejected' and not m['can_execute_now']
++    assert before==(b.dns.system,b.resolvers)
++
++
++@pytest.mark.parametrize('case',['no_parent','mismatched_ip','wrong_parent','missing_target','overlap','no_backend'])
++def test_incomplete_or_ambiguous_provenance_is_not_direct_execution(case):
++    b,f=sample()
++    if case=='no_parent':b.attempts=[]
++    if case=='mismatched_ip':b.attempts[0]['input']['resolver']='1.1.1.1'
++    if case=='wrong_parent':b.attempts[0]['tool_name']='query_authoritative'
++    if case=='missing_target':b.attempts[0]['input'].pop('domain')
++    if case=='overlap':
++        b.attempts[0]['tool_name']='compare_resolvers';b.dns.system=['1.1.1.1'];f['resolver']='1.1.1.1'
++    m=dns_method(f,None if case=='no_backend' else b)
++    assert m['authorization_status']=='unknown' and not m['supported_by_current_tools']
++    assert not m['can_execute_now']
++
++
++@pytest.mark.parametrize('server,resolver',[('10.0.0.53',None),('1.1.1.1','1.1.1.1')])
++def test_compare_paths_require_unique_origin(server,resolver):
++    b,f=sample(parent='compare_resolvers',server=server);m=dns_method(f,b)
++    assert m['parameters']['resolver']==resolver and m['supported_by_current_tools']
++
++
++def parallel_report():
++    p=Path('results/published/v05-report-quality-fixes/20261102-report-quality/before.json')
++    row=next(r for r in json.loads(p.read_text(encoding='utf-8'))['cases'] if r['case']=='multi-ambiguous')
++    return report(row)
++
++
++def test_parallel_gets_check_for_each_issue_without_mutating_json(capsys):
++    r=parallel_report();before=copy.deepcopy(r);summary(r);text=capsys.readouterr().out
++    assert '[TCP_REFUSED] CHECK' in text and '[HTTP_503] CHECK' in text
++    assert text.count('（尚未执行）')<=3 and r==before
++    assert r['diagnostic_conclusion'] is None and len(r['secondary_diagnoses'])==2
++
++
++def test_parallel_truncation_is_explicit(capsys):
++    r=parallel_report()
++    for index in range(3):
++        d=copy.deepcopy(r['secondary_diagnoses'][0]);d['primary_issue']='EXTRA_'+str(index);r['secondary_diagnoses'].append(d)
++    before=copy.deepcopy(r);summary(r);text=capsys.readouterr().out
++    assert '另有 2 项独立观测的 CHECK' in text and text.count('（尚未执行）')==3
++    assert 'EXTRA_2' not in '\n'.join(s for s in text.splitlines() if '（尚未执行）' in s)
++    assert r==before
++
++
++def test_primary_still_gets_first_action(capsys):
++    r=parallel_report();r['diagnostic_conclusion']=r['secondary_diagnoses'].pop();r['diagnosis_selection_mode']='primary'
++    expected=r['diagnostic_conclusion']['primary_issue'];summary(r)
++    lines=[s for s in capsys.readouterr().out.splitlines() if '（尚未执行）' in s]
++    assert lines[0].startswith('['+expected+'] CHECK')

@@ -13,8 +13,15 @@
   },
   "pip_check": "PASS",
   "windows_installation": "windows-installation.json",
-  "linux_ci": "PENDING_ACTUAL_RUN",
-  "business_source_commit": "PENDING_COMMIT",
+  "linux_ci": "https://github.com/heyunz59/dns-investigator/actions/runs/41417530424",
+  "business_source_commit": "33450e9e454628c28df9a9dd61b718cde5236caa",
   "model_calls": 0,
-  "review": "AI-assisted implementation verification, not independent human semantic acceptance"
+  "review": "AI-assisted implementation verification, not independent human semantic acceptance",
+  "linux_conclusion": "success",
+  "linux_summary": [
+    "test\tRun python -m pytest -q\t2026-11-02T09:04:08.3804486Z 523 passed in 29.63s",
+    "test\tRun python scripts/check_installation.py --wheel-dir dist --output results/runs/linux-installation.json\t2026-11-02T09:04:33.2798004Z Installation verification PASS: editable + wheel; both entry points; 20 strict JSON CLI cases; all module/assets match.",
+    "test\tRun python scripts/check_public.py\t2026-11-02T09:04:49.4423344Z Public audit: PASS (pattern scan; manual review still required)"
+  ],
+  "linux_installation": "linux-installation.json"
 }
