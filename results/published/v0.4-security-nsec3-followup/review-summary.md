@@ -33,6 +33,8 @@ X26 跨区布局在中间版 `844fa49` 出现 SECURE/Unbound BOGUS；原始 `nse
 - Unbound 1.26.2 为独立二进制/libunbound 实际执行，受控本机 DNS UDP：before、intermediate、final 各 28 场景。新上下文无缓存，保留 wire、配置、E/Q/V、签名与验证时间。不是公网调查或模型测试。
 - 本轮 DeepSeek 调用 0；无模型诊断准确率结论。工具注册/调用动态能力由原 Agent 回归覆盖。
 
+远程 Ubuntu / Python3.12 已实际执行 [GitHub Actions 41389247851](https://github.com/heyunz59/dns-investigator/actions/runs/41389247851)，对应交付快照 `e85fe84304c63b89ff5bd50e5bb4b14f5d271cbb`：**410 passed in21.46s**，公开扫描 PASS，完整 workflow success。`ci-status.json` 保留实际 job/step 状态及日志摘要；`conclusion.json.final_commit` 指此固定验收快照，后续提交仅追加 CI 回执与汇总脚本的元数据保留逻辑，不改业务源码。`wire-integrity.json` 对三阶段原始报文的 3572 个 query/response 哈希核验通过。
+
 `nsec3-followup-matrix.csv` 对照 before/final。`candidate_decisions` 来自最终 V；`proof_sufficient` 是本次规则/协议分析，仍待人工独立复核，不是 Unbound 相等率评分。
 
 旧审计观察器有两处元数据局限，未改写原始文件：before 每案例 environment 记录当前 checkout，而实际 import 为隔离归档 `20bd1ac`；由 `loaded-source-check.json` 的实际 import SHA 证明。final 的实际源码 SHA 见 `final-loaded-source-check.json`。X27 before 的原 equivalence=false 源自 RRset 内 RDATA 顺序比较；汇总脚本从原 wire 比较规范化、排序后的 RRset，所有 before/final 目标响应语义一致。原 false 字段仍保留，汇总同时列出修正结果。各阶段重新生成签名密钥/时间，不能把跨阶段 wire 字节不同误称为输入相同；每阶段项目与 Unbound 输入等价已核实。

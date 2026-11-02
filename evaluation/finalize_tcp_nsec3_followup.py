@@ -80,7 +80,9 @@ def main():
     with tcp.open('w', encoding='utf-8-sig', newline='') as f:
         w = csv.DictWriter(f, fieldnames=list(rows[0])); w.writeheader(); w.writerows(rows)
     verification = load(ROOT / 'source-verification.json')
-    regression = dict(verification, github_actions={'status': 'UNKNOWN', 'note': 'pending actual push'},
+    ci = load(ROOT / 'ci-status.json') if (ROOT / 'ci-status.json').exists() else {
+        'status': 'UNKNOWN', 'note': 'pending actual push'}
+    regression = dict(verification, github_actions=ci,
         coverage={k: 'PASS in complete 410-test run' for k in (
             'http_security', 'tcp_security', 'ordinary_dns', 'delegation_trace', 'dnssec',
             'A_Q_E_V_consistency', 'fixture', 'agent_five_tools', 'reports_and_old_logs')},
@@ -105,13 +107,15 @@ def main():
         new_false_secure_scope='fixed signed controlled cases only; not universal security certification',
         remaining_protocol_disagreements=[r['case'] for r in matrix if r['disagreement']],
         tests_passed=410, tests_failed=0, tests_skipped=0,
-        business_commit=verification['business_commit'], final_commit='UNKNOWN',
-        final_commit_note='The containing Git commit cannot include its own SHA; final delivery resolves it.',
+        business_commit=verification['business_commit'], final_commit=ci.get('headSha', 'UNKNOWN'),
+        final_commit_note='Immutable CI-checked release snapshot; later receipt-only publication commits do not change runtime source.',
         independent_review_status='PENDING_HUMAN_PROTOCOL_REVIEW; independent Unbound execution completed',
         limitations=['T01/T06 existing stricter BOGUS differences retained',
                      'T10 mixed-parameter malformed-owner exclusion differs from optional Unbound rejection',
                      'X24 iterations, X26 cross-zone, X27 multiple RDATA, X28 Opt-Out remain limited',
                      'No paid DeepSeek test or public-network security certification this round'])
+    if ci.get('headSha'):
+        conclusion['github_actions'] = {k: ci[k] for k in ('status', 'conclusion', 'url', 'headSha')}
     save(ROOT / 'conclusion.json', conclusion)
     print('Reviewed matrices generated:', len(matrix), 'DNS cases;', len(rows), 'TCP rows')
 

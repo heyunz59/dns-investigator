@@ -23,13 +23,19 @@
   "tests_failed": 0,
   "tests_skipped": 0,
   "business_commit": "0faab0104817919dd8bdd3632e73136ca809c38b",
-  "final_commit": "UNKNOWN",
-  "final_commit_note": "The containing Git commit cannot include its own SHA; final delivery resolves it.",
+  "final_commit": "e85fe84304c63b89ff5bd50e5bb4b14f5d271cbb",
+  "final_commit_note": "Immutable CI-checked release snapshot; later receipt-only publication commits do not change runtime source.",
   "independent_review_status": "PENDING_HUMAN_PROTOCOL_REVIEW; independent Unbound execution completed",
   "limitations": [
     "T01/T06 existing stricter BOGUS differences retained",
     "T10 mixed-parameter malformed-owner exclusion differs from optional Unbound rejection",
     "X24 iterations, X26 cross-zone, X27 multiple RDATA, X28 Opt-Out remain limited",
     "No paid DeepSeek test or public-network security certification this round"
-  ]
+  ],
+  "github_actions": {
+    "status": "completed",
+    "conclusion": "success",
+    "url": "https://github.com/heyunz59/dns-investigator/actions/runs/41389247851",
+    "headSha": "e85fe84304c63b89ff5bd50e5bb4b14f5d271cbb"
+  }
 }
