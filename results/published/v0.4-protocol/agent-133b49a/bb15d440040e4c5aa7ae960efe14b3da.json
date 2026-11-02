@@ -1,0 +1,2225 @@
+{
+  "run_id": "bb15d440040e4c5aa7ae960efe14b3da",
+  "started_at": "2026-11-02T03:10:56.008010+00:00",
+  "incident": {
+    "id": "bb15d440040e4c5aa7ae960efe14b3da",
+    "user_input": "请独立追踪并验证 probe.example.test 的 A 记录 DNSSEC；如果预算不足，保留已测路径，明确停止并报告未知。",
+    "target": {
+      "domain": "probe.example.test",
+      "url": "https://probe.example.test/",
+      "port": 443,
+      "default_https": true
+    },
+    "measurement_location": "program-host"
+  },
+  "model": "deepseek-flash",
+  "mode": "agent",
+  "thinking": "disabled",
+  "temperature": 0,
+  "model_endpoint": "https://api.deepseek.com",
+  "schema_version": 7,
+  "attempt_accounting": "complete",
+  "request_kind": "query",
+  "agent_output_schema": "decision_draft_v1",
+  "diagnosis_policy": "scoped_dns_v2",
+  "target_source": "controlled_experiment",
+  "supplement_events": [],
+  "versions": {
+    "app": "0.4.0.dev0",
+    "python": "3.12.14",
+    "pydantic-ai-slim": "2.64.0"
+  },
+  "status": "limited",
+  "execution_status": "ended",
+  "requirements_met": false,
+  "result_origin": "model_with_evidence_bound_report",
+  "result": {
+    "protocol_investigations": [
+      {
+        "attempt_id": "A1",
+        "target": "probe.example.test",
+        "record_type": "A",
+        "mode": "dnssec",
+        "completed": false,
+        "stop_reason": "DNS_BUDGET_EXHAUSTED",
+        "last_successful_zone": "test.",
+        "steps": [
+          {
+            "zone": ".",
+            "qname": "probe.example.test.",
+            "qtype": "A",
+            "server": "127.0.0.10",
+            "stage": "trace-query",
+            "result_kind": "REFERRAL",
+            "evidence_id": "E1",
+            "query_attempt_ids": [
+              "Q1"
+            ],
+            "ns": "a.root.test.",
+            "address_source": [
+              null
+            ]
+          },
+          {
+            "stage": "delegation",
+            "zone": ".",
+            "next_zone": "test.",
+            "evidence_id": "E1",
+            "selected_ns": [
+              {
+                "ns": "a.test.",
+                "addresses": [
+                  "127.0.0.11"
+                ],
+                "source": {
+                  "kind": "in_bailiwick_bootstrap_glue",
+                  "evidence_id": "E1",
+                  "cryptographically_trusted": false
+                }
+              }
+            ]
+          },
+          {
+            "zone": "test.",
+            "qname": "probe.example.test.",
+            "qtype": "A",
+            "server": "127.0.0.11",
+            "stage": "trace-query",
+            "result_kind": "REFERRAL",
+            "evidence_id": "E2",
+            "query_attempt_ids": [
+              "Q2"
+            ],
+            "ns": "a.test.",
+            "address_source": [
+              {
+                "kind": "in_bailiwick_bootstrap_glue",
+                "evidence_id": "E1",
+                "cryptographically_trusted": false
+              }
+            ]
+          },
+          {
+            "stage": "delegation",
+            "zone": "test.",
+            "next_zone": "example.test.",
+            "evidence_id": "E2",
+            "selected_ns": [
+              {
+                "ns": "ns.example.test.",
+                "addresses": [
+                  "127.0.0.12"
+                ],
+                "source": {
+                  "kind": "in_bailiwick_bootstrap_glue",
+                  "evidence_id": "E2",
+                  "cryptographically_trusted": false
+                }
+              }
+            ]
+          },
+          {
+            "zone": "example.test.",
+            "qname": "probe.example.test.",
+            "qtype": "A",
+            "server": "127.0.0.12",
+            "stage": "trace-query",
+            "result_kind": null,
+            "evidence_id": null,
+            "query_attempt_ids": [],
+            "ns": "ns.example.test.",
+            "address_source": [
+              {
+                "kind": "in_bailiwick_bootstrap_glue",
+                "evidence_id": "E2",
+                "cryptographically_trusted": false
+              }
+            ]
+          }
+        ],
+        "zones": [
+          {
+            "zone": ".",
+            "child_zone": "test.",
+            "parent_server": "127.0.0.10",
+            "qname": "probe.example.test.",
+            "qtype": "A",
+            "referral_evidence_id": "E1",
+            "selected_ns": [
+              {
+                "ns": "a.test.",
+                "addresses": [
+                  "127.0.0.11"
+                ],
+                "source": {
+                  "kind": "in_bailiwick_bootstrap_glue",
+                  "evidence_id": "E1",
+                  "cryptographically_trusted": false
+                }
+              }
+            ]
+          },
+          {
+            "zone": "test.",
+            "child_zone": "example.test.",
+            "parent_server": "127.0.0.11",
+            "qname": "probe.example.test.",
+            "qtype": "A",
+            "referral_evidence_id": "E2",
+            "selected_ns": [
+              {
+                "ns": "ns.example.test.",
+                "addresses": [
+                  "127.0.0.12"
+                ],
+                "source": {
+                  "kind": "in_bailiwick_bootstrap_glue",
+                  "evidence_id": "E2",
+                  "cryptographically_trusted": false
+                }
+              }
+            ]
+          }
+        ],
+        "resolutions": [],
+        "cache_hits": [],
+        "root_hints": {
+          "source": "explicit_test_injection"
+        },
+        "independence": "RD=0; no recursive resolver/getaddrinfo; glue is bootstrap, not cryptographic trust",
+        "current_zone": "example.test.",
+        "last_delegated_zone": "example.test.",
+        "trace_completed": false,
+        "validation": {
+          "validation_execution": "incomplete",
+          "dnssec_status": "INDETERMINATE",
+          "reason_code": "DNS_BUDGET_EXHAUSTED",
+          "algorithm_policy": "dns-investigator-dnssec-v1:8,13,14,15;DS2,4;RSA2048-4096;NSEC3-0-empty-salt",
+          "validation_scope": {
+            "qname": "probe.example.test",
+            "qtype": "A"
+          },
+          "validation_result_ids": []
+        },
+        "comparison": {
+          "scope": {
+            "max_time_gap_seconds": 300
+          },
+          "paths": [
+            {
+              "evidence_id": "E1",
+              "attempt_id": "A1",
+              "query_attempt_id": "Q1",
+              "target": "probe.example.test",
+              "record_type": "A",
+              "query_stage": null,
+              "resolver": "127.0.0.10",
+              "role": "authoritative",
+              "source_mode": "live",
+              "measured_at": "2026-11-02T03:10:56.908210+00:00",
+              "execution_status": "ok",
+              "error": null,
+              "transport_status": "responded",
+              "dns_rcode": "NOERROR",
+              "result_kind": "REFERRAL"
+            },
+            {
+              "evidence_id": "E2",
+              "attempt_id": "A1",
+              "query_attempt_id": "Q2",
+              "target": "probe.example.test",
+              "record_type": "A",
+              "query_stage": null,
+              "resolver": "127.0.0.11",
+              "role": "authoritative",
+              "source_mode": "live",
+              "measured_at": "2026-11-02T03:10:56.911818+00:00",
+              "execution_status": "ok",
+              "error": null,
+              "transport_status": "responded",
+              "dns_rcode": "NOERROR",
+              "result_kind": "REFERRAL"
+            },
+            {
+              "evidence_id": null,
+              "attempt_id": "A1",
+              "query_attempt_id": null,
+              "target": "probe.example.test",
+              "record_type": "A",
+              "query_stage": "discovery",
+              "resolver": "127.0.0.12",
+              "role": "authoritative",
+              "source_mode": "live",
+              "measured_at": null,
+              "execution_status": "error",
+              "error": {
+                "code": "DNS_BUDGET_EXHAUSTED",
+                "retryable": false
+              },
+              "transport_status": "not_executed",
+              "dns_rcode": null,
+              "result_kind": null
+            }
+          ],
+          "pairs": [
+            {
+              "path_indices": [
+                0,
+                1
+              ],
+              "evidence_ids": [
+                "E1",
+                "E2"
+              ],
+              "codes": [],
+              "comparable": false,
+              "time_status": "TIME_COMPARABLE",
+              "reason": "AUTHORITY_NOT_CONFIRMED"
+            },
+            {
+              "path_indices": [
+                0,
+                2
+              ],
+              "evidence_ids": [
+                "E1"
+              ],
+              "codes": [],
+              "comparable": false,
+              "time_status": "TIME_UNKNOWN",
+              "reason": "AUTHORITY_NOT_CONFIRMED"
+            },
+            {
+              "path_indices": [
+                1,
+                2
+              ],
+              "evidence_ids": [
+                "E2"
+              ],
+              "codes": [],
+              "comparable": false,
+              "time_status": "TIME_UNKNOWN",
+              "reason": "AUTHORITY_NOT_CONFIRMED"
+            }
+          ],
+          "differences": [
+            "COMPARISON_INCONCLUSIVE"
+          ],
+          "observations": [],
+          "limitations": [
+            "时间/来源缺失的旧记录不能证明同时或同源；响应差异不等于唯一根因。",
+            "记录差异可能来自 CDN、GeoDNS、负载均衡、缓存、策略和查询时间；超时没有提供记录或 TTL 事实。"
+          ]
+        },
+        "differences": [
+          "COMPARISON_INCONCLUSIVE"
+        ],
+        "findings": [
+          {
+            "code": "DNS_INCONCLUSIVE",
+            "stage": "dns",
+            "status": "insufficient_information",
+            "scope": {},
+            "evidence_ids": [
+              "E1",
+              "E2"
+            ],
+            "observed_facts": [],
+            "localization": {},
+            "root_cause_confirmed": false,
+            "explanation": "没有足够的完整可比较 DNS 回答来定位故障。",
+            "limitations": [
+              "正常查询不能排除历史或客户端差异；未知不等于正常。"
+            ],
+            "next_checks": [
+              "query_dns：对授权目标和所需记录取得响应；失败时保留未知。 "
+            ]
+          }
+        ],
+        "evidence_ids": [
+          "E1",
+          "E2"
+        ]
+      }
+    ],
+    "validation_results": [],
+    "authority_investigations": [],
+    "diagnostic_assessment": "A1 dnssec：追踪完成=False，停止原因=DNS_BUDGET_EXHAUSTED，最后成功区域=test.；范围仅为所列路径/选中服务器，AA与Root Hints均不是DNSSEC信任证明。 本地验证：{\"validation_execution\": \"incomplete\", \"dnssec_status\": \"INDETERMINATE\", \"reason_code\": \"DNS_BUDGET_EXHAUSTED\", \"algorithm_policy\": \"dns-investigator-dnssec-v1:8,13,14,15;DS2,4;RSA2048-4096;NSEC3-0-empty-salt\", \"validation_scope\": {\"qname\": \"probe.example.test\", \"qtype\": \"A\"}, \"validation_result_ids\": []} 另有调用执行问题（A1:PARTIAL_DNS_EXECUTION_ERROR）；这些不是 DNS 应答，不能当作 NXDOMAIN；有效测量子集仍保留。",
+    "assessment_level": "measured_without_root_cause",
+    "report_fallback_reason": null,
+    "dns_comparison": {
+      "scope": {
+        "max_time_gap_seconds": 300
+      },
+      "paths": [
+        {
+          "evidence_id": "E1",
+          "attempt_id": "A1",
+          "query_attempt_id": "Q1",
+          "target": "probe.example.test",
+          "record_type": "A",
+          "query_stage": null,
+          "resolver": "127.0.0.10",
+          "role": "authoritative",
+          "source_mode": "live",
+          "measured_at": "2026-11-02T03:10:56.908210+00:00",
+          "execution_status": "ok",
+          "error": null,
+          "transport_status": "responded",
+          "dns_rcode": "NOERROR",
+          "result_kind": "REFERRAL"
+        },
+        {
+          "evidence_id": "E2",
+          "attempt_id": "A1",
+          "query_attempt_id": "Q2",
+          "target": "probe.example.test",
+          "record_type": "A",
+          "query_stage": null,
+          "resolver": "127.0.0.11",
+          "role": "authoritative",
+          "source_mode": "live",
+          "measured_at": "2026-11-02T03:10:56.911818+00:00",
+          "execution_status": "ok",
+          "error": null,
+          "transport_status": "responded",
+          "dns_rcode": "NOERROR",
+          "result_kind": "REFERRAL"
+        },
+        {
+          "evidence_id": null,
+          "attempt_id": "A1",
+          "query_attempt_id": null,
+          "target": "probe.example.test",
+          "record_type": "A",
+          "query_stage": "discovery",
+          "resolver": "127.0.0.12",
+          "role": "authoritative",
+          "source_mode": "live",
+          "measured_at": null,
+          "execution_status": "error",
+          "error": {
+            "code": "DNS_BUDGET_EXHAUSTED",
+            "retryable": false
+          },
+          "transport_status": "not_executed",
+          "dns_rcode": null,
+          "result_kind": null
+        }
+      ],
+      "pairs": [
+        {
+          "path_indices": [
+            0,
+            1
+          ],
+          "evidence_ids": [
+            "E1",
+            "E2"
+          ],
+          "codes": [],
+          "comparable": false,
+          "time_status": "TIME_COMPARABLE",
+          "reason": "AUTHORITY_NOT_CONFIRMED"
+        },
+        {
+          "path_indices": [
+            0,
+            2
+          ],
+          "evidence_ids": [
+            "E1"
+          ],
+          "codes": [],
+          "comparable": false,
+          "time_status": "TIME_UNKNOWN",
+          "reason": "AUTHORITY_NOT_CONFIRMED"
+        },
+        {
+          "path_indices": [
+            1,
+            2
+          ],
+          "evidence_ids": [
+            "E2"
+          ],
+          "codes": [],
+          "comparable": false,
+          "time_status": "TIME_UNKNOWN",
+          "reason": "AUTHORITY_NOT_CONFIRMED"
+        }
+      ],
+      "differences": [
+        "COMPARISON_INCONCLUSIVE"
+      ],
+      "observations": [],
+      "limitations": [
+        "时间/来源缺失的旧记录不能证明同时或同源；响应差异不等于唯一根因。",
+        "记录差异可能来自 CDN、GeoDNS、负载均衡、缓存、策略和查询时间；超时没有提供记录或 TTL 事实。"
+      ]
+    },
+    "execution_issues": [
+      {
+        "attempt_id": "A1",
+        "tool_name": "query_authoritative",
+        "target": "probe.example.test",
+        "record_type": "A",
+        "error_code": "PARTIAL_DNS_EXECUTION_ERROR",
+        "description": "部分 DNS 子查询执行失败；有效子集仍保留，详见 comparison。"
+      }
+    ],
+    "measured_facts": [
+      {
+        "evidence_id": "E1",
+        "target": "probe.example.test.",
+        "resolver": "127.0.0.10",
+        "record_type": "A",
+        "measured_at": "2026-11-02T03:10:56.908210+00:00",
+        "source_mode": "live",
+        "tool": "query_dns",
+        "result": "REFERRAL",
+        "records": [],
+        "error": null,
+        "error_detail": null,
+        "peer_ip": null,
+        "transport_status": "responded",
+        "dns_rcode": "NOERROR",
+        "result_kind": "REFERRAL",
+        "resolver_role": "authoritative",
+        "edns": {
+          "present": true,
+          "version": 0,
+          "udp_payload": 8192,
+          "do": false,
+          "other_options": []
+        },
+        "ede": [],
+        "dns_flags": {
+          "AA": false,
+          "RD": false,
+          "RA": false,
+          "TC": false,
+          "AD": false,
+          "CD": false
+        },
+        "request_parameters": {
+          "rd": false,
+          "cd": false,
+          "edns": 0,
+          "do": true,
+          "payload": 1232,
+          "mode": "dnssec",
+          "stage": "trace-query",
+          "zone": "."
+        },
+        "negative_name": null,
+        "cname_chain": [],
+        "negative_scope": null,
+        "authoritative_answer": false,
+        "resolution_complete": false,
+        "canonical_name": "probe.example.test",
+        "query_attempt_id": "Q1",
+        "attempt_id": "A1",
+        "target_authorization": null
+      },
+      {
+        "evidence_id": "E2",
+        "target": "probe.example.test.",
+        "resolver": "127.0.0.11",
+        "record_type": "A",
+        "measured_at": "2026-11-02T03:10:56.911818+00:00",
+        "source_mode": "live",
+        "tool": "query_dns",
+        "result": "REFERRAL",
+        "records": [],
+        "error": null,
+        "error_detail": null,
+        "peer_ip": null,
+        "transport_status": "responded",
+        "dns_rcode": "NOERROR",
+        "result_kind": "REFERRAL",
+        "resolver_role": "authoritative",
+        "edns": {
+          "present": true,
+          "version": 0,
+          "udp_payload": 8192,
+          "do": false,
+          "other_options": []
+        },
+        "ede": [],
+        "dns_flags": {
+          "AA": false,
+          "RD": false,
+          "RA": false,
+          "TC": false,
+          "AD": false,
+          "CD": false
+        },
+        "request_parameters": {
+          "rd": false,
+          "cd": false,
+          "edns": 0,
+          "do": true,
+          "payload": 1232,
+          "mode": "dnssec",
+          "stage": "trace-query",
+          "zone": "test."
+        },
+        "negative_name": null,
+        "cname_chain": [],
+        "negative_scope": null,
+        "authoritative_answer": false,
+        "resolution_complete": false,
+        "canonical_name": "probe.example.test",
+        "query_attempt_id": "Q2",
+        "attempt_id": "A1",
+        "target_authorization": null
+      }
+    ],
+    "findings": [
+      {
+        "provenance": "observed",
+        "finding_status": "indeterminate",
+        "severity": "information",
+        "validation_result_ids": [],
+        "scope": {
+          "qname": "probe.example.test",
+          "qtype": "A"
+        },
+        "observed_facts": [],
+        "localization": {},
+        "root_cause_confirmed": false,
+        "code": "DNSSEC_VALIDATION",
+        "stage": "dnssec",
+        "status": "observed",
+        "evidence_ids": [],
+        "explanation": "本程序DNSSEC结果=INDETERMINATE；执行=incomplete；原因=DNS_BUDGET_EXHAUSTED；范围={'qname': 'probe.example.test', 'qtype': 'A'}。",
+        "limitations": [
+          "仅针对所列信任锚、策略、时刻和E/V链；不确认运维根因、全部NS或未来结果。"
+        ],
+        "next_checks": [
+          "按所列失败阶段及E/V链核对材料、策略和管理员配置意图；必要时用同锚/时刻的外部验证器对照，不盲目重复查询或修改配置。"
+        ]
+      }
+    ],
+    "request_kind": "query",
+    "outcome": "insufficient_information",
+    "observations": [
+      {
+        "evidence_id": "E1",
+        "observation": "probe.example.test. A / 解析器 127.0.0.10：REFERRAL ；来源 live；时间 2026-11-02T03:10:56.908210+00:00（E1）"
+      },
+      {
+        "evidence_id": "E2",
+        "observation": "probe.example.test. A / 解析器 127.0.0.11：REFERRAL ；来源 live；时间 2026-11-02T03:10:56.911818+00:00（E2）"
+      }
+    ],
+    "hypotheses": [],
+    "conclusion": "A1 dnssec：追踪完成=False，停止原因=DNS_BUDGET_EXHAUSTED，最后成功区域=test.；范围仅为所列路径/选中服务器，AA与Root Hints均不是DNSSEC信任证明。 本地验证：{\"validation_execution\": \"incomplete\", \"dnssec_status\": \"INDETERMINATE\", \"reason_code\": \"DNS_BUDGET_EXHAUSTED\", \"algorithm_policy\": \"dns-investigator-dnssec-v1:8,13,14,15;DS2,4;RSA2048-4096;NSEC3-0-empty-salt\", \"validation_scope\": {\"qname\": \"probe.example.test\", \"qtype\": \"A\"}, \"validation_result_ids\": []} 另有调用执行问题（A1:PARTIAL_DNS_EXECUTION_ERROR）；这些不是 DNS 应答，不能当作 NXDOMAIN；有效测量子集仍保留。 已验证事实：probe.example.test. A / 解析器 127.0.0.10：REFERRAL ；来源 live；时间 2026-11-02T03:10:56.908210+00:00（E1）；probe.example.test. A / 解析器 127.0.0.11：REFERRAL ；来源 live；时间 2026-11-02T03:10:56.911818+00:00（E2）",
+    "conclusion_evidence_ids": [
+      "E1",
+      "E2"
+    ],
+    "limitations": [
+      "仅报告列出的本次查询及应答 TTL，未测组合未知；没有权威对照时不判断原始 TTL。",
+      "协议结论仅限所列追踪路径、信任锚、验证时刻、策略与E/V链；未完成或不支持部分保持未知。"
+    ],
+    "recommendations": [
+      "按所列失败阶段及E/V链核对材料、策略和管理员配置意图；必要时用同锚/时刻的外部验证器对照，不盲目重复查询或修改配置。",
+      "query_dns：对授权目标和所需记录取得响应；失败时保留未知。 "
+    ]
+  },
+  "usage": {
+    "input_tokens": 7575,
+    "cache_write_tokens": 0,
+    "cache_write_1h_tokens": 0,
+    "cache_read_tokens": 4352,
+    "output_tokens": 1104,
+    "unmeasured_requests": 0,
+    "output_reasoning_tokens": 0,
+    "input_audio_tokens": 0,
+    "cache_audio_read_tokens": 0,
+    "output_audio_tokens": 0,
+    "audio_seconds": 0,
+    "details": {
+      "prompt_cache_hit_tokens": 4352,
+      "prompt_cache_miss_tokens": 3223
+    },
+    "cost": "0.002317812",
+    "requests": 2,
+    "tool_calls": 1
+  },
+  "visible_messages": [
+    {
+      "kind": "request",
+      "parts": []
+    },
+    {
+      "kind": "response",
+      "parts": [
+        {
+          "tool_name": "query_authoritative",
+          "args": "{\"domain\": \"probe.example.test\", \"record_type\": \"A\", \"mode\": \"dnssec\"}",
+          "tool_call_id": "call_00_nFh0IaxDa7jeeInCQ4j33510",
+          "tool_kind": null,
+          "id": null,
+          "provider_name": null,
+          "provider_details": null,
+          "part_kind": "tool-call"
+        }
+      ]
+    },
+    {
+      "kind": "request",
+      "parts": [
+        {
+          "tool_name": "query_authoritative",
+          "content": {
+            "id": null,
+            "tool_call_id": "A1",
+            "error": {
+              "code": "PARTIAL_DNS_EXECUTION_ERROR",
+              "message": "部分 DNS 子查询执行失败；有效子集仍保留，详见 comparison。",
+              "retryable": false
+            },
+            "new_evidence_ids": [
+              "E1",
+              "E2"
+            ],
+            "fact_summary": [
+              {
+                "evidence_id": "E1",
+                "target": "probe.example.test.",
+                "resolver": "127.0.0.10",
+                "record_type": "A",
+                "measured_at": "2026-11-02T03:10:56.908210+00:00",
+                "source_mode": "live",
+                "tool": "query_dns",
+                "result": "REFERRAL",
+                "records": [],
+                "transport_status": "responded",
+                "dns_rcode": "NOERROR",
+                "result_kind": "REFERRAL",
+                "resolver_role": "authoritative",
+                "edns": {
+                  "present": true,
+                  "version": 0,
+                  "udp_payload": 8192,
+                  "do": false,
+                  "other_options": []
+                },
+                "ede": [],
+                "dns_flags": {
+                  "AA": false,
+                  "RD": false,
+                  "RA": false,
+                  "TC": false,
+                  "AD": false,
+                  "CD": false
+                },
+                "request_parameters": {
+                  "rd": false,
+                  "cd": false,
+                  "edns": 0,
+                  "do": true,
+                  "payload": 1232,
+                  "mode": "dnssec",
+                  "stage": "trace-query",
+                  "zone": "."
+                },
+                "cname_chain": [],
+                "authoritative_answer": false,
+                "resolution_complete": false,
+                "canonical_name": "probe.example.test",
+                "query_attempt_id": "Q1",
+                "attempt_id": "A1"
+              },
+              {
+                "evidence_id": "E2",
+                "target": "probe.example.test.",
+                "resolver": "127.0.0.11",
+                "record_type": "A",
+                "measured_at": "2026-11-02T03:10:56.911818+00:00",
+                "source_mode": "live",
+                "tool": "query_dns",
+                "result": "REFERRAL",
+                "records": [],
+                "transport_status": "responded",
+                "dns_rcode": "NOERROR",
+                "result_kind": "REFERRAL",
+                "resolver_role": "authoritative",
+                "edns": {
+                  "present": true,
+                  "version": 0,
+                  "udp_payload": 8192,
+                  "do": false,
+                  "other_options": []
+                },
+                "ede": [],
+                "dns_flags": {
+                  "AA": false,
+                  "RD": false,
+                  "RA": false,
+                  "TC": false,
+                  "AD": false,
+                  "CD": false
+                },
+                "request_parameters": {
+                  "rd": false,
+                  "cd": false,
+                  "edns": 0,
+                  "do": true,
+                  "payload": 1232,
+                  "mode": "dnssec",
+                  "stage": "trace-query",
+                  "zone": "test."
+                },
+                "cname_chain": [],
+                "authoritative_answer": false,
+                "resolution_complete": false,
+                "canonical_name": "probe.example.test",
+                "query_attempt_id": "Q2",
+                "attempt_id": "A1"
+              }
+            ],
+            "current_findings": [
+              {
+                "code": "DNS_INCONCLUSIVE",
+                "status": "insufficient_information",
+                "scope": {},
+                "evidence_ids": [
+                  "E1",
+                  "E2"
+                ],
+                "explanation": "没有足够的完整可比较 DNS 回答来定位故障。",
+                "limitations": [
+                  "正常查询不能排除历史或客户端差异；未知不等于正常。"
+                ],
+                "next_checks": [
+                  "query_dns：对授权目标和所需记录取得响应；失败时保留未知。 "
+                ]
+              },
+              {
+                "code": "DNSSEC_VALIDATION",
+                "status": "observed",
+                "scope": {
+                  "qname": "probe.example.test",
+                  "qtype": "A"
+                },
+                "evidence_ids": [],
+                "explanation": "本程序DNSSEC结果=INDETERMINATE；执行=incomplete；原因=DNS_BUDGET_EXHAUSTED；范围={'qname': 'probe.example.test', 'qtype': 'A'}。",
+                "limitations": [
+                  "仅针对所列信任锚、策略、时刻和E/V链；不确认运维根因、全部NS或未来结果。"
+                ],
+                "next_checks": [
+                  "按所列失败阶段及E/V链核对材料、策略和管理员配置意图；必要时用同锚/时刻的外部验证器对照，不盲目重复查询或修改配置。"
+                ],
+                "provenance": "observed",
+                "finding_status": "indeterminate",
+                "validation_result_ids": []
+              }
+            ],
+            "execution_issue_summary": [
+              {
+                "attempt_id": "A1",
+                "tool_name": "query_authoritative",
+                "target": "probe.example.test",
+                "record_type": "A",
+                "error_code": "PARTIAL_DNS_EXECUTION_ERROR",
+                "description": "部分 DNS 子查询执行失败；有效子集仍保留，详见 comparison。"
+              }
+            ],
+            "partial_dns_issues": [
+              {
+                "attempt_id": "A1",
+                "queries": [
+                  {
+                    "execution_status": "error",
+                    "error": {
+                      "code": "DNS_BUDGET_EXHAUSTED",
+                      "retryable": false
+                    },
+                    "qname": "probe.example.test.",
+                    "qtype": "A",
+                    "resolver": "127.0.0.12",
+                    "resolver_role": "authoritative",
+                    "transport_status": "not_executed",
+                    "dns_rcode": null,
+                    "resolvers": [
+                      "127.0.0.12"
+                    ],
+                    "system_resolver_configuration": null,
+                    "query_evidence_ids": [],
+                    "query_attempt_ids": [],
+                    "query_stage": "discovery",
+                    "source_mode": "live",
+                    "parent_tool_call_id": "A1"
+                  }
+                ]
+              }
+            ],
+            "authority_investigations": [],
+            "protocol_investigations": [
+              {
+                "attempt_id": "A1",
+                "target": "probe.example.test",
+                "record_type": "A",
+                "mode": "dnssec",
+                "completed": false,
+                "stop_reason": "DNS_BUDGET_EXHAUSTED",
+                "last_successful_zone": "test.",
+                "steps": [
+                  {
+                    "zone": ".",
+                    "qname": "probe.example.test.",
+                    "qtype": "A",
+                    "server": "127.0.0.10",
+                    "stage": "trace-query",
+                    "result_kind": "REFERRAL",
+                    "evidence_id": "E1",
+                    "query_attempt_ids": [
+                      "Q1"
+                    ],
+                    "ns": "a.root.test.",
+                    "address_source": [
+                      null
+                    ]
+                  },
+                  {
+                    "stage": "delegation",
+                    "zone": ".",
+                    "next_zone": "test.",
+                    "evidence_id": "E1",
+                    "selected_ns": [
+                      {
+                        "ns": "a.test.",
+                        "addresses": [
+                          "127.0.0.11"
+                        ],
+                        "source": {
+                          "kind": "in_bailiwick_bootstrap_glue",
+                          "evidence_id": "E1",
+                          "cryptographically_trusted": false
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "zone": "test.",
+                    "qname": "probe.example.test.",
+                    "qtype": "A",
+                    "server": "127.0.0.11",
+                    "stage": "trace-query",
+                    "result_kind": "REFERRAL",
+                    "evidence_id": "E2",
+                    "query_attempt_ids": [
+                      "Q2"
+                    ],
+                    "ns": "a.test.",
+                    "address_source": [
+                      {
+                        "kind": "in_bailiwick_bootstrap_glue",
+                        "evidence_id": "E1",
+                        "cryptographically_trusted": false
+                      }
+                    ]
+                  },
+                  {
+                    "stage": "delegation",
+                    "zone": "test.",
+                    "next_zone": "example.test.",
+                    "evidence_id": "E2",
+                    "selected_ns": [
+                      {
+                        "ns": "ns.example.test.",
+                        "addresses": [
+                          "127.0.0.12"
+                        ],
+                        "source": {
+                          "kind": "in_bailiwick_bootstrap_glue",
+                          "evidence_id": "E2",
+                          "cryptographically_trusted": false
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "zone": "example.test.",
+                    "qname": "probe.example.test.",
+                    "qtype": "A",
+                    "server": "127.0.0.12",
+                    "stage": "trace-query",
+                    "result_kind": null,
+                    "evidence_id": null,
+                    "query_attempt_ids": [],
+                    "ns": "ns.example.test.",
+                    "address_source": [
+                      {
+                        "kind": "in_bailiwick_bootstrap_glue",
+                        "evidence_id": "E2",
+                        "cryptographically_trusted": false
+                      }
+                    ]
+                  }
+                ],
+                "zones": [
+                  {
+                    "zone": ".",
+                    "child_zone": "test.",
+                    "parent_server": "127.0.0.10",
+                    "qname": "probe.example.test.",
+                    "qtype": "A",
+                    "referral_evidence_id": "E1",
+                    "selected_ns": [
+                      {
+                        "ns": "a.test.",
+                        "addresses": [
+                          "127.0.0.11"
+                        ],
+                        "source": {
+                          "kind": "in_bailiwick_bootstrap_glue",
+                          "evidence_id": "E1",
+                          "cryptographically_trusted": false
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "zone": "test.",
+                    "child_zone": "example.test.",
+                    "parent_server": "127.0.0.11",
+                    "qname": "probe.example.test.",
+                    "qtype": "A",
+                    "referral_evidence_id": "E2",
+                    "selected_ns": [
+                      {
+                        "ns": "ns.example.test.",
+                        "addresses": [
+                          "127.0.0.12"
+                        ],
+                        "source": {
+                          "kind": "in_bailiwick_bootstrap_glue",
+                          "evidence_id": "E2",
+                          "cryptographically_trusted": false
+                        }
+                      }
+                    ]
+                  }
+                ],
+                "resolutions": [],
+                "cache_hits": [],
+                "root_hints": {
+                  "source": "explicit_test_injection"
+                },
+                "independence": "RD=0; no recursive resolver/getaddrinfo; glue is bootstrap, not cryptographic trust",
+                "current_zone": "example.test.",
+                "last_delegated_zone": "example.test.",
+                "trace_completed": false,
+                "validation": {
+                  "validation_execution": "incomplete",
+                  "dnssec_status": "INDETERMINATE",
+                  "reason_code": "DNS_BUDGET_EXHAUSTED",
+                  "algorithm_policy": "dns-investigator-dnssec-v1:8,13,14,15;DS2,4;RSA2048-4096;NSEC3-0-empty-salt",
+                  "validation_scope": {
+                    "qname": "probe.example.test",
+                    "qtype": "A"
+                  },
+                  "validation_result_ids": []
+                },
+                "comparison": {
+                  "scope": {
+                    "max_time_gap_seconds": 300
+                  },
+                  "paths": [
+                    {
+                      "evidence_id": "E1",
+                      "attempt_id": "A1",
+                      "query_attempt_id": "Q1",
+                      "target": "probe.example.test",
+                      "record_type": "A",
+                      "query_stage": null,
+                      "resolver": "127.0.0.10",
+                      "role": "authoritative",
+                      "source_mode": "live",
+                      "measured_at": "2026-11-02T03:10:56.908210+00:00",
+                      "execution_status": "ok",
+                      "error": null,
+                      "transport_status": "responded",
+                      "dns_rcode": "NOERROR",
+                      "result_kind": "REFERRAL"
+                    },
+                    {
+                      "evidence_id": "E2",
+                      "attempt_id": "A1",
+                      "query_attempt_id": "Q2",
+                      "target": "probe.example.test",
+                      "record_type": "A",
+                      "query_stage": null,
+                      "resolver": "127.0.0.11",
+                      "role": "authoritative",
+                      "source_mode": "live",
+                      "measured_at": "2026-11-02T03:10:56.911818+00:00",
+                      "execution_status": "ok",
+                      "error": null,
+                      "transport_status": "responded",
+                      "dns_rcode": "NOERROR",
+                      "result_kind": "REFERRAL"
+                    },
+                    {
+                      "evidence_id": null,
+                      "attempt_id": "A1",
+                      "query_attempt_id": null,
+                      "target": "probe.example.test",
+                      "record_type": "A",
+                      "query_stage": "discovery",
+                      "resolver": "127.0.0.12",
+                      "role": "authoritative",
+                      "source_mode": "live",
+                      "measured_at": null,
+                      "execution_status": "error",
+                      "error": {
+                        "code": "DNS_BUDGET_EXHAUSTED",
+                        "retryable": false
+                      },
+                      "transport_status": "not_executed",
+                      "dns_rcode": null,
+                      "result_kind": null
+                    }
+                  ],
+                  "pairs": [
+                    {
+                      "path_indices": [
+                        0,
+                        1
+                      ],
+                      "evidence_ids": [
+                        "E1",
+                        "E2"
+                      ],
+                      "codes": [],
+                      "comparable": false,
+                      "time_status": "TIME_COMPARABLE",
+                      "reason": "AUTHORITY_NOT_CONFIRMED"
+                    },
+                    {
+                      "path_indices": [
+                        0,
+                        2
+                      ],
+                      "evidence_ids": [
+                        "E1"
+                      ],
+                      "codes": [],
+                      "comparable": false,
+                      "time_status": "TIME_UNKNOWN",
+                      "reason": "AUTHORITY_NOT_CONFIRMED"
+                    },
+                    {
+                      "path_indices": [
+                        1,
+                        2
+                      ],
+                      "evidence_ids": [
+                        "E2"
+                      ],
+                      "codes": [],
+                      "comparable": false,
+                      "time_status": "TIME_UNKNOWN",
+                      "reason": "AUTHORITY_NOT_CONFIRMED"
+                    }
+                  ],
+                  "differences": [
+                    "COMPARISON_INCONCLUSIVE"
+                  ],
+                  "observations": [],
+                  "limitations": [
+                    "时间/来源缺失的旧记录不能证明同时或同源；响应差异不等于唯一根因。",
+                    "记录差异可能来自 CDN、GeoDNS、负载均衡、缓存、策略和查询时间；超时没有提供记录或 TTL 事实。"
+                  ]
+                },
+                "differences": [
+                  "COMPARISON_INCONCLUSIVE"
+                ],
+                "findings": [
+                  {
+                    "code": "DNS_INCONCLUSIVE",
+                    "stage": "dns",
+                    "status": "insufficient_information",
+                    "scope": {},
+                    "evidence_ids": [
+                      "E1",
+                      "E2"
+                    ],
+                    "observed_facts": [],
+                    "localization": {},
+                    "root_cause_confirmed": false,
+                    "explanation": "没有足够的完整可比较 DNS 回答来定位故障。",
+                    "limitations": [
+                      "正常查询不能排除历史或客户端差异；未知不等于正常。"
+                    ],
+                    "next_checks": [
+                      "query_dns：对授权目标和所需记录取得响应；失败时保留未知。 "
+                    ]
+                  }
+                ],
+                "evidence_ids": [
+                  "E1",
+                  "E2"
+                ]
+              }
+            ],
+            "validation_results": [],
+            "allowed_dns_targets": [
+              {
+                "target": "probe.example.test",
+                "depth": 0,
+                "links": [],
+                "evidence_ids": []
+              }
+            ],
+            "finish_now": false,
+            "query_scope": {
+              "independent_tool_targets": [
+                "probe.example.test"
+              ],
+              "query_dns_targets": [
+                "probe.example.test"
+              ],
+              "system_resolver_argument": null,
+              "configured_public_resolvers": [
+                "1.1.1.1",
+                "8.8.8.8"
+              ],
+              "resolver_policy": "系统路径用 resolver=None；其他显式地址仍须通过现有公共/系统地址策略。权威候选请用 query_authoritative，内部 NS 名称不自动授权为独立目标。"
+            },
+            "non_retryable_requests": [],
+            "non_retryable_dns_paths": [
+              {
+                "attempt_id": "A1",
+                "qname": "probe.example.test.",
+                "qtype": "A",
+                "resolver": "127.0.0.12",
+                "error": {
+                  "code": "DNS_BUDGET_EXHAUSTED",
+                  "retryable": false
+                }
+              }
+            ],
+            "tool_coverage": {
+              "query_authoritative": "能力说明（不表示已执行）：basic为递归辅助发现及选中权威查询；trace为独立委派路径；dnssec另有链与证明采集。实际已测内容只看相应A的E/Q及protocol_investigations，不假定每个模式都查了SOA/NS或全部服务器。"
+            },
+            "budget": {
+              "tool_attempts_remaining": 7,
+              "dns_requests_remaining": 0
+            },
+            "context_policy": "compact_v2; complete raw DNS/HTTP evidence retained in JSON/JSONL; omitted records are not absent; aggregate describes the full record set, not only the 16 visible records"
+          },
+          "tool_call_id": "call_00_nFh0IaxDa7jeeInCQ4j33510",
+          "tool_kind": null,
+          "metadata": null,
+          "timestamp": "2026-11-02T03:10:56.913326Z",
+          "outcome": "success",
+          "retry": null,
+          "part_kind": "tool-return"
+        }
+      ]
+    },
+    {
+      "kind": "response",
+      "parts": [
+        {
+          "tool_name": "final_result",
+          "args": "{\"request_kind\": \"query\", \"outcome\": \"insufficient_information\", \"hypotheses\": [{\"id\": \"H1\", \"statement\": \"probe.example.test 的 A 记录 DNSSEC 状态无法在本轮预算内完成验证（验证执行不完整，结果 INDETERMINATE）。\", \"status\": \"无法确定\", \"category\": \"dns_resolution\", \"supporting_evidence_ids\": [\"E1\", \"E2\"], \"contradicting_evidence_ids\": [], \"missing_information\": [\"example.test 权威服务器 127.0.0.12 对 probe.example.test/A 的实际应答（含 RRSIG/NSEC 等 DNSSEC 材料）\", \"probe.example.test 的最终 A 记录值\", \"从根到 example.test 的 DS/DNSKEY 链验证结果\"], \"evidence_review_notes\": [\"E1：根区 127.0.0.10 返回 REFERRAL（NOERROR，AA=false），委派至 test.，仅提供 in-bailiwick glue，非密码学信任。\", \"E2：test. 区 127.0.0.11 返回 REFERRAL（NOERROR，AA=false），委派至 example.test.，NS 为 ns.example.test.，地址来自 glue。\", \"对 127.0.0.12 的 trace-query 未执行（DNS_BUDGET_EXHAUSTED），因此未取得任何 AA 回答，DNSSEC 验证链 incomplete，validation_result_ids 为空。\", \"E1/E2 的 EDNS 响应中 do=false，且均为委派而非权威回答，不能用于判断签名存在或有效。\"]}], \"analysis_summary\": \"本轮以 dnssec 模式对 probe.example.test 的 A 记录做独立委派追踪，仅完成前两跳：根区（127.0.0.10，E1）与 test. 区（127.0.0.11，E2）均返回 NOERROR 的 REFERRAL，AA=false，未给出任何 A 记录或 DNSSEC 签名材料。第三跳指向 example.test. 的权威服务器 ns.example.test.（127.0.0.12），该查询因 DNS 预算耗尽未执行（dns_requests_remaining=0，且标记不可重试）。因此既未取得 probe.example.test 的 A 记录，也未取得可用于 DNSSEC 链验证的 DS/DNSKEY/RRSIG 证据；程序 DNSSEC 结果为 INDETERMINATE、执行状态 incomplete。按用户要求，保留已测路径并在此明确停止：无法确认该 A 记录是否存在、其值为何，也无法确认其是否受 DNSSEC 保护或签名是否有效。已测两跳只说明委派路径存在且响应正常，不构成对目标记录或 DNSSEC 状态的任何结论。\", \"limitations\": [\"仅完成根区与 test. 区两跳委派查询，未到达 example.test. 权威服务器，未获得任何 AA 回答。\", \"DNS 请求预算已耗尽（dns_requests_remaining=0），127.0.0.12 的查询被标记为不可重试，本轮无法继续。\", \"E1/E2 中的 NS 地址来自 in-bailiwick glue，非密码学信任，不能作为权威性依据。\", \"无 validation_result_ids，DNSSEC 签名/信任链判断完全缺失；AD/DO 标志不构成本程序已验证 DNSSEC 的证据。\", \"测量来自本程序所在主机，不代表浏览器缓存、hosts、代理或 DoH 路径。\"], \"next_directions\": [\"在预算恢复后，对 example.test. 权威服务器 127.0.0.12 直接查询 probe.example.test/A（RD=0，DO=1），取得 AA 回答及 RRSIG/NSEC/NSEC3 材料。\", \"若需完整 DNSSEC 结论，按 example.test. 的 DS→DNSKEY→RRSIG 链逐级采集，并核对算法策略（dns-investigator-dnssec-v1）。\", \"如需确认记录值本身，可另用独立递归解析器（如 1.1.1.1、8.8.8.8）对照 A 记录，但递归成功不能替代权威 DNSSEC 验证。\"]}",
+          "tool_call_id": "call_00_Pn9qS3EpI7lwhXo7284N8238",
+          "tool_kind": null,
+          "id": null,
+          "provider_name": null,
+          "provider_details": null,
+          "part_kind": "tool-call"
+        }
+      ]
+    },
+    {
+      "kind": "request",
+      "parts": [
+        {
+          "tool_name": "final_result",
+          "content": "Final result processed.",
+          "tool_call_id": "call_00_Pn9qS3EpI7lwhXo7284N8238",
+          "tool_kind": null,
+          "metadata": null,
+          "timestamp": "2026-11-02T03:11:03.059661Z",
+          "outcome": "success",
+          "retry": null,
+          "part_kind": "tool-return"
+        }
+      ]
+    }
+  ],
+  "agent_execution_status": "completed",
+  "report_availability": "available",
+  "report_origin": "deterministic_evidence_report",
+  "fallback_reason": null,
+  "evidence": [
+    {
+      "tool_call_id": "A1",
+      "parent_tool_call_id": "A1",
+      "query_attempt_id": "Q1",
+      "tool_name": "query_dns",
+      "input": {
+        "domain": "probe.example.test.",
+        "record_type": "A",
+        "resolver": "127.0.0.10"
+      },
+      "started_at": "2026-11-02T03:10:56.908210+00:00",
+      "duration_ms": 0.0,
+      "execution_status": "ok",
+      "data": {
+        "qname": "probe.example.test.",
+        "qtype": "A",
+        "record_type": "A",
+        "resolver": "127.0.0.10",
+        "responding_resolver": "127.0.0.10",
+        "resolver_role": "authoritative",
+        "rcode": "NOERROR",
+        "dns_rcode": "NOERROR",
+        "transport_status": "responded",
+        "flags": {
+          "AA": false,
+          "RD": false,
+          "RA": false,
+          "TC": false,
+          "AD": false,
+          "CD": false
+        },
+        "answer": [],
+        "authority": [
+          {
+            "name": "test",
+            "type": "NS",
+            "ttl": 60,
+            "rdclass": "IN",
+            "values": [
+              "a.test."
+            ]
+          }
+        ],
+        "additional": [
+          {
+            "name": "a.test",
+            "type": "A",
+            "ttl": 60,
+            "rdclass": "IN",
+            "values": [
+              "127.0.0.11"
+            ]
+          },
+          {
+            "name": "unrelated.test",
+            "type": "A",
+            "ttl": 60,
+            "rdclass": "IN",
+            "values": [
+              "10.0.0.1"
+            ]
+          }
+        ],
+        "transport": "UDP",
+        "execution_status": "ok",
+        "error": null,
+        "qclass": "IN",
+        "header_rcode": "NOERROR",
+        "edns": {
+          "present": true,
+          "version": 0,
+          "udp_payload": 8192,
+          "do": false,
+          "other_options": []
+        },
+        "ede": [],
+        "ede_omitted_count": 0,
+        "records": [],
+        "result_kind": "REFERRAL",
+        "cname_loop": false,
+        "cname_chain": [],
+        "canonical_name": "probe.example.test",
+        "negative_name": null,
+        "negative_scope": null,
+        "resolution_complete": false,
+        "soa_serials": [],
+        "duration_ms": 0.0,
+        "query_attempt_id": "Q1",
+        "request_parameters": {
+          "rd": false,
+          "cd": false,
+          "edns": 0,
+          "do": true,
+          "payload": 1232,
+          "mode": "dnssec",
+          "stage": "trace-query",
+          "zone": "."
+        },
+        "requested_at": "2026-11-02T03:10:56.906133+00:00",
+        "finished_at": "2026-11-02T03:10:56.908210+00:00"
+      },
+      "source_mode": "live",
+      "measurement_location": "program-host",
+      "error": null,
+      "id": "E1"
+    },
+    {
+      "tool_call_id": "A1",
+      "parent_tool_call_id": "A1",
+      "query_attempt_id": "Q2",
+      "tool_name": "query_dns",
+      "input": {
+        "domain": "probe.example.test.",
+        "record_type": "A",
+        "resolver": "127.0.0.11"
+      },
+      "started_at": "2026-11-02T03:10:56.911818+00:00",
+      "duration_ms": 0.0,
+      "execution_status": "ok",
+      "data": {
+        "qname": "probe.example.test.",
+        "qtype": "A",
+        "record_type": "A",
+        "resolver": "127.0.0.11",
+        "responding_resolver": "127.0.0.11",
+        "resolver_role": "authoritative",
+        "rcode": "NOERROR",
+        "dns_rcode": "NOERROR",
+        "transport_status": "responded",
+        "flags": {
+          "AA": false,
+          "RD": false,
+          "RA": false,
+          "TC": false,
+          "AD": false,
+          "CD": false
+        },
+        "answer": [],
+        "authority": [
+          {
+            "name": "example.test",
+            "type": "NS",
+            "ttl": 60,
+            "rdclass": "IN",
+            "values": [
+              "ns.example.test."
+            ]
+          }
+        ],
+        "additional": [
+          {
+            "name": "ns.example.test",
+            "type": "A",
+            "ttl": 60,
+            "rdclass": "IN",
+            "values": [
+              "127.0.0.12"
+            ]
+          }
+        ],
+        "transport": "UDP",
+        "execution_status": "ok",
+        "error": null,
+        "qclass": "IN",
+        "header_rcode": "NOERROR",
+        "edns": {
+          "present": true,
+          "version": 0,
+          "udp_payload": 8192,
+          "do": false,
+          "other_options": []
+        },
+        "ede": [],
+        "ede_omitted_count": 0,
+        "records": [],
+        "result_kind": "REFERRAL",
+        "cname_loop": false,
+        "cname_chain": [],
+        "canonical_name": "probe.example.test",
+        "negative_name": null,
+        "negative_scope": null,
+        "resolution_complete": false,
+        "soa_serials": [],
+        "duration_ms": 0.0,
+        "query_attempt_id": "Q2",
+        "request_parameters": {
+          "rd": false,
+          "cd": false,
+          "edns": 0,
+          "do": true,
+          "payload": 1232,
+          "mode": "dnssec",
+          "stage": "trace-query",
+          "zone": "test."
+        },
+        "requested_at": "2026-11-02T03:10:56.909213+00:00",
+        "finished_at": "2026-11-02T03:10:56.911234+00:00"
+      },
+      "source_mode": "live",
+      "measurement_location": "program-host",
+      "error": null,
+      "id": "E2"
+    }
+  ],
+  "attempts": [
+    {
+      "attempt_id": "A1",
+      "tool_name": "query_authoritative",
+      "provider_call_id": "call_00_nFh0IaxDa7jeeInCQ4j33510",
+      "input": {
+        "domain": "probe.example.test",
+        "record_type": "A",
+        "mode": "dnssec"
+      },
+      "started_at": "2026-11-02T03:10:56.905093+00:00",
+      "status": "measured",
+      "evidence_id": null,
+      "error": {
+        "code": "PARTIAL_DNS_EXECUTION_ERROR",
+        "message": "部分 DNS 子查询执行失败；有效子集仍保留，详见 comparison。",
+        "retryable": false
+      },
+      "duration_ms": 16.0,
+      "protocol_state": {
+        "mode": "dnssec",
+        "completed": false,
+        "stop_reason": "DNS_BUDGET_EXHAUSTED",
+        "last_successful_zone": "test.",
+        "steps": [
+          {
+            "zone": ".",
+            "qname": "probe.example.test.",
+            "qtype": "A",
+            "server": "127.0.0.10",
+            "stage": "trace-query",
+            "result_kind": "REFERRAL",
+            "evidence_id": "E1",
+            "query_attempt_ids": [
+              "Q1"
+            ],
+            "ns": "a.root.test.",
+            "address_source": [
+              null
+            ]
+          },
+          {
+            "stage": "delegation",
+            "zone": ".",
+            "next_zone": "test.",
+            "evidence_id": "E1",
+            "selected_ns": [
+              {
+                "ns": "a.test.",
+                "addresses": [
+                  "127.0.0.11"
+                ],
+                "source": {
+                  "kind": "in_bailiwick_bootstrap_glue",
+                  "evidence_id": "E1",
+                  "cryptographically_trusted": false
+                }
+              }
+            ]
+          },
+          {
+            "zone": "test.",
+            "qname": "probe.example.test.",
+            "qtype": "A",
+            "server": "127.0.0.11",
+            "stage": "trace-query",
+            "result_kind": "REFERRAL",
+            "evidence_id": "E2",
+            "query_attempt_ids": [
+              "Q2"
+            ],
+            "ns": "a.test.",
+            "address_source": [
+              {
+                "kind": "in_bailiwick_bootstrap_glue",
+                "evidence_id": "E1",
+                "cryptographically_trusted": false
+              }
+            ]
+          },
+          {
+            "stage": "delegation",
+            "zone": "test.",
+            "next_zone": "example.test.",
+            "evidence_id": "E2",
+            "selected_ns": [
+              {
+                "ns": "ns.example.test.",
+                "addresses": [
+                  "127.0.0.12"
+                ],
+                "source": {
+                  "kind": "in_bailiwick_bootstrap_glue",
+                  "evidence_id": "E2",
+                  "cryptographically_trusted": false
+                }
+              }
+            ]
+          },
+          {
+            "zone": "example.test.",
+            "qname": "probe.example.test.",
+            "qtype": "A",
+            "server": "127.0.0.12",
+            "stage": "trace-query",
+            "result_kind": null,
+            "evidence_id": null,
+            "query_attempt_ids": [],
+            "ns": "ns.example.test.",
+            "address_source": [
+              {
+                "kind": "in_bailiwick_bootstrap_glue",
+                "evidence_id": "E2",
+                "cryptographically_trusted": false
+              }
+            ]
+          }
+        ],
+        "zones": [
+          {
+            "zone": ".",
+            "child_zone": "test.",
+            "parent_server": "127.0.0.10",
+            "qname": "probe.example.test.",
+            "qtype": "A",
+            "referral_evidence_id": "E1",
+            "selected_ns": [
+              {
+                "ns": "a.test.",
+                "addresses": [
+                  "127.0.0.11"
+                ],
+                "source": {
+                  "kind": "in_bailiwick_bootstrap_glue",
+                  "evidence_id": "E1",
+                  "cryptographically_trusted": false
+                }
+              }
+            ]
+          },
+          {
+            "zone": "test.",
+            "child_zone": "example.test.",
+            "parent_server": "127.0.0.11",
+            "qname": "probe.example.test.",
+            "qtype": "A",
+            "referral_evidence_id": "E2",
+            "selected_ns": [
+              {
+                "ns": "ns.example.test.",
+                "addresses": [
+                  "127.0.0.12"
+                ],
+                "source": {
+                  "kind": "in_bailiwick_bootstrap_glue",
+                  "evidence_id": "E2",
+                  "cryptographically_trusted": false
+                }
+              }
+            ]
+          }
+        ],
+        "resolutions": [],
+        "cache_hits": [],
+        "root_hints": {
+          "source": "explicit_test_injection"
+        },
+        "discovery": [
+          {
+            "qname": "probe.example.test.",
+            "qtype": "A",
+            "record_type": "A",
+            "resolver": "127.0.0.10",
+            "responding_resolver": "127.0.0.10",
+            "resolver_role": "authoritative",
+            "rcode": "NOERROR",
+            "dns_rcode": "NOERROR",
+            "transport_status": "responded",
+            "flags": {
+              "AA": false,
+              "RD": false,
+              "RA": false,
+              "TC": false,
+              "AD": false,
+              "CD": false
+            },
+            "answer": [],
+            "authority": [
+              {
+                "name": "test",
+                "type": "NS",
+                "ttl": 60,
+                "rdclass": "IN",
+                "values": [
+                  "a.test."
+                ]
+              }
+            ],
+            "additional": [
+              {
+                "name": "a.test",
+                "type": "A",
+                "ttl": 60,
+                "rdclass": "IN",
+                "values": [
+                  "127.0.0.11"
+                ]
+              },
+              {
+                "name": "unrelated.test",
+                "type": "A",
+                "ttl": 60,
+                "rdclass": "IN",
+                "values": [
+                  "10.0.0.1"
+                ]
+              }
+            ],
+            "transport": "UDP",
+            "execution_status": "ok",
+            "error": null,
+            "qclass": "IN",
+            "header_rcode": "NOERROR",
+            "edns": {
+              "present": true,
+              "version": 0,
+              "udp_payload": 8192,
+              "do": false,
+              "other_options": []
+            },
+            "ede": [],
+            "ede_omitted_count": 0,
+            "records": [],
+            "result_kind": "REFERRAL",
+            "cname_loop": false,
+            "cname_chain": [],
+            "canonical_name": "probe.example.test",
+            "negative_name": null,
+            "negative_scope": null,
+            "resolution_complete": false,
+            "soa_serials": [],
+            "duration_ms": 0.0,
+            "query_attempt_id": "Q1",
+            "request_parameters": {
+              "rd": false,
+              "cd": false,
+              "edns": 0,
+              "do": true,
+              "payload": 1232,
+              "mode": "dnssec",
+              "stage": "trace-query",
+              "zone": "."
+            },
+            "requested_at": "2026-11-02T03:10:56.906133+00:00",
+            "finished_at": "2026-11-02T03:10:56.908210+00:00",
+            "evidence_id": "E1",
+            "resolvers": [
+              "127.0.0.10"
+            ],
+            "system_resolver_configuration": null,
+            "query_evidence_ids": [
+              "E1"
+            ],
+            "query_attempt_ids": [
+              "Q1"
+            ]
+          },
+          {
+            "qname": "probe.example.test.",
+            "qtype": "A",
+            "record_type": "A",
+            "resolver": "127.0.0.11",
+            "responding_resolver": "127.0.0.11",
+            "resolver_role": "authoritative",
+            "rcode": "NOERROR",
+            "dns_rcode": "NOERROR",
+            "transport_status": "responded",
+            "flags": {
+              "AA": false,
+              "RD": false,
+              "RA": false,
+              "TC": false,
+              "AD": false,
+              "CD": false
+            },
+            "answer": [],
+            "authority": [
+              {
+                "name": "example.test",
+                "type": "NS",
+                "ttl": 60,
+                "rdclass": "IN",
+                "values": [
+                  "ns.example.test."
+                ]
+              }
+            ],
+            "additional": [
+              {
+                "name": "ns.example.test",
+                "type": "A",
+                "ttl": 60,
+                "rdclass": "IN",
+                "values": [
+                  "127.0.0.12"
+                ]
+              }
+            ],
+            "transport": "UDP",
+            "execution_status": "ok",
+            "error": null,
+            "qclass": "IN",
+            "header_rcode": "NOERROR",
+            "edns": {
+              "present": true,
+              "version": 0,
+              "udp_payload": 8192,
+              "do": false,
+              "other_options": []
+            },
+            "ede": [],
+            "ede_omitted_count": 0,
+            "records": [],
+            "result_kind": "REFERRAL",
+            "cname_loop": false,
+            "cname_chain": [],
+            "canonical_name": "probe.example.test",
+            "negative_name": null,
+            "negative_scope": null,
+            "resolution_complete": false,
+            "soa_serials": [],
+            "duration_ms": 0.0,
+            "query_attempt_id": "Q2",
+            "request_parameters": {
+              "rd": false,
+              "cd": false,
+              "edns": 0,
+              "do": true,
+              "payload": 1232,
+              "mode": "dnssec",
+              "stage": "trace-query",
+              "zone": "test."
+            },
+            "requested_at": "2026-11-02T03:10:56.909213+00:00",
+            "finished_at": "2026-11-02T03:10:56.911234+00:00",
+            "evidence_id": "E2",
+            "resolvers": [
+              "127.0.0.11"
+            ],
+            "system_resolver_configuration": null,
+            "query_evidence_ids": [
+              "E2"
+            ],
+            "query_attempt_ids": [
+              "Q2"
+            ]
+          },
+          {
+            "execution_status": "error",
+            "error": {
+              "code": "DNS_BUDGET_EXHAUSTED",
+              "retryable": false
+            },
+            "qname": "probe.example.test.",
+            "qtype": "A",
+            "resolver": "127.0.0.12",
+            "resolver_role": "authoritative",
+            "transport_status": "not_executed",
+            "dns_rcode": null,
+            "resolvers": [
+              "127.0.0.12"
+            ],
+            "system_resolver_configuration": null,
+            "query_evidence_ids": [],
+            "query_attempt_ids": []
+          }
+        ],
+        "responses": [],
+        "independence": "RD=0; no recursive resolver/getaddrinfo; glue is bootstrap, not cryptographic trust",
+        "current_zone": "example.test.",
+        "last_delegated_zone": "example.test.",
+        "trace_completed": false,
+        "validation": {
+          "validation_execution": "incomplete",
+          "dnssec_status": "INDETERMINATE",
+          "reason_code": "DNS_BUDGET_EXHAUSTED",
+          "algorithm_policy": "dns-investigator-dnssec-v1:8,13,14,15;DS2,4;RSA2048-4096;NSEC3-0-empty-salt",
+          "validation_scope": {
+            "qname": "probe.example.test",
+            "qtype": "A"
+          },
+          "validation_result_ids": []
+        },
+        "comparison": {
+          "scope": {
+            "max_time_gap_seconds": 300
+          },
+          "paths": [
+            {
+              "evidence_id": "E1",
+              "attempt_id": "A1",
+              "query_attempt_id": "Q1",
+              "target": "probe.example.test",
+              "record_type": "A",
+              "query_stage": null,
+              "resolver": "127.0.0.10",
+              "role": "authoritative",
+              "source_mode": "live",
+              "measured_at": "2026-11-02T03:10:56.908210+00:00",
+              "execution_status": "ok",
+              "error": null,
+              "transport_status": "responded",
+              "dns_rcode": "NOERROR",
+              "result_kind": "REFERRAL"
+            },
+            {
+              "evidence_id": "E2",
+              "attempt_id": "A1",
+              "query_attempt_id": "Q2",
+              "target": "probe.example.test",
+              "record_type": "A",
+              "query_stage": null,
+              "resolver": "127.0.0.11",
+              "role": "authoritative",
+              "source_mode": "live",
+              "measured_at": "2026-11-02T03:10:56.911818+00:00",
+              "execution_status": "ok",
+              "error": null,
+              "transport_status": "responded",
+              "dns_rcode": "NOERROR",
+              "result_kind": "REFERRAL"
+            },
+            {
+              "evidence_id": null,
+              "attempt_id": "A1",
+              "query_attempt_id": null,
+              "target": "probe.example.test",
+              "record_type": "A",
+              "query_stage": "discovery",
+              "resolver": "127.0.0.12",
+              "role": "authoritative",
+              "source_mode": "live",
+              "measured_at": null,
+              "execution_status": "error",
+              "error": {
+                "code": "DNS_BUDGET_EXHAUSTED",
+                "retryable": false
+              },
+              "transport_status": "not_executed",
+              "dns_rcode": null,
+              "result_kind": null
+            }
+          ],
+          "pairs": [
+            {
+              "path_indices": [
+                0,
+                1
+              ],
+              "evidence_ids": [
+                "E1",
+                "E2"
+              ],
+              "codes": [],
+              "comparable": false,
+              "time_status": "TIME_COMPARABLE",
+              "reason": "AUTHORITY_NOT_CONFIRMED"
+            },
+            {
+              "path_indices": [
+                0,
+                2
+              ],
+              "evidence_ids": [
+                "E1"
+              ],
+              "codes": [],
+              "comparable": false,
+              "time_status": "TIME_UNKNOWN",
+              "reason": "AUTHORITY_NOT_CONFIRMED"
+            },
+            {
+              "path_indices": [
+                1,
+                2
+              ],
+              "evidence_ids": [
+                "E2"
+              ],
+              "codes": [],
+              "comparable": false,
+              "time_status": "TIME_UNKNOWN",
+              "reason": "AUTHORITY_NOT_CONFIRMED"
+            }
+          ],
+          "differences": [
+            "COMPARISON_INCONCLUSIVE"
+          ],
+          "observations": [],
+          "limitations": [
+            "时间/来源缺失的旧记录不能证明同时或同源；响应差异不等于唯一根因。",
+            "记录差异可能来自 CDN、GeoDNS、负载均衡、缓存、策略和查询时间；超时没有提供记录或 TTL 事实。"
+          ]
+        },
+        "differences": [
+          "COMPARISON_INCONCLUSIVE"
+        ],
+        "findings": [
+          {
+            "code": "DNS_INCONCLUSIVE",
+            "stage": "dns",
+            "status": "insufficient_information",
+            "scope": {},
+            "evidence_ids": [
+              "E1",
+              "E2"
+            ],
+            "observed_facts": [],
+            "localization": {},
+            "root_cause_confirmed": false,
+            "explanation": "没有足够的完整可比较 DNS 回答来定位故障。",
+            "limitations": [
+              "正常查询不能排除历史或客户端差异；未知不等于正常。"
+            ],
+            "next_checks": [
+              "query_dns：对授权目标和所需记录取得响应；失败时保留未知。 "
+            ]
+          }
+        ],
+        "evidence_ids": [
+          "E1",
+          "E2"
+        ]
+      },
+      "dns_execution_issues": [
+        {
+          "execution_status": "error",
+          "error": {
+            "code": "DNS_BUDGET_EXHAUSTED",
+            "retryable": false
+          },
+          "qname": "probe.example.test.",
+          "qtype": "A",
+          "resolver": "127.0.0.12",
+          "resolver_role": "authoritative",
+          "transport_status": "not_executed",
+          "dns_rcode": null,
+          "resolvers": [
+            "127.0.0.12"
+          ],
+          "system_resolver_configuration": null,
+          "query_evidence_ids": [],
+          "query_attempt_ids": [],
+          "query_stage": "discovery",
+          "source_mode": "live",
+          "parent_tool_call_id": "A1"
+        }
+      ],
+      "evidence_ids": [
+        "E1",
+        "E2"
+      ]
+    }
+  ],
+  "validation_results": [],
+  "model_draft": {
+    "request_kind": "query",
+    "outcome": "insufficient_information",
+    "hypotheses": [
+      {
+        "testable_claim": null,
+        "measurement_scope": {},
+        "evidence_review_notes": [
+          "E1：根区 127.0.0.10 返回 REFERRAL（NOERROR，AA=false），委派至 test.，仅提供 in-bailiwick glue，非密码学信任。",
+          "E2：test. 区 127.0.0.11 返回 REFERRAL（NOERROR，AA=false），委派至 example.test.，NS 为 ns.example.test.，地址来自 glue。",
+          "对 127.0.0.12 的 trace-query 未执行（DNS_BUDGET_EXHAUSTED），因此未取得任何 AA 回答，DNSSEC 验证链 incomplete，validation_result_ids 为空。",
+          "E1/E2 的 EDNS 响应中 do=false，且均为委派而非权威回答，不能用于判断签名存在或有效。"
+        ],
+        "category": "dns_resolution",
+        "id": "H1",
+        "statement": "probe.example.test 的 A 记录 DNSSEC 状态无法在本轮预算内完成验证（验证执行不完整，结果 INDETERMINATE）。",
+        "status": "无法确定",
+        "supporting_evidence_ids": [
+          "E1",
+          "E2"
+        ],
+        "contradicting_evidence_ids": [],
+        "missing_information": [
+          "example.test 权威服务器 127.0.0.12 对 probe.example.test/A 的实际应答（含 RRSIG/NSEC 等 DNSSEC 材料）",
+          "probe.example.test 的最终 A 记录值",
+          "从根到 example.test 的 DS/DNSKEY 链验证结果"
+        ]
+      }
+    ],
+    "analysis_summary": "本轮以 dnssec 模式对 probe.example.test 的 A 记录做独立委派追踪，仅完成前两跳：根区（127.0.0.10，E1）与 test. 区（127.0.0.11，E2）均返回 NOERROR 的 REFERRAL，AA=false，未给出任何 A 记录或 DNSSEC 签名材料。第三跳指向 example.test. 的权威服务器 ns.example.test.（127.0.0.12），该查询因 DNS 预算耗尽未执行（dns_requests_remaining=0，且标记不可重试）。因此既未取得 probe.example.test 的 A 记录，也未取得可用于 DNSSEC 链验证的 DS/DNSKEY/RRSIG 证据；程序 DNSSEC 结果为 INDETERMINATE、执行状态 incomplete。按用户要求，保留已测路径并在此明确停止：无法确认该 A 记录是否存在、其值为何，也无法确认其是否受 DNSSEC 保护或签名是否有效。已测两跳只说明委派路径存在且响应正常，不构成对目标记录或 DNSSEC 状态的任何结论。",
+    "limitations": [
+      "仅完成根区与 test. 区两跳委派查询，未到达 example.test. 权威服务器，未获得任何 AA 回答。",
+      "DNS 请求预算已耗尽（dns_requests_remaining=0），127.0.0.12 的查询被标记为不可重试，本轮无法继续。",
+      "E1/E2 中的 NS 地址来自 in-bailiwick glue，非密码学信任，不能作为权威性依据。",
+      "无 validation_result_ids，DNSSEC 签名/信任链判断完全缺失；AD/DO 标志不构成本程序已验证 DNSSEC 的证据。",
+      "测量来自本程序所在主机，不代表浏览器缓存、hosts、代理或 DoH 路径。"
+    ],
+    "next_directions": [
+      "在预算恢复后，对 example.test. 权威服务器 127.0.0.12 直接查询 probe.example.test/A（RD=0，DO=1），取得 AA 回答及 RRSIG/NSEC/NSEC3 材料。",
+      "若需完整 DNSSEC 结论，按 example.test. 的 DS→DNSKEY→RRSIG 链逐级采集，并核对算法策略（dns-investigator-dnssec-v1）。",
+      "如需确认记录值本身，可另用独立递归解析器（如 1.1.1.1、8.8.8.8）对照 A 记录，但递归成功不能替代权威 DNSSEC 验证。"
+    ]
+  },
+  "report_policy": "scoped_evidence_bound_v2",
+  "raw_model_drafts": [
+    {
+      "request_kind": "query",
+      "outcome": "insufficient_information",
+      "hypotheses": [
+        {
+          "id": "H1",
+          "statement": "probe.example.test 的 A 记录 DNSSEC 状态无法在本轮预算内完成验证（验证执行不完整，结果 INDETERMINATE）。",
+          "status": "无法确定",
+          "category": "dns_resolution",
+          "supporting_evidence_ids": [
+            "E1",
+            "E2"
+          ],
+          "contradicting_evidence_ids": [],
+          "missing_information": [
+            "example.test 权威服务器 127.0.0.12 对 probe.example.test/A 的实际应答（含 RRSIG/NSEC 等 DNSSEC 材料）",
+            "probe.example.test 的最终 A 记录值",
+            "从根到 example.test 的 DS/DNSKEY 链验证结果"
+          ],
+          "evidence_review_notes": [
+            "E1：根区 127.0.0.10 返回 REFERRAL（NOERROR，AA=false），委派至 test.，仅提供 in-bailiwick glue，非密码学信任。",
+            "E2：test. 区 127.0.0.11 返回 REFERRAL（NOERROR，AA=false），委派至 example.test.，NS 为 ns.example.test.，地址来自 glue。",
+            "对 127.0.0.12 的 trace-query 未执行（DNS_BUDGET_EXHAUSTED），因此未取得任何 AA 回答，DNSSEC 验证链 incomplete，validation_result_ids 为空。",
+            "E1/E2 的 EDNS 响应中 do=false，且均为委派而非权威回答，不能用于判断签名存在或有效。"
+          ]
+        }
+      ],
+      "analysis_summary": "本轮以 dnssec 模式对 probe.example.test 的 A 记录做独立委派追踪，仅完成前两跳：根区（127.0.0.10，E1）与 test. 区（127.0.0.11，E2）均返回 NOERROR 的 REFERRAL，AA=false，未给出任何 A 记录或 DNSSEC 签名材料。第三跳指向 example.test. 的权威服务器 ns.example.test.（127.0.0.12），该查询因 DNS 预算耗尽未执行（dns_requests_remaining=0，且标记不可重试）。因此既未取得 probe.example.test 的 A 记录，也未取得可用于 DNSSEC 链验证的 DS/DNSKEY/RRSIG 证据；程序 DNSSEC 结果为 INDETERMINATE、执行状态 incomplete。按用户要求，保留已测路径并在此明确停止：无法确认该 A 记录是否存在、其值为何，也无法确认其是否受 DNSSEC 保护或签名是否有效。已测两跳只说明委派路径存在且响应正常，不构成对目标记录或 DNSSEC 状态的任何结论。",
+      "limitations": [
+        "仅完成根区与 test. 区两跳委派查询，未到达 example.test. 权威服务器，未获得任何 AA 回答。",
+        "DNS 请求预算已耗尽（dns_requests_remaining=0），127.0.0.12 的查询被标记为不可重试，本轮无法继续。",
+        "E1/E2 中的 NS 地址来自 in-bailiwick glue，非密码学信任，不能作为权威性依据。",
+        "无 validation_result_ids，DNSSEC 签名/信任链判断完全缺失；AD/DO 标志不构成本程序已验证 DNSSEC 的证据。",
+        "测量来自本程序所在主机，不代表浏览器缓存、hosts、代理或 DoH 路径。"
+      ],
+      "next_directions": [
+        "在预算恢复后，对 example.test. 权威服务器 127.0.0.12 直接查询 probe.example.test/A（RD=0，DO=1），取得 AA 回答及 RRSIG/NSEC/NSEC3 材料。",
+        "若需完整 DNSSEC 结论，按 example.test. 的 DS→DNSKEY→RRSIG 链逐级采集，并核对算法策略（dns-investigator-dnssec-v1）。",
+        "如需确认记录值本身，可另用独立递归解析器（如 1.1.1.1、8.8.8.8）对照 A 记录，但递归成功不能替代权威 DNSSEC 验证。"
+      ]
+    }
+  ],
+  "validation_errors": [],
+  "dns_attempts": [
+    {
+      "query_attempt_id": "Q1",
+      "parent_tool_call_id": "A1",
+      "qname": "probe.example.test.",
+      "qtype": "A",
+      "qclass": "IN",
+      "server": "127.0.0.10",
+      "port": 52249,
+      "resolver_role": "authoritative",
+      "transport": "UDP",
+      "status": "measured",
+      "request_parameters": {
+        "rd": false,
+        "cd": false,
+        "edns": 0,
+        "do": true,
+        "payload": 1232,
+        "mode": "dnssec",
+        "stage": "trace-query",
+        "zone": "."
+      },
+      "requested_at": "2026-11-02T03:10:56.906133+00:00",
+      "finished_at": "2026-11-02T03:10:56.908210+00:00",
+      "duration_ms": 0.0,
+      "evidence_id": "E1"
+    },
+    {
+      "query_attempt_id": "Q2",
+      "parent_tool_call_id": "A1",
+      "qname": "probe.example.test.",
+      "qtype": "A",
+      "qclass": "IN",
+      "server": "127.0.0.11",
+      "port": 52250,
+      "resolver_role": "authoritative",
+      "transport": "UDP",
+      "status": "measured",
+      "request_parameters": {
+        "rd": false,
+        "cd": false,
+        "edns": 0,
+        "do": true,
+        "payload": 1232,
+        "mode": "dnssec",
+        "stage": "trace-query",
+        "zone": "test."
+      },
+      "requested_at": "2026-11-02T03:10:56.909213+00:00",
+      "finished_at": "2026-11-02T03:10:56.911234+00:00",
+      "duration_ms": 0.0,
+      "evidence_id": "E2"
+    }
+  ],
+  "findings": [
+    {
+      "code": "DNS_INCONCLUSIVE",
+      "stage": "dns",
+      "status": "insufficient_information",
+      "scope": {},
+      "evidence_ids": [
+        "E1",
+        "E2"
+      ],
+      "observed_facts": [],
+      "localization": {},
+      "root_cause_confirmed": false,
+      "explanation": "没有足够的完整可比较 DNS 回答来定位故障。",
+      "limitations": [
+        "正常查询不能排除历史或客户端差异；未知不等于正常。"
+      ],
+      "next_checks": [
+        "query_dns：对授权目标和所需记录取得响应；失败时保留未知。 "
+      ]
+    },
+    {
+      "code": "DNSSEC_VALIDATION",
+      "stage": "dnssec",
+      "status": "observed",
+      "provenance": "observed",
+      "finding_status": "indeterminate",
+      "severity": "information",
+      "validation_result_ids": [],
+      "scope": {
+        "qname": "probe.example.test",
+        "qtype": "A"
+      },
+      "evidence_ids": [],
+      "observed_facts": [],
+      "localization": {},
+      "root_cause_confirmed": false,
+      "explanation": "本程序DNSSEC结果=INDETERMINATE；执行=incomplete；原因=DNS_BUDGET_EXHAUSTED；范围={'qname': 'probe.example.test', 'qtype': 'A'}。",
+      "limitations": [
+        "仅针对所列信任锚、策略、时刻和E/V链；不确认运维根因、全部NS或未来结果。"
+      ],
+      "next_checks": [
+        "按所列失败阶段及E/V链核对材料、策略和管理员配置意图；必要时用同锚/时刻的外部验证器对照，不盲目重复查询或修改配置。"
+      ]
+    }
+  ],
+  "elapsed_seconds": 7.047,
+  "output_attempt_count": 1,
+  "output_resubmissions": 0
+}

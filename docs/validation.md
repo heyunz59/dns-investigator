@@ -2,9 +2,9 @@
 
 ## v0.4 协议诊断（2026-11-02）
 
-基线3a0b1fa：271 passed in11.93s。最终业务9bd82d9：351 passed in23.66s，当前Windows无skip，pip check通过；旧并发/CNAME/调用统计/不可重试及IPv6回环保留。35例受控真实UDP/TCP签名数据与独立Unbound1.26.2：30个声明核心场景状态一致，另5项策略/材料/能力边界如实区别。不是未见holdout或整体语义准确率。
+基线3a0b1fa：271 passed in11.93s。最终业务133b49a：356 passed in24.90s，当前Windows无skip，pip check通过；旧并发/CNAME/调用统计/不可重试及IPv6回环保留。37例受控真实UDP/TCP签名数据与独立Unbound1.26.2：30个声明核心场景状态一致，另7项策略/材料/畸形边界如实区别。畸形hash名本程序BOGUS而参考SECURE，明确列为机械差异候选，待协议复核，不谎称全部一致。不是未见holdout或整体语义准确率。
 
-真实DeepSeek受控逐轮补测保存，最终9bd82d9分母与成本见review-9bd82d9.json；a525dc2历史轮7次为6 completed/1 limited、8A/36Q/36E/27V，不混称最终代码结果。公网纯工具nic.cz独立trace2Q，DNSSEC7Q/7E/9V为SECURE；先前同机父子区错误BOGUS已复现修复，原失败保留。cloudflare.com依赖/网络未完成也保留，未冒充公网全面通过。全部阶段/中间/失败、最终逐模块哈希和公开扫描见results/published/v0.4-protocol/，[实现与验收边界](v0.4-validation.md)。本轮不推送，远程CI及独立人工语义验收未执行。
+真实DeepSeek受控逐轮补测保存，最终133b49a分母与成本见review-133b49a.json：7次为6 completed/1 limited、8A/36Q/36E/27V、输入73186/输出7332 tokens、55.532秒。公网纯工具nic.cz独立trace2Q，DNSSEC7Q/7E/9V为SECURE；先前同机父子区错误BOGUS已复现修复，原失败保留。cloudflare.com依赖/网络未完成也保留，未冒充公网全面通过。全部阶段/中间/失败、最终逐模块哈希和公开扫描见results/published/v0.4-protocol/，[实现与验收边界](v0.4-validation.md)。本轮不推送，远程CI及独立人工语义验收未执行。
 
 ## d26d6b7 最终核验与针对性修复（2026-11-01）
 
