@@ -174,3 +174,15 @@ def test_policy_redirect_and_body_limit_remain_unknown():
             security_refusal=refusal),'check_http')
         d=evidence_bound_report(draft(),b).diagnostic_conclusion
         assert d.fault_detected is None and d.diagnosis_status=='INSUFFICIENT_EVIDENCE'
+
+
+def test_authoritative_refusal_not_recursive_failure():
+    b=backend();dns(b,'REFUSED',role='authoritative')
+    d=evidence_bound_report(draft(),b).diagnostic_conclusion
+    assert d.fault_layer=='Authoritative DNS' and d.primary_issue=='DNS_REFUSED'
+
+
+def test_non_aa_does_not_confirm_normal_authority():
+    b=backend();e=dns(b,role='authoritative');e['data']['flags']['AA']=False
+    d=evidence_bound_report(draft(),b).diagnostic_conclusion
+    assert d.diagnosis_status=='INSUFFICIENT_EVIDENCE' and d.fault_detected is None

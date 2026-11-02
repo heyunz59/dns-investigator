@@ -88,6 +88,8 @@ def reason(result):
         layer,title,alts=codes[f.code]
         # SOA serial / record-only differences are observations, not faults.
         selected=[facts[e] for e in f.evidence_ids if e in facts]
+        if f.code in {'DNS_SERVFAIL','DNS_REFUSED'} and selected and all(x.get('resolver_role')=='authoritative' for x in selected):
+            layer='Authoritative DNS'
         if f.code in {'RECURSIVE_AUTH_RESPONSE_MISMATCH','AUTHORITATIVE_RESPONSE_DISAGREEMENT'}:
             if len({x['result'] for x in selected})<2:continue
             if any(x.get('resolver_role')=='authoritative' and not x.get('authoritative_answer') for x in selected):continue
@@ -132,6 +134,8 @@ def reason(result):
             f['result']!='NOERROR' and f['evidence_id'] not in validated_negative_ds and not
             (f['result']=='REFERRAL' and f.get('attempt_id') in validated_protocol_attempts)) for f in facts.values())
         incomplete=incomplete or any(f['tool']=='check_http' and f.get('request_state') not in {'complete','finished_within_check_limits'} for f in facts.values())
+        incomplete=incomplete or any(f.get('resolver_role')=='authoritative' and not f.get('authoritative_answer') and
+            not (f['result']=='REFERRAL' and f.get('attempt_id') in validated_protocol_attempts) for f in facts.values())
         normal=bool(facts) and not incomplete
         add('MEASURED_NORMAL' if normal else 'INSUFFICIENT_EVIDENCE','Unknown',
             '本次已测范围未发现明确异常。' if normal else '没有足够有效测量完成故障定位。',
