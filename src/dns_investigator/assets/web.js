@@ -102,7 +102,7 @@ function renderEvidence(view) {
     for (const card of cards.slice(shown,shown+5)) {
       const node = el('details',undefined,'evidence-card'); node.append(el('summary',card.id+' · '+card.title));
       const raw = card.raw;
-      node.append(el('p','测量时间：'+timeText(raw.started_at || raw.measured_at)+' · 来源：'+(raw.source_mode || '未记录'),'evidence-facts'));
+      node.append(el('p','测量时间：'+timeText(raw.started_at || raw.measured_at || (typeof raw.validation_time === 'number' ? new Date(raw.validation_time*1000).toISOString() : null))+' · 来源：'+(raw.source_mode || '未记录'),'evidence-facts'));
       if (raw.tool_name) node.append(el('p','实际工具：'+(operations[raw.tool_name] || raw.tool_name),'evidence-facts'));
       disclosure(node,'查看原始参数、结果及审计字段',raw); panel.append(node);
     }
@@ -119,6 +119,7 @@ function renderTimeline(view) {
     // Visible narrative belongs to the node; raw records stay one level deeper.
     entry.append(node, el('p',row.target+' · '+row.state+' · '+duration(row.duration),'timeline-meta'),el('p',row.summary),el('p',row.refs.join(' / '),'timeline-meta'));
     if (row.error) node.append(el('p','执行问题：'+JSON.stringify(row.error)));
+    for (const internal of row.internal_validations || []) disclosure(node,'工具内部验证 · '+internal.title,internal.raw);
     disclosure(node,'实际调用参数与完整事件',row.raw);
     panel.append(entry);
   }

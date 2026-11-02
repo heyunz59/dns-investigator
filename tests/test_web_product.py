@@ -164,3 +164,10 @@ def test_legacy_long_summary_uses_controlled_fallback_without_data_loss():
     assert v['short_title']=='证据不足，暂无法确定'
     assert len(v['short_explanation'])<100
     assert v['result']['conclusion']==text
+
+def test_friendly_evidence_identity_and_internal_validation_references():
+    v=present({'evidence':[{'id':'E7','tool_name':'query_dns','tool_call_id':'A1','input':{'domain':'x.test','record_type':'A','resolver':'1.1.1.1'},'data':{'result_kind':'TIMEOUT'}}], 'attempts':[{'attempt_id':'A1','tool_name':'query_authoritative'}], 'validation_results':[{'id':'V7','parent_tool_call_id':'A1','kind':'ds_digest','local_result':'SIGNATURE_CHECK_FAILED','reason_code':'DS_DIGEST_MISMATCH','scope':{'zone':'x.test.'}}]})
+    assert '1.1.1.1 的 x.test A' in v['evidence_cards'][0]['title']
+    assert 'DS' in v['validation_cards'][0]['title'] and '未记录' not in v['validation_cards'][0]['title']
+    assert 'V7' in v['timeline'][0]['refs']
+    assert len(v['timeline'])==1 and len(v['timeline'][0]['internal_validations'])==1

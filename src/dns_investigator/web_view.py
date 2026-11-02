@@ -29,6 +29,23 @@ def result_text(e):
     value = data.get('result_kind') or data.get('result') or data.get('dns_rcode') or data.get('rcode') or data.get('status')
     return RESULTS.get(str(value), '结果未记录' if not value else str(value))
 
+def evidence_title(e):
+    data=e.get('data') or e
+    args=e.get('input') or {}
+    tool=e.get('tool_name') or e.get('tool')
+    if tool == 'query_dns':
+        name=data.get('qname') or data.get('target') or args.get('domain') or '名称未记录'
+        typ=data.get('record_type') or data.get('qtype') or args.get('record_type') or '类型未记录'
+        resolver=data.get('resolver') or args.get('resolver') or '解析器未记录'
+        return f'{resolver} 的 {name} {typ} · {result_text(e)}'
+    target=args.get('url') or (str(args.get('ip'))+':'+str(args.get('port')) if args.get('ip') else args.get('domain') or '')
+    return TOOLS.get(tool,'测量')+' · '+target+' · '+result_text(e)
+
+def validation_title(v):
+    scope=v.get('scope') or {}
+    result=REASONS.get(v.get('reason_code')) or RESULTS.get(v.get('status')) or {'SIGNATURE_CHECK_FAILED':'本地验证未通过','VERIFIED':'本地验证通过','INDETERMINATE':'无法确定'}.get(v.get('local_result')) or v.get('local_result') or v.get('status') or '验证结果未记录'
+    return str(scope.get('zone') or scope.get('qname') or '')+' · '+result
+
 def enrich(view, log):
     r = view['result']; ds = view['diagnoses']; d = (ds or [{}])[0]
     evidence = dictionaries(view['evidence']); by_id = {e.get('id') or e.get('evidence_id'):e for e in evidence}
@@ -91,20 +108,21 @@ def enrich(view, log):
     view['paths']=[dict(resolver=g['resolver'],role=g['role'],source=g['source'],location=g['location'],summary=g['summary'],tone=g['tone'],
         queries=list(dict.fromkeys(m['name']+' '+m['type'] for m in g['measurements']))) for g in groups]
     view['evidence_cards']=[dict(id=e.get('id') or e.get('evidence_id') or 'ID 未记录',
-        title=(TOOLS.get(e.get('tool_name') or e.get('tool'), '测量')+' · '+str((e.get('input') or {}).get('domain') or (e.get('data') or e).get('target') or '')+' · '+result_text(e)),raw=e) for e in evidence]
+        title=evidence_title(e),raw=e) for e in evidence]
     direct=set(i for x in ds for i in x.get('direct_evidence_ids',[])+x.get('direct_validation_ids',[]))
     view['evidence_cards'].sort(key=lambda c:c['id'] not in direct)
-    view['validation_cards']=[dict(id=v.get('id') or v.get('validation_id') or 'ID 未记录',title=RESULTS.get(v.get('status'),v.get('status') or '验证结果未记录'),raw=v) for v in dictionaries(view['validations'])]
+    view['validation_cards']=[dict(id=v.get('id') or v.get('validation_id') or 'ID 未记录',title=validation_title(v),raw=v) for v in dictionaries(view['validations'])]
     timeline=[]
     for a in dictionaries(view['attempts']):
         aid=a.get('attempt_id') or a.get('id'); related=[e for e in evidence if e.get('tool_call_id')==aid or e.get('parent_tool_call_id')==aid or (e.get('id') or e.get('evidence_id')) in a.get('evidence_ids',[])]
-        refs=[aid]+[e.get('id') or e.get('evidence_id') for e in related]+[q.get('query_attempt_id') for q in queries if q.get('parent_tool_call_id')==aid]
+        internal=[v for v in dictionaries(view['validations']) if v.get('parent_tool_call_id')==aid]
+        refs=[v.get('id') or v.get('validation_id') for v in internal]+[aid]+[e.get('id') or e.get('evidence_id') for e in related]+[q.get('query_attempt_id') for q in queries if q.get('parent_tool_call_id')==aid]
         error=a.get('error')
         timeline.append(dict(time=a.get('started_at') or a.get('timestamp'), operation=TOOLS.get(a.get('tool_name'), a.get('tool_name') or '操作未记录'),
             target=a.get('input',{}).get('domain') or a.get('input',{}).get('url') or a.get('input',{}).get('ip') or '目标未记录',
             state=EXECUTION.get(a.get('status'),a.get('status') or '状态未记录'), duration=a.get('duration_ms'),
             summary='调用未执行或未完成；不据此判断远端故障。' if a.get('status') in ('rejected','failed','error','cancelled','pending') else '；'.join(dict.fromkeys(result_text(e) for e in related)) or '没有关联结果记录。',
-            refs=[x for x in refs if x],error=error,raw=a))
+            refs=[x for x in refs if x],error=error,internal_validations=[dict(title=validation_title(v),raw=v) for v in internal],raw=a))
     timeline.sort(key=lambda x:(recorded_time(x['time']) is None,recorded_time(x['time']) or 0))
     view['timeline']=timeline
     view['dnssec']=[dict(title=REASONS.get(x.get('reason_code'), 'DNSSEC 验证范围与依据'),location=x.get('fault_location'),stage=x.get('failure_stage') or '阶段未记录',
