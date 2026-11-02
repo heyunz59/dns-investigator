@@ -3,3 +3,5 @@ src/dns_investigator/assets/* -text whitespace=cr-at-eol
 src/dns_investigator/assets/named.root -whitespace
 *.wire -text
 results/published/nsec3-divergence-audit/** -text whitespace=cr-at-eol
+# Diagnostic vendor output retains its original trailing whitespace.
+results/published/nsec3-divergence-audit/reference-debug/verifier-logs/*.log -whitespace
