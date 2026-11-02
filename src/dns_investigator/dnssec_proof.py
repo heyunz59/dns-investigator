@@ -5,6 +5,21 @@ import dns.name,dns.rdatatype,dns.dnssec
 class ProofUnsupported(Exception):pass
 
 
+def nsec3_candidate(rr,zone):
+    """Eligibility only; never establishes signature validity or proof sufficiency."""
+    if len(rr)!=1:return 'policy_limited','NSEC3_RRSET_STRUCTURE'
+    if rr.name.parent()!=zone:return 'ignored','NSEC3_WRONG_OWNER_ZONE'
+    data=rr[0]
+    if data.algorithm!=1:return 'ignored','NSEC3_UNKNOWN_HASH'
+    if data.flags not in {0,1}:return 'ignored','NSEC3_RESERVED_FLAGS'
+    if len(rr.name.labels[0])!=32 or any(c not in b'0123456789ABCDEFGHIJKLMNOPQRSTUV' for c in rr.name.labels[0].upper()):
+        return 'ignored','NSEC3_INVALID_OWNER_HASH'
+    if len(data.next)!=20:return 'ignored','NSEC3_INVALID_NEXT_HASH'
+    if data.iterations!=0 or data.salt or data.flags==1:return 'policy_limited','NSEC3_PARAMETERS_OR_OPT_OUT'
+    if bitmap(data,128):return 'policy_limited','COMPACT_DENIAL_NXNAME'
+    return 'eligible','SUPPORTED_NSEC3_CANDIDATE'
+
+
 def bitmap(data,typ):
     value=int(dns.rdatatype.from_text(typ)) if isinstance(typ,str) else int(typ)
     for window,bits in data.windows:
@@ -31,7 +46,7 @@ def denial(q,typ,rcode,zone,rrsets,charge,wildcard_base=None,delegation=False):
     nsec=[r for r in rrsets if r.rdtype==dns.rdatatype.NSEC]
     nsec3=[r for r in rrsets if r.rdtype==dns.rdatatype.NSEC3]
     if not nsec and not nsec3:return False
-    if any(bitmap(data,128) for rr in nsec+nsec3 for data in rr):raise ProofUnsupported("COMPACT_DENIAL_NXNAME")
+    if any(bitmap(data,128) for rr in nsec for data in rr):raise ProofUnsupported("COMPACT_DENIAL_NXNAME")
     if nsec:
         values=[];exists={zone}
         for rr in nsec:
@@ -66,15 +81,10 @@ def denial(q,typ,rcode,zone,rrsets,charge,wildcard_base=None,delegation=False):
     # Deliberately bounded RFC9276 profile; no expensive arbitrary iterations.
     values=[];parameters=set()
     for rr in nsec3:
-        if len(rr)!=1 or rr.name.parent()!=zone:return False
+        category,reason=nsec3_candidate(rr,zone)
+        if category=='ignored':continue
+        if category=='policy_limited':raise ProofUnsupported(reason)
         data=rr[0]
-        if data.algorithm!=1 or data.iterations!=0 or data.salt or data.flags:
-            raise ProofUnsupported("NSEC3_PARAMETERS_OR_OPT_OUT")
-        if len(data.next)!=20:return False
-        if len(rr.name.labels[0])!=32:continue
-        # RFC5155/4648 base32hex, not an arbitrary 32-byte DNS label. Lexically
-        # sorting malformed labels can manufacture a false covering interval.
-        if any(c not in b"0123456789ABCDEFGHIJKLMNOPQRSTUV" for c in rr.name.labels[0].upper()):continue
         parameters.add((data.algorithm,data.iterations,data.salt))
         values.append((rr.name.labels[0].decode("ascii").upper(),data))
     if len(parameters)!=1:return False

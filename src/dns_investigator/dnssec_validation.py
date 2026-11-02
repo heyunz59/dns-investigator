@@ -2,7 +2,7 @@
 import time
 from datetime import datetime,timezone
 import dns.name,dns.rrset,dns.rdatatype,dns.dnssec,dns.exception
-from .dnssec_proof import denial,ProofUnsupported
+from .dnssec_proof import denial,ProofUnsupported,nsec3_candidate
 
 POLICY_VERSION="dns-investigator-dnssec-v1:8,13,14,15;DS2,4;RSA2048-4096;NSEC3-0-empty-salt"
 ALGORITHMS={8,13,14,15};DIGESTS={2,4}
@@ -119,12 +119,13 @@ class Session:
             vs.append(result["id"])
             if result["local_result"]=="SIGNATURE_CHECK_PASSED":valid.append(rr)
             if result["local_result"]=="UNSUPPORTED_OR_POLICY_LIMITED":limited=True
+        candidates=[dict(owner=r.name.to_text(),category=nsec3_candidate(r,zone)[0],reason=nsec3_candidate(r,zone)[1]) for r in valid if r.rdtype==dns.rdatatype.NSEC3]
         try:
             covered=denial(q,typ,rcode,zone,valid,self.charge,wildcard_base,delegation)
         except ProofUnsupported as exc:
-            return self.record("denial_proof","UNSUPPORTED_OR_POLICY_LIMITED",ids,str(exc),vs)
+            return self.record("denial_proof","UNSUPPORTED_OR_POLICY_LIMITED",ids,str(exc),vs,candidate_decisions=candidates)
         return self.record("denial_proof","SIGNATURE_CHECK_PASSED" if covered else "UNSUPPORTED_OR_POLICY_LIMITED" if limited else "SIGNATURE_CHECK_FAILED",
-            ids,"DENIAL_COVERS_QUESTION" if covered else "DENIAL_POLICY_LIMIT" if limited else "DENIAL_DOES_NOT_COVER_QUESTION",vs,
+            ids,"DENIAL_COVERS_QUESTION" if covered else "DENIAL_POLICY_LIMIT" if limited else "DENIAL_DOES_NOT_COVER_QUESTION",vs,candidate_decisions=candidates,
             scope=dict(qname=q.to_text(),qtype=dns.rdatatype.to_text(typ),zone=zone.to_text(),rcode=rcode,delegation=delegation))
 
     def finish(self,status,reason,stage,dependencies=(),execution="completed"):
