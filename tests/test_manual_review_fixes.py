@@ -74,6 +74,8 @@ async def test_ipv6_controlled_loopback():
     except OSError as exc:pytest.skip(f"IPv6 loopback unavailable: {type(exc).__name__} errno={exc.errno}")
     b=ToolBackend(parse_target("example.com"))
     try:
+        from tcp_support import authorize
+        authorize(b,'::1',server.sockets[0].getsockname()[1])
         r=await b.check_tcp("::1",server.sockets[0].getsockname()[1])
         assert r["status"]=="CONNECTED",r
     finally:server.close();await server.wait_closed()
@@ -83,7 +85,8 @@ async def test_tcp_oserror_details(monkeypatch):
     loop=asyncio.get_running_loop()
     async def fail(*args):raise OSError(10022,"private data")
     monkeypatch.setattr(loop,"sock_connect",fail)
-    r=await ToolBackend(parse_target("example.com")).check_tcp("::1",443)
+    from tcp_support import authorize
+    r=await authorize(ToolBackend(parse_target("example.com")),'::1').check_tcp("::1",443)
     assert r["status"]=="NETWORK_ERROR" and r["error_detail"]["chain"][0]["errno"]==10022
     assert "private" not in json.dumps(r)
 

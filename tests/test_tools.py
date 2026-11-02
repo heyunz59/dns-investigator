@@ -81,6 +81,8 @@ async def test_real_loopback_tcp():
     port = server.sockets[0].getsockname()[1]
     b = ToolBackend(parse_target("example.com"))
     try:
+        from tcp_support import authorize
+        authorize(b,'127.0.0.1',port)
         assert (await b.check_tcp("127.0.0.1", port))["status"] == "CONNECTED"
     finally:
         server.close()

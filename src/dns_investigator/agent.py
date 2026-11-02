@@ -190,6 +190,8 @@ async def investigate(text, target, config, fixture=None, model=None, baseline_f
         if progress and row.get("event") == "evidence":
             progress(row)
     backend = ToolBackend(target, fixture, config.max_tool_calls, persist)
+    from .network_policy import networks
+    backend.tcp_networks=networks(config.tcp_allowed_networks)
     backend.dns.limit=config.dns_query_budget
     backend.dns_tool_timeout=config.dns_tool_timeout
     backend.max_auth_servers=config.max_auth_servers

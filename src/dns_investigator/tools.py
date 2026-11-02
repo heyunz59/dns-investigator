@@ -22,6 +22,8 @@ from .authority import investigate_authority
 from .network_errors import describe
 from .http_safety import HTTPPolicy,PinnedTransport,HTTPRefused
 from .alias_scope import alias_paths,already_resolved
+from .network_policy import numeric,networks,tcp_address
+from .dns_wire import dns_outcome
 
 PARENT = contextvars.ContextVar("dns_parent", default=None)
 
@@ -38,8 +40,9 @@ class InputRejected(ValueError):
 
 class ToolBackend:
     """Per-investigation evidence ledger. Fixture backend never falls through to live."""
-    def __init__(self, target, fixture: Path | None = None, max_calls=10, on_evidence=None):
+    def __init__(self, target, fixture: Path | None = None, max_calls=10, on_evidence=None,*,tcp_allowed_networks=()):
         self.target = target
+        self.tcp_networks=networks(tcp_allowed_networks)
         self.fixture = json.loads(fixture.read_text(encoding="utf-8")) if fixture else None
         self.max_calls = max_calls
         self.calls = []  # Valid measurements only; never a call counter.
@@ -242,6 +245,9 @@ class ToolBackend:
             raise
         except TimeoutError:
             return self.reject(attempt,"DNS_TOOL_TIMEOUT","复合 DNS 工具整体时间预算已用尽；已取得的证据仍保留。",status="execution_error",emit=False)
+        except InputRejected as exc:
+            self.blocked.add(fingerprint)
+            return self.reject(attempt,'INVALID_INPUT',str(exc),reason=exc.reason,emit=False)
         except Exception:
             self.blocked.add(fingerprint)
             return self.reject(attempt, "INTERNAL_EXECUTION_ERROR", "工具内部执行失败；没有取得有效测量，不能据此判断目标故障。", status="execution_error", emit=False)
@@ -271,16 +277,18 @@ class ToolBackend:
                 if self.fixture is None and not self.dns.permitted(args["resolver"]):
                     raise InputRejected("DNS_RESOLVER_NOT_AUTHORIZED","显式 resolver 地址未经授权；不要更换类型或超时重试同一地址。系统 DNS 使用 resolver=None；配置的公共递归路径见 query_scope。权威对照使用 query_authoritative。")
         elif name == "check_tcp":
-            ipaddress.ip_address(args["ip"])
+            ip=numeric(args['ip'])
             if args["port"] not in {80, 443, self.target.port}:
                 raise ValueError("不允许扫描无关端口")
             allowed=set(alias_paths(self))
-            known = {r["value"] for c in self.calls if c["tool_name"] == "query_dns"
+            known = {str(numeric(r["value"])) for c in self.calls if c["tool_name"] == "query_dns"
                      and str(c["data"].get("qname") or c.get("input",{}).get("domain","")).lower().rstrip(".") in allowed
                      and c["data"].get("qtype",c.get("input",{}).get("record_type","A")) in {"A","AAAA"}
+                     and self._tcp_evidence_usable(c)
                      for r in c["data"].get("records", [])}
-            if args["ip"] not in known:
+            if str(ip) not in known:
                 raise ValueError("TCP 地址必须来自已有 DNS 证据")
+            if self.fixture is None:self._tcp_address(args['ip'])
         elif name == "check_http":
             t = parse_target(args["url"])
             if t.domain != self.target.domain or t.port not in {80, 443, self.target.port}:
@@ -305,7 +313,37 @@ class ToolBackend:
         from .dnssec import investigate_dnssec
         return await investigate_dnssec(self,PARENT.get(),domain,record_type,timeout)
 
+    def _tcp_address(self,ip):
+        try:return tcp_address(ip,self.tcp_networks)
+        except ValueError:raise InputRejected('TCP_TARGET_ADDRESS_NOT_AUTHORIZED','TCP 目的地址未获独立网络授权；未创建连接。') from None
+
+    def _tcp_evidence_usable(self,e):
+        if self.fixture is not None:return e.get('source_mode') in {'fixture','synthetic'}
+        if e.get('source_mode')!='live' or not any(e is r for r in self.owned_evidence(e.get('tool_call_id'))):return False
+        d=e['data'];state=dns_outcome(d)
+        if state['transport_status']!='responded' or state['dns_rcode']!='NOERROR' or d.get('flags',{}).get('TC') or d.get('execution_status','ok')!='ok':return False
+        try:
+            stamp=datetime.fromisoformat(e['started_at']);age=(datetime.now(timezone.utc)-stamp).total_seconds()
+            ttls=[float(r['ttl']) for r in d.get('records',[]) if 'ttl' in r]
+            if not 0<=age<=min(300,max(5,min(ttls,default=300))):return False
+            # Every alias authorization edge must also belong to a recent live
+            # observation from this investigation, not an imported old chain.
+            auth=alias_paths(self).get(str(d.get('qname','')).lower().rstrip('.'),{})
+            for eid in auth.get('evidence_ids',[]):
+                parent=next((r for r in self.calls if r['id']==eid),None)
+                if parent is None or parent.get('source_mode')!='live' or not any(parent is r for r in self.owned_evidence(parent.get('tool_call_id'))):return False
+                gap=(datetime.now(timezone.utc)-datetime.fromisoformat(parent['started_at'])).total_seconds()
+                if not 0<=gap<=300:return False
+        except (ValueError,TypeError,KeyError):return False
+        typ=d.get('qtype');allowed=set(alias_paths(self))
+        return all(any(rr['type']==typ and rr['name'].lower().rstrip('.') in allowed and
+            str(numeric(r['value'])) in {str(numeric(v)) for v in rr['values']} for rr in d.get('answer',[]))
+            for r in d.get('records',[]))
+
     async def check_tcp(self, ip, port, timeout=5):
+        if self.fixture is not None:raise InputRejected('TCP_TARGET_ADDRESS_NOT_AUTHORIZED','Fixture 不得进入真实 socket 路径。')
+        self._validate('check_tcp',dict(ip=ip,port=port))
+        ip=self._tcp_address(ip)
         sock = socket.socket(socket.AF_INET6 if ipaddress.ip_address(ip).version == 6 else socket.AF_INET,
                              socket.SOCK_STREAM)
         sock.setblocking(False)

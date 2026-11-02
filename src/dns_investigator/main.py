@@ -24,7 +24,12 @@ async def run(args):
         print(f"输入错误：{exc}")
         return 2
     if args.tools_only:
-        backend = ToolBackend(target, args.fixture)
+        config=Config.load()
+        backend = ToolBackend(target, args.fixture,tcp_allowed_networks=config.tcp_allowed_networks)
+        backend.dns.limit=config.dns_query_budget;backend.resolvers=config.dns_resolvers
+        backend.dns_tool_timeout=config.dns_tool_timeout;backend.max_auth_servers=config.max_auth_servers
+        from .http_safety import HTTPPolicy
+        backend.http_policy=HTTPPolicy(target.url,config.http_allowed_origins,config.http_allowed_networks)
         await backend.call("query_dns", domain=target.domain, record_type="A")
         records = backend.calls[0]["data"].get("records", []) if backend.calls else []
         if records:

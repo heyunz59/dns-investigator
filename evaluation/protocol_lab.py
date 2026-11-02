@@ -81,7 +81,7 @@ async def protocol_lab(scenario="normal"):
         for server in tcp_servers:server.close();await server.wait_closed()
         raise
     def backend():
-        b=ToolBackend(parse_target("probe.example.test"));b.trace_roots=[dict(ns="a.root.test.",addresses=["127.0.0.10"])]
+        b=ToolBackend(parse_target("probe.example.test"),tcp_allowed_networks=('192.0.2.0/24',));b.trace_roots=[dict(ns="a.root.test.",addresses=["127.0.0.10"])]
         b.dns.deep_endpoint_policy=lambda ip,port:port==53 and ip in lab.endpoints
         packet=b.dns.packet
         async def routed(name,typ,server,role,timeout,parent,tcp=False,port=53):

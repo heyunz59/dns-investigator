@@ -7,6 +7,7 @@ from contextlib import contextmanager
 import certifi
 import httpcore
 import httpx
+from .network_policy import numeric,public as public_address
 
 
 class HTTPRefused(Exception):
@@ -42,13 +43,10 @@ class HTTPPolicy:
 
     def address(self,value):
         try:
-            if "%" in value:raise ValueError("scoped IP")
-            ip=ipaddress.ip_address(value)
-            ip=getattr(ip,"ipv4_mapped",None) or ip
+            ip=numeric(value)
         except ValueError as exc:raise HTTPRefused("HTTP_TARGET_ADDRESS_NOT_AUTHORIZED") from exc
         if ip.is_multicast or ip.is_unspecified:raise HTTPRefused("HTTP_TARGET_ADDRESS_NOT_AUTHORIZED")
-        public=ip.is_global and not ip.is_reserved and not ip.is_loopback and not ip.is_link_local
-        if isinstance(ip,ipaddress.IPv6Address) and (ip.sixtofour or ip.teredo):public=False
+        public=public_address(ip)
         if not public and not any(ip in network for network in self.networks):
             raise HTTPRefused("HTTP_TARGET_ADDRESS_NOT_AUTHORIZED")
         return str(ip)

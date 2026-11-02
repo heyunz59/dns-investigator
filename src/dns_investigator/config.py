@@ -16,9 +16,11 @@ class Config:
     dns_resolvers: tuple = (None, "1.1.1.1", "8.8.8.8")
     http_allowed_origins: tuple = ()
     http_allowed_networks: tuple = ()
+    tcp_allowed_networks: tuple = ()
 
     def __post_init__(self):
         import ipaddress
+        for cidr in self.tcp_allowed_networks:ipaddress.ip_network(cidr,strict=True)
         if not 1 <= self.dns_query_budget <= 128 or not 1 <= self.dns_tool_timeout <= 60:
             raise ValueError("DNS budget/timeout out of range")
         if not 1 <= len(self.dns_resolvers) <= 4:
@@ -40,4 +42,5 @@ class Config:
                    min(3,max(1,int(os.getenv("MAX_AUTH_SERVERS", "2")))),
                    tuple(None if x.strip()=="system" else x.strip() for x in os.getenv("DNS_RESOLVERS","system,1.1.1.1,8.8.8.8").split(",") if x.strip()),
                    tuple(x.strip() for x in os.getenv("HTTP_ALLOWED_ORIGINS","").split(",") if x.strip()),
-                   tuple(x.strip() for x in os.getenv("HTTP_ALLOWED_NETWORKS","").split(",") if x.strip()))
+                   tuple(x.strip() for x in os.getenv("HTTP_ALLOWED_NETWORKS","").split(",") if x.strip()),
+                   tuple(x.strip() for x in os.getenv("TCP_ALLOWED_NETWORKS","").split(",") if x.strip()))
