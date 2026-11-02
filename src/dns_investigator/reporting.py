@@ -47,6 +47,11 @@ def issues(attempts):
         error_code=a["error"]["code"],description=a["error"].get("message","")) for a in attempts if a.get("error")]
 
 
+def protocols(attempts):
+    return [dict(attempt_id=a["attempt_id"],target=a["input"].get("domain"),record_type=a["input"].get("record_type","A"),
+        **{k:v for k,v in a["protocol_state"].items() if k not in {"discovery","responses"}}) for a in attempts if a.get("protocol_state")]
+
+
 def validate_issue_refs(result,attempts):
     known={i.attempt_id:i for i in issues(attempts)}
     for issue in result.execution_issues:
@@ -67,6 +72,8 @@ def evidence_bound_report(result,backend):
     measured=facts(backend.calls)
     result.measured_facts=measured
     result.execution_issues=issues(backend.attempts)
+    result.protocol_investigations=protocols(backend.attempts)
+    result.validation_results=getattr(backend,"validation_results",[])
     result.authority_investigations=[dict(attempt_id=a["attempt_id"],target=a["input"].get("domain"),record_type=a["input"].get("record_type","A"),
         **a["authority_state"]) for a in backend.attempts if a.get("authority_state")]
     result.findings=[Finding(**f) for f in diagnose(backend.calls)]
@@ -198,6 +205,8 @@ def assessment(result,measured):
     if result.request_kind=="query":return ("单项查询的本次结果如下；不据此诊断其他路径或唯一根因。"+
         (" HTTP 安全策略拒绝后续目标，未向被拒绝目标发起请求；不是测得的网络故障。" if any(f.get("security_refusal") for f in measured) else "")),"query_measured"
     parts=[];localized=False
+    for p in result.protocol_investigations:
+        parts.append(f"{p['attempt_id']} {p['mode']}：追踪完成={p.get('completed')}，停止原因={p.get('stop_reason')}，最后推进区域={p.get('last_successful_zone')}；范围仅为所列路径/选中服务器，AA与Root Hints均不是DNSSEC信任证明。")
     for state in result.authority_investigations:
         progress=state.get("progress") or {}
         completion="本轮选中子集检查已完成" if state.get("completed") else "权威调查尚未完成"

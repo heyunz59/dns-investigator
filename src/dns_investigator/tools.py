@@ -82,6 +82,9 @@ class ToolBackend:
 
     def attach_alias_scope(self,row):
         name=row.get("data",{}).get("qname")
+        if name:
+            try:name=domain(name)
+            except ValueError:return
         if name and name!=self.target.domain:
             authorization=alias_paths(self).get(name)
             if authorization:row["target_authorization"]=authorization
@@ -104,6 +107,8 @@ class ToolBackend:
 
     def reject(self, row, code, message, retryable=False, status="rejected", emit=True, reason=None):
         row.update(status=status, error=dict(code=code, message=message, retryable=retryable))
+        if code in {"CANCELLED","DNS_TOOL_TIMEOUT"} and row.get("protocol_state"):
+            row["protocol_state"].update(completed=False,stop_reason=code)
         if reason:row["error"]["reason"]=reason
         if code in {"CANCELLED","DNS_TOOL_TIMEOUT"} and row.get("authority_state"):
             state=row["authority_state"]
@@ -173,6 +178,8 @@ class ToolBackend:
                     if name == "query_dns":
                         expected = {"record_type": "A", "resolver": None, **expected}
                     actual = {"record_type": "A", "resolver": None, **args} if name == "query_dns" else args
+                    if name=="query_authoritative":
+                        expected={"mode":"basic",**expected};actual={"mode":"basic",**args}
                     return item["tool"] == name and all(actual.get(k) == v for k, v in expected.items())
                 matches = [item for item in self.fixture if matching(item)]
                 if not matches:
@@ -188,8 +195,10 @@ class ToolBackend:
                     row["data"] = await getattr(self, name)(**args)
             if self.fixture is not None and name == "query_dns":
                 row["data"]={"qname":args["domain"],"qtype":args.get("record_type","A"),"resolver_role":"recursive",**row["data"]}
+            if row["data"].get("execution_status")=="error":
+                return self.reject(attempt,(row["data"].get("error") or {}).get("code","TOOL_EXECUTION_ERROR"),"工具未取得测量或模式尚未实现；已有证据保留。",emit=False)
             if name in {"compare_resolvers","query_authoritative"}:
-                if name=="query_authoritative":
+                if name=="query_authoritative" and args.get("mode","basic")=="basic":
                     attempt["authority_state"]={k:copy.deepcopy(row["data"].get(k)) for k in ("discovery_status","completed","zone","progress")}
                 # Fixture composites contain raw sub-responses, not conclusions.
                 if self.fixture is not None:
@@ -248,6 +257,8 @@ class ToolBackend:
         if not 0 < timeout <= (15 if name == "check_http" else 5):
             raise ValueError("工具超时参数越界")
         if name in {"query_dns","compare_resolvers","query_authoritative"}:
+            if name=="query_authoritative" and args.get("mode","basic") not in {"basic","trace","dnssec"}:
+                raise InputRejected("UNSUPPORTED_AUTHORITY_MODE","mode仅支持basic/trace/dnssec；未实现分支不会静默回退basic。")
             requested=domain(args["domain"])
             if requested != self.target.domain and (name!="query_dns" or requested not in alias_paths(self)):
                 raise InputRejected("DNS_TARGET_NOT_AUTHORIZED","独立 DNS 查询仅限原目标；query_dns 可跟进已观测且授权的 CNAME。NS 发现中的名称不自动成为独立目标，不要更换类型重试同一未授权名称。")
@@ -261,7 +272,10 @@ class ToolBackend:
             ipaddress.ip_address(args["ip"])
             if args["port"] not in {80, 443, self.target.port}:
                 raise ValueError("不允许扫描无关端口")
+            allowed=set(alias_paths(self))
             known = {r["value"] for c in self.calls if c["tool_name"] == "query_dns"
+                     and str(c["data"].get("qname") or c.get("input",{}).get("domain","")).lower().rstrip(".") in allowed
+                     and c["data"].get("qtype",c.get("input",{}).get("record_type","A")) in {"A","AAAA"}
                      for r in c["data"].get("records", [])}
             if args["ip"] not in known:
                 raise ValueError("TCP 地址必须来自已有 DNS 证据")
@@ -281,8 +295,12 @@ class ToolBackend:
         rows=await asyncio.gather(*(self.dns.query(domain,record_type,r,timeout,PARENT.get()) for r in self.resolvers))
         return dict(responses=rows,differences=compare(rows),limitations=["CDN, GeoDNS, TTL, cache and policy can explain differences."])
 
-    async def query_authoritative(self, domain, record_type="A", timeout=5):
-        return await investigate_authority(self,domain,record_type,timeout,PARENT.get())
+    async def query_authoritative(self, domain, record_type="A", timeout=5,mode="basic"):
+        if mode=="basic":return await investigate_authority(self,domain,record_type,timeout,PARENT.get())
+        if mode=="trace":
+            from .trace import TraceEngine
+            return await TraceEngine(self,PARENT.get(),mode,timeout).run(domain,record_type)
+        return dict(mode=mode,execution_status="error",error=dict(code="MODE_NOT_IMPLEMENTED",retryable=False))
 
     async def check_tcp(self, ip, port, timeout=5):
         sock = socket.socket(socket.AF_INET6 if ipaddress.ip_address(ip).version == 6 else socket.AF_INET,

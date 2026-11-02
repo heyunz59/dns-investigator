@@ -14,7 +14,7 @@ class Server(asyncio.DatagramProtocol):
         q=dns.message.from_wire(wire);r=dns.message.make_response(q)
         r.use_edns(0,payload=1232,options=[] if self.kind=="no_ede" else [dns.edns.GenericOption(15,b"\x01")] if self.kind=="malformed" else [dns.edns.EDEOption(6,"untrusted reported DNSSEC error")])
         if self.kind=="servfail":r.set_rcode(dns.rcode.SERVFAIL)
-        else:r.answer.append(dns.rrset.from_text("example.com",60,"IN","A","192.0.2.10"))
+        else:r.answer.append(dns.rrset.from_text("example.com.",60,"IN","A","192.0.2.10"))
         self.transport.sendto(r.to_wire(),peer)
 
 

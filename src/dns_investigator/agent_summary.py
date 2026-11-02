@@ -1,5 +1,5 @@
 """Compact model context. Full packets and measurements remain in the evidence ledger."""
-from .reporting import facts,issues
+from .reporting import facts,issues,protocols
 from .dns_diagnosis import diagnose
 from .alias_scope import alias_paths
 import hashlib
@@ -36,6 +36,7 @@ def current_state(backend,response):
         error=response.get("error"),new_evidence_ids=[e["id"] for e in backend.owned_evidence(response.get("tool_call_id",response.get("attempt_id")))],
         fact_summary=measured,current_findings=findings,execution_issue_summary=[i.model_dump() for i in issues(backend.attempts)],
         partial_dns_issues=partial,authority_investigations=[dict(attempt_id=a["attempt_id"],**a["authority_state"]) for a in backend.attempts if a.get("authority_state")],
+        protocol_investigations=protocols(backend.attempts),validation_results=getattr(backend,"validation_results",[]),
         allowed_dns_targets=list(scope.values()),finish_now=backend.finish_now,
         query_scope=dict(independent_tool_targets=[backend.target.domain],query_dns_targets=list(scope),
             system_resolver_argument=None,configured_public_resolvers=[r for r in backend.resolvers if r is not None],

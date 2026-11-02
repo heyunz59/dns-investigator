@@ -59,6 +59,8 @@ class Finding(BaseModel):
 
 
 class InvestigationResult(BaseModel):
+    protocol_investigations: list[dict] = Field(default_factory=list)
+    validation_results: list[dict] = Field(default_factory=list)
     authority_investigations: list[dict] = Field(default_factory=list)
     diagnostic_assessment: str = ""
     assessment_level: str = "unassessed"

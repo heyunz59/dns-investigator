@@ -1,0 +1,13 @@
+{
+  "bundle_sha256": "18ce7215812d1a2cad8d9d4d3d7c26f7235a9b5ec6f0c1e214e15230fd4f9e24",
+  "signers": [
+    {
+      "subject": "E=dnssec@iana.org, CN=DNSSEC Trust Anchor Verification, O=ICANN",
+      "sha256": "2CA13F6611A5683002177B4290A26EA7EDA9EEEA6518EFA5D63A27A2A675B67F"
+    }
+  ],
+  "revocation": "not checked offline",
+  "authentication": "CMS_SIGNATURE_AND_PINNED_ICANN_CA_CHAIN",
+  "xml_sha256": "3ccaab38830025ee0a0f6c1f25769427544f81ea2865aa860468f3ef5278b908",
+  "verified_at": "2026-11-02T01:53:15.8923223+00:00"
+}

@@ -4,7 +4,7 @@ import platform
 import time
 import uuid
 import re
-from typing import Annotated
+from typing import Annotated,Literal
 from pydantic import Field
 from dataclasses import asdict
 from importlib.metadata import version
@@ -96,9 +96,9 @@ def build_agent(config: Config, model=None, with_tools=True):
             return await invoke(ctx,"compare_resolvers",domain=domain,record_type=record_type,timeout=timeout)
 
         @agent.tool(prepare=prepare_network)
-        async def query_authoritative(ctx: RunContext[ToolBackend], domain: str, record_type: str="A", timeout: DNSSeconds=5) -> dict:
-            """递归辅助发现权威区/NS/地址，有限直查目标类型并自动补查每台SOA。已有该调用的SOA不必另开同轮SOA调查；仅按证据价值复测，并非完整迭代验证。"""
-            return await invoke(ctx,"query_authoritative",domain=domain,record_type=record_type,timeout=timeout)
+        async def query_authoritative(ctx: RunContext[ToolBackend], domain: str, record_type: str="A", timeout: DNSSeconds=5,mode: Literal["basic","trace","dnssec"]="basic") -> dict:
+            """basic默认递归辅助权威发现并补SOA；trace为有界RD=0独立委派/别名追踪；dnssec采集并验证支持范围。未完成模式明确返回未知/不支持，不回退basic。"""
+            return await invoke(ctx,"query_authoritative",domain=domain,record_type=record_type,timeout=timeout,mode=mode)
 
         @agent.tool(prepare=prepare_network)
         async def check_tcp(ctx: RunContext[ToolBackend], ip: str, port: int, timeout: DNSSeconds = 5) -> dict:

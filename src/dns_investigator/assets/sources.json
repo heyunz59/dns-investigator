@@ -1,0 +1,26 @@
+{
+  "named.root": {
+    "source_url": "https://www.internic.net/domain/named.root",
+    "sha256": "9fd5ae176fd100295e97f9def704e30eb2d0f033ecf06a42dae04ed4be69c70b",
+    "bytes": 3313,
+    "retrieved_at": "2026-11-02T01:41:54.145921+00:00"
+  },
+  "root-anchors.xml": {
+    "source_url": "https://data.iana.org/root-anchors/root-anchors.xml",
+    "sha256": "3ccaab38830025ee0a0f6c1f25769427544f81ea2865aa860468f3ef5278b908",
+    "bytes": 1861,
+    "retrieved_at": "2026-11-02T01:41:55.471582+00:00"
+  },
+  "root-anchors.p7s": {
+    "source_url": "https://data.iana.org/root-anchors/root-anchors.p7s",
+    "sha256": "644e0e22842c6b7a57fda13d286941fd7449a179f0a3763578fa9a251d307dd1",
+    "bytes": 2523,
+    "retrieved_at": "2026-11-02T01:41:55.645366+00:00"
+  },
+  "icannbundle.pem": {
+    "source_url": "https://data.iana.org/root-anchors/icannbundle.pem",
+    "sha256": "18ce7215812d1a2cad8d9d4d3d7c26f7235a9b5ec6f0c1e214e15230fd4f9e24",
+    "bytes": 3295,
+    "retrieved_at": "2026-11-02T01:41:56.558199+00:00"
+  }
+}

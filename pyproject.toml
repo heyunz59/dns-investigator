@@ -15,6 +15,9 @@ dependencies = {file = ["requirements.txt"]}
 [tool.setuptools.packages.find]
 where = ["src"]
 
+[tool.setuptools.package-data]
+dns_investigator = ["assets/*"]
+
 [project.scripts]
 dns-investigator = "dns_investigator.main:main"
 
