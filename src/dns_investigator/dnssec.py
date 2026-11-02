@@ -1,8 +1,31 @@
 """DNSSEC collection via TraceEngine plus a hard-terminable validation process."""
 import asyncio,json,multiprocessing,time
+import dns.name,dns.rdatatype
 from .trace import TraceEngine,TraceStopped
 from .trust import anchors
 from .dnssec_validation import worker,POLICY_VERSION
+
+
+def cohosted_signer_hint(data,zone,qname,typ):
+    """Untrusted descendant hint only. DS validation must establish the cut.
+
+    An AA answer can come from a child zone cohosted at the reached parent's
+    endpoint, without a referral. A signer string alone is never trusted.
+    """
+    names=set();base=dns.name.from_text(zone);q=dns.name.from_text(qname,origin=dns.name.root)
+    for section in ("answer","authority"):
+        for rr in data.get(section,[]):
+            if rr["type"]!="RRSIG":continue
+            owner=dns.name.from_text(rr["name"],origin=dns.name.root)
+            for value in rr["values"]:
+                parts=value.split()
+                if len(parts)<9:continue
+                if not ((section=="answer" and owner==q and parts[0]==typ) or (section=="authority" and parts[0]=="SOA" and q.is_subdomain(owner))):continue
+                signer=dns.name.from_text(parts[7],origin=dns.name.root).canonicalize()
+                if q.is_subdomain(signer) and signer.is_subdomain(base):names.add(signer)
+    if base in names:return None
+    if len(names)>1:raise ValueError("AMBIGUOUS_UNTRUSTED_SIGNER_ZONES")
+    return next(iter(names)).to_text() if names else None
 
 
 async def isolated_validate(bundle,seconds=4):
@@ -72,6 +95,14 @@ async def investigate_dnssec(backend,parent,qname,typ,timeout):
             child_server=path["path"][index+1]["parent_server"] if index+1<len(path["path"]) else path["server"]
             key=await engine.ask(child,"DNSKEY",child_server,child,"dnssec-child-key")
             chain.append(dict(parent_zone=cut["zone"],child_zone=child,ds_eid=ds.get("evidence_id"),dnskey_eid=key.get("evidence_id")))
+        terminal=next(e["data"] for e in backend.owned_evidence(parent) if e["id"]==state["terminal_evidence_id"])
+        try:hint=cohosted_signer_hint(terminal,path["zone"],qname,typ)
+        except ValueError:return incomplete("AMBIGUOUS_UNTRUSTED_SIGNER_ZONES","capability_limited")
+        if hint:
+            state["cohosted_zone_hint"]=dict(zone=hint,parent_zone=path["zone"],source_evidence_id=state["terminal_evidence_id"],trusted=False)
+            ds=await engine.ask(hint,"DS",path["server"],path["zone"],"dnssec-cohosted-parent-ds")
+            key=await engine.ask(hint,"DNSKEY",path["server"],hint,"dnssec-cohosted-child-key")
+            chain.append(dict(parent_zone=path["zone"],child_zone=hint,ds_eid=ds.get("evidence_id"),dnskey_eid=key.get("evidence_id"),cut_source="untrusted_signer_hint"))
     except TraceStopped as exc:return incomplete(exc.code,"resource_limited")
     bundle=dict(qname=qname,qtype=typ,validation_time=validation_time,anchor=anchor,
         root_dnskey_eid=root.get("evidence_id"),chain=chain,terminal_eid=state["terminal_evidence_id"],

@@ -9,7 +9,7 @@ from evaluation.signed_protocol_lab import signed_lab
     ("key_timeout","INDETERMINATE"),("algorithm8","SECURE"),("algorithm13","SECURE"),("algorithm14","SECURE"),
     ("algorithm16","INDETERMINATE"),("digest4","SECURE"),("wrong_signer","BOGUS"),("wrong_type","BOGUS"),
     ("multi_sig","SECURE"),("ede_conflict","SECURE"),("nsec3_insecure","INSECURE"),("bad_nsec3","BOGUS"),
-    ("wildcard_nodata","SECURE"),("nsec3_wildcard_nodata","SECURE")])
+    ("wildcard_nodata","SECURE"),("nsec3_wildcard_nodata","SECURE"),("cohosted","SECURE"),("cohosted_unproven","INDETERMINATE")])
 async def test_complete_chain_and_supported_proofs_from_real_wire(scenario,status):
     async with signed_lab(scenario) as lab:
         b=lab.backend();r=await b.call("query_authoritative",domain=b.target.domain,mode="dnssec",timeout=.2)

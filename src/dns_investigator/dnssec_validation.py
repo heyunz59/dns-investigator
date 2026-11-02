@@ -157,8 +157,11 @@ class Session:
             if ds is None:
                 proof=self.proof(deid,child,dns.rdatatype.DS,zone,keys,key_eid,[trusted_v],delegation=True)
                 if proof["local_result"]=="SIGNATURE_CHECK_PASSED":return self.finish("INSECURE","AUTHENTICATED_UNSIGNED_DELEGATION","parent-ds",[proof["id"]])
+                if cut.get("cut_source")=="untrusted_signer_hint":return self.finish("INDETERMINATE","UNCONFIRMED_SIGNER_ZONE_CUT","parent-no-ds",[proof["id"]],"incomplete")
                 return self.failed(proof,"parent-no-ds")
             result=self.signature(ds,deid,keys,zone,key_eid,[trusted_v])
+            if cut.get("cut_source")=="untrusted_signer_hint" and result["local_result"]!="SIGNATURE_CHECK_PASSED":
+                return self.finish("INDETERMINATE","UNCONFIRMED_SIGNER_ZONE_CUT","parent-ds",[result["id"]],"incomplete")
             if result["local_result"]!="SIGNATURE_CHECK_PASSED":return self.failed(result,"parent-ds")
             ceid=cut["dnskey_eid"]
             if not self.usable(ceid,child,"DNSKEY",child):return self.finish("INDETERMINATE","CHILD_KEY_MATERIAL_UNAVAILABLE","child-dnskey",[result["id"]],"incomplete")

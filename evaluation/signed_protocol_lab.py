@@ -51,6 +51,13 @@ class Signed:
         if r is None:return None
         qname=q.question[0].name.to_text();typ=dns.rdatatype.to_text(q.question[0].rdtype)
         zone=self.zones[index] if index<3 else "example.test."
+        if self.scenario in {"cohosted","cohosted_unproven"} and index==1 and qname.endswith("example.test.") and typ in {"A","DNSKEY"}:
+            # The TLD endpoint also serves the child. DS stays parent-side.
+            zone="example.test."
+            r.flags|=dns.flags.AA;r.authority.clear();r.additional.clear()
+            if typ=="DNSKEY":self.signed_add(r.answer,self.keys[zone],zone)
+            else:self.signed_add(r.answer,dns.rrset.from_text(qname,60,"IN","A","192.0.2.10"),zone)
+            return r
         r.answer.clear()
         ns={0:"a.root.",1:"a.test.",2:"ns.example.test."}
         if index<3 and typ=="SOA" and qname==zone:
@@ -69,6 +76,7 @@ class Signed:
             self.signed_add(r.answer,self.keys[zone],zone);return r
         if typ=="DS" and qname in self.ds and index<2:
             r.authority.clear();r.additional.clear();r.flags|=dns.flags.AA
+            if qname=="example.test." and self.scenario=="cohosted_unproven":return r
             if qname=="example.test." and self.scenario in {"insecure","nsec3_insecure"}:
                 if self.scenario=="insecure":proofs=[dns.rrset.from_text(qname,60,"IN","NSEC","zzz.test. NS RRSIG NSEC")]
                 else:proofs=self.nsec3([zone,qname],{zone:"SOA NS DNSKEY RRSIG NSEC3",qname:"NS RRSIG NSEC3"},zone=zone)
