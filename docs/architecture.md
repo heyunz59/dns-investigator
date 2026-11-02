@@ -1,5 +1,13 @@
 # 实现与证据边界
 
+## v0.4 有限协议诊断（2026-11-02，当前）
+
+用户→唯一Agent→五Tool→统一ToolBackend/DNSClient→A/Q/E→纯规则诊断及隔离DNSSEC验证→V/Finding→Agent继续或停止→程序正式报告。query_authoritative 的 basic 保持递归辅助发现；trace.py 通过固定 Root Hints、RD=0、数值端点/端口53、bailiwick和独立NS依赖驱动有界状态机；dnssec.py复用同一引擎采集根DNSKEY/父DS/子DNSKEY及目标签名/证明。没有第六工具或第二Agent。模型不能改变信任锚/策略/访问授权。
+
+trust.py仅使用经过CMS+固定ICANN CA链认证的软件快照；维护者import_root_anchor.py认证成功后更新。dnssec_validation.py/dnssec_proof.py在4秒可终止子进程，使用dnspython/cryptography执行签名/DS匹配及受限否定证明意义检查。V有E/V依赖、锚/策略/时刻；E/Q始终是实际测量/网络尝试，不制造验证E。服务器EDE、AA/AD/DO与本地V明确区分。父子区同机的signer先作未信任提示，父DS认证后才采用子密钥；保留原E查询上下文。
+
+原并发显式parent归属、双预算、TCP/HTTP安全及fixture隔离保留。深度模式另有依赖/别名/RR/签名/计算边界；取消终止并回收进程，部分E不丢失。日志v7新增有效EDNS参数/完整RRset、protocol_investigations、validation_results及Finding来源/严重性；旧字段默认可读，不据缺字段补猜验证成功。完整支持/限制/真实成本见[v0.4验证](v0.4-validation.md)。下文为各历史版本架构记录。
+
 ## 最终核验补修（2026-11-01）
 
 架构仍为单Agent、五工具、双预算与显式A/Q/E归属。http_safety.py的授权/连接实现本轮未重写；HTTP证据新增body_state、body_complete、body_limit_bytes。观察到完整结束为true；读取错误为false；到达64KiB上限或尚未读取为null，不能把HTTP200或达到上限当作完整响应。旧日志缺字段按unknown_legacy展示。

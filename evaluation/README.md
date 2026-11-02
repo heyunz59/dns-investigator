@@ -1,5 +1,9 @@
 # 对照实验与评分
 
+v0.4：`python -m evaluation.protocol_agent_capture <新raw目录> <新公开目录>`执行实际DeepSeek+显式受控DNS，7个受影响场景每个1次；criteria独立在protocol_agent_criteria.json，不传给Agent。`dnssec_reference_capture.py`使用独立Unbound1.26.2（仅参考，需本地官方便携工具）针对受控签名数据独立迭代；参考请求单独统计，不计项目Q。`protocol_public_capture.py`为少量公网纯工具实验，不调用模型。全部输出拒绝覆盖；raw在忽略目录，公开结果仍须人工检查。
+
+`protocol_review.py <reference.json> <agent目录> <新review.json>`核对源码、A/Q/E/V引用、固定开发集协议状态及实际开销；不评自然语言语义准确率。最终35例含30个声明核心和5个边界（策略差异/参考超时/未建立提示委派），不要只选一致结果。不同历史构造、源码、失败均保留；不是独立holdout，完整解释见[验证记录](../docs/v0.4-validation.md)。
+
 最终核验入口：`python -m evaluation.final_counterexamples <新文件.json>`执行有界本机HTTP/受控DNS与固定证据反例，不调用模型。`security_stability_runs.py ... --logical-identities`可选逻辑resolver身份与实际回环端点分离；Q仍记录物理server/port，E保留响应者与controlled_network_endpoint。不要把旧物理身份实验与新逻辑身份实验直接横比。固定预期在final_verification_criteria.json，不进入Agent。final_verification_review.py核对两臂源码与配置并保存开发助手AI辅助复核，输出校验/关键覆盖/语义判断/调用价值分开，不生成准确率。`replay_final_findings.py`只重算旧测量，不能冒充模型重跑。此次新增14次付费结果及未改善的调用数见[最终核验](../docs/final-verification.md)。
 
 2026-11-01 安全/稳定性专项：`security_stability_offline.py`保存14个受控DNS阶段场景、5组时间回放和HTTP mock调度；`security_stability_runs.py`在真实DeepSeek下默认每个关键场景重复3次，另1次单项对照，不是公网实验。每次使用新目录，不覆盖。`--source-ref`只记版本、不自动切换代码；基线包需独立PYTHONPATH进程加载，summarize_security_stability.py逐模块校验源码哈希后导出脱敏日志/实际分母。SDK tokens只累计已记录usage，旧失败缺失不猜补。新旧7次结果及限制见[修复记录](../docs/security-stability-fixes.md)。日志v6保留所有原始草稿/校验反馈，Agent失败与程序报告可用分开；不同版本不能把旧日志缺字段当作成功补齐。所有语义、范围定位和错误根因断言均待独立人工复核。

@@ -1,0 +1,401 @@
+[
+  {
+    "case": "normal",
+    "file": "07a3f2c4dab74872b157076d19b4e6c8.json",
+    "agent_status": "completed",
+    "status": "completed",
+    "report_origin": "deterministic_evidence_report",
+    "A": 1,
+    "Q": 1,
+    "E": 1,
+    "V": 0,
+    "elapsed_seconds": 3.625,
+    "usage": {
+      "input_tokens": 5652,
+      "cache_write_tokens": 0,
+      "cache_write_1h_tokens": 0,
+      "cache_read_tokens": 4733,
+      "output_tokens": 370,
+      "unmeasured_requests": 0,
+      "output_reasoning_tokens": 0,
+      "input_audio_tokens": 0,
+      "cache_audio_read_tokens": 0,
+      "output_audio_tokens": 0,
+      "audio_seconds": 0,
+      "details": {
+        "prompt_cache_hit_tokens": 4733,
+        "prompt_cache_miss_tokens": 919
+      },
+      "cost": "0.000748098",
+      "requests": 2,
+      "tool_calls": 1
+    },
+    "calls": [
+      {
+        "tool": "query_dns",
+        "mode": "basic",
+        "status": "measured"
+      }
+    ],
+    "local_validation": [],
+    "root_cause_quality": "PENDING_HUMAN_REVIEW"
+  },
+  {
+    "case": "basic",
+    "file": "0bf9aa05a2b940f6be41b729a361a217.json",
+    "agent_status": "completed",
+    "status": "completed",
+    "report_origin": "deterministic_evidence_report",
+    "A": 1,
+    "Q": 5,
+    "E": 5,
+    "V": 0,
+    "elapsed_seconds": 6.11,
+    "usage": {
+      "input_tokens": 7141,
+      "cache_write_tokens": 0,
+      "cache_write_1h_tokens": 0,
+      "cache_read_tokens": 4736,
+      "output_tokens": 991,
+      "unmeasured_requests": 0,
+      "output_reasoning_tokens": 0,
+      "input_audio_tokens": 0,
+      "cache_audio_read_tokens": 0,
+      "output_audio_tokens": 0,
+      "audio_seconds": 0,
+      "details": {
+        "prompt_cache_hit_tokens": 4736,
+        "prompt_cache_miss_tokens": 2405
+      },
+      "cost": "0.001939116",
+      "requests": 2,
+      "tool_calls": 1
+    },
+    "calls": [
+      {
+        "tool": "query_authoritative",
+        "mode": "basic",
+        "status": "measured"
+      }
+    ],
+    "local_validation": [],
+    "root_cause_quality": "PENDING_HUMAN_REVIEW"
+  },
+  {
+    "case": "trace",
+    "file": "ee01d344980448399f37c134d71ff407.json",
+    "agent_status": "completed",
+    "status": "completed",
+    "report_origin": "deterministic_evidence_report",
+    "A": 1,
+    "Q": 3,
+    "E": 3,
+    "V": 0,
+    "elapsed_seconds": 7.578,
+    "usage": {
+      "input_tokens": 8025,
+      "cache_write_tokens": 0,
+      "cache_write_1h_tokens": 0,
+      "cache_read_tokens": 4736,
+      "output_tokens": 1300,
+      "unmeasured_requests": 0,
+      "output_reasoning_tokens": 0,
+      "input_audio_tokens": 0,
+      "cache_audio_read_tokens": 0,
+      "output_audio_tokens": 0,
+      "audio_seconds": 0,
+      "details": {
+        "prompt_cache_hit_tokens": 4736,
+        "prompt_cache_miss_tokens": 3289
+      },
+      "cost": "0.002575116",
+      "requests": 2,
+      "tool_calls": 1
+    },
+    "calls": [
+      {
+        "tool": "query_authoritative",
+        "mode": "trace",
+        "status": "measured"
+      }
+    ],
+    "local_validation": [
+      null
+    ],
+    "root_cause_quality": "PENDING_HUMAN_REVIEW"
+  },
+  {
+    "case": "dnssec",
+    "file": "6c45dd025343425697c790a27b6938fe.json",
+    "agent_status": "completed",
+    "status": "completed",
+    "report_origin": "deterministic_evidence_report",
+    "A": 1,
+    "Q": 8,
+    "E": 8,
+    "V": 9,
+    "elapsed_seconds": 10.313,
+    "usage": {
+      "input_tokens": 12801,
+      "cache_write_tokens": 0,
+      "cache_write_1h_tokens": 0,
+      "cache_read_tokens": 4736,
+      "output_tokens": 1250,
+      "unmeasured_requests": 0,
+      "output_reasoning_tokens": 0,
+      "input_audio_tokens": 0,
+      "cache_audio_read_tokens": 0,
+      "output_audio_tokens": 0,
+      "audio_seconds": 0,
+      "details": {
+        "prompt_cache_hit_tokens": 4736,
+        "prompt_cache_miss_tokens": 8065
+      },
+      "cost": "0.003947916",
+      "requests": 2,
+      "tool_calls": 1
+    },
+    "calls": [
+      {
+        "tool": "query_authoritative",
+        "mode": "dnssec",
+        "status": "measured"
+      }
+    ],
+    "local_validation": [
+      {
+        "validation_execution": "completed",
+        "dnssec_status": "SECURE",
+        "reason_code": "SUPPORTED_ANSWER_AUTHENTICATED",
+        "failure_stage": "answer",
+        "validation_scope": {
+          "qname": "probe.example.test",
+          "qtype": "A",
+          "validation_time": 1793587437.6863754
+        },
+        "trust_anchor": {
+          "zone": ".",
+          "ds": [
+            "59055 15 2 d8b593e1295fc2be58fff8ddb97ecf095915c8637b109b2c131e0b3f833c621c"
+          ],
+          "version": "explicit-test-anchor-v1",
+          "authentication": "EXPLICIT_TEST_ANCHOR",
+          "source": "isolated_test_only"
+        },
+        "algorithm_policy": "dns-investigator-dnssec-v1:8,13,14,15;DS2,4;RSA2048-4096;NSEC3-0-empty-salt",
+        "implementation": "dnspython2.9.1/cryptography50.0.0+bounded-protocol-v1",
+        "validation_result_ids": [
+          "V9"
+        ],
+        "compute": {
+          "work_units": 15,
+          "signature_attempts": 6
+        },
+        "operational_root_cause_confirmed": false
+      }
+    ],
+    "root_cause_quality": "PENDING_HUMAN_REVIEW"
+  },
+  {
+    "case": "bogus",
+    "file": "1873d8859acb4e4e8d1338974e95b260.json",
+    "agent_status": "completed",
+    "status": "completed",
+    "report_origin": "deterministic_evidence_report",
+    "A": 1,
+    "Q": 8,
+    "E": 8,
+    "V": 9,
+    "elapsed_seconds": 12.375,
+    "usage": {
+      "input_tokens": 12811,
+      "cache_write_tokens": 0,
+      "cache_write_1h_tokens": 0,
+      "cache_read_tokens": 4736,
+      "output_tokens": 1456,
+      "unmeasured_requests": 0,
+      "output_reasoning_tokens": 0,
+      "input_audio_tokens": 0,
+      "cache_audio_read_tokens": 0,
+      "output_audio_tokens": 0,
+      "audio_seconds": 0,
+      "details": {
+        "prompt_cache_hit_tokens": 4736,
+        "prompt_cache_miss_tokens": 8075
+      },
+      "cost": "0.004198116",
+      "requests": 2,
+      "tool_calls": 1
+    },
+    "calls": [
+      {
+        "tool": "query_authoritative",
+        "mode": "dnssec",
+        "status": "measured"
+      }
+    ],
+    "local_validation": [
+      {
+        "validation_execution": "completed",
+        "dnssec_status": "BOGUS",
+        "reason_code": "NO_SIGNATURE_VALIDATED",
+        "failure_stage": "target-signature",
+        "validation_scope": {
+          "qname": "probe.example.test",
+          "qtype": "A",
+          "validation_time": 1793587448.3238766
+        },
+        "trust_anchor": {
+          "zone": ".",
+          "ds": [
+            "59055 15 2 d8b593e1295fc2be58fff8ddb97ecf095915c8637b109b2c131e0b3f833c621c"
+          ],
+          "version": "explicit-test-anchor-v1",
+          "authentication": "EXPLICIT_TEST_ANCHOR",
+          "source": "isolated_test_only"
+        },
+        "algorithm_policy": "dns-investigator-dnssec-v1:8,13,14,15;DS2,4;RSA2048-4096;NSEC3-0-empty-salt",
+        "implementation": "dnspython2.9.1/cryptography50.0.0+bounded-protocol-v1",
+        "validation_result_ids": [
+          "V9"
+        ],
+        "compute": {
+          "work_units": 15,
+          "signature_attempts": 6
+        },
+        "operational_root_cause_confirmed": false
+      }
+    ],
+    "root_cause_quality": "PENDING_HUMAN_REVIEW"
+  },
+  {
+    "case": "ede",
+    "file": "34443dfd163b4a41b108c7a3234ee4ea.json",
+    "agent_status": "completed",
+    "status": "completed",
+    "report_origin": "deterministic_evidence_report",
+    "A": 2,
+    "Q": 9,
+    "E": 9,
+    "V": 9,
+    "elapsed_seconds": 12.016,
+    "usage": {
+      "input_tokens": 18138,
+      "cache_write_tokens": 0,
+      "cache_write_1h_tokens": 0,
+      "cache_read_tokens": 8192,
+      "output_tokens": 1455,
+      "unmeasured_requests": 0,
+      "output_reasoning_tokens": 0,
+      "input_audio_tokens": 0,
+      "cache_audio_read_tokens": 0,
+      "output_audio_tokens": 0,
+      "audio_seconds": 0,
+      "details": {
+        "prompt_cache_hit_tokens": 8192,
+        "prompt_cache_miss_tokens": 9946
+      },
+      "cost": "0.004778952",
+      "requests": 3,
+      "tool_calls": 2
+    },
+    "calls": [
+      {
+        "tool": "query_dns",
+        "mode": "basic",
+        "status": "measured"
+      },
+      {
+        "tool": "query_authoritative",
+        "mode": "dnssec",
+        "status": "measured"
+      }
+    ],
+    "local_validation": [
+      {
+        "validation_execution": "completed",
+        "dnssec_status": "SECURE",
+        "reason_code": "SUPPORTED_ANSWER_AUTHENTICATED",
+        "failure_stage": "answer",
+        "validation_scope": {
+          "qname": "probe.example.test",
+          "qtype": "A",
+          "validation_time": 1793587461.5035326
+        },
+        "trust_anchor": {
+          "zone": ".",
+          "ds": [
+            "59055 15 2 d8b593e1295fc2be58fff8ddb97ecf095915c8637b109b2c131e0b3f833c621c"
+          ],
+          "version": "explicit-test-anchor-v1",
+          "authentication": "EXPLICIT_TEST_ANCHOR",
+          "source": "isolated_test_only"
+        },
+        "algorithm_policy": "dns-investigator-dnssec-v1:8,13,14,15;DS2,4;RSA2048-4096;NSEC3-0-empty-salt",
+        "implementation": "dnspython2.9.1/cryptography50.0.0+bounded-protocol-v1",
+        "validation_result_ids": [
+          "V9"
+        ],
+        "compute": {
+          "work_units": 15,
+          "signature_attempts": 6
+        },
+        "operational_root_cause_confirmed": false
+      }
+    ],
+    "root_cause_quality": "PENDING_HUMAN_REVIEW"
+  },
+  {
+    "case": "budget",
+    "file": "34fa8b1357b24819923571343b6ee9c9.json",
+    "agent_status": "completed",
+    "status": "limited",
+    "report_origin": "deterministic_evidence_report",
+    "A": 1,
+    "Q": 2,
+    "E": 2,
+    "V": 0,
+    "elapsed_seconds": 6.438,
+    "usage": {
+      "input_tokens": 7575,
+      "cache_write_tokens": 0,
+      "cache_write_1h_tokens": 0,
+      "cache_read_tokens": 4352,
+      "output_tokens": 1093,
+      "unmeasured_requests": 0,
+      "output_reasoning_tokens": 0,
+      "input_audio_tokens": 0,
+      "cache_audio_read_tokens": 0,
+      "output_audio_tokens": 0,
+      "audio_seconds": 0,
+      "details": {
+        "prompt_cache_hit_tokens": 4352,
+        "prompt_cache_miss_tokens": 3223
+      },
+      "cost": "0.002304612",
+      "requests": 2,
+      "tool_calls": 1
+    },
+    "calls": [
+      {
+        "tool": "query_authoritative",
+        "mode": "dnssec",
+        "status": "measured"
+      }
+    ],
+    "local_validation": [
+      {
+        "validation_execution": "incomplete",
+        "dnssec_status": "INDETERMINATE",
+        "reason_code": "DNS_BUDGET_EXHAUSTED",
+        "algorithm_policy": "dns-investigator-dnssec-v1:8,13,14,15;DS2,4;RSA2048-4096;NSEC3-0-empty-salt",
+        "validation_scope": {
+          "qname": "probe.example.test",
+          "qtype": "A"
+        },
+        "validation_result_ids": []
+      }
+    ],
+    "root_cause_quality": "PENDING_HUMAN_REVIEW"
+  }
+]
