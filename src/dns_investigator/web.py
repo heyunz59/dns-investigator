@@ -2,6 +2,7 @@
 import asyncio
 import json
 import secrets
+import re
 import uuid
 import time
 from datetime import datetime, timezone
@@ -14,7 +15,7 @@ from jinja2 import Environment, FileSystemLoader, select_autoescape
 from pydantic import BaseModel, Field
 from .agent import investigate
 from .config import Config
-from .privacy import redact
+from .privacy import redact, safe_url
 from .target import parse_target
 
 ASSETS = Path(__file__).parent / 'assets'
@@ -68,8 +69,13 @@ def create_app(history_dir=Path('results/runs')):
     def clean(data):
         def strip(value):
             if isinstance(value, dict):
-                return {k: strip(v) for k,v in value.items() if k.lower().replace('-', '_') not in {'deepseek_api_key','proxy_authorization','password','proxy_password','secret','secrets','environment','env','config','configuration','private_config','server_key'}}
+                return {k: strip(v) for k,v in value.items() if k.lower().replace('-', '_') not in {'deepseek_api_key','proxy_authorization','password','proxy_password','secret','secrets','environment','env','config','configuration','private_config','server_key','proxy','proxy_url','http_proxy','https_proxy','all_proxy','proxy_credentials','proxy_username','access_token','refresh_token','private_key'}}
             if isinstance(value, list): return [strip(v) for v in value]
+            if isinstance(value, str):
+                def url(match):
+                    try: return safe_url(match.group())
+                    except ValueError: return '[invalid URL]'
+                return re.sub(r"[a-zA-Z][a-zA-Z0-9+.-]*://[^\s<>\"']+", url, value)
             return value
         return redact(strip(data), [Config.load().api_key])
     def read(key):

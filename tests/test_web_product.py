@@ -74,11 +74,11 @@ def test_dnssec_direct_dependencies_and_html(tmp_path):
 
 def test_html_untrusted_export_and_json_compatibility(tmp_path):
     c,h=client(tmp_path)
-    raw={'incident':{'target':'<img src=x onerror=alert(1)>'},'proxy-authorization':'private-proxy','config':{'password':'private-pw'},'environment':{'TOKEN':'private-env'},'result':{'conclusion':'<script>alert(1)</script>'},'url':'https://user:pass@x.test/?token=private-query'}
+    raw={'incident':{'target':'<img src=x onerror=alert(1)>'},'proxy-authorization':'private-proxy','proxy_url':'socks5://proxy-user:proxy-pass@localhost','note':'socks5://hidden-user:hidden-pass@proxy.test:1080','config':{'password':'private-pw'},'environment':{'TOKEN':'private-env'},'result':{'conclusion':'<script>alert(1)</script>'},'url':'https://user:pass@x.test/?token=private-query'}
     key=c.post('/api/import',headers=h,json=raw).json()['id']
     page=c.get('/api/reports/'+key+'/html').text
     assert '<img' not in page and '<script>' not in page and '&lt;script&gt;' in page
-    assert all(x not in page for x in ['private-proxy','private-pw','private-env','user:pass','private-query'])
+    assert all(x not in page for x in ['private-proxy','private-pw','private-env','user:pass','private-query','proxy-user','proxy-pass','hidden-user','hidden-pass'])
     exported=c.get('/api/reports/'+key+'/export').json()
     assert exported['result']==raw['result']
     assert 'environment' not in exported and 'config' not in exported
