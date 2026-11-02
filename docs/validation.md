@@ -1,5 +1,23 @@
 # 验证记录
 
+## d26d6b7 最终核验与针对性修复（2026-11-01）
+
+当前起点249项，本轮修改前 **249 passed in 8.67s**。独立反例在隔离d26包上8失败/2通过，修复后通过；摘要反例5失败/1通过后修复。最后发现跨时区Finding起止按字符串排序，反例1失败后改为按真实时刻排序。最终业务源码4be929d，完整 **271 passed in 9.29s**，无skip；旧报告验收脚本9条通过（在92be49a执行）。一轮269项耗时977.13秒但均通过，下一次同码9.16秒，最终最慢单项2.04秒；未定位异常慢跑原因，不作为性能提升证据。
+
+新付费对照基线d26d6b7与当前92be49a各7次（serial3、NS超时3、单项A1），同deepseek-flash/thinking disabled/temp0/8A/24Q/0.3秒受控DNS，采用两臂相同的逻辑身份映射。校验输出均7/7、关键测量机械覆盖均7/7、输出重交/回退均0；A30→38、Q/E62→69、INVALID_INPUT2→6。未证明稳定性相对基线进一步提高，调用合理性改善未通过。候选因果措辞仍可能过强；开发助手复核不是独立人工评分，错误根因断言数仍未知，不填0。
+
+付费后业务变化仅dns_diagnosis.py中Finding时间边界选择。4be929d与92be49a对旧14+新14共28份原始测量重算的Finding哈希逐份相同；跨时区反例单独修复。不能将回放称为最终源码真实模型重跑。新实验、逐例AI辅助语义复核和最终源码受控反例在results/published/final-verification/，旧记录不覆盖。原d26的GitHub Actions成功属于基线；本轮不推送，新提交Linux/远程CI未验证。[完整核验清单和局限](final-verification.md)。
+
+## 安全、权威阶段、时间边界与 Agent 总结修复（2026-11-01）
+
+基线512141e，修改前完整196项通过。工作分支 fix/security-dns-agent-20261101，原始 docs/manual-reviews/ 未跟踪内容及旧实验未改写。最终业务源码4de824c：完整 **249 passed in 9.74s**，无跳过；报告验收脚本 **9条通过**（results/runs/report-acceptance-49ea513fa33b49179ec1f3cbf3130214/）。保留旧并发、CNAME、A/Q/E、TLS、IPv6及重试测试。安全子集23项含真正本机TLS握手、证书主机名失败、Host/SNI；受控DNS验证阶段进度、预算和取消。受控报文不冒充公网根因验证。
+
+新旧业务源码逐模块哈希与Git blob或Windows CRLF表示核对通过。独立14场景受控DNS、5组时间回放、HTTP mock跳转对照保存到 results/published/security-stability/{baseline,current}-offline.json；旧版NS超时标RECURSIVE_ASSISTED，新版为NS_DISCOVERY_TIMEOUT且无权威直查；两条缺时间的NXDOMAIN/NOERROR不再产生同期冲突Finding。原始响应不删除。公开检查为规则扫描，不替代人工隐私审查。
+
+真实DeepSeek + 受控回环DNS，新旧各7次（权威记录/SOA差异3、NS超时3、正常A查询1），同 deepseek-flash、thinking disabled、temperature0、8A/24Q预算。校验输出旧6/7、新7/7；serial两版均3/3；旧NS超时2/3、新3/3；旧失败保留了7E程序报告。新版也有一次输出重交，原验证规则仍生效。新A总数40高于旧31，Q/E各51低于旧60，不宣称工具选择效率全面提升。诊断语义、定位正确性和错误根因断言均待独立人工复核，不从completed或Finding命中推导准确率。
+
+完整14份脱敏模型JSON、逐次明细、源码和配置在 results/published/security-stability/real-model-comparison/；原始JSON/JSONL另存被忽略目录，不覆盖。最终源码后仅添加评测/文档/审计材料，没有把中间源码运行称为最终业务版本验证。未新增公网目标调查，本轮未推送，远程Actions未验证。[完整对照与边界](security-stability-fixes.md)。
+
 ## fcd1d52 验收补修（2026-11-01）
 
 修改前180项通过；新增反例先复现4失败/9通过。修复别名成功跟进后 Finding/摘要未收敛，以及权威 discovery 的预算/执行错误漏记后，完整 **196 passed in 8.76s**。相同复现中 E1/E2 均保留；权威预算拒绝 A/Q/E 仍为1/1/1，并明确 A1 的 NS 发现失败。本轮未执行付费模型或公网测量。before/after及源码哈希另存 results/published/fcd-acceptance/，原始人工材料与旧日志不改写。[修复和验证说明](fcd-acceptance-fixes.md)。

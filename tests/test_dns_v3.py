@@ -143,7 +143,7 @@ async def test_agent_registers_five_and_selects_new_tools(tmp_path):
         assert {t.name for t in info.function_tools}=={"query_dns","compare_resolvers","query_authoritative","check_tcp","check_http"}
         if step<=2:
             return ModelResponse(parts=[ToolCallPart("compare_resolvers" if step==1 else "query_authoritative",{"domain":"example.com"})])
-        return ModelResponse(parts=[ToolCallPart(info.output_tools[0].name,dict(request_kind="investigation",outcome="insufficient_information",observations=[],hypotheses=[],conclusion="存在差异，无法确定唯一原因",conclusion_evidence_ids=["E1"],limitations=["未证明根因"],recommendations=["补充查询"]))])
+        return ModelResponse(parts=[ToolCallPart(info.output_tools[0].name,dict(request_kind="investigation",outcome="insufficient_information",hypotheses=[],analysis_summary="存在差异，无法确定唯一原因",limitations=["未证明根因"],next_directions=["补充查询"]))])
     log,_=await investigate("调查 example.com",parse_target("example.com"),Config("test"),
         fixture=ROOT/"data/fixtures/dns-v3/D4.json",model=FunctionModel(model),log_dir=tmp_path)
     assert log["status"]=="limited",log

@@ -1,5 +1,9 @@
 # DNS 调查助手
 
+最终核验（2026-11-01）：补齐正文完整性/上限状态、权威直查中断计数与选中范围、未知时间的别名/超时对照及跨时区Finding边界；完善调用范围和记录全集摘要。最终离线 **271 passed**。新增同环境真实DeepSeek受控对照两版各7次均通过输出校验，但新版A=38高于基线30，**未证明调用更合理或语义准确率提高**。完整反例、AI辅助复核、源码对应及课程演示边界见[最终核验记录](docs/final-verification.md)。本轮仅本地提交，未推送；新提交远程CI未验证。
+
+2026-11-01 安全与稳定性修复：HTTP 每跳按 origin 授权，解析后仅连接通过地址策略的数值 IP，保留 Host/SNI/证书校验；权威发现保存明确完成阶段；缺少有效时间的历史证据不参与同期冲突定位。模型只输出决策草稿，程序生成正式证据报告，日志 v6 区分 Agent 总结失败与报告可用。完整离线 **249 passed**，真实 DeepSeek + 本机受控 DNS 新旧各7次，新版校验输出7/7、旧版6/7；不是诊断准确率。见[修复、实测与限制](docs/security-stability-fixes.md)。本轮在工作分支本地提交，按本轮要求未自动推送或创建 PR，远程 Actions 尚未验证。
+
 fcd1d52 验收补修：CNAME 后续完整回答通过证据链收敛，原始响应不改写；权威发现的预算/执行失败进入正式 A 问题、比较和摘要，不伪造 Q/E。[本轮验证与边界](docs/fcd-acceptance-fixes.md)。
 
 2026-11-01 DNS 判断与范围定位升级：区分传输结果和真实 RCODE；超时不参与内容/TTL 冲突比较，部分失败不隐藏有效子集。Finding 按目标、类型、来源及时间范围聚合；正式输出分为 measured_facts、findings、diagnostic_assessment 和 recommendations。调查不再按假设数量机械降级，保留候选身份和证据关系。仅 query_dns 可跟进已观测、同来源、与原目标连通的 CNAME 链（深度/目标数均最多8），不扩展为任意扫描。模型总结失败仍保留程序生成的事实与范围摘要。[本轮实际对照、运行方法与边界](docs/dns-accuracy-upgrade.md)。此前按要求仅本地提交；本次验收补修已获用户推送授权，远程 Actions 以实际提交运行结果为准。
@@ -30,7 +34,7 @@ v0.3 针对性修复：并发测量按调用 ID 归属，保留独立 HTTP/DNS �
 
 基于 DeepSeek 和 PydanticAI 的命令行单 Agent。工具与证据来自运行程序的电脑；外部网络状态不能保证可复现。
 
-实现：五个正式工具、模型自主工具循环、CLI、诊断结构与证据校验、独立调用尝试日志、受限超时与调用预算、可重放场景、离线 CI 和同模型 A/B 实验入口。当前日志格式 v5，旧日志按读取适配，不修改原文件。v0.2 修复说明见 [docs/reliability-v2.md](docs/reliability-v2.md)，验证状态见 [docs/validation.md](docs/validation.md)。课程报告不在本项目范围内。
+实现：五个正式工具、模型自主工具循环、CLI、诊断结构与证据校验、独立调用尝试日志、受限超时与调用预算、可重放场景、离线 CI 和同模型 A/B 实验入口。当前日志格式 v6，旧正式报告字段保留可读默认值，不修改原文件。v0.2 修复说明见 [docs/reliability-v2.md](docs/reliability-v2.md)，验证状态见 [docs/validation.md](docs/validation.md)。课程报告不在本项目范围内。
 
 需求见 [docs/PRD.md](docs/PRD.md)。真实密钥仅存放在本地 `.env`，不要提交原始运行日志。
 
@@ -47,6 +51,8 @@ notepad .env
 ```
 
 在 `.env` 第一行等号后填写本人的 DeepSeek API Key。不要将密钥发到聊天、截图或 GitHub。API 账户需要可用额度。默认 `deepseek-flash`、非思考模式、服务地址 `https://api.deepseek.com`，环境变量可覆盖配置；程序不会静默换模型。
+
+HTTP 默认只授权输入 URL 的 scheme/host/port；同主机标准 HTTP:80 → HTTPS:443 可升级。其他跨域或端口跳转会保留已收到的响应并明确拒绝。确需授权时由用户在本地配置 `HTTP_ALLOWED_ORIGINS`（逗号分隔完整 origin），内网还需单独配置 `HTTP_ALLOWED_NETWORKS`（逗号分隔精确 CIDR）；两者默认均空。允许 origin 不等于允许其解析到内网，模型不能扩大这两个配置。HTTP 不使用环境代理，不关闭证书验证。
 
 ```powershell
 .\.venv\Scripts\python.exe -m dns_investigator.main "其他网站正常，但 https://example.com/ 打不开，请调查"
@@ -90,6 +96,7 @@ v0.2 已完成 [48 次真实模型对照](results/published/evaluation-reliabili
 - 重定向最多 5 次、正文最多读取 64 KiB；不渲染网页、不读取正文给模型、不执行修复或扫描无关端口。
 - 证据编号验证不能保证语义正确；质量以保留原始回答的人工案例评分为准。
 - `status=completed` 表示模型输出通过本地结构和证据要求，`limited` 表示信息不足，`failed` 表示执行失败；另记 execution_status、requirements_met、result_origin。结构检查不能保证假设合理性和全部语义判断正确。
+- 日志 v6 另记 agent_execution_status、report_availability、report_origin、fallback_reason；Agent 总结失败仍可能有可用程序报告，但保持 failed，不统计为 Agent 成功。raw_model_drafts 保留所有最终输出尝试，output_resubmissions 只数结构化输出重交，不冒充 SDK/HTTP 重试数。
 - CLI 退出码：0=通过本地结构要求，3=信息不足的有限结果，1=运行失败，2=输入/配置错误。有限结果不会被伪装成确定性根因诊断。
 - 原始记录格式 v2 的 attempts 是全部已观察到的网络工具调用尝试，evidence 仅含有效测量。框架参数拒绝、工具内部失败、重复与预算拒绝仍计入尝试；结构化最终输出不计入网络工具分母。
 - 网络测量具有时效性，公开仓库只存代码和材料，不会自动部署在线服务。

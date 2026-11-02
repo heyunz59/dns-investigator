@@ -16,6 +16,22 @@ def normal(value):
     return value.lower().rstrip(".") if isinstance(value,str) else value
 
 
+def measured_time(row):
+    value=row.get("measured_at")
+    if value is None:return None
+    try:
+        parsed=datetime.fromisoformat(value)
+        return parsed if parsed.tzinfo is not None and parsed.utcoffset() is not None else None
+    except (TypeError,ValueError):return None
+
+
+def time_relation(a,b):
+    if not a.get("measured_at") or not b.get("measured_at"):return "TIME_UNKNOWN"
+    left,right=measured_time(a),measured_time(b)
+    if left is None or right is None:return "TIME_INVALID"
+    return "TIME_COMPARABLE" if abs((left-right).total_seconds())<=MAX_COMPARISON_SECONDS else "TIME_WINDOW_DIFFERS"
+
+
 def path(row):
     return dict(evidence_id=row.get("evidence_id"),attempt_id=row.get("parent_tool_call_id"),
         query_attempt_id=row.get("query_attempt_id"),target=normal(row.get("qname")),record_type=row.get("qtype"),
@@ -33,12 +49,6 @@ def scope_reason(a,b):
     for row in (a,b):
         if row.get("resolver_role")=="authoritative" and not row.get("flags",{}).get("AA"):
             return "AUTHORITY_NOT_CONFIRMED"
-    times=[r.get("measured_at") for r in (a,b)]
-    if all(times):
-        try:
-            if abs((datetime.fromisoformat(times[0])-datetime.fromisoformat(times[1])).total_seconds())>MAX_COMPARISON_SECONDS:
-                return "TIME_WINDOW_DIFFERS"
-        except (ValueError,TypeError):return "TIME_NOT_COMPARABLE"
     return None
 
 
@@ -47,13 +57,13 @@ def compare_details(rows):
     for i,j in combinations(range(len(rows)),2):
         a,b=rows[i],rows[j];sa,sb=dns_outcome(a),dns_outcome(b)
         item=dict(path_indices=[i,j],evidence_ids=[r["evidence_id"] for r in (a,b) if r.get("evidence_id")],
-                  codes=[],comparable=False,reason=scope_reason(a,b))
+                  codes=[],comparable=False,time_status=time_relation(a,b),reason=scope_reason(a,b))
         pairs.append(item)
         if item["reason"]:continue
         if any(r.get("execution_status","ok")!="ok" for r in (a,b)):
             item["reason"]="EXECUTION_FAILED";continue
         if {sa["transport_status"],sb["transport_status"]}=={"timeout","responded"}:
-            item.update(codes=["QUERY_AVAILABILITY_DIFFERENCE"],reason="NO_CONTENT_FROM_TIMEOUT")
+            item.update(codes=["QUERY_AVAILABILITY_DIFFERENCE"],reason="NO_CONTENT_FROM_TIMEOUT" if item["time_status"]=="TIME_COMPARABLE" else item["time_status"])
             codes+=item["codes"];continue
         if not comparable_response(a) or not comparable_response(b):
             item["reason"]="INCOMPLETE_OR_NO_RESPONSE";continue
@@ -61,7 +71,8 @@ def compare_details(rows):
             terminal=[normal(r.get("negative_name") or r.get("canonical_name") or r.get("qname")) for r in (a,b)]
             if terminal[0]!=terminal[1]:
                 item["reason"]="NEGATIVE_SCOPE_DIFFERS";continue
-        item["comparable"]=True
+        item["comparable"]=item["time_status"]=="TIME_COMPARABLE"
+        if not item["comparable"]:item["reason"]=item["time_status"]
         if sa["dns_rcode"]!=sb["dns_rcode"]:item["codes"].append("RCODE_DISAGREEMENT")
         if bool(a.get("records"))!=bool(b.get("records")):item["codes"].append("RECORD_PRESENCE_DISAGREEMENT")
         values=lambda r:tuple(sorted(x["value"].lower().rstrip(".") for x in r.get("records",[])))
@@ -69,6 +80,7 @@ def compare_details(rows):
         chain=lambda r:tuple((normal(x.get("name")),normal(x.get("target"))) if isinstance(x,dict) else normal(x) for x in r.get("cname_chain",[]))
         if chain(a)!=chain(b):item["codes"].append("CNAME_DIFFERENCE")
         if a.get("soa_serials")!=b.get("soa_serials") and a.get("qtype")=="SOA":item["codes"].append("SOA_SERIAL_DIFFERENCE")
+        if item["codes"] and not item["comparable"]:item["codes"].append("NONCONTEMPORANEOUS_DIFFERENCE")
         observations.append(dict(path_indices=[i,j],evidence_ids=item["evidence_ids"],
             ttl_values=[[x.get("ttl") for x in r.get("records",[])] for r in (a,b)],
             duration_ms=[r.get("duration_ms") for r in (a,b)],interpretation="TTL 与耗时为单次观测，不证明缓存、配置或性能异常。"))

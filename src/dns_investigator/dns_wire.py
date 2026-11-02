@@ -2,6 +2,7 @@
 import asyncio
 import ipaddress
 import time
+from contextvars import ContextVar
 import dns.asyncquery
 import dns.flags
 import dns.message
@@ -10,6 +11,9 @@ import dns.resolver
 import dns.exception
 
 TYPES = {"A", "AAAA", "CNAME", "NS", "SOA"}
+# Scoped to one logical DNS operation/task. The observer records Q allocation,
+# including a query cancelled before its response; no global-list ownership guess.
+ATTEMPT_OBSERVER = ContextVar("dns_attempt_observer",default=None)
 
 INCOMPLETE_KINDS = {"REFERRAL", "ALIAS_INCOMPLETE", "TRUNCATED", "INDETERMINATE"}
 
@@ -136,8 +140,10 @@ class DNSClient:
             return dict(execution_status="error", error={"code":"DNS_BUDGET_EXHAUSTED", "retryable":False},**scope)
         self.repeats[key]=self.repeats.get(key,0)+1
         row = dict(query_attempt_id=f"Q{len(self.attempts)+1}", parent_tool_call_id=parent,
-                   qname=name,qtype=typ,server=server,port=port,transport="TCP" if tcp else "UDP",status="running")
+                   qname=name,qtype=typ,server=server,port=port,resolver_role=role,transport="TCP" if tcp else "UDP",status="running")
         self.attempts.append(row)
+        observer=ATTEMPT_OBSERVER.get()
+        if observer is not None:observer(row)
         start=time.monotonic()
         message=dns.message.make_query(name,typ)
         if role == "authoritative":
@@ -162,6 +168,7 @@ class DNSClient:
             row["duration_ms"]=round((time.monotonic()-start)*1000,2)
             self.backend.emit("dns_attempt",row)
         data["duration_ms"]=row["duration_ms"]
+        data["query_attempt_id"]=row["query_attempt_id"]
         if data["execution_status"] == "ok":
             evidence=self.backend.add_dns_evidence(data,parent,row["query_attempt_id"])
             row["evidence_id"]=evidence["id"]
@@ -171,7 +178,7 @@ class DNSClient:
     async def query(self,name,typ="A",resolver=None,timeout=5,parent=None,role="recursive",port=53):
         servers=[resolver] if resolver else self.system[:2]
         start=time.monotonic()
-        history=[]
+        history=[];attempt_ids=[]
         last=dict(execution_status="error",error={"code":"NO_RESOLVER_CONFIGURED","retryable":False})
         for server in servers:
             remaining=timeout-(time.monotonic()-start)
@@ -179,11 +186,13 @@ class DNSClient:
                 break
             last=await self.packet(name,typ,server,role,remaining/max(1,len(servers)),parent,port=port)
             history.append(last.get("evidence_id"))
+            if last.get("query_attempt_id"):attempt_ids.append(last["query_attempt_id"])
             if last.get("flags",{}).get("TC"):
                 remaining=timeout-(time.monotonic()-start)
                 if remaining > 0:
                     last=await self.packet(name,typ,server,role,remaining,parent,tcp=True,port=port)
                     history.append(last.get("evidence_id"))
+                    if last.get("query_attempt_id"):attempt_ids.append(last["query_attempt_id"])
             if dns_outcome(last)["result_kind"] not in (None,"TIMEOUT","SERVFAIL","REFUSED","EXECUTION_ERROR"):
                 break
-        return {**last,"resolvers":servers,"system_resolver_configuration":self.system if resolver is None else None,"query_evidence_ids":[e for e in history if e]}
+        return {**last,"resolvers":servers,"system_resolver_configuration":self.system if resolver is None else None,"query_evidence_ids":[e for e in history if e],"query_attempt_ids":attempt_ids}

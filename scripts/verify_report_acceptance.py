@@ -30,7 +30,7 @@ async def main():
         paid_model_invoked=False,public_network_invoked=False)
     rows=[]
     def scripted(messages,info):
-        return ModelResponse(parts=[ToolCallPart(info.output_tools[0].name,empty(outcome="insufficient_information").model_dump())])
+        return ModelResponse(parts=[ToolCallPart(info.output_tools[0].name,dict(request_kind="investigation",outcome="insufficient_information"))])
     log,path=await investigate("调查 probe.invalid",parse_target("probe.invalid"),Config("test",model="scripted-verification"),model=FunctionModel(scripted),log_dir=out)
     assert not log["evidence"] and "本次公网 NXDOMAIN" not in str(log["result"])
     rows.append(dict(case="invalid_without_measurements",status=log["status"],report=log["result"],run_file=path.name,mode="scripted-model"))
@@ -42,7 +42,10 @@ async def main():
     server=await asyncio.start_server(handler,"127.0.0.1",0)
     try:
         backend=ToolBackend(parse_target("example.com"))
-        data=await backend.check_http(f"http://127.0.0.1:{server.sockets[0].getsockname()[1]}/",timeout=.3)
+        from dns_investigator.http_safety import HTTPPolicy
+        url=f"http://127.0.0.1:{server.sockets[0].getsockname()[1]}/"
+        backend.http_policy=HTTPPolicy(url,allowed_networks=("127.0.0.1/32",))
+        data=await backend.check_http(url,timeout=.3)
         assert data["status_code"]==200 and data["error"]=="TIMEOUT"
         backend.calls=[dict(id="E1",tool_name="check_http",input=dict(url="http://controlled-local-test/"),data=data,source_mode="live",started_at="controlled-test")]
         report=evidence_bound_report(empty(),backend)

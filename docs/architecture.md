@@ -1,6 +1,30 @@
 # 实现与证据边界
 
-## 2026-11-01：DNS 范围定位与日志 v5
+## 最终核验补修（2026-11-01）
+
+架构仍为单Agent、五工具、双预算与显式A/Q/E归属。http_safety.py的授权/连接实现本轮未重写；HTTP证据新增body_state、body_complete、body_limit_bytes。观察到完整结束为true；读取错误为false；到达64KiB上限或尚未读取为null，不能把HTTP200或达到上限当作完整响应。旧日志缺字段按unknown_legacy展示。
+
+authority.py用任务隔离的ATTEMPT_OBSERVER，在dns_wire实际分配Q时记录当前目标操作的query_attempt_ids；即使随后取消也能保留已发起查询数。并行任务不会写入同一observer；UDP/TCP回退仍是多个Q、同一个目标操作。中断保存INTERRUPTED与原阶段/原因。报告始终显示发现/选中/地址/已查询/收到响应/AA数量，完成仅限选中子集。
+
+别名收敛与超时对照也必须满足带时区时间资格；未知时间的成功E仍展示，但不作为超时的同期对照。Finding起止按实际时刻选择原测量时间，不能按ISO字符串排序导致时区边界反转。原始时间不改写。
+
+compact_v2补query_scope、不可重试请求/子路径、复合权威工具已有覆盖、AA/negative_scope。超过16条记录时摘要包含全集计数、唯一值集合SHA256、TTL范围及可解析SOA Serial，完整E不删。模型仍可能选择错误参数；拒绝继续计A，不伪造E或宣称自然语言已被完全验证。[实际核验及未通过项](final-verification.md)。
+
+## 2026-11-01：HTTP 连接安全、权威阶段、时间资格与日志 v6
+
+仍是单 PydanticAI Agent + 五个正式工具，build_agent 注册机制与动态选择不变。DNS Diagnosis Engine、HTTPPolicy、PinnedTransport 和 agent_summary 都是普通模块，不新增 Agent 或 Tool。并发 A/Q/E 归属继续通过显式调用 ID，预算与 fixture/live 隔离保留。
+
+HTTP 路径为 check_http → 每跳 HTTPPolicy（scheme/host/port/凭据/origin）→ PinnedTransport → AuthorizedBackend 解析一次并检查完整地址集合 → 数值 IP 连接。原 URL hostname 留给 Host/SNI/证书验证，拒绝单独覆盖 Host/SNI。连接池不跨请求复用、关闭 HTTP/2 和自动重试；最多6次 HTTP 请求、16个候选地址，整体15秒覆盖解析、连接、跳转和读取。混合公网/内网地址集默认全部拒绝；允许内网需受信任 CIDR，跨 origin 另需显式授权。拒绝后的跳转不发送请求，已取得的302/错误仍保存。依据公开接口实现：[HTTPX transports](https://www.python-httpx.org/advanced/transports/)、[HTTPcore network backends](https://www.encode.io/httpcore/network-backends/)。
+
+权威发现按 SOA → NS → NS地址 → 目标直查 → 补充SOA 保存阶段进度。有效权威回答需完整响应、AA及可解释结果；超时测量仍是E，不能把它当成取得DNS报文。completed=true只指本次有上限的选中NS及所需目标/SOA检查完成，不表示全部NS、全域或根因已验证。取消、总超时、预算拒绝保存最后阶段、有效E和执行问题。
+
+compare_details 的每对结果记录 time_status：TIME_COMPARABLE / TIME_WINDOW_DIFFERS / TIME_UNKNOWN / TIME_INVALID。仅具有时区的有效测量时间且间隔≤300秒才可参与同期差异定位；窗口按起点划分，不靠链式相近把跨度大于300秒的证据并为一组。时间未知/跨窗仍可展示观测差异，但只生成无定位断言的 DNS_TEMPORAL_DIFFERENCE。不以文件时间补造测量时间。
+
+AgentDraft 只要求 request_kind、outcome、hypotheses、analysis_summary、limitations、next_directions；extra=forbid。程序从真实E生成正式 observations/measured_facts/findings/结论和A执行问题，保留原 InvestigationResult 的可读兼容字段。模型 E 引用仍验证存在，回答完成仍须测量，假设的证据关系仍验证，再经受限报告器处理。每次工具返回紧凑事实与Finding、全部失败、权威进度、授权别名及剩余预算；最多展示16条记录时明确 omitted_count，完整响应仅保存在原始E，不删除。
+
+schema_version=6 增加 decision_draft_v1、raw_model_drafts、validation_errors、output_attempt_count/output_resubmissions。agent_execution_status 与 report_availability/report_origin/fallback_reason 分开；重试有硬上限，模型失败仍保留程序事实与报告且 status=failed。hypotheses/自然语言候选及建议仍需语义复核。旧日志缺少这些字段时保持未知，不能补算为成功。[实际验证与边界](security-stability-fixes.md)。
+
+## 2026-11-01：DNS 范围定位与日志 v5（历史阶段；当前以上文 v6 为准）
 
 单 Agent 与五个正式 Tool 保持不变；A/Q/E、ContextVar 调用归属、并发、双层预算及 HTTP/TLS/IPv6 逻辑保留。新增模块 alias_scope.py 是普通授权规则，不是工具或 Agent。只有 query_dns 可跟进同模式有效 DNS 证据连接到原始目标的 CNAME，其他工具仍限原目标。跟进 E 保存 target_authorization 链及父 E；完整末端已有同类型记录时拒绝重复跟进。深度/目标数上限均8，既有 A/Q/时间/重复预算继续生效。网页跳转、模型文本、无关 Additional 不授权；观测链路不表示 DNSSEC 验证。
 

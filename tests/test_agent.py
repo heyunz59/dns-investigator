@@ -27,7 +27,7 @@ async def test_real_framework_tool_loop(tmp_path):
     def respond(messages, info):
         if not any(getattr(p, "part_kind", "") == "tool-return" for m in messages for p in m.parts):
             return ModelResponse(parts=[ToolCallPart("query_dns", {"domain": "example.com", "record_type": "A"})])
-        return ModelResponse(parts=[ToolCallPart(info.output_tools[0].name, output())])
+        return ModelResponse(parts=[ToolCallPart(info.output_tools[0].name, dict(request_kind="query",outcome="answered"))])
     fixture = Path(__file__).resolve().parents[1] / "data/fixtures/Q1.json"
     log, path = await investigate("查询 example.com 的 A 记录", parse_target("example.com"),
                                   Config("test", model="scripted-test"), fixture,

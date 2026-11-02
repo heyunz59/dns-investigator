@@ -14,6 +14,8 @@ class Config:
     dns_tool_timeout: float = 20
     max_auth_servers: int = 2
     dns_resolvers: tuple = (None, "1.1.1.1", "8.8.8.8")
+    http_allowed_origins: tuple = ()
+    http_allowed_networks: tuple = ()
 
     def __post_init__(self):
         import ipaddress
@@ -36,4 +38,6 @@ class Config:
                    int(os.getenv("DNS_QUERY_BUDGET", "32")),
                    float(os.getenv("DNS_TOOL_TIMEOUT", "20")),
                    min(3,max(1,int(os.getenv("MAX_AUTH_SERVERS", "2")))),
-                   tuple(None if x.strip()=="system" else x.strip() for x in os.getenv("DNS_RESOLVERS","system,1.1.1.1,8.8.8.8").split(",") if x.strip()))
+                   tuple(None if x.strip()=="system" else x.strip() for x in os.getenv("DNS_RESOLVERS","system,1.1.1.1,8.8.8.8").split(",") if x.strip()),
+                   tuple(x.strip() for x in os.getenv("HTTP_ALLOWED_ORIGINS","").split(",") if x.strip()),
+                   tuple(x.strip() for x in os.getenv("HTTP_ALLOWED_NETWORKS","").split(",") if x.strip()))

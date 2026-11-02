@@ -1,7 +1,7 @@
 """Deterministic scoped observations and localization; no confirmed causal verdicts."""
 from collections import defaultdict
 from datetime import datetime
-from .dns_compare import compare_details,evidence_rows,normal
+from .dns_compare import compare_details,evidence_rows,normal,measured_time,time_relation
 from .dns_wire import dns_outcome,comparable_response
 from .alias_scope import completed_followups
 
@@ -13,8 +13,8 @@ def _windows(rows):
     for group in groups.values():
         # Bound the whole window, not a transitive chain of pairwise time gaps.
         def stamp(r):
-            try:return datetime.fromisoformat(r.get("measured_at") or "").timestamp()
-            except (ValueError,TypeError):return None
+            parsed=measured_time(r)
+            return parsed.timestamp() if parsed else None
         known=sorted((r for r in group if stamp(r) is not None),key=stamp)
         while known:
             first=stamp(known[0]);part=[r for r in known if stamp(r)-first<=300]
@@ -34,10 +34,11 @@ def diagnose(evidence):
             selected=list(dict.fromkeys(selected));facts=[all_by_id[eid] for eid in selected]
             paths=[dict(resolver=r.get("resolver"),role=r.get("resolver_role","recursive"),evidence_id=r["evidence_id"]) for r in facts]
             affected=selected if affected is None else affected
+            timed=sorted((r for r in facts if measured_time(r) is not None),key=measured_time)
             scope=dict(target=normal(first["qname"]),record_type=first.get("qtype"),source_mode=first.get("source_mode"),
-                dns_followup_only=any(r.get("target_authorization") for r in facts),
-                paths=paths,time_start=min((r["measured_at"] for r in facts if r.get("measured_at")),default=None),
-                time_end=max((r["measured_at"] for r in facts if r.get("measured_at")),default=None))
+                dns_followup_only=any(r.get("target_authorization") for r in facts),paths=paths,
+                time_start=timed[0]["measured_at"] if timed else None,
+                time_end=timed[-1]["measured_at"] if timed else None)
             observed=[dict(evidence_id=r["evidence_id"],qname=r["qname"],qtype=r.get("qtype"),measured_at=r.get("measured_at"),source_mode=r.get("source_mode"),resolver=r.get("resolver"),role=r.get("resolver_role","recursive"),
                 authoritative_answer=r.get("flags",{}).get("AA",False),negative_name=r.get("negative_name"),
                 records=r.get("records",[]),soa_serials=r.get("soa_serials",[]),**dns_outcome(r)) for r in facts]
@@ -67,7 +68,8 @@ def diagnose(evidence):
                 add(code,role,selected,"原始响应的别名解析未完成；后续同来源、同解析路径、同类型的已授权查询已取得完整末端回答。原始响应不改写，否定回答仅适用于实际末端名称。",ids)
                 continue
             if code.endswith("QUERY_TIMEOUT"):
-                selected += [r["evidence_id"] for r in group if dns_outcome(r)["transport_status"]=="responded"]
+                selected += [r["evidence_id"] for r in group if dns_outcome(r)["transport_status"]=="responded"
+                    and any(time_relation(by_id[i],r)=="TIME_COMPARABLE" for i in ids)]
             add(code,role,selected,f"查询 {first['qname']} {first.get('qtype')}：{described}。不推断注册状态或服务器宕机。",ids)
         buckets=defaultdict(set)
         comparison=compare_details(group)
@@ -90,6 +92,18 @@ def diagnose(evidence):
             ordered=[r["evidence_id"] for r in group if r["evidence_id"] in ids]
             add(code,"dns-comparison",ordered,
                 f"{first['qname']} {first.get('qtype')} 的完整可比较响应存在状态或记录集合差异；详见各路径结果。地址及 SOA Serial 差异只是观察，正常调度和时间变化仍可能解释。")
+    temporal=defaultdict(set)
+    for pair in compare_details(rows)["pairs"]:
+        if "NONCONTEMPORANEOUS_DIFFERENCE" in pair["codes"]:
+            a=rows[pair["path_indices"][0]]
+            temporal[(normal(a["qname"]),a.get("qtype"),a.get("source_mode"))].update(pair["evidence_ids"])
+    for (name,typ,source),ids in temporal.items():
+        findings.append(dict(code="DNS_TEMPORAL_DIFFERENCE",stage="dns-comparison",status="insufficient_time_basis",
+            scope=dict(target=name,record_type=typ,source_mode=source),evidence_ids=[r["evidence_id"] for r in rows if r["evidence_id"] in ids],
+            observed_facts=[dict(evidence_id=r["evidence_id"],qname=r["qname"],qtype=r.get("qtype"),resolver=r.get("resolver"),measured_at=r.get("measured_at"),records=r.get("records",[]),**dns_outcome(r)) for r in rows if r["evidence_id"] in ids],
+            localization={},root_cause_confirmed=False,explanation="跨时间或时间未知的响应/记录差异，不具备可靠同期定位条件。",
+            limitations=["缺失、非法或无时区时间不补造；不能由文件生成时间推断查询时间。"],
+            next_checks=[f"query_dns：按需对 {name} {typ} 在有真实测量时间的新调查中取得路径对照，避免将历史差异认作同期冲突。 "]))
     if not findings:
         complete=bool(rows) and all(comparable_response(r) and dns_outcome(r)["result_kind"]=="NOERROR" for r in rows)
         findings.append(dict(code="DNS_INCONCLUSIVE",stage="dns",status="no_anomaly_observed" if complete else "insufficient_information",

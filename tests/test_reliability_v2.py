@@ -24,7 +24,9 @@ def answer(kind="investigation", outcome="answered", refs=()):
 
 
 def final(info, value):
-    return ModelResponse(parts=[ToolCallPart(info.output_tools[0].name, value)])
+    draft=dict(request_kind=value["request_kind"],outcome=value["outcome"],hypotheses=value["hypotheses"],
+        analysis_summary=value["conclusion"],limitations=value["limitations"],next_directions=value["recommendations"])
+    return ModelResponse(parts=[ToolCallPart(info.output_tools[0].name, draft)])
 
 
 async def run_script(tmp_path, respond, text="调查 example.com", **kwargs):

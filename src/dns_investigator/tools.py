@@ -20,6 +20,7 @@ from .dns_compare import compare,compare_details,evidence_rows
 from .dns_diagnosis import diagnose
 from .authority import investigate_authority
 from .network_errors import describe
+from .http_safety import HTTPPolicy,PinnedTransport,HTTPRefused
 from .alias_scope import alias_paths,already_resolved
 
 PARENT = contextvars.ContextVar("dns_parent", default=None)
@@ -27,6 +28,12 @@ PARENT = contextvars.ContextVar("dns_parent", default=None)
 
 def now():
     return datetime.now(timezone.utc).isoformat()
+
+
+class InputRejected(ValueError):
+    def __init__(self,reason,message):
+        self.reason=reason
+        super().__init__(message)
 
 
 class ToolBackend:
@@ -46,6 +53,8 @@ class ToolBackend:
         self.dns_tool_timeout = 20
         self.max_auth_servers = 2
         self.resolvers = (None,"1.1.1.1","8.8.8.8")
+        self.http_policy=HTTPPolicy(target.url)
+        self.http_transport_factory=PinnedTransport
 
     def owned_evidence(self, call_id):
         return list(self._evidence_by_call.get(call_id, ()))
@@ -93,8 +102,13 @@ class ToolBackend:
         self.emit("attempt_started", row)
         return row
 
-    def reject(self, row, code, message, retryable=False, status="rejected", emit=True):
+    def reject(self, row, code, message, retryable=False, status="rejected", emit=True, reason=None):
         row.update(status=status, error=dict(code=code, message=message, retryable=retryable))
+        if reason:row["error"]["reason"]=reason
+        if code in {"CANCELLED","DNS_TOOL_TIMEOUT"} and row.get("authority_state"):
+            state=row["authority_state"]
+            state.update(discovery_status="INTERRUPTED",completed=False,
+                interruption=dict(code=code,stage=(state.get("progress") or {}).get("stage")))
         if emit:
             self.emit("attempt_finished", row)
         return dict(attempt_id=row["attempt_id"], execution_status="error", data={},
@@ -135,6 +149,9 @@ class ToolBackend:
             return self.reject(attempt,"INVALID_INPUT",f"timeout 必须大于0且不超过{upper}秒；此次未执行。")
         try:
             self._validate(name, args)
+        except InputRejected as exc:
+            self.blocked.add(fingerprint)
+            return self.reject(attempt,"INVALID_INPUT",str(exc),reason=exc.reason)
         except (ValueError, KeyError, TypeError, UnicodeError):
             self.blocked.add(fingerprint)
             return self.reject(attempt, "INVALID_INPUT", "参数非法或不在本次调查范围；检查目标、端口、类型和已有 DNS 证据。")
@@ -172,6 +189,8 @@ class ToolBackend:
             if self.fixture is not None and name == "query_dns":
                 row["data"]={"qname":args["domain"],"qtype":args.get("record_type","A"),"resolver_role":"recursive",**row["data"]}
             if name in {"compare_resolvers","query_authoritative"}:
+                if name=="query_authoritative":
+                    attempt["authority_state"]={k:copy.deepcopy(row["data"].get(k)) for k in ("discovery_status","completed","zone","progress")}
                 # Fixture composites contain raw sub-responses, not conclusions.
                 if self.fixture is not None:
                     for data in row["data"].get("responses",[]):
@@ -195,7 +214,7 @@ class ToolBackend:
                 row["data"]["evidence_ids"]=ids
                 return row
             if row["data"].get("execution_status")=="error":
-                return self.reject(attempt,(row["data"].get("error") or {}).get("code","DNS_EXECUTION_ERROR"),"DNS 查询没有取得响应；已有子查询证据保留。",emit=False)
+                return self.reject(attempt,(row["data"].get("error") or {}).get("code","TOOL_EXECUTION_ERROR"),"工具未取得测量或被安全策略拒绝；已有证据保留。",emit=False)
             identifier=row["data"].get("evidence_id") if name=="query_dns" else None
             if identifier is not None:
                 if identifier not in {e["id"] for e in self.owned_evidence(attempt["attempt_id"])}:
@@ -231,13 +250,13 @@ class ToolBackend:
         if name in {"query_dns","compare_resolvers","query_authoritative"}:
             requested=domain(args["domain"])
             if requested != self.target.domain and (name!="query_dns" or requested not in alias_paths(self)):
-                raise ValueError("DNS 查询仅限本次调查域名")
+                raise InputRejected("DNS_TARGET_NOT_AUTHORIZED","独立 DNS 查询仅限原目标；query_dns 可跟进已观测且授权的 CNAME。NS 发现中的名称不自动成为独立目标，不要更换类型重试同一未授权名称。")
             if args.get("record_type", "A") not in TYPES:
                 raise ValueError("不支持该 DNS 类型")
             if args.get("resolver"):
                 ipaddress.ip_address(args["resolver"])
                 if self.fixture is None and not self.dns.permitted(args["resolver"]):
-                    raise ValueError("未经配置授权的私有 DNS 地址")
+                    raise InputRejected("DNS_RESOLVER_NOT_AUTHORIZED","显式 resolver 地址未经授权；不要更换类型或超时重试同一地址。系统 DNS 使用 resolver=None；配置的公共递归路径见 query_scope。权威对照使用 query_authoritative。")
         elif name == "check_tcp":
             ipaddress.ip_address(args["ip"])
             if args["port"] not in {80, 443, self.target.port}:
@@ -293,33 +312,46 @@ class ToolBackend:
 
     async def check_http(self, url, timeout=15):
         data = dict(status_code=None, final_url=safe_url(url), redirects=[], peer_ip=None,
-                    proxy_mode="disabled (trust_env=False)", bytes_read=0, error=None)
+                    proxy_mode="disabled (trust_env=False)", bytes_read=0, error=None,
+                    body_state="not_read",body_complete=None,body_limit_bytes=65536)
+        transport=None
         try:
             # Outer deadline includes all redirects, DNS, TLS and body reads.
             async with asyncio.timeout(timeout):
-                async with httpx.AsyncClient(trust_env=False, verify=True, follow_redirects=False) as client:
+                self.http_policy.authorize(url)
+                transport=self.http_transport_factory(self.http_policy)
+                async with httpx.AsyncClient(trust_env=False, verify=True, follow_redirects=False,transport=transport) as client:
                     for hop in range(6):
+                        self.http_policy.authorize(url,redirect=hop>0)
                         async with client.stream("GET", url, timeout=timeout, headers={"User-Agent": "dns-investigator/0.1"}) as response:
                             data.update(status_code=response.status_code, final_url=safe_url(str(response.url)))
                             stream = response.extensions.get("network_stream")
                             peer = stream.get_extra_info("server_addr") if stream else None
                             data["peer_ip"] = str(peer[0]) if peer else None
                             if response.is_redirect and "location" in response.headers:
-                                next_url = str(response.url.join(response.headers["location"]))
+                                try:
+                                    next_url = str(response.url.join(response.headers["location"]))
+                                    public_url=safe_url(next_url)
+                                except (ValueError,httpx.InvalidURL):
+                                    raise HTTPRefused("HTTP_REDIRECT_TARGET_NOT_AUTHORIZED") from None
+                                data["redirects"].append(dict(status=response.status_code,url=public_url))
                                 parsed = httpx.URL(next_url)
                                 if parsed.scheme not in ("http", "https") or parsed.username or parsed.password:
-                                    data["error"] = "UNSUPPORTED_REDIRECT"
-                                    break
-                                data["redirects"].append(dict(status=response.status_code, url=safe_url(next_url)))
+                                    raise HTTPRefused("HTTP_REDIRECT_TARGET_NOT_AUTHORIZED")
+                                self.http_policy.authorize(next_url,redirect=True)
                                 if hop == 5:
                                     data["error"] = "TOO_MANY_REDIRECTS"
                                     break
                                 url = next_url
                                 continue
+                            data["body_state"]="reading"
                             async for chunk in response.aiter_raw(chunk_size=4096):
                                 data["bytes_read"] += len(chunk)
                                 if data["bytes_read"] >= 65536:
+                                    data["body_state"]="limit_reached"
                                     break
+                            else:
+                                data.update(body_state="complete",body_complete=True)
                             break
         except (TimeoutError, httpx.TimeoutException) as exc:
             data["error"] = "TIMEOUT"
@@ -327,4 +359,13 @@ class ToolBackend:
         except httpx.RequestError as exc:
             data["error_detail"]=describe(exc)
             data["error"] = "TLS_ERROR" if data["error_detail"]["code"] in {"TLS_ERROR","CERTIFICATE_VERIFY_FAILED"} else type(exc).__name__
+        except (HTTPRefused,httpx.InvalidURL) as exc:
+            code=exc.code if isinstance(exc,HTTPRefused) else "HTTP_REDIRECT_TARGET_NOT_AUTHORIZED"
+            data["error"]=code
+            data["security_refusal"]=dict(code=code,request_sent_to_rejected_target=False)
+            if data["status_code"] is None:
+                data.update(execution_status="error",error=dict(code=code,retryable=False))
+        finally:
+            if data["body_state"]=="reading":data.update(body_state="read_error",body_complete=False)
+            data["connection_attempts"]=transport.backend.events if transport is not None and hasattr(transport,"backend") else []
         return data
