@@ -198,6 +198,8 @@ async def investigate(text, target, config, fixture=None, model=None, baseline_f
     backend.resolvers=config.dns_resolvers
     backend.http_policy=HTTPPolicy(target.url,config.http_allowed_origins,config.http_allowed_networks)
     backend.request_kind = request_kind(text)
+    from .request_context import context
+    backend.request_context=context(text,target,backend.request_kind)
     if baseline_facts is not None:
         backend.calls = baseline_facts.copy()
     log = dict(run_id=run_id, started_at=now(), incident={"id": run_id,
@@ -273,7 +275,7 @@ async def investigate(text, target, config, fixture=None, model=None, baseline_f
                 for m in json.loads(run.all_messages_json())]
         log.update(evidence=backend.calls, attempts=backend.attempts,
                    validation_results=getattr(backend,"validation_results",[]),
-                   model_draft=getattr(backend,"model_draft",None),report_policy="diagnostic_conclusion_v05",
+                   model_draft=getattr(backend,"model_draft",None),request_context=backend.request_context,report_policy="diagnostic_quality_v05",
                    raw_model_drafts=getattr(backend,"raw_model_drafts",[]),validation_errors=getattr(backend,"validation_errors",[]),
                    dns_attempts=backend.dns.attempts,findings=diagnose(backend.calls)+protocol_findings(backend),
                    elapsed_seconds=round(time.monotonic()-start, 3))

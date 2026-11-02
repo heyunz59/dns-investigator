@@ -61,7 +61,8 @@ def diagnose(evidence):
                 code={"NXDOMAIN":"NXDOMAIN_OBSERVED","NODATA":"NODATA_OBSERVED","SERVFAIL":"DNS_SERVFAIL","REFUSED":"DNS_REFUSED"}.get(kind)
                 if code:unary[(code,role)].append(r["evidence_id"])
         for (code,role),ids in unary.items():
-            described="；".join(f"{by_id[i].get('resolver')} 对 {by_id[i].get('negative_name') or first['qname']} 返回 {dns_outcome(by_id[i])['result_kind']}（{i}）" for i in ids)
+            described="；".join(f"{by_id[i].get('resolver')} 对 {by_id[i].get('negative_name') or first['qname']} "+
+                ('查询未在时限内收到响应（TIMEOUT）' if dns_outcome(by_id[i])['transport_status']=='timeout' else f"收到 DNS {dns_outcome(by_id[i])['result_kind']} 响应")+f"（{i}）" for i in ids)
             selected=ids[:]
             if code=="ALIAS_FOLLOWUP_COMPLETED":
                 selected += [eid for origin in ids for proof in completed[origin] for eid in proof]

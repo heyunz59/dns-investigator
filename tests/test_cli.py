@@ -12,6 +12,8 @@ def test_missing_target_prompts_then_runs_offline(monkeypatch, capsys):
         prompts.append(prompt)
         return "example.com"
     monkeypatch.setattr("builtins.input", answer)
+    # This case represents an interactive terminal; piped/JSON calls must not prompt.
+    monkeypatch.setattr(sys.stdin,'isatty',lambda:True)
     with pytest.raises(SystemExit) as result:
         main()
     assert result.value.code == 0 and len(prompts) == 1

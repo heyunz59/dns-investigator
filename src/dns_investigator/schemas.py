@@ -58,7 +58,16 @@ class Finding(BaseModel):
     next_checks: list[str]
 
 
+class RemediationBranch(BaseModel):
+    condition: str
+    interpretation: str
+    next_action: str
+    change_prerequisites: list[str] = Field(default_factory=list)
+
+
 class RemediationStep(BaseModel):
+    method: dict = Field(default_factory=dict)
+    branches: list[RemediationBranch] = Field(default_factory=list)
     id: str
     priority: int = Field(ge=1)
     title: str
@@ -78,6 +87,19 @@ class RemediationStep(BaseModel):
 
 
 class DiagnosticConclusion(BaseModel):
+    status_code: int | None = None
+    error_details: dict = Field(default_factory=dict)
+    location: list[dict] = Field(default_factory=list)
+    fault_component: str | None = None
+    failure_stage: str | None = None
+    reason_code: str | None = None
+    direct_evidence_ids: list[str] = Field(default_factory=list)
+    direct_validation_ids: list[str] = Field(default_factory=list)
+    dependency_evidence_ids: list[str] = Field(default_factory=list)
+    dependency_validation_ids: list[str] = Field(default_factory=list)
+    relevance: str = 'unknown_context'
+    selection_reason: str = '未取得受控问题上下文；不据此推断用户关注点。'
+    intent_source: str = 'unknown'
     diagnosis_status: Literal['CONFIRMED_PROTOCOL_ISSUE', 'LIKELY_CAUSE', 'FAULT_LOCALIZED',
                               'NO_FAULT_OBSERVED', 'INSUFFICIENT_EVIDENCE']
     fault_detected: bool | None = None
@@ -104,6 +126,8 @@ class DiagnosticConclusion(BaseModel):
 
 
 class InvestigationResult(BaseModel):
+    request_context: dict = Field(default_factory=dict)
+    diagnosis_selection_mode: Literal['primary','parallel'] = 'primary'
     diagnostic_conclusion: DiagnosticConclusion | None = None
     secondary_diagnoses: list[DiagnosticConclusion] = Field(default_factory=list)
     diagnosis_ordering: str = ''

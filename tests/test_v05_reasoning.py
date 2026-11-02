@@ -69,6 +69,12 @@ def test_scoped_mechanism(scenario,expected,layer):
             body_complete=scenario not in {'body_timeout','certificate'}),'check_http')
     if scenario=='policy':b.attempts=[dict(attempt_id='A1',tool_name='check_tcp',input={'ip':'10.0.0.1'},error={'code':'INVALID_INPUT','reason':'TCP_TARGET_ADDRESS_NOT_AUTHORIZED'})]
     r=evidence_bound_report(draft(),b);d=r.diagnostic_conclusion
+    if scenario=='multi':
+        # No explicit task focus: retain both observations without a lexical primary.
+        assert d is None and r.diagnosis_selection_mode=='parallel'
+        assert {x.fault_layer for x in r.secondary_diagnoses}=={'HTTP','TCP/Network Transport'}
+        assert all(x.diagnosis_status==expected for x in r.secondary_diagnoses)
+        return
     assert d.diagnosis_status==expected and d.fault_layer==layer
     assert d.cause_status!='VERIFIED_PROTOCOL'
     assert set(d.evidence_ids).issubset({e['id'] for e in b.calls})
