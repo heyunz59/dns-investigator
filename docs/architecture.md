@@ -1,5 +1,15 @@
 # 实现与证据边界
 
+## v0.5 报告质量补修（本地，2026-11-02）
+
+新增 request_context.py 从规范化目标与用户显式协议词提取保守关注点（处理常见否定/引用，多义时未知），仅供报告排序；不作为 E/V、网络授权、验证状态或预算输入。原用户问题不重复存入新增上下文。Agent 调查与失败回退均将同一上下文交给报告。
+
+本地验证结论从最终状态指向的实际阻断 V 开始：direct_* 是失败位置依据，dependency_* 是使该判断成立的闭包，其并集仍保留在兼容 evidence_ids/validation_ids 中。DS 不匹配定位子区域的父 DS/子 DNSKEY，不把根材料列为故障。trace 使用结构化 current_zone/steps 选择停止区段，不解析自然语言猜测位置；旧记录缺信息时留宽范围。
+
+相关性先看明确关注与目标/URL/端口等已有范围，再看确认等级，最后才稳定展示；URL 区分路径和 query，HTTP 请求的 TLS 异常也可直接相关。没有唯一领先者时 primary=null，secondary_diagnoses 保存全部并列项；attach、CLI、JSON 和失败回退统一遵守此契约。不同异常之间默认关联未验证，不因并存合成因果链。位置、方法中的 expected_sni 是 URL 派生的预期值，不冒充抓包观测。
+
+修复建议根据 primary_issue/reason_code/failure_stage/status_code/error_details 选择规则，不再搜索 cause 文本。每个分支关联 condition/interpretation/next_action/change_prerequisites；旧 expected_outcomes 仅保留兼容用途，不作为平行分支解释。method 区分候选当前工具检查、模拟复核、外部只读、管理员条件变更和用户现场信息；无执行器。默认最多三项操作，完整分支始终留在日志。
+
 ## v0.5 报告诊断层（2026-11-02）
 
 原有单 Agent/五 Tool 与协议验证路径保持不变。`reporting.evidence_bound_report` 生成原有事实、Finding、协议状态和受约束假设后，调用 `diagnostic_reasoner.reason` 和 `remediation.attach`；两者是无网络/模型调用的普通 Python 模块。E/V 依赖闭包、调用归属、目标/类型与本地 BOGUS 结果限制协议确认。高层结论是用户展示来源；旧 conclusion/diagnostic_assessment 继续保留完整事实/定位审计详情，recommendations 为旧调查补充检查，具体行动以 remediation_plan 为准。模型仅提供经过原有范围审查的候选解释及顺序，保留 CANDIDATE 和人工复核标记，不改变本地协议状态。schema 的新增字段有兼容默认值，日志 report_policy=diagnostic_conclusion_v05；失败回退同样生成诊断但不改变 failed 执行状态。详情见 [技术报告](../results/published/v05-diagnostic-upgrade/technical-report.md)。

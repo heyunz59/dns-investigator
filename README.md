@@ -97,6 +97,10 @@ v0.2 已完成 [48 次真实模型对照](results/published/evaluation-reliabili
 
 ## v0.5 结构化诊断与修复建议
 
+本地报告质量补修：默认 CLI 为摘要，不再重复输出完整 JSON；`--verbose` 追加详情，`--format json` 输出单一完整 JSON 对象（进度到 stderr，不能与 `--verbose` 组合）。JSON/非交互模式缺目标直接返回错误，不等待输入；`--tools-only --format json` 输出独立工具记录对象，仍不调用模型。完整日志与原退出码保留。
+
+诊断新增直接依据/验证依赖与结构化位置；明确关注点只影响展示相关性，不影响授权或验证等级。无充分主次依据时 `diagnosis_selection_mode=parallel`、`diagnostic_conclusion=null`，所有并列观测保存在 `secondary_diagnoses`，不虚构综合根因。CHECK 的 `branches` 将未来检查条件、解释、下一步和变更前提绑定；建议尚未执行。完整材料见 [本地专项修复记录](results/published/v05-report-quality-fixes/20261102-report-quality/review-summary.md)。本轮未推送，远程 CI 未执行。
+
 调查结束后，普通 Python 规则模块从已有 Evidence/Finding/V 构造 `diagnostic_conclusion`、`secondary_diagnoses` 和 `remediation_plan`，不新增工具、网络测量或第二次模型调用。CLI 优先显示结论、位置、原因等级和行动，再显示完整调查详情；单项查询继续优先显示记录。
 
 诊断状态与 Agent 执行状态独立：`CONFIRMED_PROTOCOL_ISSUE` 仅确认支持范围内的本地协议异常，`FAULT_LOCALIZED` 只定位已测环节，`NO_FAULT_OBSERVED` 不代表用户问题不存在，`INSUFFICIENT_EVIDENCE` 不当作故障。`LIKELY_CAUSE` 为兼容的候选状态，目前规则不凭症状强行提升到该等级。建议分 CHECK、条件性 POSSIBLE_FIX 和 VERIFY，全部尚未执行，不自动修改配置。旧日志的新字段默认空，不把回放生成字段当历史事实。
