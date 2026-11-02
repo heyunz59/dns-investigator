@@ -127,3 +127,8 @@ DNS 单项查询虽只使用 DNS 工具，但额外查询了 AAAA，超出了用
 - GitHub Actions 首次云端执行通过：[运行记录](https://github.com/heyunz59/dns-investigator/actions/runs/41164947160)。
 - 多网络位置、实际 IPv6 连通性、真实无效 TLS 站点、长期重复采样尚未验证；TLS 错误分类已用可控测试验证。
 - 截图为实际日志在浏览器中的只读视图，非原始终端截图，图中保留真实模型的不理想表述并标明开发者复核。
+
+
+## v0.6 封版定向修复（2026-11-02）
+
+基于 75c16f7；修改前 584 passed in 41.48s。只修混合故障首页映射及历史只读回放，不改协议、安全、预算或页面布局。[修复、反例、来源与边界](v06-final-review.md)。冻结输入和独立回放位于 results/published/v06-final-review/20261102/，本轮不调用模型、不重新测量公网。最终 pytest、安装及远程 CI 回执见该目录 verification.json。

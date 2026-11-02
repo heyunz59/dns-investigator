@@ -1,0 +1,14 @@
+{
+  "baseline_commit": "75c16f7e0b512e2277c0b57c325cde6cf60f1979",
+  "baseline_pytest": "584 passed in 41.48s",
+  "final_windows_pytest": "604 passed in 44.21s",
+  "new_targeted_tests": 20,
+  "focused_suite": "81 passed in 3.78s",
+  "pip_check": "No broken requirements found",
+  "browser_cases": 9,
+  "browser_record": "final-source-replay/validation.json",
+  "new_public_measurements": 0,
+  "new_model_calls": 0,
+  "remote_ci": "PENDING_PUSH",
+  "independent_human_semantic_review": "NOT_RUN"
+}

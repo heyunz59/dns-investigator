@@ -1,0 +1,22 @@
+诊断结论：父区域 DS 与已取得子区域 DNSKEY 无法建立关联 [CONFIRMED_PROTOCOL_ISSUE]
+位置：example.test. 父侧 DS 与子侧 DNSKEY 关联验证
+观测与等级：父区域 DS 与已取得子区域 DNSKEY 无法建立关联；阶段=child-ds-match，reason_code=DS_DIGEST_MISMATCH，范围={'qname': 'probe.example.test', 'qtype': 'A', 'validation_time': 1793604954.688389}；限本地验证策略。 [VERIFIED_PROTOCOL]
+选择依据：独立测量保留；缺少足够问题相关性或主次依据，不推断唯一主因。 本地协议确认优先。
+直接依据：E7, E8, V7
+路径异常组：解析器 1.1.1.1：1 次递归查询超时 [FAULT_LOCALIZED]
+位置：test-host → 1.1.1.1 的本组 DNS 查询路径
+观测与等级：1.1.1.1 的 1 次查询未在时限内收到响应；已测组合：probe.example.test. A。只归纳路径级现象，未确认共同或独立根因。 [OBSERVED_MECHANISM]
+选择依据：独立测量保留；缺少足够问题相关性或主次依据，不推断唯一主因。
+直接依据：E999
+[DNSSEC_VALIDATION] CHECK（尚未执行）：只读查询并核对父区域发布的 DS 与子区域正在使用的 DNSKEY（含 key tag、算法和 digest）。；核对密钥轮换时间、发布状态与管理权限，确认具体不匹配发生在哪个父子区域。
+  如果后续检查发现：父侧 DS 与子侧 DNSKEY 的算法/digest 发布材料仍不匹配 → 关联异常复现，但轮换或配置操作原因未定 → 管理员核对轮换状态后条件性修正对应发布材料，再重验完整链。
+  如果后续检查发现：DS/DNSKEY 匹配但 RRSIG 验证失败 → 当前阻断环节已变化 → 检查签名者、DNSKEY、RRSIG 和验证时间，不直接修改 DS。
+验证方式：以同一信任锚、策略、时间范围和 QNAME/QTYPE 重验完整 DNSSEC 链与递归响应，保存新的 E/V；不能只看一次解析成功。
+[DNSSEC_VALIDATION] POSSIBLE_FIX（尚未执行）：只有确认父子 DS/DNSKEY 关联配置错误后，管理员才按正确密钥轮换流程修正对应记录；不直接删除 DS 或关闭 DNSSEC。
+验证方式：以同一信任锚、策略、时间范围和 QNAME/QTYPE 重验完整 DNSSEC 链与递归响应，保存新的 E/V；不能只看一次解析成功。
+[DNSSEC_VALIDATION] VERIFY（尚未执行）：以同一信任锚、策略、时间范围和 QNAME/QTYPE 重验完整 DNSSEC 链与递归响应，保存新的 E/V；不能只看一次解析成功。
+验证方式：以同一信任锚、策略、时间范围和 QNAME/QTYPE 重验完整 DNSSEC 链与递归响应，保存新的 E/V；不能只看一次解析成功。
+未知/范围限制：范围仅为所列来源、时间及已测组合；协议异常不确认具体运维操作或用户故障的唯一原因。
+未知/范围限制：本工具有有限协议支持；否定证明等与独立验证器的历史分歧仍须复核。
+未知/范围限制：范围仅为所列来源、时间及已测组合；协议异常不确认具体运维操作或用户故障的唯一原因。
+未知/范围限制：单次观测不能区分缓存、策略、调度、网络路径或服务因素；未确认唯一根因。

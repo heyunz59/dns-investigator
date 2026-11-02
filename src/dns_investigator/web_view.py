@@ -51,24 +51,35 @@ def enrich(view, log):
     evidence = dictionaries(view['evidence']); by_id = {e.get('id') or e.get('evidence_id'):e for e in evidence}
     incident = log.get('incident') or {}; target = incident.get('target') or {}
     target = target.get('url') or target.get('domain') if isinstance(target, dict) else target
-    view.update(target=target or r.get('request_context', {}).get('target') or '目标未记录',
+    ctx=r.get('request_context');ctx=ctx if isinstance(ctx,dict) else {}
+    view.update(target=target or ctx.get('target') or '目标未记录',
         measured_at=log.get('started_at') or next((e.get('started_at') or e.get('measured_at') for e in evidence if e.get('started_at') or e.get('measured_at')), None),
         replay=bool(log.get('report_replay')) or log.get('status') == 'historical_replay',
         state_label=STATES.get(view['state'], '状态未记录'), full_explanation=view['explanation'],
         short_title=view['title'], short_explanation='当前证据仅支持所列测量范围；具体配置原因及未测路径仍需核对。')
     overview = view['diagnostic_summary']
-    if overview.get('timeout_groups'):
+    # Only the formal report can authorize a timeout summary of the whole case.
+    if overview.get('timeout_groups') and overview.get('title'):
         view['short_title'] = '部分 DNS 解析路径超时' if overview.get('successful_dns') else '已测 DNS 解析路径超时'
         view['short_explanation'] = '异常集中在已测的部分解析器查询路径，具体原因尚未确认。' + ('其他已测查询存在正常响应，不能据此认定目标域名整体 DNS 不可用。' if overview.get('successful_dns') else '缺少足够成功对照，尚无法确定目标域名的整体可用性。')
         view['short_location'] = '、'.join(str(x.get('resolver','未记录解析器')) for x in overview['timeout_groups'])
     else:
         fallback_title = {'CONFIRMED_PROTOCOL_ISSUE':'已确认所列协议异常','FAULT_LOCALIZED':'已测范围出现异常，具体原因待核对','LIKELY_CAUSE':'存在候选原因，仍需进一步验证','NO_FAULT_OBSERVED':'本次未观察到明确故障','INSUFFICIENT_EVIDENCE':'证据不足，暂无法确定'}.get(d.get('diagnosis_status'),'证据不足，暂无法确定')
-        view['short_title'] = '多个独立异常，无法确认唯一主因' if r.get('diagnosis_selection_mode') == 'parallel' else TITLES.get(d.get('primary_issue'), TITLES.get(d.get('reason_code'), fallback_title))
+        parallel=r.get('diagnosis_selection_mode')=='parallel'
+        view['short_title'] = '多个异常观测，关联尚未确认，无法确认唯一主因' if parallel else TITLES.get(d.get('primary_issue'), TITLES.get(d.get('reason_code'), fallback_title))
         status = d.get('diagnosis_status')
         if status == 'NO_FAULT_OBSERVED': view['short_explanation'] = '本次已测范围内未观察到明确故障；这不代表所有路径、记录类型或后续请求均正常。'
         elif status == 'CONFIRMED_PROTOCOL_ISSUE': view['short_explanation'] = '所列协议异常已有直接验证依据；具体配置操作原因仍需核对，不能据此推断所有访问路径均失败。'
         elif status == 'INSUFFICIENT_EVIDENCE' or not ds: view['short_explanation'] = '当前证据不足以确认故障或根因；请查看调查限制，并在授权范围内补充测量。'
         elif status == 'LIKELY_CAUSE': view['short_explanation'] = '现有观测支持候选原因，尚未完成确认；请先核对关键证据，再决定是否修改配置。'
+        if parallel:
+            view.update(title=view['short_title'],label='多个异常观测',tone='uncertain',
+                short_explanation='；'.join(x.get('summary','观测范围未记录') for x in ds)+'。这些观测的关联及具体运维原因尚未确认，不据此确认主次因果。',
+                short_location='；'.join(x.get('fault_location','位置未记录') for x in ds))
+            if any(x.get('diagnosis_status')=='CONFIRMED_PROTOCOL_ISSUE' for x in ds):
+                view.update(label='多个异常观测（含已确认协议异常）',tone='bad')
+        elif len(ds)>1:
+            view['short_explanation']+=' 另有观测：'+'；'.join(x.get('summary','范围未记录') for x in ds[1:])+'；关联尚未确认。'
     if view['state'] == 'cancelled':
         view.update(label='调查已取消', tone='uncertain', short_explanation='调查已停止，仅保留取消前取得的实际证据；取消不代表 DNS 故障。')
     view.setdefault('short_location', view['location'])
