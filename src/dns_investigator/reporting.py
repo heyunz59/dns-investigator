@@ -222,6 +222,15 @@ def evidence_bound_report(result,backend):
         if not result.protocol_investigations and not invalid and not synthetic and not policy_refused:
             result.recommendations=["本次单项查询结果已列出；没有额外异常线索时无需继续调查。" if measured else "当前未取得测量；先处理所列执行问题，再按需补充这项查询。"]
     else:result.limitations=["仅代表列出的测量位置、时刻、来源和组合；程序路径成功不证明用户客户端有问题。", "独立 TCP 和 HTTP 是不同连接，可能使用不同后端；结果差异须先核查工具和现场。", "候选解释与事实分开，结构和类型限制仍不能保证全部语义正确。"]
+    from .remediation import attach
+    from .diagnostic_reasoner import validate_diagnostics
+    attach(result)
+    validate_diagnostics(result,backend.attempts)
+    # Legacy fields retain their audit-detail role; the high-level summary is the
+    # single user-facing diagnosis. Keep exact no-evidence and single-query output.
+    if measured and result.request_kind!='query':
+        result.conclusion=result.diagnostic_conclusion.summary+' '+result.conclusion
+        result.diagnostic_assessment=result.diagnostic_conclusion.summary+' '+result.diagnostic_assessment
     return result
 
 

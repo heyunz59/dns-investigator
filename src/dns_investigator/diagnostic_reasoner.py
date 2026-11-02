@@ -46,6 +46,12 @@ def reason(result):
         v=p.get('validation')
         if not v:continue
         vs,es=validation_closure(v.get('validation_result_ids',[]),result.validation_results,set(facts))
+        known_v={row['id']:row for row in result.validation_results}
+        validation_scope=v.get('validation_scope') or {}
+        if (any(known_v[vid].get('parent_tool_call_id')!=p['attempt_id'] for vid in vs) or
+            str(validation_scope.get('qname','')).lower().rstrip('.')!=str(p.get('target','')).lower().rstrip('.') or
+            validation_scope.get('qtype')!=p.get('record_type')):
+            vs,es=[],[]
         state=v.get('dnssec_status');code=v.get('reason_code','UNKNOWN')
         if state in {'SECURE','INSECURE'} and vs and v.get('validation_execution')=='completed':
             validated_negative_ds.update(e for e in es if facts[e].get('record_type')=='DS')
@@ -148,6 +154,17 @@ def validate_diagnostics(result,attempts):
             raise ValueError('Invalid diagnostic source reference')
         if d.diagnosis_status=='CONFIRMED_PROTOCOL_ISSUE' and (not d.evidence_ids or not d.validation_ids):
             raise ValueError('Confirmed protocol issue needs E/V')
+        measured={f['evidence_id']:f for f in result.measured_facts}
+        for row in d.affected_scope+d.unaffected_or_comparison_scope:
+            if row.get('evidence_id') not in d.evidence_ids or row!=scope(measured[row['evidence_id']]):
+                raise ValueError('Diagnostic scope exceeds measurement')
+        if d.diagnosis_status=='CONFIRMED_PROTOCOL_ISSUE':
+            matching=False
+            for p in result.protocol_investigations:
+                v=p.get('validation') or {}
+                linked,linked_e=validation_closure(v.get('validation_result_ids',[]),result.validation_results,es)
+                if v.get('dnssec_status')=='BOGUS' and v.get('validation_execution')=='completed' and set(linked)==set(d.validation_ids) and set(linked_e)==set(d.evidence_ids):matching=True
+            if not matching:raise ValueError('Confirmed diagnosis does not match local BOGUS result')
         for step in d.remediation_steps+d.verification_steps:
             if not set(step.evidence_ids).issubset(d.evidence_ids) or not set(step.validation_ids).issubset(d.validation_ids):
                 raise ValueError('Remediation source exceeds diagnosis')

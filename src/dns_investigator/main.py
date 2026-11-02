@@ -54,7 +54,15 @@ async def run(args):
         for issue in log["result"].get("execution_issues",[]):print(json.dumps(issue,ensure_ascii=False))
     else:
         result=log.get("result",{})
-        print("诊断摘要："+result.get("diagnostic_assessment",result.get("conclusion","")))
+        d=result.get('diagnostic_conclusion')
+        if d:
+            print('诊断结论：'+d['summary']+' ['+d['diagnosis_status']+']')
+            print('故障位置：'+d['fault_location'])
+            print('原因与等级：'+d['cause']+' ['+d['cause_status']+']')
+            for s in d.get('remediation_steps',[])+d.get('verification_steps',[]):
+                print(s['action_type']+'（尚未执行）：'+s['description'])
+            print('诊断依据：'+', '.join(d['evidence_ids']+d['validation_ids']))
+        else:print("诊断摘要："+result.get("diagnostic_assessment",result.get("conclusion","")))
         print(json.dumps(result, ensure_ascii=False, indent=2))
     print(f"状态：{log['status']}；日志：{path.resolve()}")
     return 0 if log["status"] == "completed" else 3 if log["status"] == "limited" else 1

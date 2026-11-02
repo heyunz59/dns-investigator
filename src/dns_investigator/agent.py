@@ -273,7 +273,7 @@ async def investigate(text, target, config, fixture=None, model=None, baseline_f
                 for m in json.loads(run.all_messages_json())]
         log.update(evidence=backend.calls, attempts=backend.attempts,
                    validation_results=getattr(backend,"validation_results",[]),
-                   model_draft=getattr(backend,"model_draft",None),report_policy="scoped_evidence_bound_v2",
+                   model_draft=getattr(backend,"model_draft",None),report_policy="diagnostic_conclusion_v05",
                    raw_model_drafts=getattr(backend,"raw_model_drafts",[]),validation_errors=getattr(backend,"validation_errors",[]),
                    dns_attempts=backend.dns.attempts,findings=diagnose(backend.calls)+protocol_findings(backend),
                    elapsed_seconds=round(time.monotonic()-start, 3))
