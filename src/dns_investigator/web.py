@@ -3,6 +3,8 @@ import asyncio
 import json
 import secrets
 import uuid
+import time
+from datetime import datetime, timezone
 from pathlib import Path
 from fastapi import FastAPI, HTTPException, Request
 from fastapi.responses import HTMLResponse, Response
@@ -48,7 +50,8 @@ def present(log):
     if overview.get('title'):
         view.update(label='部分路径异常' if overview.get('successful_dns') else '路径超时，缺少对照',tone='uncertain',
             location='；'.join(g['fault_location'] for g in r.get('diagnostic_groups',[])),explanation=overview['explanation'])
-    return view
+    from .web_view import enrich
+    return enrich(view, log)
 
 class Start(BaseModel):
     target: str = Field(min_length=1, max_length=2048)
@@ -61,8 +64,14 @@ def create_app(history_dir=Path('results/runs')):
     history_dir = Path(history_dir)
     jobs = {}
     tasks = set()
+    owners = set()
     def clean(data):
-        return redact(data, [Config.load().api_key])
+        def strip(value):
+            if isinstance(value, dict):
+                return {k: strip(v) for k,v in value.items() if k.lower().replace('-', '_') not in {'deepseek_api_key','proxy_authorization','password','proxy_password','secret','secrets','environment','env','config','configuration','private_config','server_key'}}
+            if isinstance(value, list): return [strip(v) for v in value]
+            return value
+        return redact(strip(data), [Config.load().api_key])
     def read(key):
         if not key.isalnum() or len(key) > 80: raise HTTPException(404)
         path = history_dir / (key + '.json')
@@ -84,17 +93,27 @@ def create_app(history_dir=Path('results/runs')):
         return response
     app.mount('/assets', StaticFiles(directory=ASSETS), name='assets')
     @app.get('/', response_class=HTMLResponse)
-    async def index():
-        return ENV.get_template('web.html').render(token=token)
+    async def index(request: Request):
+        owner = request.cookies.get('dns_session')
+        if owner not in owners:
+            owner = secrets.token_urlsafe(32)
+            owners.add(owner)
+        response = HTMLResponse(ENV.get_template('web.html').render(token=token))
+        response.set_cookie('dns_session', owner, httponly=True, samesite='strict')
+        return response
     @app.get('/api/history')
-    async def history():
+    async def history(domain: str = '', order: str = 'newest'):
         rows = []
         if history_dir.exists():
             for p in sorted(history_dir.glob('*.json'), key=lambda p: p.stat().st_mtime, reverse=True)[:100]:
                 try:
                     log = read(p.stem)
-                    rows.append(dict(id=p.stem, title=present(log)['title'], time=log.get('started_at', '未记录时间')))
-                except HTTPException: continue
+                    v=present(log)
+                    if domain.casefold() not in str(v['target']).casefold(): continue
+                    rows.append(dict(id=p.stem, title=v['short_title'], time=v['measured_at'] or '测量时间未记录', target=v['target'], state=v['state_label'], demo=v['demo'], replay=v['replay']))
+                except (HTTPException, ValueError, TypeError, AttributeError): continue
+        from .web_view import recorded_time
+        rows.sort(key=lambda row: recorded_time(row['time']) or 0, reverse=order != 'oldest')
         return rows
     @app.get('/api/reports/{key}')
     async def report(key: str): return present(read(key))
@@ -102,6 +121,14 @@ def create_app(history_dir=Path('results/runs')):
     async def export(key: str):
         from .report_replay import canonical
         return Response(json.dumps(canonical(read(key)), ensure_ascii=False, indent=2), media_type='application/json', headers={'Content-Disposition': 'attachment; filename="investigation.json"'})
+    @app.get('/api/reports/{key}/html')
+    async def html_export(key: str):
+        log=read(key)
+        from .report_replay import canonical
+        log=canonical(log)
+        view=present(log)
+        page=ENV.get_template('report.html').render(v=view, raw=json.dumps(log,ensure_ascii=False,indent=2), css=(ASSETS/'report.css').read_text(encoding='utf-8-sig'))
+        return HTMLResponse(page, headers={'Content-Disposition':'attachment; filename="dns-report.html"'})
     @app.post('/api/import')
     async def import_report(request: Request):
         chunks = bytearray()
@@ -115,38 +142,69 @@ def create_app(history_dir=Path('results/runs')):
             if not isinstance(log.get('result', log), dict): raise ValueError()
             log = clean(log)
             present(log)
-        except (ValueError, TypeError, AttributeError): raise HTTPException(400, '无效报告 JSON')
+        except (ValueError, TypeError, AttributeError, KeyError, RecursionError): raise HTTPException(400, '无效报告 JSON')
         history_dir.mkdir(parents=True, exist_ok=True)
         key = uuid.uuid4().hex
         (history_dir / (key + '.json')).write_text(json.dumps(log, ensure_ascii=False), encoding='utf-8')
         return {'id': key}
     @app.post('/api/start')
-    async def start(data: Start):
+    async def start(data: Start, request: Request):
         try:
             target = parse_target(data.target)
             config = Config.load()
         except ValueError: raise HTTPException(400, '目标或本机配置无效')
         if not config.api_key: raise HTTPException(400, '缺少 DEEPSEEK_API_KEY，请在本机 .env 中配置。')
-        if any(j['state'] == 'running' for j in jobs.values()): raise HTTPException(409, '已有调查正在进行')
+        owner=request.cookies.get('dns_session')
+        if owner not in owners: raise HTTPException(403, '请先打开本机页面')
+        if any(j['state'] in ('running','cancelling') for j in jobs.values()): raise HTTPException(409, '已有调查正在进行')
         key = uuid.uuid4().hex
-        jobs.clear()
-        jobs[key] = dict(state='running', events=[])
+        # Retain completed jobs for reconnects; only prune finished records.
+        if len(jobs)>100:
+            for old in list(jobs):
+                if jobs[old]['state'] not in ('running','cancelling'): jobs.pop(old)
+        jobs[key] = dict(state='running', events=[], owner=owner, target=data.target, started_at=datetime.now(timezone.utc).isoformat(), started_clock=time.monotonic())
         async def execute():
             try:
                 log, path = await investigate(data.question or data.target, target, config,
                     log_dir=history_dir, target_source='explicit_target',
                     progress=lambda row: jobs[key]['events'].append(clean(row)))
-                jobs[key].update(state=log['status'], report_id=path.stem)
+                jobs[key].update(state=log['status'], report_id=path.stem, elapsed_seconds=round(time.monotonic()-jobs[key]['started_clock']))
+            except asyncio.CancelledError:
+                save_cancelled(key)
             except Exception:
                 jobs[key].update(state='failed', error='调查未完成，请检查本机配置与日志。')
         task = asyncio.create_task(execute())
+        jobs[key]['task']=task
         tasks.add(task)
-        task.add_done_callback(tasks.discard)
+        def done(task):
+            tasks.discard(task)
+            if task.cancelled(): save_cancelled(key)
+        task.add_done_callback(done)
         return {'id': key}
+    def save_cancelled(key):
+        j=jobs[key]
+        history_dir.mkdir(parents=True,exist_ok=True)
+        report_id=uuid.uuid4().hex
+        log=dict(status='cancelled',started_at=j['started_at'],incident={'target':j['target']}, evidence=j['events'],result={'conclusion':'调查由用户取消；仅保留已经取得的证据。','limitations':['取消不代表 DNS 故障；未执行部分仍未知。']})
+        (history_dir/(report_id+'.json')).write_text(json.dumps(clean(log),ensure_ascii=False),encoding='utf-8')
+        j.update(state='cancelled',report_id=report_id,elapsed_seconds=round(time.monotonic()-j['started_clock']))
+    def owned(key, request):
+        j=jobs.get(key)
+        if not j or request.cookies.get('dns_session') != j['owner']: raise HTTPException(404, '任务不存在或服务已重启')
+        return j
+    def job_view(j):
+        from .web_view import STATES
+        return {**{k:v for k,v in j.items() if k not in ('owner','task','started_clock')},'elapsed_seconds':j.get('elapsed_seconds', round(time.monotonic()-j['started_clock'])), 'state_label':STATES.get(j['state'],'状态未记录'), 'call_count':len({e.get('tool_call_id') or e.get('parent_tool_call_id') or e.get('id') for e in j['events']})}
     @app.get('/api/jobs/{key}')
-    async def job(key: str):
-        if key not in jobs: raise HTTPException(404)
-        return jobs[key]
+    async def job(key: str, request: Request):
+        return job_view(owned(key,request))
+    @app.post('/api/jobs/{key}/cancel')
+    async def cancel(key: str, request: Request):
+        j=owned(key,request)
+        if j['state']=='running':
+            j['state']='cancelling'
+            j['task'].cancel()
+        return job_view(j)
     return app
 
 def main():

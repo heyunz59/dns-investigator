@@ -142,14 +142,21 @@ v0.2 已完成 [48 次真实模型对照](results/published/evaluation-reliabili
 
 页面只有“解析与证据 / 排障详情 / 调查时间线”三个标签页。检查与修正建议均标为尚未执行。解析器对照只展示实际日志；没有时间或测量时明确标为未记录/未测量。证据按五项分页展开，可查看完整 A/Q/E/V 关联数据。故障位置使用已有结论中的文本，不推测 Root/TLD 节点。
 
-“历史记录”读取 `results/runs` 下最多 100 份最近 JSON；“导入历史 JSON 报告”接收最多 16 MB 的报告副本，生成随机本地 ID，不能指定服务器文件路径。导出为脱敏 JSON；本轮未提供 HTML 导出。
+“历史记录”读取 `results/runs` 下最多 100 份最近 JSON；“导入历史 JSON 报告”接收最多 16 MB 的报告副本，生成随机本地 ID，不能指定服务器文件路径。支持脱敏 JSON 与独立 HTML 导出。HTML 无脚本、无外部依赖，可双击离线打开和打印。JSON 保持既有正式报告及回放兼容格式。
 
 受控历史/构造场景可单独准备（始终显示“示例数据 / 非真实公网测量”）：
 
 ```powershell
-.venv\Scripts\python.exe scripts/prepare_web_demos.py
+.venv\Scripts\python.exe -m scripts.prepare_web_demos
 ```
 
 验证：`python -m pytest -q`。浏览器检查需另装 `playwright`，运行 `python scripts/check_web_browser.py`（先准备演示报告、启动服务）。Windows 自动使用 Chrome/Edge；其他平台运行 `python -m playwright install chromium`，或通过 `WEB_BROWSER` 指定浏览器路径。此脚本检查三种场景、三个标签页和移动端溢出，并生成截图。
 
-交付截图与验证说明见 [docs/v06-web/README.md](docs/v06-web/README.md)。回放只反映保存时刻；历史文件缺失的新字段不会补造。当前调查单实例串行执行，服务重启后正在执行的调查不恢复。
+最新产品化交付见 [docs/v06-polish/README.md](docs/v06-polish/README.md)，初版资料见 [docs/v06-web/README.md](docs/v06-web/README.md)。回放只反映保存时刻，历史字段不补造。首页使用受控短摘要，正常/异常路径限实际查询范围；三个标签页保留完整解释、按解析器分组的测量、友好证据与纵向时间线。
+
+
+调查期间显示真实证据回调、已记录的工具调用数及持续时间。取消会向后台任务发送异步取消请求，待上下文退出并保存证据后显示“已取消”，不会将取消解释为 DNS 故障。页面刷新或短暂断线后可在同一浏览器会话恢复任务；服务重启后旧任务返回不存在，并提示查看已保存历史。当前仍为单机串行调查，没有持久化任务队列。取消不能撤回已经发送的网络请求；同步清理操作完成前会保持停止中状态。
+
+历史记录支持域名筛选和实际测量时间排序，缺失测量时间明确标注未知，导入时间不冒充测量时间。取消接口要求本机令牌和所属浏览器会话，其他会话不能查询或取消该任务。已有建议不自动执行，历史授权必须重新校验。
+
+产品浏览器验收：启动服务并准备演示报告后运行 `python scripts/check_web_product_browser.py`。追加 `--live` 会真实调用本机 DeepSeek 配置并进行新的 example.com 公网测量，以及第二次真实取消检查；默认仅回放/导入已有报告。截图、离线 HTML、打印验证和浏览器结果写入 `docs/v06-polish/`。

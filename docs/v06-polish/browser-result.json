@@ -1,0 +1,19 @@
+{
+  "browser": "Chromium",
+  "checks": "tabs, resolver expansion, filter, JSON compatibility, offline HTML no requests/scripts, print, mobile overflow, hostile DOM",
+  "live": [
+    {
+      "mode": "real_model_public_dns",
+      "status": "调查完成；已有证据已保存。",
+      "report_id": "020e6a151fee4022a3efaa027c1ed785",
+      "evidence_count": 6
+    },
+    {
+      "mode": "real_model_cancel_request",
+      "status": "已取消调查；已有证据已保存。",
+      "report_id": "0d1172557da54d589eb02548f4e5480b",
+      "evidence_count": 0
+    }
+  ],
+  "errors": []
+}

@@ -251,6 +251,15 @@ async def investigate(text, target, config, fixture=None, model=None, baseline_f
                    result_origin="model_with_evidence_bound_report", result=result.output.model_dump(),
                    usage=json.loads(json.dumps(asdict(result.usage), default=str)), visible_messages=visible)
         log.update(agent_execution_status="completed",report_availability="available" if backend.calls else "limited_no_measurements",report_origin="deterministic_evidence_report",fallback_reason=None)
+    except asyncio.CancelledError:
+        # Async cancellation unwinds the active agent/tool context before persisting.
+        fallback=InvestigationResult(request_kind=backend.request_kind, outcome="insufficient_information",
+            observations=[], hypotheses=[], conclusion="调查由用户取消；已有证据保留，未执行部分未知。",
+            conclusion_evidence_ids=[], limitations=["用户取消不代表 DNS 故障。"], recommendations=[])
+        log.update(status="cancelled", execution_status="cancelled", agent_execution_status="cancelled",
+            requirements_met=False, result_origin="application_cancelled",
+            result=evidence_bound_report(fallback,backend).model_dump())
+        log["result"]["limitations"].append("用户取消调查；仅保留取消前证据，未执行部分未知，取消不代表 DNS 故障。")
     except Exception as exc:
         # Do not persist SDK exception strings: these may contain request details.
         log.update(status="failed", execution_status="failed", requirements_met=False,
