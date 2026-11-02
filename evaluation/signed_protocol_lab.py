@@ -77,12 +77,15 @@ class Signed:
             return r
         if index!=2:return r
         r.flags|=dns.flags.AA;r.authority.clear();r.additional.clear()
-        if self.scenario in {"nxdomain","nodata","bad_nsec","nsec3_nxdomain","nsec3_nodata","nsec3_policy","opt_out","bad_nsec3"}:
+        if self.scenario=="cname_rrset" and typ=="CNAME":
+            self.signed_add(r.answer,dns.rrset.from_text(qname,60,"IN","CNAME","other.test."),zone)
+            return r
+        if self.scenario in {"nxdomain","nodata","bad_nsec","nsec3_nxdomain","nsec3_nodata","nsec3_policy","opt_out","bad_nsec3","wildcard_nodata","nsec3_wildcard_nodata"}:
             negative="nxdomain" in self.scenario or self.scenario in {"bad_nsec","nsec3_policy","opt_out","bad_nsec3"}
             if negative:r.set_rcode(dns.rcode.NXDOMAIN)
             self.signed_add(r.authority,self.soa(),zone)
             if self.scenario.startswith("nsec3") or self.scenario in {"opt_out","bad_nsec3"}:
-                names=[zone,"ns.example.test."]+([] if negative else [qname])
+                names=[zone,"ns.example.test."]+(["*.example.test."] if self.scenario=="nsec3_wildcard_nodata" else [] if negative else [qname])
                 if self.scenario=="bad_nsec3":names.append(qname)
                 proofs=self.nsec3(names,{n:"SOA NS DNSKEY RRSIG NSEC3" if n==zone else "A RRSIG NSEC3" if n=="ns.example.test." else "AAAA RRSIG NSEC3" for n in names},iterations=100 if self.scenario=="nsec3_policy" else 0,flags=1 if self.scenario=="opt_out" else 0)
             else:
@@ -90,6 +93,7 @@ class Signed:
                     proofs=[dns.rrset.from_text(zone,60,"IN","NSEC","ns.example.test. SOA NS DNSKEY RRSIG NSEC"),
                         dns.rrset.from_text("ns.example.test.",60,"IN","NSEC",("o.example.test." if self.scenario=="bad_nsec" else zone)+" A RRSIG NSEC")]
                 else:proofs=[dns.rrset.from_text(qname,60,"IN","NSEC",zone+" AAAA RRSIG NSEC")]
+                if self.scenario=="wildcard_nodata":proofs=[dns.rrset.from_text(zone,60,"IN","NSEC","*.example.test. SOA NS DNSKEY RRSIG NSEC"),dns.rrset.from_text("*.example.test.",60,"IN","NSEC","ns.example.test. AAAA RRSIG NSEC"),dns.rrset.from_text("ns.example.test.",60,"IN","NSEC",zone+" A RRSIG NSEC")]
             for rr in proofs:self.signed_add(r.authority,rr,zone)
             return r
         if typ not in {"A","AAAA"}:

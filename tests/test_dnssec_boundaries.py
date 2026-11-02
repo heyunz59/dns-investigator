@@ -98,9 +98,16 @@ def test_nsec_cannot_deny_below_delegation_or_wildcard_outside_zone():
 
 def test_stale_anchor_and_failed_import_leave_snapshot_unchanged(tmp_path):
     src = Path("src/dns_investigator/assets")
-    now = datetime.now(timezone.utc).timestamp()
+    import json
+    receipt=json.loads((src / "anchor-authentication.json").read_text(encoding="utf-8-sig"))
+    now = datetime.fromisoformat(receipt["verified_at"]).timestamp()+60
     assert anchors(now)["authentication"] == "CMS_SIGNATURE_AND_PINNED_ICANN_CA_CHAIN"
     with pytest.raises(ValueError, match="UPDATE_REQUIRED"): anchors(now + 181 * 86400)
+
+
+@pytest.mark.skipif(shutil.which("pwsh") is None, reason="Actual CMS import integration requires PowerShell 7/.NET; not simulated")
+def test_authenticated_import_failure_preserves_snapshot(tmp_path):
+    src = Path("src/dns_investigator/assets")
     dest = tmp_path / "active"
     shutil.copytree(src, dest)
     before = {p.name: p.read_bytes() for p in dest.iterdir()}

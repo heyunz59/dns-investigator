@@ -44,6 +44,6 @@ def current_state(backend,response):
         non_retryable_requests=blocked,
         non_retryable_dns_paths=[dict(attempt_id=a["attempt_id"],qname=q.get("qname"),qtype=q.get("qtype"),resolver=q.get("resolver"),error=q.get("error"))
             for a in backend.attempts for q in a.get("dns_execution_issues",[]) if (q.get("error") or {}).get("retryable") is False],
-        tool_coverage=dict(query_authoritative="单次已包含区域SOA/NS、NS地址、选中NS的目标类型及补充SOA；先复用这些E，再决定是否确需重采样。"),
+        tool_coverage=dict(query_authoritative="能力说明（不表示已执行）：basic为递归辅助发现及选中权威查询；trace为独立委派路径；dnssec另有链与证明采集。实际已测内容只看相应A的E/Q及protocol_investigations，不假定每个模式都查了SOA/NS或全部服务器。"),
         budget=dict(tool_attempts_remaining=max(0,backend.max_calls-len(backend.attempts)),dns_requests_remaining=max(0,backend.dns.limit-len(backend.dns.attempts))),
         context_policy="compact_v2; complete raw DNS/HTTP evidence retained in JSON/JSONL; omitted records are not absent; aggregate describes the full record set, not only the 16 visible records")

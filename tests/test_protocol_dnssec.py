@@ -8,7 +8,8 @@ from evaluation.signed_protocol_lab import signed_lab
     ("nsec3_policy","INDETERMINATE"),("opt_out","INDETERMINATE"),("wildcard","SECURE"),("wildcard_nsec3","SECURE"),("wildcard_missing","BOGUS"),
     ("key_timeout","INDETERMINATE"),("algorithm8","SECURE"),("algorithm13","SECURE"),("algorithm14","SECURE"),
     ("algorithm16","INDETERMINATE"),("digest4","SECURE"),("wrong_signer","BOGUS"),("wrong_type","BOGUS"),
-    ("multi_sig","SECURE"),("ede_conflict","SECURE"),("nsec3_insecure","INSECURE"),("bad_nsec3","BOGUS")])
+    ("multi_sig","SECURE"),("ede_conflict","SECURE"),("nsec3_insecure","INSECURE"),("bad_nsec3","BOGUS"),
+    ("wildcard_nodata","SECURE"),("nsec3_wildcard_nodata","SECURE")])
 async def test_complete_chain_and_supported_proofs_from_real_wire(scenario,status):
     async with signed_lab(scenario) as lab:
         b=lab.backend();r=await b.call("query_authoritative",domain=b.target.domain,mode="dnssec",timeout=.2)
@@ -23,3 +24,13 @@ async def test_complete_chain_and_supported_proofs_from_real_wire(scenario,statu
         assert r["data"]["validation"]["trust_anchor"]["authentication"]=="EXPLICIT_TEST_ANCHOR"
     if scenario=="ds_mismatch":assert r["data"]["validation"]["failure_stage"]=="child-ds-match"
     if scenario=="missing_sig":assert r["data"]["validation"]["failure_stage"]=="target-signature"
+
+
+@pytest.mark.parametrize("typ,target,scenario",[("AAAA","probe.example.test","secure"),("CNAME","probe.example.test","cname_rrset"),("NS","example.test","secure"),("SOA","example.test","secure")])
+async def test_supported_positive_types(typ,target,scenario):
+    from dns_investigator.target import parse_target
+    async with signed_lab(scenario) as lab:
+        b=lab.backend();b.target=parse_target(target)
+        r=await b.call("query_authoritative",domain=target,record_type=typ,mode="dnssec",timeout=.2)
+    assert r["data"]["validation"]["dnssec_status"]=="SECURE",r
+    assert r["data"]["validation"]["validation_scope"]["qtype"]==typ
