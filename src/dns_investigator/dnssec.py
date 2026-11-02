@@ -106,11 +106,17 @@ async def investigate_dnssec(backend,parent,qname,typ,timeout):
     except TraceStopped as exc:return incomplete(exc.code,"resource_limited")
     bundle=dict(qname=qname,qtype=typ,validation_time=validation_time,anchor=anchor,
         root_dnskey_eid=root.get("evidence_id"),chain=chain,terminal_eid=state["terminal_evidence_id"],
+        terminal_query_zone=path["zone"],
         evidence=[dict(id=e["id"],source_mode=e["source_mode"],data=e["data"]) for e in backend.owned_evidence(parent)])
     state["validation"]=dict(validation_execution="running",dnssec_status="INDETERMINATE",reason_code="VALIDATION_RUNNING")
     try:result=await isolated_validate(bundle)
     except asyncio.CancelledError:
         incomplete("VALIDATION_CANCELLED");raise
     state["validation"]=publish(backend,parent,result)
+    if state.get("cohosted_zone_hint"):
+        hint=state["cohosted_zone_hint"]
+        hint["authenticated_parent_ds_result_ids"]=[v["id"] for v in backend.validation_results
+            if v["parent_tool_call_id"]==parent and v["kind"]=="rrset_signature" and v["local_result"]=="SIGNATURE_CHECK_PASSED"
+            and v.get("scope",{}).get("qtype")=="DS" and v.get("scope",{}).get("owner")==hint["zone"]]
     state["completed"]=state["validation"].get("validation_execution")=="completed"
     return state

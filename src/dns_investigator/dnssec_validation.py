@@ -173,7 +173,10 @@ class Session:
             if keyresult["local_result"]!="SIGNATURE_CHECK_PASSED":return self.failed(keyresult,"child-dnskey")
             keys,zone,key_eid,trusted_v=childkeys,child,ceid,keyresult["id"]
         target=self.bundle["terminal_eid"]
-        if not self.usable(target,name(self.bundle["qname"]),self.bundle["qtype"],zone):return self.finish("INDETERMINATE","TARGET_MATERIAL_UNAVAILABLE","target",[trusted_v],"incomplete")
+        # Original wire context stays intact. A cohosted child can be authenticated
+        # through a later parent DS without rewriting the parent's original E.
+        context_zone=name(self.bundle.get("terminal_query_zone",zone.to_text()))
+        if not self.usable(target,name(self.bundle["qname"]),self.bundle["qtype"],context_zone):return self.finish("INDETERMINATE","TARGET_MATERIAL_UNAVAILABLE","target",[trusted_v],"incomplete")
         data=self.messages[target];q=name(self.bundle["qname"]);typ=dns.rdatatype.from_text(self.bundle["qtype"])
         if not q.is_subdomain(zone):return self.finish("INDETERMINATE","TARGET_ZONE_MISMATCH","target",execution="incomplete")
         if data.get("cname_chain") and typ!=dns.rdatatype.CNAME:return self.finish("INDETERMINATE","DNSSEC_CNAME_CHAIN_NOT_SUPPORTED","alias",execution="capability_limited")

@@ -52,18 +52,34 @@ class Lab:
 async def protocol_lab(scenario="normal"):
     lab=Lab(scenario)
     tcp_servers=[]
-    for index in range(5):
-        host=f"127.0.0.{index+10}"
-        t,_=await asyncio.get_running_loop().create_datagram_endpoint(lambda i=index:UDP(lab,i),local_addr=(host,0))
-        lab.transports.append(t);lab.endpoints[host]=t.get_extra_info("sockname")[1]
-        async def tcp(reader,writer,i=index):
-            try:
-                size=int.from_bytes(await reader.readexactly(2),"big")
-                q=dns.message.from_wire(await reader.readexactly(size));r=lab.answer(i,q)
-                if r is not None:
-                    wire=r.to_wire();writer.write(len(wire).to_bytes(2,"big")+wire);await writer.drain()
-            finally:writer.close();await writer.wait_closed()
-        tcp_servers.append(await asyncio.start_server(tcp,host,lab.endpoints[host]))
+    try:
+        for index in range(5):
+            host=f"127.0.0.{index+10}"
+            async def tcp(reader,writer,i=index):
+                try:
+                    size=int.from_bytes(await reader.readexactly(2),"big")
+                    q=dns.message.from_wire(await reader.readexactly(size));r=lab.answer(i,q)
+                    if r is not None:
+                        wire=r.to_wire();writer.write(len(wire).to_bytes(2,"big")+wire);await writer.drain()
+                finally:writer.close();await writer.wait_closed()
+            # On Windows a UDP ephemeral port can be reserved/forbidden for TCP.
+            # Reserve TCP first, then bind UDP to the same port; bounded startup
+            # retries concern test infrastructure only, never DNS query retries.
+            for candidate in range(8):
+                server=await asyncio.start_server(tcp,host,0)
+                port=server.sockets[0].getsockname()[1]
+                try:
+                    t,_=await asyncio.get_running_loop().create_datagram_endpoint(lambda i=index:UDP(lab,i),local_addr=(host,port))
+                except OSError:
+                    server.close();await server.wait_closed()
+                    if candidate==7:raise
+                    continue
+                tcp_servers.append(server);lab.transports.append(t);lab.endpoints[host]=port
+                break
+    except BaseException:
+        for t in lab.transports:t.close()
+        for server in tcp_servers:server.close();await server.wait_closed()
+        raise
     def backend():
         b=ToolBackend(parse_target("probe.example.test"));b.trace_roots=[dict(ns="a.root.test.",addresses=["127.0.0.10"])]
         b.dns.deep_endpoint_policy=lambda ip,port:port==53 and ip in lab.endpoints
