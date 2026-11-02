@@ -58,7 +58,57 @@ class Finding(BaseModel):
     next_checks: list[str]
 
 
+class RemediationStep(BaseModel):
+    id: str
+    priority: int = Field(ge=1)
+    title: str
+    action_type: Literal['CHECK', 'POSSIBLE_FIX', 'VERIFY']
+    description: str
+    target: str
+    reason: str
+    related_finding_codes: list[str] = Field(default_factory=list)
+    evidence_ids: list[str] = Field(default_factory=list)
+    validation_ids: list[str] = Field(default_factory=list)
+    instructions: list[str] = Field(default_factory=list)
+    expected_outcomes: list[str] = Field(default_factory=list)
+    verification_method: str
+    prerequisites: list[str] = Field(default_factory=list)
+    safety_notes: list[str] = Field(default_factory=list)
+    executed: Literal[False] = False
+
+
+class DiagnosticConclusion(BaseModel):
+    diagnosis_status: Literal['CONFIRMED_PROTOCOL_ISSUE', 'LIKELY_CAUSE', 'FAULT_LOCALIZED',
+                              'NO_FAULT_OBSERVED', 'INSUFFICIENT_EVIDENCE']
+    fault_detected: bool | None = None
+    primary_issue: str
+    summary: str
+    fault_layer: Literal['Recursive DNS', 'Authoritative DNS', 'Delegation', 'DNSSEC',
+                         'CNAME/Alias Resolution', 'TCP/Network Transport', 'TLS', 'HTTP',
+                         'Client Environment', 'Unknown'] = 'Unknown'
+    fault_location: str
+    affected_scope: list[dict] = Field(default_factory=list)
+    unaffected_or_comparison_scope: list[dict] = Field(default_factory=list)
+    cause: str
+    cause_status: Literal['VERIFIED_PROTOCOL', 'OBSERVED_MECHANISM', 'CANDIDATE', 'UNKNOWN'] = 'UNKNOWN'
+    alternative_causes: list[str] = Field(default_factory=list)
+    reason: str
+    evidence_ids: list[str] = Field(default_factory=list)
+    validation_ids: list[str] = Field(default_factory=list)
+    finding_codes: list[str] = Field(default_factory=list)
+    relevant_attempt_ids: list[str] = Field(default_factory=list)
+    source_modes: list[str] = Field(default_factory=list)
+    remediation_steps: list[RemediationStep] = Field(default_factory=list)
+    verification_steps: list[RemediationStep] = Field(default_factory=list)
+    limitations: list[str] = Field(default_factory=list)
+
+
 class InvestigationResult(BaseModel):
+    diagnostic_conclusion: DiagnosticConclusion | None = None
+    secondary_diagnoses: list[DiagnosticConclusion] = Field(default_factory=list)
+    diagnosis_ordering: str = ''
+    remediation_plan: list[RemediationStep] = Field(default_factory=list)
+    candidate_analysis: list[dict] = Field(default_factory=list)
     protocol_investigations: list[dict] = Field(default_factory=list)
     validation_results: list[dict] = Field(default_factory=list)
     authority_investigations: list[dict] = Field(default_factory=list)
