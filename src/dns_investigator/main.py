@@ -62,6 +62,8 @@ async def run(args):
             for s in d.get('remediation_steps',[])+d.get('verification_steps',[]):
                 print(s['action_type']+'（尚未执行）：'+s['description'])
             print('诊断依据：'+', '.join(d['evidence_ids']+d['validation_ids']))
+            for other in result.get('secondary_diagnoses',[]):
+                print('另有异常/未完成范围：'+other['summary']+'；不据排序确认因果。')
         else:print("诊断摘要："+result.get("diagnostic_assessment",result.get("conclusion","")))
         print(json.dumps(result, ensure_ascii=False, indent=2))
     print(f"状态：{log['status']}；日志：{path.resolve()}")
