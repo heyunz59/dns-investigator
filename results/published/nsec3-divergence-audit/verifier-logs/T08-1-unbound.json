@@ -1,0 +1,11 @@
+{
+  "reference_version": "1.26.2",
+  "secure": false,
+  "bogus": true,
+  "havedata": false,
+  "nxdomain": true,
+  "rcode": 3,
+  "why_bogus": "validation failure <probe.example.test. A IN>: nameerror proof failed from 127.0.0.12",
+  "provenance": "external_reference_not_project_V",
+  "network_scope": "controlled_loopback_independent_iterator"
+}
