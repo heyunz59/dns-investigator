@@ -1,5 +1,9 @@
 # 实现与证据边界
 
+## v0.5 报告诊断层（2026-11-02）
+
+原有单 Agent/五 Tool 与协议验证路径保持不变。`reporting.evidence_bound_report` 生成原有事实、Finding、协议状态和受约束假设后，调用 `diagnostic_reasoner.reason` 和 `remediation.attach`；两者是无网络/模型调用的普通 Python 模块。E/V 依赖闭包、调用归属、目标/类型与本地 BOGUS 结果限制协议确认。高层结论是用户展示来源；旧 conclusion/diagnostic_assessment 继续保留完整事实/定位审计详情，recommendations 为旧调查补充检查，具体行动以 remediation_plan 为准。模型仅提供经过原有范围审查的候选解释及顺序，保留 CANDIDATE 和人工复核标记，不改变本地协议状态。schema 的新增字段有兼容默认值，日志 report_policy=diagnostic_conclusion_v05；失败回退同样生成诊断但不改变 failed 执行状态。详情见 [技术报告](../results/published/v05-diagnostic-upgrade/technical-report.md)。
+
 ## v0.4 有限协议诊断（2026-11-02，当前）
 
 用户→唯一Agent→五Tool→统一ToolBackend/DNSClient→A/Q/E→纯规则诊断及隔离DNSSEC验证→V/Finding→Agent继续或停止→程序正式报告。query_authoritative 的 basic 保持递归辅助发现；trace.py 通过固定 Root Hints、RD=0、数值端点/端口53、bailiwick和独立NS依赖驱动有界状态机；dnssec.py复用同一引擎采集根DNSKEY/父DS/子DNSKEY及目标签名/证明。没有第六工具或第二Agent。模型不能改变信任锚/策略/访问授权。

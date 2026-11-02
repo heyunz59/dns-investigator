@@ -1,0 +1,1 @@
+{"stage": "initial_capture_script", "error": "AttributeError: optional validation_results absent on ordinary DNS backend", "measurements_published": 0, "resolution": "capture uses getattr default; new final directory; no runtime source change"}

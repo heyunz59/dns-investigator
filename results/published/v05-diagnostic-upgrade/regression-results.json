@@ -1,0 +1,36 @@
+{
+  "baseline": "aed194ac53b9f9af8f2637c8b4d2efd9fd772317",
+  "business_commit": "5e86226d36fdc7b426b3f06b3dbe844d6d1c51c7",
+  "baseline_test": {
+    "passed": 410,
+    "seconds": 29.27
+  },
+  "final_test": {
+    "passed": 447,
+    "failed": 0,
+    "skipped": 0,
+    "seconds": 28.87
+  },
+  "added_tests": 37,
+  "python": "3.12.14",
+  "os": "Windows",
+  "unchanged_runtime_modules": {
+    "tools.py": true,
+    "http_safety.py": true,
+    "network_policy.py": true,
+    "dns_wire.py": true,
+    "trace.py": true,
+    "dnssec.py": true,
+    "dnssec_proof.py": true,
+    "dnssec_validation.py": true,
+    "trust.py": true,
+    "accounting.py": true,
+    "alias_scope.py": true
+  },
+  "pip_check": "PASS",
+  "model_calls": 0,
+  "public_network_tests": 0,
+  "controlled_cases": 10,
+  "human_semantic_review": "PENDING",
+  "github_actions": "UNKNOWN until actual push"
+}

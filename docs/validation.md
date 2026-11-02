@@ -1,5 +1,9 @@
 # 验证记录
 
+## v0.5 故障位置与修复建议（2026-11-02）
+
+实际基线 aed194a：410 passed in29.27s。最终业务 5e86226：447 passed in28.87s，新增37项，0失败/0跳过；依赖检查通过。受控本机 UDP/签名 DNS 与 HTTP 共10例，新旧报告实际使用同批测量，事实表一致。覆盖具体 E/V 归属、DS关联/签名/时间异常、正常INSECURE、策略限制、单查询、fixture、Agent失败回退和真实旧日志默认加载。未执行本轮真实 DeepSeek 或公网测试，独立人工语义复核待完成；测试通过率不是根因准确率。完整源码身份、新旧输出及实际远程 CI 见 [交付目录](../results/published/v05-diagnostic-upgrade/technical-report.md)。
+
 ## TCP 网络许可与 NSEC3 候选兼容性（2026-11-02）
 
 实际基线 2bacd75e：362 passed in25.66s；最终业务 0faab010：410 passed in25.36s，0 failed/0 skipped。Windows IPv6 loopback 运行通过，依赖检查与 wheel 模块/资产字节核对通过。TCP 修复前后各26例采用注入 DNS、拦截 socket 连接，不冒充真实内网探测。NSEC3 before/intermediate/final 各28例为受控本机 UDP 与独立 Unbound1.26.2 实际对照；未知 Hash/Flags 六个拆分场景、Next Hash、坏签名与剩余证明不足均有原始报文。T01/T05/T06 保持 BOGUS/SECURE/BOGUS；T01/T06/T10 及能力受限边界的 Unbound 分歧保留，未声称全部协议一致。本轮模型调用0。完整矩阵、源码身份、元数据局限及实际 CI 见 [专项材料](../results/published/v0.4-security-nsec3-followup/review-summary.md)。语义与协议独立人工审计仍待完成。

@@ -1,0 +1,80 @@
+{
+  "baseline_report_function": "aed194ac53b9f9af8f2637c8b4d2efd9fd772317",
+  "business_commit": "382a0d7bea54890131074e6855044c6514af76d6",
+  "source_hashes": {
+    "accounting.py": "bb091800613b42aa22583c3873d21aac0ff7fed089afdd69a8498c46502c84a3",
+    "agent.py": "e88c22fc0df9e922d7d78003c9eb90c09c9a541d6209110fcba0fc36356b7e52",
+    "agent_summary.py": "66bdd1e46dd25d817758b717b71451d3d2352400da39efd24896f4519543e539",
+    "alias_scope.py": "8de965f6b153abf61e771f9bc9793dc2874f1396a47e63daf44e2d27df66b758",
+    "authority.py": "7bfd81fb62a1d472ee1ed41da4637bf31de776628cfad74e7dd54010aeccb865",
+    "config.py": "78b2b5a6690ec4b83f1d08ba3135d263870850bf1806ae39f6e052ab464592df",
+    "diagnostic_reasoner.py": "2f1fe529e82d0331f7fec98fa8313623219a52a12f4c3629c54ef0f2d423f5ea",
+    "dnssec.py": "d25bda313334e0fb2b903204e150e50eb7cf5abdc96c16e5e6bd080a877eaa14",
+    "dnssec_proof.py": "54a525c261345cae371717b8c5c3eece55816cfeb7a64faac435c3109a968f01",
+    "dnssec_validation.py": "7d9b6a84f6631a836dc5a7358f08cdcf5ab7a0cab51d0a9ddf6fbca4743a5fb4",
+    "dns_compare.py": "edc5a0105b2488821902e838ba53f29529ce4534729d90ff591b7d87aee0f646",
+    "dns_diagnosis.py": "03e58f6021db284e591bedda08f9b7794b6f74ad383f253463fd85c3427004dc",
+    "dns_wire.py": "cf6826b283f8e692566037fd809601b58779e3292d8823aa9234a930d05b605e",
+    "edns.py": "f1e231a4027fc0fe61da58fed08ee93899c9fb1cb51d0caa1c4c565df0ed3de6",
+    "http_safety.py": "436ae30bb75cada0728af29b21f9ddd46ffc03abc15c3f408d3514f4e9eb24c9",
+    "main.py": "2abd02158b935c818f446582221e0be400ffaa8019572a85f818381be77d18d7",
+    "network_errors.py": "df4b93832d77a43d334771706d8c03ee8b89c91ce79289586cdb76349a65adc1",
+    "network_policy.py": "da4a1fcd8798f54233ab583aebfaa3a79a1d2f80e87269e11759302477589647",
+    "privacy.py": "c60a85b4e2c903e5afed81cd8afea8b1ae6a0f3200e9fec4419a1a9af41bfee7",
+    "remediation.py": "bd7999800193410bfa075189b0a039570b18a822031f6808d63ff4fe5ab6a1b2",
+    "reporting.py": "1804daafa60383c03dbd1e146623c9423e04bc7e9472f1a2f0999f50e3fac2d9",
+    "schemas.py": "ffb016d23df280094e523d2ace2a45b0551f0c3e9453667950e0c5ba90d3c55a",
+    "target.py": "cc3e570dcdd7fdbe13dbd755a34ed7bf4ce7fab9cd4590dd03e918fd736d428c",
+    "tools.py": "8fc44bbdc09576a561edf3ba8eab61f5291b04abd99d42bdf7d39df0c50e5374",
+    "trace.py": "498676eb2ab6a3ce8cbae41abb8b2f1bb596cfcc0bba9b54ab8342070cca8284",
+    "trust.py": "71fc6b12812731b9011532eb9f7277cb60d4ac46479d8c8498558dce987afe6e",
+    "__init__.py": "5946cc6b8957bf5b3277da5da64dedffdd4a91d1281ab9b0a54c35dbee47ad7a"
+  },
+  "model_calls": 0,
+  "public_network_tests": 0,
+  "controlled_cases": [
+    {
+      "case": "dns-timeout",
+      "status": "FAULT_LOCALIZED",
+      "layer": "Recursive DNS",
+      "file": "dns-timeout.json"
+    },
+    {
+      "case": "dns-normal",
+      "status": "NO_FAULT_OBSERVED",
+      "layer": "Unknown",
+      "file": "dns-normal.json"
+    },
+    {
+      "case": "dns-mismatch",
+      "status": "FAULT_LOCALIZED",
+      "layer": "Authoritative DNS",
+      "file": "dns-mismatch.json"
+    },
+    {
+      "case": "dnssec-ds_mismatch",
+      "status": "CONFIRMED_PROTOCOL_ISSUE",
+      "layer": "DNSSEC",
+      "file": "dnssec-ds_mismatch.json"
+    },
+    {
+      "case": "dnssec-tampered",
+      "status": "CONFIRMED_PROTOCOL_ISSUE",
+      "layer": "DNSSEC",
+      "file": "dnssec-tampered.json"
+    },
+    {
+      "case": "dnssec-insecure",
+      "status": "NO_FAULT_OBSERVED",
+      "layer": "Unknown",
+      "file": "dnssec-insecure.json"
+    },
+    {
+      "case": "http-503",
+      "status": "FAULT_LOCALIZED",
+      "layer": "HTTP",
+      "file": "http-503.json"
+    }
+  ],
+  "baseline_replay_note": "Original reporting.py loaded from immutable Git baseline, compatibility schemas from current checkout; no historical measurement rewritten."
+}

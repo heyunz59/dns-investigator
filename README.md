@@ -95,6 +95,14 @@ v0.2 已完成 [48 次真实模型对照](results/published/evaluation-reliabili
 
 架构见 [docs/architecture.md](docs/architecture.md)，实际公开材料在 `results/published/`。原始日志位于 `results/runs/` 和 `results/evaluation-raw/`，均被 Git 忽略；仍须自行保管。工具日志公开导出可用 `scripts/publish_tools.py`，它会隐藏本地 DNS 配置，其他用户输入、路径等仍需逐项审核。首次及后续推送前运行 `python scripts/check_public.py`，并人工检查待提交文件。
 
+## v0.5 结构化诊断与修复建议
+
+调查结束后，普通 Python 规则模块从已有 Evidence/Finding/V 构造 `diagnostic_conclusion`、`secondary_diagnoses` 和 `remediation_plan`，不新增工具、网络测量或第二次模型调用。CLI 优先显示结论、位置、原因等级和行动，再显示完整调查详情；单项查询继续优先显示记录。
+
+诊断状态与 Agent 执行状态独立：`CONFIRMED_PROTOCOL_ISSUE` 仅确认支持范围内的本地协议异常，`FAULT_LOCALIZED` 只定位已测环节，`NO_FAULT_OBSERVED` 不代表用户问题不存在，`INSUFFICIENT_EVIDENCE` 不当作故障。`LIKELY_CAUSE` 为兼容的候选状态，目前规则不凭症状强行提升到该等级。建议分 CHECK、条件性 POSSIBLE_FIX 和 VERIFY，全部尚未执行，不自动修改配置。旧日志的新字段默认空，不把回放生成字段当历史事实。
+
+完整中文技术报告、十个受控新旧对照和边界见 [v0.5 专项报告](results/published/v05-diagnostic-upgrade/technical-report.md)。本轮是报告层升级，发行包版本元数据仍为 0.4.0.dev0，尚未发布正式 0.5 包。
+
 ## 已知边界
 
 - 本机测量不代表用户浏览器、DoH、缓存、hosts、代理或历史状态。
