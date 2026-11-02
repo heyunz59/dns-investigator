@@ -20,8 +20,8 @@ class Session:
         self.messages={r["id"]:r["data"] for r in bundle["evidence"]}
 
     def charge(self):
+        if self.work>=512:raise Limited("VALIDATION_WORK_BUDGET")
         self.work+=1
-        if self.work>512:raise Limited("VALIDATION_WORK_BUDGET")
 
     def record(self,kind,status,ids,reason,dependencies=(),**extra):
         row=dict(id=f"V{len(self.results)+1}",kind=kind,local_result=status,evidence_ids=list(dict.fromkeys(x for x in ids if x)),
@@ -64,7 +64,11 @@ class Session:
     def signature(self,rr,eid,keys,zone,key_eid,dependencies=()):
         scope=dict(owner=rr.name.to_text(),qtype=dns.rdatatype.to_text(rr.rdtype),zone=zone.to_text(),qclass="IN")
         sigsets=[s for s in self.rrsets(eid) if s.rdtype==dns.rdatatype.RRSIG and s.name==rr.name and s.covers==rr.rdtype]
-        if not sigsets:return self.record("rrset_signature","MISSING_EVIDENCE",[eid,key_eid],"RRSIG_MISSING",dependencies,scope=scope)
+        signatures=[sig for ss in sigsets for sig in ss]
+        observed=dict(count=len(signatures),algorithms=sorted({int(s.algorithm) for s in signatures}),
+            key_tags=sorted({s.key_tag for s in signatures})[:16],signers=sorted({s.signer.to_text() for s in signatures})[:16],
+            expired_count=sum(s.expiration<self.now for s in signatures),not_yet_valid_count=sum(s.inception>self.now for s in signatures))
+        if not sigsets:return self.record("rrset_signature","MISSING_EVIDENCE",[eid,key_eid],"RRSIG_MISSING",dependencies,scope=scope,rrsig_summary=observed)
         unsupported=False;tried=False
         for ss in sigsets:
             for sig in ss:
@@ -76,19 +80,19 @@ class Session:
                     try:allowed=self.allowed_key(key)
                     except (ValueError,dns.exception.DNSException):allowed=False
                     if not allowed:unsupported=True;continue
+                    if self.signatures>=64:raise Limited("SIGNATURE_ATTEMPT_BUDGET")
                     self.charge();self.signatures+=1
-                    if self.signatures>64:raise Limited("SIGNATURE_ATTEMPT_BUDGET")
                     trusted=dns.rrset.from_rdata_list(zone,keys.ttl,[key])
                     tried=True
                     try:
                         dns.dnssec.validate_rrsig(rr,sig,{zone:trusted},now=self.now)
                         effective_ttl=max(0,min(rr.ttl,ss.ttl,sig.original_ttl,sig.expiration-self.now))
                         return self.record("rrset_signature","SIGNATURE_CHECK_PASSED",[eid,key_eid],"CRYPTOGRAPHIC_SIGNATURE_VALID",dependencies,
-                            scope=scope,key_tag=sig.key_tag,algorithm=int(sig.algorithm),original_ttl=sig.original_ttl,effective_ttl=effective_ttl,
+                            scope=scope,rrsig_summary=observed,key_tag=sig.key_tag,algorithm=int(sig.algorithm),original_ttl=sig.original_ttl,effective_ttl=effective_ttl,
                             wildcard_labels=sig.labels if sig.labels<len(rr.name.labels)-1 else None)
                     except (dns.dnssec.ValidationFailure,dns.dnssec.UnsupportedAlgorithm,ValueError):pass
         return self.record("rrset_signature","UNSUPPORTED_OR_POLICY_LIMITED" if unsupported else "SIGNATURE_CHECK_FAILED",
-            [eid,key_eid],"ALGORITHM_OR_KEY_POLICY" if unsupported else "NO_SIGNATURE_VALIDATED",dependencies,scope=scope,cryptographic_attempted=tried)
+            [eid,key_eid],"ALGORITHM_OR_KEY_POLICY" if unsupported else "NO_SIGNATURE_VALIDATED",dependencies,scope=scope,rrsig_summary=observed,cryptographic_attempted=tried)
 
     def match_ds(self,zone,ds,keys,ids,dependencies=()):
         matched=[];unsupported=False
@@ -128,6 +132,8 @@ class Session:
             validation_scope=dict(qname=self.bundle["qname"],qtype=self.bundle["qtype"],validation_time=self.now),
             trust_anchor=self.bundle["anchor"],algorithm_policy=POLICY_VERSION,implementation="dnspython2.9.1/cryptography50.0.0+bounded-protocol-v1",
             validation_result_ids=list(dependencies),results=self.results,compute=dict(work_units=self.work,signature_attempts=self.signatures),
+            signature_observations=[dict(validation_result_id=r["id"],scope=r["scope"],local_result=r["local_result"],rrsig_summary=r["rrsig_summary"])
+                for r in self.results if r["id"] in dependencies and "rrsig_summary" in r],
             operational_root_cause_confirmed=False)
 
     def failed(self,result,stage,trusted=True):

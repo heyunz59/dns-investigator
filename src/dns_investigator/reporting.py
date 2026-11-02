@@ -106,7 +106,8 @@ def evidence_bound_report(result,backend):
     allowed_targets=alias_paths(backend)
     for finding in result.findings:
         name=finding.scope.get("target")
-        if name and name!=backend.target.domain and name not in allowed_targets:
+        normalized=name.rstrip(".").lower() if name else None
+        if normalized and normalized!=backend.target.domain and normalized not in allowed_targets:
             finding.next_checks=[f"外部专项检查：核实 {name} {finding.scope.get('record_type')}；该名称来自内部发现测量，当前五工具的独立目标授权未扩展到它。此建议尚未执行，不能描述为可直接调用现有工具。"]
     dns_rows=evidence_rows(backend.calls)
     failures=[dict(qname=q.get("qname"),qtype=q.get("qtype"),resolver=q.get("server"),
@@ -197,12 +198,13 @@ def evidence_bound_report(result,backend):
     elif result.request_kind!="query" and not synthetic and not dns_rows:
         recommendations += [f"外部对照可用 curl.exe -v -L '{backend.target.url}'，保留证书校验；IPv4/IPv6 可分别用 -4/-6 对照，不修改系统配置。",
             "现有 HTTP 工具不能绑定指定后端。外部专项检查可用 curl.exe --resolve 域名:端口:IP 配合原始 HTTPS URL，保留 Host/SNI 和证书校验。"]
-    if result.request_kind!="query" and not invalid:
+    if (result.request_kind!="query" or result.protocol_investigations) and not invalid:
         priority={"DNSSEC_VALIDATION":-1,"RECURSIVE_RESPONSE_DISAGREEMENT":0,"RECURSIVE_AUTH_RESPONSE_MISMATCH":0,"AUTHORITATIVE_RESPONSE_DISAGREEMENT":0,
                   "RECURSIVE_QUERY_TIMEOUT":1,"AUTHORITATIVE_QUERY_TIMEOUT":1,"ALIAS_RESOLUTION_INCOMPLETE":2}
         checks=list(dict.fromkeys(c for f in sorted(result.findings,key=lambda f:priority.get(f.code,3)) for c in f.next_checks))[:3]
-        if any(p.get("query_stage")=="discovery" and p.get("execution_status")=="error" for p in result.dns_comparison.get("paths",[])):
-            failed=list(dict.fromkeys(p.get("attempt_id") for p in result.dns_comparison["paths"] if p.get("query_stage")=="discovery" and p.get("execution_status")=="error"))
+        basic_ids={a["attempt_id"] for a in result.authority_investigations}
+        if any(p.get("attempt_id") in basic_ids and p.get("query_stage")=="discovery" and p.get("execution_status")=="error" for p in result.dns_comparison.get("paths",[])):
+            failed=list(dict.fromkeys(p.get("attempt_id") for p in result.dns_comparison["paths"] if p.get("attempt_id") in basic_ids and p.get("query_stage")=="discovery" and p.get("execution_status")=="error"))
             complete=[s["attempt_id"] for s in result.authority_investigations if s.get("completed")]
             checks=[f"query_authoritative：调用 {'、'.join(x for x in failed if x)} 的发现子查询未完成；其他已完成调用 {'、'.join(complete) if complete else '尚无'} 的证据仍保留。先检查所列执行问题，仅在新的有预算调查中按需补充 {backend.target.domain} 的未测范围；不在本轮突破硬性预算，成功 SOA 不代表已完成目标权威查询。"]+checks[:2]
         if checks:recommendations=(recommendations if synthetic else [])+checks
@@ -215,7 +217,9 @@ def evidence_bound_report(result,backend):
     if result.request_kind=="query":
         result.findings=[f for f in result.findings if f.code!="DNS_INCONCLUSIVE"]
         result.limitations=["仅报告列出的本次查询及应答 TTL，未测组合未知；没有权威对照时不判断原始 TTL。"]
-        if not invalid and not synthetic and not policy_refused:
+        if result.protocol_investigations:
+            result.limitations += ["协议结论仅限所列追踪路径、信任锚、验证时刻、策略与E/V链；未完成或不支持部分保持未知。"]
+        if not result.protocol_investigations and not invalid and not synthetic and not policy_refused:
             result.recommendations=["本次单项查询结果已列出；没有额外异常线索时无需继续调查。" if measured else "当前未取得测量；先处理所列执行问题，再按需补充这项查询。"]
     else:result.limitations=["仅代表列出的测量位置、时刻、来源和组合；程序路径成功不证明用户客户端有问题。", "独立 TCP 和 HTTP 是不同连接，可能使用不同后端；结果差异须先核查工具和现场。", "候选解释与事实分开，结构和类型限制仍不能保证全部语义正确。"]
     return result
@@ -247,7 +251,7 @@ def assessment(result,measured):
     if any(f.get("security_refusal") for f in measured):
         parts.append("HTTP 安全策略拒绝后续目标，已取得的初始响应保留，被拒绝目标没有发起请求；这不是测得站点不可达、DNS失败或宕机。")
     for path in result.dns_comparison.get("paths",[]):
-        if path.get("query_stage")=="discovery" and path.get("execution_status")=="error":
+        if path.get("attempt_id") in {a["attempt_id"] for a in result.authority_investigations} and path.get("query_stage")=="discovery" and path.get("execution_status")=="error":
             parts.append(f"{path['attempt_id']} 的权威发现环节 {path['target']} {path['record_type']} 未取得事实（{(path.get('error') or {}).get('code')}）；成功的发现测量不证明该调用已完成目标权威查询。")
     for f in result.findings:
         scope=f.scope

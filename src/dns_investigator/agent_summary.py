@@ -36,7 +36,7 @@ def current_state(backend,response):
         error=response.get("error"),new_evidence_ids=[e["id"] for e in backend.owned_evidence(response.get("tool_call_id",response.get("attempt_id")))],
         fact_summary=measured,current_findings=findings,execution_issue_summary=[i.model_dump() for i in issues(backend.attempts)],
         partial_dns_issues=partial,authority_investigations=[dict(attempt_id=a["attempt_id"],**a["authority_state"]) for a in backend.attempts if a.get("authority_state")],
-        protocol_investigations=protocols(backend.attempts),validation_results=[{k:v[k] for k in ("id","kind","local_result","reason_code","evidence_ids","validation_result_ids","scope") if k in v} for v in getattr(backend,"validation_results",[])],
+        protocol_investigations=protocols(backend.attempts),validation_results=[{k:v[k] for k in ("id","kind","local_result","reason_code","evidence_ids","validation_result_ids","scope","rrsig_summary") if k in v} for v in getattr(backend,"validation_results",[])],
         allowed_dns_targets=list(scope.values()),finish_now=backend.finish_now,
         query_scope=dict(independent_tool_targets=[backend.target.domain],query_dns_targets=list(scope),
             system_resolver_argument=None,configured_public_resolvers=[r for r in backend.resolvers if r is not None],

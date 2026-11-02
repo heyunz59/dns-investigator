@@ -62,6 +62,7 @@ def publish(backend,parent,result):
             "validation_result_ids":[mapping[v] for v in row.get("validation_result_ids",[])]}
         backend.validation_results.append(row);backend.emit("validation_result",row)
     result["validation_result_ids"]=[mapping[v] for v in result.get("validation_result_ids",[])]
+    for observation in result.get("signature_observations",[]):observation["validation_result_id"]=mapping[observation["validation_result_id"]]
     result.setdefault("algorithm_policy",POLICY_VERSION)
     return result
 
