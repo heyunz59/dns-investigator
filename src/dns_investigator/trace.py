@@ -36,7 +36,7 @@ class TraceEngine:
         self.timeout=min(timeout,5)
         self.roots,self.hints=root_hints() if getattr(backend,"trace_roots",None) is None else (backend.trace_roots,dict(source="explicit_test_injection"))
         self.steps=[];self.measurements=[];self.responses=[];self.memo={};self.active=set();self.dependencies=0
-        self.state=dict(mode=mode,completed=False,stop_reason="IN_PROGRESS",last_successful_zone=".",steps=self.steps,
+        self.state=dict(mode=mode,completed=False,stop_reason="IN_PROGRESS",last_successful_zone=None,steps=self.steps,
             zones=[],resolutions=[],cache_hits=[],root_hints=self.hints,discovery=self.measurements,responses=self.responses,
             independence="RD=0; no recursive resolver/getaddrinfo; glue is bootstrap, not cryptographic trust")
         self.attempt=next((a for a in backend.attempts if a["attempt_id"]==parent),None)

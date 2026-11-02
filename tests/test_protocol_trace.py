@@ -46,3 +46,11 @@ async def test_invalid_mode_cannot_silently_execute_basic():
     async with protocol_lab() as lab:
         b=lab.backend();r=await b.call("query_authoritative",domain=b.target.domain,mode="unsupported")
     assert r["error"]["reason"]=="UNSUPPORTED_AUTHORITY_MODE" and not b.calls and not b.dns.attempts
+
+
+async def test_root_not_contacted_is_not_reported_as_successful_level():
+    async with protocol_lab() as lab:
+        b=lab.backend();b.dns.limit=0
+        r=await b.call("query_authoritative",domain=b.target.domain,mode="trace")
+    assert r["data"]["last_successful_zone"] is None
+    assert r["data"]["stop_reason"]=="DNS_BUDGET_EXHAUSTED" and not b.calls
