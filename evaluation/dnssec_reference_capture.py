@@ -21,6 +21,7 @@ async def capture(out,scenarios):
         print(scenario,(r["data"].get("validation") or {}).get("dnssec_status"),json.dumps(ref),flush=True)
     out.write_text(json.dumps(dict(source_ref=subprocess.check_output(["git","rev-parse","HEAD"],text=True).strip(),
         source_hashes={p.name:hashlib.sha256(p.read_bytes()).hexdigest() for p in Path("src/dns_investigator").glob("*.py")},
+        harness_hashes={p.name:hashlib.sha256(p.read_bytes()).hexdigest() for p in [Path(__file__),Path("evaluation/signed_protocol_lab.py"),Path("evaluation/protocol_lab.py"),Path("evaluation/unbound_reference.py")]},
         mode="controlled_signed_DNS_plus_independent_Unbound_not_public_targets",model_invoked=False,
         reference_download=json.loads(Path("results/runs/reference-tools/download.json").read_text()),runs=rows),ensure_ascii=False,indent=2),encoding="utf-8")
 

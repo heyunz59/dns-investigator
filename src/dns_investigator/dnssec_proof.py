@@ -38,6 +38,7 @@ def denial(q,typ,rcode,zone,rrsets,charge,wildcard_base=None,delegation=False):
             if len(rr)!=1 or not rr.name.is_subdomain(zone):return False
             data=rr[0]
             if not data.next.is_subdomain(zone):return False
+            if bitmap(data,"DNAME") and q!=rr.name and q.is_subdomain(rr.name):raise ProofUnsupported("DNAME_DENIAL_NOT_SUPPORTED")
             values.append((rr.name,data))
             exists.update(ancestors(rr.name,zone));exists.update(ancestors(data.next,zone))
         def cover(target):
@@ -70,6 +71,9 @@ def denial(q,typ,rcode,zone,rrsets,charge,wildcard_base=None,delegation=False):
         if data.algorithm!=1 or data.iterations!=0 or data.salt or data.flags:
             raise ProofUnsupported("NSEC3_PARAMETERS_OR_OPT_OUT")
         if len(data.next)!=20 or len(rr.name.labels[0])!=32:return False
+        # RFC5155/4648 base32hex, not an arbitrary 32-byte DNS label. Lexically
+        # sorting malformed labels can manufacture a false covering interval.
+        if any(c not in b"0123456789ABCDEFGHIJKLMNOPQRSTUV" for c in rr.name.labels[0].upper()):return False
         parameters.add((data.algorithm,data.iterations,data.salt))
         values.append((rr.name.labels[0].decode("ascii").upper(),data))
     if len(parameters)!=1:return False
@@ -92,12 +96,14 @@ def denial(q,typ,rcode,zone,rrsets,charge,wildcard_base=None,delegation=False):
         return data is not None and bitmap(data,"NS") and not bitmap(data,"SOA") and not bitmap(data,"DS")
     if wildcard_base is not None:
         data=exact(wildcard_base)
+        if data is not None and bitmap(data,"DNAME"):raise ProofUnsupported("DNAME_DENIAL_NOT_SUPPORTED")
         closer=dns.name.Name(q.labels[-(len(wildcard_base.labels)+1):])
         return data is not None and not(bitmap(data,"NS") and not bitmap(data,"SOA")) and cover(closer)
     if rcode=="NOERROR" and no_type(q):return True
     closest=next((a for a in ancestors(q,zone) if exact(a) is not None),None)
     if closest is None or closest==q:return False
     ce=exact(closest)
+    if bitmap(ce,"DNAME"):raise ProofUnsupported("DNAME_DENIAL_NOT_SUPPORTED")
     if bitmap(ce,"NS") and not bitmap(ce,"SOA"):return False
     closer=dns.name.Name(q.labels[-(len(closest.labels)+1):])
     wildcard=dns.name.Name((b"*",)+closest.labels)

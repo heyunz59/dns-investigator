@@ -88,14 +88,19 @@ class Signed:
         if self.scenario=="cname_rrset" and typ=="CNAME":
             self.signed_add(r.answer,dns.rrset.from_text(qname,60,"IN","CNAME","other.test."),zone)
             return r
-        if self.scenario in {"nxdomain","nodata","bad_nsec","nsec3_nxdomain","nsec3_nodata","nsec3_policy","opt_out","bad_nsec3","wildcard_nodata","nsec3_wildcard_nodata"}:
-            negative="nxdomain" in self.scenario or self.scenario in {"bad_nsec","nsec3_policy","opt_out","bad_nsec3"}
+        if self.scenario in {"nxdomain","nodata","bad_nsec","nsec3_nxdomain","nsec3_nodata","nsec3_policy","opt_out","bad_nsec3","wildcard_nodata","nsec3_wildcard_nodata","nsec3_invalid_owner","nsec3_dname"}:
+            negative="nxdomain" in self.scenario or self.scenario in {"bad_nsec","nsec3_policy","opt_out","bad_nsec3","nsec3_invalid_owner","nsec3_dname"}
             if negative:r.set_rcode(dns.rcode.NXDOMAIN)
             self.signed_add(r.authority,self.soa(),zone)
             if self.scenario.startswith("nsec3") or self.scenario in {"opt_out","bad_nsec3"}:
                 names=[zone,"ns.example.test."]+(["*.example.test."] if self.scenario=="nsec3_wildcard_nodata" else [] if negative else [qname])
                 if self.scenario=="bad_nsec3":names.append(qname)
                 proofs=self.nsec3(names,{n:"SOA NS DNSKEY RRSIG NSEC3" if n==zone else "A RRSIG NSEC3" if n=="ns.example.test." else "AAAA RRSIG NSEC3" for n in names},iterations=100 if self.scenario=="nsec3_policy" else 0,flags=1 if self.scenario=="opt_out" else 0)
+                if self.scenario in {"nsec3_invalid_owner","nsec3_dname"}:
+                    ce=dns.dnssec.nsec3_hash(zone,b"",0,1)
+                    next_name=dns.dnssec.nsec3_hash(qname,b"",0,1) if self.scenario=="nsec3_invalid_owner" else ce
+                    proofs=[dns.rrset.from_text(ce+"."+zone,60,"IN","NSEC3",f"1 0 0 - {next_name} SOA NS DNSKEY RRSIG NSEC3"+(" DNAME" if self.scenario=="nsec3_dname" else ""))]
+                    if self.scenario=="nsec3_invalid_owner":proofs.append(dns.rrset.from_text("!"*32+"."+zone,60,"IN","NSEC3","1 0 0 - "+"V"*32+" A RRSIG NSEC3"))
             else:
                 if negative:
                     proofs=[dns.rrset.from_text(zone,60,"IN","NSEC","ns.example.test. SOA NS DNSKEY RRSIG NSEC"),

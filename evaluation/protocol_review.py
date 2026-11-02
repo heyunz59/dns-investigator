@@ -12,7 +12,7 @@ def load(path):return json.loads(Path(path).read_text(encoding="utf-8"))
 def review(reference,agent,output):
     if output.exists():raise FileExistsError("Preserve previous reviews")
     reference_data=load(reference);rows=[]
-    boundaries={"nsec3_policy","opt_out","algorithm16","key_timeout","cohosted_unproven"}
+    boundaries={"nsec3_policy","opt_out","algorithm16","key_timeout","cohosted_unproven","nsec3_invalid_owner","nsec3_dname"}
     for r in reference_data["runs"]:
         ref=r["reference"]
         status=None if ref.get("error") else "SECURE" if ref["secure"] else "BOGUS" if ref["bogus"] else "INSECURE"
@@ -38,6 +38,7 @@ def review(reference,agent,output):
     all_hashes={p.name:hashlib.sha256(p.read_bytes()).hexdigest() for p in Path("src/dns_investigator").glob("*.py")}
     summary=dict(review="developer_automated_checks_pending_independent_human_review",holdout=False,
         regression_development_set=True,semantic_accuracy="not_established",source_ref=reference_data["source_ref"],
+        reference_comparison_warning="false_secure/false_bogus are mechanical reference-disagreement candidates, not independently adjudicated errors; all boundary rows remain visible",
         source_hashes_match_current=reference_data["source_hashes"]==all_hashes==source["source_hashes"],
         protocol=dict(cases=len(rows),core_cases=sum(r["declared_core"] for r in rows),
             core_reference_agreements=sum(r["declared_core"] and r["agreement"] is True for r in rows),
