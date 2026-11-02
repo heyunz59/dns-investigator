@@ -70,10 +70,11 @@ def denial(q,typ,rcode,zone,rrsets,charge,wildcard_base=None,delegation=False):
         data=rr[0]
         if data.algorithm!=1 or data.iterations!=0 or data.salt or data.flags:
             raise ProofUnsupported("NSEC3_PARAMETERS_OR_OPT_OUT")
-        if len(data.next)!=20 or len(rr.name.labels[0])!=32:return False
+        if len(data.next)!=20:return False
+        if len(rr.name.labels[0])!=32:continue
         # RFC5155/4648 base32hex, not an arbitrary 32-byte DNS label. Lexically
         # sorting malformed labels can manufacture a false covering interval.
-        if any(c not in b"0123456789ABCDEFGHIJKLMNOPQRSTUV" for c in rr.name.labels[0].upper()):return False
+        if any(c not in b"0123456789ABCDEFGHIJKLMNOPQRSTUV" for c in rr.name.labels[0].upper()):continue
         parameters.add((data.algorithm,data.iterations,data.salt))
         values.append((rr.name.labels[0].decode("ascii").upper(),data))
     if len(parameters)!=1:return False
