@@ -3,5 +3,9 @@
   "command": "python -m evaluation.nsec3_divergence.run",
   "original_runs": 3,
   "worker_os_exit_code": "UNKNOWN",
-  "unbound_debug_trace": "not enabled; original verbosity0 preserved; source and counterfactual evidence provided"
+  "unbound_debug_trace": "reference-debug/verifier-logs/T01-1-unbound-debug.log",
+  "python_harness_exit_code": 0,
+  "final_command": "python -m evaluation.nsec3_divergence.run <new directory>; serialize reference experiments on shared port53",
+  "full_reference": "python -m evaluation.dnssec_reference_capture <new output> --scenarios <37 original IDs>",
+  "debug": "python -m evaluation.nsec3_divergence.run <new directory> T01 debug"
 }

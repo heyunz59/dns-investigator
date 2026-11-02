@@ -15,16 +15,18 @@
     "original": false,
     "T05": true
   },
-  "false_secure_risk": "Original reference uses malformed owner candidate; relaxing project without complete proof would be unsafe",
+  "false_secure_risk": "No new project SECURE on insufficient/bad-signature samples; not a universal safety proof",
   "rfc_conformance_assessment": "Valid proof subset should remain usable; no evidence of MUST reject whole response for unrelated malformed candidate",
   "recommended_action": "filter malformed owner candidates, require remaining complete authenticated proof",
-  "fix_implemented": false,
-  "followup_tests_passed": null,
+  "fix_implemented": true,
+  "followup_tests_passed": "362 passed in 25.71s; isolated T01-T12 complete",
   "independent_human_review_status": "PENDING",
   "unresolved_questions": [
     "Unbound internal PC not instrumented",
     "T11 unknown flag/hash project policy remains limited",
-    "General malformed-response treatment not completely specified"
+    "General malformed-response treatment not completely specified",
+    "General malformed-response treatment: UNRESOLVED_PROTOCOL_INTERPRETATION outside tested necessary/subset cases"
   ],
-  "evidence_index": "evidence-manifest.json"
+  "evidence_index": "evidence-manifest.json",
+  "fix_commit": "e1ecd9e"
 }

@@ -64,6 +64,10 @@ async def reference(lab,directory,out):
         f' root-hints: "{hints_path.as_posix()}"'," trust-anchor-signaling: no"," qname-minimisation: no",
         ' local-zone: "test." nodefault', ' local-zone: "example.test." nodefault',
         ' trust-anchor: ". IN DS '+lab.signed.anchor["ds"][0]+'"']
+    debug_path=None
+    if getattr(lab,'audit_debug',False):
+        with tempfile.NamedTemporaryFile(prefix='unbound-audit-log-',delete=False) as log:debug_path=Path(log.name)
+        lines += [' verbosity: 4',f' logfile: "{debug_path.as_posix()}"']
     config.write_text("\n".join(lines)+"\n",encoding="utf-8")
     # The upstream Windows build uses narrow fopen; use a disposable ASCII temp
     # filename rather than interpreting a Unicode-path open failure as DNSSEC failure.
@@ -87,3 +91,7 @@ async def reference(lab,directory,out):
         process.close();reader.close()
         temp_path.unlink(missing_ok=True)
         hints_path.unlink(missing_ok=True)
+        if debug_path is not None:
+            data=debug_path.read_text(encoding='utf-8',errors='replace')
+            data=data.replace(str(hints_path),'CONTROLLED_ROOT_HINTS').replace(hints_path.as_posix(),'CONTROLLED_ROOT_HINTS')
+            (out/'unbound-debug.log').write_text(data,encoding='utf-8');debug_path.unlink(missing_ok=True)

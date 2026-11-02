@@ -1,3 +1,5 @@
 # Preserve authenticated/vendor snapshot bytes, including on Windows checkout.
 src/dns_investigator/assets/* -text whitespace=cr-at-eol
 src/dns_investigator/assets/named.root -whitespace
+*.wire -text
+results/published/nsec3-divergence-audit/** -text whitespace=cr-at-eol

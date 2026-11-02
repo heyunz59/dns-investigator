@@ -1,0 +1,2 @@
+﻿case_id,input_hash,changed_factor,project_status,unbound_status,project_reason,unbound_reason,proof_sufficient,evidence_files,rfc_basis,interpretation
+T01,2f7f8d933ed5fd298636dfc0d590af3f9852bf5f16cd2af92b5eaf37dc3e67e9,unchanged original,BOGUS,SECURE,DENIAL_DOES_NOT_COVER_QUESTION,,PENDING_PROTOCOL_ANALYSIS,verifier-logs/T01-1-project.json,RFC5155 8.1-8.4,not adjudicated from status equality

@@ -1,0 +1,652 @@
+[
+  {
+    "stage": "before",
+    "case": "T01",
+    "records": [
+      {
+        "owner": "JBAS736CHUNG3BB701JKJDHQKQLHVUG7.example.test.",
+        "base32hex_valid": true,
+        "decoded_owner_length": 20,
+        "next_hash": "9VBMDRN5GAIGLEM11UAC4DILR4CPMA1R",
+        "signature": "PASSED",
+        "rdata": "1 0 0 - 9vbmdrn5gaiglem11uac4dilr4cpma1r NS SOA RRSIG DNSKEY NSEC3",
+        "rrsig": "JBAS736CHUNG3BB701JKJDHQKQLHVUG7.example.test. 60 IN RRSIG NSEC3 15 3 60 20261102043243 20261102023243 25160 example.test. aCB1zrVLiHRiRqn6fPmFuQQGenyCdyO3 wir3Tx7lmyDxVTyJT9b8R2IlUKLxW1rP HMGcNYQfbch20ZTb1NqeCA==",
+        "unbound_individual_selection": "UNKNOWN; debug trace verifies both original signatures but not per-interval PC"
+      },
+      {
+        "owner": "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!.example.test.",
+        "base32hex_valid": false,
+        "decoded_owner_length": null,
+        "next_hash": "VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV",
+        "signature": "PASSED",
+        "rdata": "1 0 0 - vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv A RRSIG NSEC3",
+        "rrsig": "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!.example.test. 60 IN RRSIG NSEC3 15 3 60 20261102043243 20261102023243 25160 example.test. UTTkeIRPLs8bu5SsrEms/TQlporKEKlM exJNJz+dW3J42g1t7agveppF3itiWSjQ klBcBuwuVys7TXUbZTAoCw==",
+        "unbound_individual_selection": "UNKNOWN; debug trace verifies both original signatures but not per-interval PC"
+      }
+    ],
+    "valid_proof_sufficiency": false,
+    "raw_response": "raw-wire/T01-1-002-response.wire"
+  },
+  {
+    "stage": "before",
+    "case": "T02",
+    "records": [
+      {
+        "owner": "JBAS736CHUNG3BB701JKJDHQKQLHVUG7.example.test.",
+        "base32hex_valid": true,
+        "decoded_owner_length": 20,
+        "next_hash": "9VBMDRN5GAIGLEM11UAC4DILR4CPMA1R",
+        "signature": "PASSED",
+        "rdata": "1 0 0 - 9vbmdrn5gaiglem11uac4dilr4cpma1r NS SOA RRSIG DNSKEY NSEC3",
+        "rrsig": "JBAS736CHUNG3BB701JKJDHQKQLHVUG7.example.test. 60 IN RRSIG NSEC3 15 3 60 20261102043246 20261102023246 25160 example.test. YRZtCdp7gHo0bwKiCjPWhAcpuaJgOT8q rEFEqEFGucOnbGYsgD68CBFNkJZhZcmI 8CgveBB3QIfh3GcarlNEDA==",
+        "unbound_individual_selection": "UNKNOWN; debug trace verifies both original signatures but not per-interval PC"
+      }
+    ],
+    "valid_proof_sufficiency": false,
+    "raw_response": "raw-wire/T02-1-002-response.wire"
+  },
+  {
+    "stage": "before",
+    "case": "T03",
+    "records": [
+      {
+        "owner": "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!.example.test.",
+        "base32hex_valid": false,
+        "decoded_owner_length": null,
+        "next_hash": "VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV",
+        "signature": "PASSED",
+        "rdata": "1 0 0 - vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv A RRSIG NSEC3",
+        "rrsig": "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!.example.test. 60 IN RRSIG NSEC3 15 3 60 20261102043248 20261102023248 25160 example.test. uXd278W1qlXIpfIMW/bqHa1UNfiSfbtq GoMukrayhZ8XBaaybNOPhY7HmljFaYzN nZNzCTKEbnokV7EypX29CQ==",
+        "unbound_individual_selection": "UNKNOWN; debug trace verifies both original signatures but not per-interval PC"
+      }
+    ],
+    "valid_proof_sufficiency": false,
+    "raw_response": "raw-wire/T03-1-002-response.wire"
+  },
+  {
+    "stage": "before",
+    "case": "T04",
+    "records": [
+      {
+        "owner": "GSPQM39NH1AJ967T5RB35MBB97HB60BG.example.test.",
+        "base32hex_valid": true,
+        "decoded_owner_length": 20,
+        "next_hash": "JBAS736CHUNG3BB701JKJDHQKQLHVUG7",
+        "signature": "PASSED",
+        "rdata": "1 0 0 - jbas736chung3bb701jkjdhqkqlhvug7 A RRSIG NSEC3",
+        "rrsig": "GSPQM39NH1AJ967T5RB35MBB97HB60BG.example.test. 60 IN RRSIG NSEC3 15 3 60 20261102043249 20261102023249 25160 example.test. jvS8Dh29B/fSUwK3u1frH/csCPuuFCxV PMLNgit8i2wyOTT26YXuNo5kF97GSuYs tAvgI12LiNbYMKhHkcqDBA==",
+        "unbound_individual_selection": "UNKNOWN; debug trace verifies both original signatures but not per-interval PC"
+      },
+      {
+        "owner": "JBAS736CHUNG3BB701JKJDHQKQLHVUG7.example.test.",
+        "base32hex_valid": true,
+        "decoded_owner_length": 20,
+        "next_hash": "GSPQM39NH1AJ967T5RB35MBB97HB60BG",
+        "signature": "PASSED",
+        "rdata": "1 0 0 - gspqm39nh1aj967t5rb35mbb97hb60bg NS SOA RRSIG DNSKEY NSEC3",
+        "rrsig": "JBAS736CHUNG3BB701JKJDHQKQLHVUG7.example.test. 60 IN RRSIG NSEC3 15 3 60 20261102043249 20261102023249 25160 example.test. /CpIp4tZoOyu7/7kEUiKMoLxjNAswWm6 9+JKd1mtwRU2OgLeuPP9Os7+PxHjgTN7 z6QlTOXX72quOANBAIAOAw==",
+        "unbound_individual_selection": "UNKNOWN; debug trace verifies both original signatures but not per-interval PC"
+      }
+    ],
+    "valid_proof_sufficiency": true,
+    "raw_response": "raw-wire/T04-1-002-response.wire"
+  },
+  {
+    "stage": "before",
+    "case": "T05",
+    "records": [
+      {
+        "owner": "GSPQM39NH1AJ967T5RB35MBB97HB60BG.example.test.",
+        "base32hex_valid": true,
+        "decoded_owner_length": 20,
+        "next_hash": "JBAS736CHUNG3BB701JKJDHQKQLHVUG7",
+        "signature": "PASSED",
+        "rdata": "1 0 0 - jbas736chung3bb701jkjdhqkqlhvug7 A RRSIG NSEC3",
+        "rrsig": "GSPQM39NH1AJ967T5RB35MBB97HB60BG.example.test. 60 IN RRSIG NSEC3 15 3 60 20261102043250 20261102023250 25160 example.test. P8ng/xQOx1xded2bjaU1Lzb/3t2/zNK+ 33VXxiZS7JfQi1yS2PENvk0FO02gR31x U5EwEttoD/lZflATrtLyAg==",
+        "unbound_individual_selection": "UNKNOWN; debug trace verifies both original signatures but not per-interval PC"
+      },
+      {
+        "owner": "JBAS736CHUNG3BB701JKJDHQKQLHVUG7.example.test.",
+        "base32hex_valid": true,
+        "decoded_owner_length": 20,
+        "next_hash": "GSPQM39NH1AJ967T5RB35MBB97HB60BG",
+        "signature": "PASSED",
+        "rdata": "1 0 0 - gspqm39nh1aj967t5rb35mbb97hb60bg NS SOA RRSIG DNSKEY NSEC3",
+        "rrsig": "JBAS736CHUNG3BB701JKJDHQKQLHVUG7.example.test. 60 IN RRSIG NSEC3 15 3 60 20261102043250 20261102023250 25160 example.test. rZkViuc+dqlVzx2Jyd1CldQt/T5J63Vw OJDiIO2fLyJIA5RFvHa6TMRAl+PuvHjp yilO1RaLIGj1MFM9JBH+Cg==",
+        "unbound_individual_selection": "UNKNOWN; debug trace verifies both original signatures but not per-interval PC"
+      },
+      {
+        "owner": "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!.example.test.",
+        "base32hex_valid": false,
+        "decoded_owner_length": null,
+        "next_hash": "VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV",
+        "signature": "PASSED",
+        "rdata": "1 0 0 - vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv A RRSIG NSEC3",
+        "rrsig": "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!.example.test. 60 IN RRSIG NSEC3 15 3 60 20261102043250 20261102023250 25160 example.test. fVFHOVwjpA/z1bKgFDihTrblD9izytiJ 0EfQmbMKeoJRtA57WTAMqAk9Q/TqjICQ KxjPjn41G0SAPhFesi+7AA==",
+        "unbound_individual_selection": "UNKNOWN; debug trace verifies both original signatures but not per-interval PC"
+      }
+    ],
+    "valid_proof_sufficiency": true,
+    "raw_response": "raw-wire/T05-1-002-response.wire"
+  },
+  {
+    "stage": "before",
+    "case": "T06",
+    "records": [
+      {
+        "owner": "JBAS736CHUNG3BB701JKJDHQKQLHVUG7.example.test.",
+        "base32hex_valid": true,
+        "decoded_owner_length": 20,
+        "next_hash": "9VBMDRN5GAIGLEM11UAC4DILR4CPMA1R",
+        "signature": "PASSED",
+        "rdata": "1 0 0 - 9vbmdrn5gaiglem11uac4dilr4cpma1r NS SOA RRSIG DNSKEY NSEC3",
+        "rrsig": "JBAS736CHUNG3BB701JKJDHQKQLHVUG7.example.test. 60 IN RRSIG NSEC3 15 3 60 20261102043251 20261102023251 25160 example.test. PP5/WBjA0RZO1+g6Gk8TqgnkwfhhGBuj e09TedX6Qr1ZQaFUg7tvaRYdMVxO1Snw Ig195jBr6A3igeawthlPDA==",
+        "unbound_individual_selection": "UNKNOWN; debug trace verifies both original signatures but not per-interval PC"
+      },
+      {
+        "owner": "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!.example.test.",
+        "base32hex_valid": false,
+        "decoded_owner_length": null,
+        "next_hash": "VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV",
+        "signature": "PASSED",
+        "rdata": "1 0 0 - vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv A RRSIG NSEC3",
+        "rrsig": "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!.example.test. 60 IN RRSIG NSEC3 15 3 60 20261102043251 20261102023251 25160 example.test. G9iE+l9UfihGJ3tDCrNAxApCt7pmltGz Whzn4LVVaa3i842p1150947LNlwu0eGs lkgJj2NRlvOIQCeFvpOuCw==",
+        "unbound_individual_selection": "UNKNOWN; debug trace verifies both original signatures but not per-interval PC"
+      }
+    ],
+    "valid_proof_sufficiency": false,
+    "raw_response": "raw-wire/T06-1-002-response.wire"
+  },
+  {
+    "stage": "before",
+    "case": "T07",
+    "records": [
+      {
+        "owner": "JBAS736CHUNG3BB701JKJDHQKQLHVUG7.example.test.",
+        "base32hex_valid": true,
+        "decoded_owner_length": 20,
+        "next_hash": "9VBMDRN5GAIGLEM11UAC4DILR4CPMA1R",
+        "signature": "PASSED",
+        "rdata": "1 0 0 - 9vbmdrn5gaiglem11uac4dilr4cpma1r NS SOA RRSIG DNSKEY NSEC3",
+        "rrsig": "JBAS736CHUNG3BB701JKJDHQKQLHVUG7.example.test. 60 IN RRSIG NSEC3 15 3 60 20261102043455 20261102023455 25160 example.test. 813H0pINcf3x3ldxcaShV/+UatlTFwVW suGGa/q37/yNtlj1hfpScMTdurfDruac s9Fr3oTQkHoRezt66YTHBA==",
+        "unbound_individual_selection": "UNKNOWN; debug trace verifies both original signatures but not per-interval PC"
+      },
+      {
+        "owner": "00000000000000000000000000000000.example.test.",
+        "base32hex_valid": true,
+        "decoded_owner_length": 20,
+        "next_hash": "00000000000000000000000000000001",
+        "signature": "PASSED",
+        "rdata": "1 0 0 - 00000000000000000000000000000001 A",
+        "rrsig": "00000000000000000000000000000000.example.test. 60 IN RRSIG NSEC3 15 3 60 20261102043455 20261102023455 25160 example.test. xthf+M30P5H7oyhFuA/6n2KOXQwmPmEl AeB2Xz4d14qiNQSIzCgBDO5uF57lLsdD KNBvLe7hNS13qgxZ20dRAg==",
+        "unbound_individual_selection": "UNKNOWN; debug trace verifies both original signatures but not per-interval PC"
+      }
+    ],
+    "valid_proof_sufficiency": false,
+    "raw_response": "t07-corrected-v2/raw-wire/T07-1-002-response.wire"
+  },
+  {
+    "stage": "before",
+    "case": "T08",
+    "records": [
+      {
+        "owner": "9VBMDRN5GAIGLEM11UAC4DILR4CPMA1R.example.test.",
+        "base32hex_valid": true,
+        "decoded_owner_length": 20,
+        "next_hash": "JBAS736CHUNG3BB701JKJDHQKQLHVUG7",
+        "signature": "PASSED",
+        "rdata": "1 0 0 - jbas736chung3bb701jkjdhqkqlhvug7 A RRSIG NSEC3",
+        "rrsig": "9VBMDRN5GAIGLEM11UAC4DILR4CPMA1R.example.test. 60 IN RRSIG NSEC3 15 3 60 20261102043252 20261102023252 25160 example.test. 95tfUvQYxAobtttSogH3j6D44woaIt63 6i7q1knR1P7JOJBqlt95B01Q0CqbknIJ D4fyvFZshDwDc62ekLLfBw==",
+        "unbound_individual_selection": "UNKNOWN; debug trace verifies both original signatures but not per-interval PC"
+      },
+      {
+        "owner": "JBAS736CHUNG3BB701JKJDHQKQLHVUG7.example.test.",
+        "base32hex_valid": true,
+        "decoded_owner_length": 20,
+        "next_hash": "9VBMDRN5GAIGLEM11UAC4DILR4CPMA1R",
+        "signature": "PASSED",
+        "rdata": "1 0 0 - 9vbmdrn5gaiglem11uac4dilr4cpma1r NS SOA RRSIG DNSKEY NSEC3",
+        "rrsig": "JBAS736CHUNG3BB701JKJDHQKQLHVUG7.example.test. 60 IN RRSIG NSEC3 15 3 60 20261102043252 20261102023252 25160 example.test. P/ZxxGQ7sh8ugK3lhkvMtDb93Y7pXgLd mzlDNrgxqlKtDw8N9TPI5WhNlxTbDw5a yJoz60gx1jDkG4c9NnHgBA==",
+        "unbound_individual_selection": "UNKNOWN; debug trace verifies both original signatures but not per-interval PC"
+      }
+    ],
+    "valid_proof_sufficiency": false,
+    "raw_response": "raw-wire/T08-1-002-response.wire"
+  },
+  {
+    "stage": "before",
+    "case": "T09",
+    "records": [
+      {
+        "owner": "GSPQM39NH1AJ967T5RB35MBB97HB60BG.example.test.",
+        "base32hex_valid": true,
+        "decoded_owner_length": 20,
+        "next_hash": "JBAS736CHUNG3BB701JKJDHQKQLHVUG7",
+        "signature": "ValidationFailure",
+        "rdata": "1 0 0 - jbas736chung3bb701jkjdhqkqlhvug7 A RRSIG NSEC3",
+        "rrsig": "GSPQM39NH1AJ967T5RB35MBB97HB60BG.example.test. 60 IN RRSIG NSEC3 15 3 60 20261102043253 20261102023253 25160 example.test. AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA AAAAAAAAAAAAAAAAAAAAAA==",
+        "unbound_individual_selection": "UNKNOWN; debug trace verifies both original signatures but not per-interval PC"
+      },
+      {
+        "owner": "JBAS736CHUNG3BB701JKJDHQKQLHVUG7.example.test.",
+        "base32hex_valid": true,
+        "decoded_owner_length": 20,
+        "next_hash": "GSPQM39NH1AJ967T5RB35MBB97HB60BG",
+        "signature": "ValidationFailure",
+        "rdata": "1 0 0 - gspqm39nh1aj967t5rb35mbb97hb60bg NS SOA RRSIG DNSKEY NSEC3",
+        "rrsig": "JBAS736CHUNG3BB701JKJDHQKQLHVUG7.example.test. 60 IN RRSIG NSEC3 15 3 60 20261102043253 20261102023253 25160 example.test. AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA AAAAAAAAAAAAAAAAAAAAAA==",
+        "unbound_individual_selection": "UNKNOWN; debug trace verifies both original signatures but not per-interval PC"
+      }
+    ],
+    "valid_proof_sufficiency": false,
+    "raw_response": "raw-wire/T09-1-002-response.wire"
+  },
+  {
+    "stage": "before",
+    "case": "T10",
+    "records": [
+      {
+        "owner": "GSPQM39NH1AJ967T5RB35MBB97HB60BG.example.test.",
+        "base32hex_valid": true,
+        "decoded_owner_length": 20,
+        "next_hash": "JBAS736CHUNG3BB701JKJDHQKQLHVUG7",
+        "signature": "PASSED",
+        "rdata": "1 0 0 - jbas736chung3bb701jkjdhqkqlhvug7 A RRSIG NSEC3",
+        "rrsig": "GSPQM39NH1AJ967T5RB35MBB97HB60BG.example.test. 60 IN RRSIG NSEC3 15 3 60 20261102043255 20261102023255 25160 example.test. +hoXwqTBk15CgWh+4ojDLlSwu3CcYPtT 1ua2+hHQVk1ul38EUbM3aTdoZyLYzqNH J9XWqcAnrXfUUDyQc3V9Dg==",
+        "unbound_individual_selection": "UNKNOWN; debug trace verifies both original signatures but not per-interval PC"
+      },
+      {
+        "owner": "JBAS736CHUNG3BB701JKJDHQKQLHVUG7.example.test.",
+        "base32hex_valid": true,
+        "decoded_owner_length": 20,
+        "next_hash": "GSPQM39NH1AJ967T5RB35MBB97HB60BG",
+        "signature": "PASSED",
+        "rdata": "1 0 0 - gspqm39nh1aj967t5rb35mbb97hb60bg NS SOA RRSIG DNSKEY NSEC3",
+        "rrsig": "JBAS736CHUNG3BB701JKJDHQKQLHVUG7.example.test. 60 IN RRSIG NSEC3 15 3 60 20261102043255 20261102023255 25160 example.test. QnpyIPFX5CWfxZalz5f1E+FPpph6WkS3 E8IZ80KLtd+vJTHfxVdGN7fYFJVcoefU QkYwZa7A+HFmyxyBCJG+BA==",
+        "unbound_individual_selection": "UNKNOWN; debug trace verifies both original signatures but not per-interval PC"
+      },
+      {
+        "owner": "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!.example.test.",
+        "base32hex_valid": false,
+        "decoded_owner_length": null,
+        "next_hash": "VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV",
+        "signature": "PASSED",
+        "rdata": "1 0 1 - vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv A RRSIG NSEC3",
+        "rrsig": "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!.example.test. 60 IN RRSIG NSEC3 15 3 60 20261102043255 20261102023255 25160 example.test. nB4B+g9w2osunn+wUgvm488r5BXY+ggU sUDMnR+suenyzu90X3R7/4pDTUrk5aA2 kKkUVRWBOb1l35j3lRr0DA==",
+        "unbound_individual_selection": "UNKNOWN; debug trace verifies both original signatures but not per-interval PC"
+      }
+    ],
+    "valid_proof_sufficiency": "UNKNOWN: mixed parameter envelope",
+    "raw_response": "raw-wire/T10-1-002-response.wire"
+  },
+  {
+    "stage": "before",
+    "case": "T11",
+    "records": [
+      {
+        "owner": "GSPQM39NH1AJ967T5RB35MBB97HB60BG.example.test.",
+        "base32hex_valid": true,
+        "decoded_owner_length": 20,
+        "next_hash": "JBAS736CHUNG3BB701JKJDHQKQLHVUG7",
+        "signature": "PASSED",
+        "rdata": "1 0 0 - jbas736chung3bb701jkjdhqkqlhvug7 A RRSIG NSEC3",
+        "rrsig": "GSPQM39NH1AJ967T5RB35MBB97HB60BG.example.test. 60 IN RRSIG NSEC3 15 3 60 20261102043256 20261102023256 25160 example.test. d96XKmpbohG+QKIQPvX4OdkC8KbUymLH JEbQKGLnjpDj5gyyda/vJ0bJpedu692f r/WP8yJgpGQBc2dZIdS7Ag==",
+        "unbound_individual_selection": "UNKNOWN; debug trace verifies both original signatures but not per-interval PC"
+      },
+      {
+        "owner": "JBAS736CHUNG3BB701JKJDHQKQLHVUG7.example.test.",
+        "base32hex_valid": true,
+        "decoded_owner_length": 20,
+        "next_hash": "GSPQM39NH1AJ967T5RB35MBB97HB60BG",
+        "signature": "PASSED",
+        "rdata": "1 0 0 - gspqm39nh1aj967t5rb35mbb97hb60bg NS SOA RRSIG DNSKEY NSEC3",
+        "rrsig": "JBAS736CHUNG3BB701JKJDHQKQLHVUG7.example.test. 60 IN RRSIG NSEC3 15 3 60 20261102043256 20261102023256 25160 example.test. bpw7jHuilRETbKHSFO5GtolStoinX7lM MRD2NV04OvEfB/gaMc+cWdYImumSZwkF RWDcX1+KgB/mNC0dKp1VDA==",
+        "unbound_individual_selection": "UNKNOWN; debug trace verifies both original signatures but not per-interval PC"
+      },
+      {
+        "owner": "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!.example.test.",
+        "base32hex_valid": false,
+        "decoded_owner_length": null,
+        "next_hash": "VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV",
+        "signature": "PASSED",
+        "rdata": "250 128 0 - vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv A RRSIG NSEC3",
+        "rrsig": "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!.example.test. 60 IN RRSIG NSEC3 15 3 60 20261102043256 20261102023256 25160 example.test. YrSceoRzPc5hhmCloaHQ5sE4zzC18Sgv ogHgnXoNyAU9Vs6rR9w3pAPgyFeb20f4 W4uXN96hYRjhzL0bzE2pCg==",
+        "unbound_individual_selection": "UNKNOWN; debug trace verifies both original signatures but not per-interval PC"
+      }
+    ],
+    "valid_proof_sufficiency": true,
+    "raw_response": "raw-wire/T11-1-002-response.wire"
+  },
+  {
+    "stage": "before",
+    "case": "T12",
+    "records": [],
+    "valid_proof_sufficiency": false,
+    "raw_response": "raw-wire/T12-1-002-response.wire"
+  },
+  {
+    "stage": "after",
+    "case": "T01",
+    "records": [
+      {
+        "owner": "JBAS736CHUNG3BB701JKJDHQKQLHVUG7.example.test.",
+        "base32hex_valid": true,
+        "decoded_owner_length": 20,
+        "next_hash": "9VBMDRN5GAIGLEM11UAC4DILR4CPMA1R",
+        "signature": "PASSED",
+        "rdata": "1 0 0 - 9vbmdrn5gaiglem11uac4dilr4cpma1r NS SOA RRSIG DNSKEY NSEC3",
+        "rrsig": "JBAS736CHUNG3BB701JKJDHQKQLHVUG7.example.test. 60 IN RRSIG NSEC3 15 3 60 20261102044103 20261102024103 25160 example.test. +XfRPAwZf4zB1P0FUUcekP7lfA9UlvB6 4FIo3VPWEP7JO3Udah7UwR6hD1ZUH2Nu T8Waa8N0lF1jlRPmJbsoCA==",
+        "unbound_individual_selection": "UNKNOWN; debug trace verifies both original signatures but not per-interval PC"
+      },
+      {
+        "owner": "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!.example.test.",
+        "base32hex_valid": false,
+        "decoded_owner_length": null,
+        "next_hash": "VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV",
+        "signature": "PASSED",
+        "rdata": "1 0 0 - vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv A RRSIG NSEC3",
+        "rrsig": "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!.example.test. 60 IN RRSIG NSEC3 15 3 60 20261102044103 20261102024103 25160 example.test. zQW61YxBpBb2enEfhUfXM3h4BUlkV1G/ mc8NU3iufK6eha0xKU1Bv4+KqdM9rl0I +UcbCsskBSAJCvuXbdwfDg==",
+        "unbound_individual_selection": "UNKNOWN; debug trace verifies both original signatures but not per-interval PC"
+      }
+    ],
+    "valid_proof_sufficiency": false,
+    "raw_response": "after-isolated/raw-wire/T01-1-002-response.wire"
+  },
+  {
+    "stage": "after",
+    "case": "T02",
+    "records": [
+      {
+        "owner": "JBAS736CHUNG3BB701JKJDHQKQLHVUG7.example.test.",
+        "base32hex_valid": true,
+        "decoded_owner_length": 20,
+        "next_hash": "9VBMDRN5GAIGLEM11UAC4DILR4CPMA1R",
+        "signature": "PASSED",
+        "rdata": "1 0 0 - 9vbmdrn5gaiglem11uac4dilr4cpma1r NS SOA RRSIG DNSKEY NSEC3",
+        "rrsig": "JBAS736CHUNG3BB701JKJDHQKQLHVUG7.example.test. 60 IN RRSIG NSEC3 15 3 60 20261102044106 20261102024106 25160 example.test. lmXSiN+4B5ICLT/W3aeIX8W+WWpUxwg3 ebHkGTi4UH2IZrURaLOE+FJDHw3fLUpq uPczW9v/f044dszwrwQjDA==",
+        "unbound_individual_selection": "UNKNOWN; debug trace verifies both original signatures but not per-interval PC"
+      }
+    ],
+    "valid_proof_sufficiency": false,
+    "raw_response": "after-isolated/raw-wire/T02-1-002-response.wire"
+  },
+  {
+    "stage": "after",
+    "case": "T03",
+    "records": [
+      {
+        "owner": "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!.example.test.",
+        "base32hex_valid": false,
+        "decoded_owner_length": null,
+        "next_hash": "VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV",
+        "signature": "PASSED",
+        "rdata": "1 0 0 - vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv A RRSIG NSEC3",
+        "rrsig": "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!.example.test. 60 IN RRSIG NSEC3 15 3 60 20261102044107 20261102024107 25160 example.test. lzCgIUd0VTfCV/spopUFNpWkNUxT2t8K ghTTwO9bZY/WaHcQPRoz7tbMKuSILBwN 2bSuR3tRxFqX1THBXkOhAw==",
+        "unbound_individual_selection": "UNKNOWN; debug trace verifies both original signatures but not per-interval PC"
+      }
+    ],
+    "valid_proof_sufficiency": false,
+    "raw_response": "after-isolated/raw-wire/T03-1-002-response.wire"
+  },
+  {
+    "stage": "after",
+    "case": "T04",
+    "records": [
+      {
+        "owner": "GSPQM39NH1AJ967T5RB35MBB97HB60BG.example.test.",
+        "base32hex_valid": true,
+        "decoded_owner_length": 20,
+        "next_hash": "JBAS736CHUNG3BB701JKJDHQKQLHVUG7",
+        "signature": "PASSED",
+        "rdata": "1 0 0 - jbas736chung3bb701jkjdhqkqlhvug7 A RRSIG NSEC3",
+        "rrsig": "GSPQM39NH1AJ967T5RB35MBB97HB60BG.example.test. 60 IN RRSIG NSEC3 15 3 60 20261102044108 20261102024108 25160 example.test. lCSMYHyYxWEnOgxhYcA3KkrnZqKuqFAQ SalMvriGKu593R+licDo1ZR5ZbYO378W RNrH9dvPK1W/82ZrXmmUDw==",
+        "unbound_individual_selection": "UNKNOWN; debug trace verifies both original signatures but not per-interval PC"
+      },
+      {
+        "owner": "JBAS736CHUNG3BB701JKJDHQKQLHVUG7.example.test.",
+        "base32hex_valid": true,
+        "decoded_owner_length": 20,
+        "next_hash": "GSPQM39NH1AJ967T5RB35MBB97HB60BG",
+        "signature": "PASSED",
+        "rdata": "1 0 0 - gspqm39nh1aj967t5rb35mbb97hb60bg NS SOA RRSIG DNSKEY NSEC3",
+        "rrsig": "JBAS736CHUNG3BB701JKJDHQKQLHVUG7.example.test. 60 IN RRSIG NSEC3 15 3 60 20261102044108 20261102024108 25160 example.test. 6X+twFMCQDDLs9Oeabi2ioGjzh1sYpVi L/2aF2b/ZiiIX0WlsNrlCWdcOyJG7DZo E3IdEH4c7Id9RcgHMDuvDQ==",
+        "unbound_individual_selection": "UNKNOWN; debug trace verifies both original signatures but not per-interval PC"
+      }
+    ],
+    "valid_proof_sufficiency": true,
+    "raw_response": "after-isolated/raw-wire/T04-1-002-response.wire"
+  },
+  {
+    "stage": "after",
+    "case": "T05",
+    "records": [
+      {
+        "owner": "GSPQM39NH1AJ967T5RB35MBB97HB60BG.example.test.",
+        "base32hex_valid": true,
+        "decoded_owner_length": 20,
+        "next_hash": "JBAS736CHUNG3BB701JKJDHQKQLHVUG7",
+        "signature": "PASSED",
+        "rdata": "1 0 0 - jbas736chung3bb701jkjdhqkqlhvug7 A RRSIG NSEC3",
+        "rrsig": "GSPQM39NH1AJ967T5RB35MBB97HB60BG.example.test. 60 IN RRSIG NSEC3 15 3 60 20261102044109 20261102024109 25160 example.test. 3alhgjp3ao6Qv9tvh/O3y/fZGPLf9xGj g+Y7yVlcO0vODpYS5hWTmdiJkf94vDW2 VP91NqnCY4aItiQJOL1iCA==",
+        "unbound_individual_selection": "UNKNOWN; debug trace verifies both original signatures but not per-interval PC"
+      },
+      {
+        "owner": "JBAS736CHUNG3BB701JKJDHQKQLHVUG7.example.test.",
+        "base32hex_valid": true,
+        "decoded_owner_length": 20,
+        "next_hash": "GSPQM39NH1AJ967T5RB35MBB97HB60BG",
+        "signature": "PASSED",
+        "rdata": "1 0 0 - gspqm39nh1aj967t5rb35mbb97hb60bg NS SOA RRSIG DNSKEY NSEC3",
+        "rrsig": "JBAS736CHUNG3BB701JKJDHQKQLHVUG7.example.test. 60 IN RRSIG NSEC3 15 3 60 20261102044109 20261102024109 25160 example.test. NSxes/i0mDn0dvsHvtf8EPyVmkvruCp1 WANru39aDD3BDDPj4Q7AJDYZ1YulxGu/ iZEQthIvwJ2b6L29A7p6Bg==",
+        "unbound_individual_selection": "UNKNOWN; debug trace verifies both original signatures but not per-interval PC"
+      },
+      {
+        "owner": "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!.example.test.",
+        "base32hex_valid": false,
+        "decoded_owner_length": null,
+        "next_hash": "VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV",
+        "signature": "PASSED",
+        "rdata": "1 0 0 - vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv A RRSIG NSEC3",
+        "rrsig": "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!.example.test. 60 IN RRSIG NSEC3 15 3 60 20261102044109 20261102024109 25160 example.test. TZoUr1QZM4fs9OAj74rOeqM6Hqdv9nYd Au8hMKt8yEg0LpglZfQVr+w+XTUhhhmz EGpS+FLafwSofsd4x+uUCA==",
+        "unbound_individual_selection": "UNKNOWN; debug trace verifies both original signatures but not per-interval PC"
+      }
+    ],
+    "valid_proof_sufficiency": true,
+    "raw_response": "after-isolated/raw-wire/T05-1-002-response.wire"
+  },
+  {
+    "stage": "after",
+    "case": "T06",
+    "records": [
+      {
+        "owner": "JBAS736CHUNG3BB701JKJDHQKQLHVUG7.example.test.",
+        "base32hex_valid": true,
+        "decoded_owner_length": 20,
+        "next_hash": "9VBMDRN5GAIGLEM11UAC4DILR4CPMA1R",
+        "signature": "PASSED",
+        "rdata": "1 0 0 - 9vbmdrn5gaiglem11uac4dilr4cpma1r NS SOA RRSIG DNSKEY NSEC3",
+        "rrsig": "JBAS736CHUNG3BB701JKJDHQKQLHVUG7.example.test. 60 IN RRSIG NSEC3 15 3 60 20261102044110 20261102024110 25160 example.test. vhkUIEEBttst6bscmObecxZaIgm4SCCG O2LWTEYhz1NhYewdAKDGNPgLyaHsgshp NmA97XV+WsMfazsfuByIAg==",
+        "unbound_individual_selection": "UNKNOWN; debug trace verifies both original signatures but not per-interval PC"
+      },
+      {
+        "owner": "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!.example.test.",
+        "base32hex_valid": false,
+        "decoded_owner_length": null,
+        "next_hash": "VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV",
+        "signature": "PASSED",
+        "rdata": "1 0 0 - vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv A RRSIG NSEC3",
+        "rrsig": "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!.example.test. 60 IN RRSIG NSEC3 15 3 60 20261102044110 20261102024110 25160 example.test. zxtr/qcgTARUlIodmXX6DkeZuTEupp1b L4ltsM4GKJOX5xOwfSR6mXySCE4GzcTM wjtQrI4Mc1DPBbyiTz+nBQ==",
+        "unbound_individual_selection": "UNKNOWN; debug trace verifies both original signatures but not per-interval PC"
+      }
+    ],
+    "valid_proof_sufficiency": false,
+    "raw_response": "after-isolated/raw-wire/T06-1-002-response.wire"
+  },
+  {
+    "stage": "after",
+    "case": "T07",
+    "records": [
+      {
+        "owner": "JBAS736CHUNG3BB701JKJDHQKQLHVUG7.example.test.",
+        "base32hex_valid": true,
+        "decoded_owner_length": 20,
+        "next_hash": "9VBMDRN5GAIGLEM11UAC4DILR4CPMA1R",
+        "signature": "PASSED",
+        "rdata": "1 0 0 - 9vbmdrn5gaiglem11uac4dilr4cpma1r NS SOA RRSIG DNSKEY NSEC3",
+        "rrsig": "JBAS736CHUNG3BB701JKJDHQKQLHVUG7.example.test. 60 IN RRSIG NSEC3 15 3 60 20261102044111 20261102024111 25160 example.test. knviUUkbXAmoHJGD8U08O20Kx8hbkdUU F29O56XbpUt/BcUZh8qajatpcZIaLVEL DJQbU73RKPsDBQ2YMh9/Cw==",
+        "unbound_individual_selection": "UNKNOWN; debug trace verifies both original signatures but not per-interval PC"
+      },
+      {
+        "owner": "00000000000000000000000000000000.example.test.",
+        "base32hex_valid": true,
+        "decoded_owner_length": 20,
+        "next_hash": "00000000000000000000000000000001",
+        "signature": "PASSED",
+        "rdata": "1 0 0 - 00000000000000000000000000000001 A",
+        "rrsig": "00000000000000000000000000000000.example.test. 60 IN RRSIG NSEC3 15 3 60 20261102044111 20261102024111 25160 example.test. DpnOC51YlagSWB7AHUac0ozUo/WyucLh 4lGyTrtLi9B7CVMlWr7oBR0BZnmIRvo2 vZYyxx4YA85Rl0kgeFSDCA==",
+        "unbound_individual_selection": "UNKNOWN; debug trace verifies both original signatures but not per-interval PC"
+      }
+    ],
+    "valid_proof_sufficiency": false,
+    "raw_response": "after-isolated/raw-wire/T07-1-002-response.wire"
+  },
+  {
+    "stage": "after",
+    "case": "T08",
+    "records": [
+      {
+        "owner": "9VBMDRN5GAIGLEM11UAC4DILR4CPMA1R.example.test.",
+        "base32hex_valid": true,
+        "decoded_owner_length": 20,
+        "next_hash": "JBAS736CHUNG3BB701JKJDHQKQLHVUG7",
+        "signature": "PASSED",
+        "rdata": "1 0 0 - jbas736chung3bb701jkjdhqkqlhvug7 A RRSIG NSEC3",
+        "rrsig": "9VBMDRN5GAIGLEM11UAC4DILR4CPMA1R.example.test. 60 IN RRSIG NSEC3 15 3 60 20261102044112 20261102024112 25160 example.test. kXQBXBOeka74yYESsfLYMiMb5ufNsFKh SWlHW5QbpjeTgE3gcf5+PhVVErsSPSj3 fadbXk0Puyphun6Om7xbAQ==",
+        "unbound_individual_selection": "UNKNOWN; debug trace verifies both original signatures but not per-interval PC"
+      },
+      {
+        "owner": "JBAS736CHUNG3BB701JKJDHQKQLHVUG7.example.test.",
+        "base32hex_valid": true,
+        "decoded_owner_length": 20,
+        "next_hash": "9VBMDRN5GAIGLEM11UAC4DILR4CPMA1R",
+        "signature": "PASSED",
+        "rdata": "1 0 0 - 9vbmdrn5gaiglem11uac4dilr4cpma1r NS SOA RRSIG DNSKEY NSEC3",
+        "rrsig": "JBAS736CHUNG3BB701JKJDHQKQLHVUG7.example.test. 60 IN RRSIG NSEC3 15 3 60 20261102044112 20261102024112 25160 example.test. ILebpv5q2ANGOmrAp5k0DRWrHzZqFKTe GK1quLrmtTHno6EfAnKWC7fKywhMt0ua iZDEhELwQU7amTsKjg1aAg==",
+        "unbound_individual_selection": "UNKNOWN; debug trace verifies both original signatures but not per-interval PC"
+      }
+    ],
+    "valid_proof_sufficiency": false,
+    "raw_response": "after-isolated/raw-wire/T08-1-002-response.wire"
+  },
+  {
+    "stage": "after",
+    "case": "T09",
+    "records": [
+      {
+        "owner": "GSPQM39NH1AJ967T5RB35MBB97HB60BG.example.test.",
+        "base32hex_valid": true,
+        "decoded_owner_length": 20,
+        "next_hash": "JBAS736CHUNG3BB701JKJDHQKQLHVUG7",
+        "signature": "ValidationFailure",
+        "rdata": "1 0 0 - jbas736chung3bb701jkjdhqkqlhvug7 A RRSIG NSEC3",
+        "rrsig": "GSPQM39NH1AJ967T5RB35MBB97HB60BG.example.test. 60 IN RRSIG NSEC3 15 3 60 20261102044113 20261102024113 25160 example.test. AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA AAAAAAAAAAAAAAAAAAAAAA==",
+        "unbound_individual_selection": "UNKNOWN; debug trace verifies both original signatures but not per-interval PC"
+      },
+      {
+        "owner": "JBAS736CHUNG3BB701JKJDHQKQLHVUG7.example.test.",
+        "base32hex_valid": true,
+        "decoded_owner_length": 20,
+        "next_hash": "GSPQM39NH1AJ967T5RB35MBB97HB60BG",
+        "signature": "ValidationFailure",
+        "rdata": "1 0 0 - gspqm39nh1aj967t5rb35mbb97hb60bg NS SOA RRSIG DNSKEY NSEC3",
+        "rrsig": "JBAS736CHUNG3BB701JKJDHQKQLHVUG7.example.test. 60 IN RRSIG NSEC3 15 3 60 20261102044113 20261102024113 25160 example.test. AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA AAAAAAAAAAAAAAAAAAAAAA==",
+        "unbound_individual_selection": "UNKNOWN; debug trace verifies both original signatures but not per-interval PC"
+      }
+    ],
+    "valid_proof_sufficiency": false,
+    "raw_response": "after-isolated/raw-wire/T09-1-002-response.wire"
+  },
+  {
+    "stage": "after",
+    "case": "T10",
+    "records": [
+      {
+        "owner": "GSPQM39NH1AJ967T5RB35MBB97HB60BG.example.test.",
+        "base32hex_valid": true,
+        "decoded_owner_length": 20,
+        "next_hash": "JBAS736CHUNG3BB701JKJDHQKQLHVUG7",
+        "signature": "PASSED",
+        "rdata": "1 0 0 - jbas736chung3bb701jkjdhqkqlhvug7 A RRSIG NSEC3",
+        "rrsig": "GSPQM39NH1AJ967T5RB35MBB97HB60BG.example.test. 60 IN RRSIG NSEC3 15 3 60 20261102044114 20261102024114 25160 example.test. 4/N9zQRN8AeUbNQNNYd5C/6/3G+xCTMi H4xkP0nXXp8HdWZtTr0khuABlD8oe/wN CyiG7Dpt0aYt5JeD6aS4Bw==",
+        "unbound_individual_selection": "UNKNOWN; debug trace verifies both original signatures but not per-interval PC"
+      },
+      {
+        "owner": "JBAS736CHUNG3BB701JKJDHQKQLHVUG7.example.test.",
+        "base32hex_valid": true,
+        "decoded_owner_length": 20,
+        "next_hash": "GSPQM39NH1AJ967T5RB35MBB97HB60BG",
+        "signature": "PASSED",
+        "rdata": "1 0 0 - gspqm39nh1aj967t5rb35mbb97hb60bg NS SOA RRSIG DNSKEY NSEC3",
+        "rrsig": "JBAS736CHUNG3BB701JKJDHQKQLHVUG7.example.test. 60 IN RRSIG NSEC3 15 3 60 20261102044114 20261102024114 25160 example.test. mR5aM3uctvBlQ69IR+/QsxCFxnZzdAr/ DllyyVYxw+fvtRNYlyl7iZ0PG2CiDl1z uG9lQPqAOcSyAXw0T7mMDA==",
+        "unbound_individual_selection": "UNKNOWN; debug trace verifies both original signatures but not per-interval PC"
+      },
+      {
+        "owner": "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!.example.test.",
+        "base32hex_valid": false,
+        "decoded_owner_length": null,
+        "next_hash": "VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV",
+        "signature": "PASSED",
+        "rdata": "1 0 1 - vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv A RRSIG NSEC3",
+        "rrsig": "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!.example.test. 60 IN RRSIG NSEC3 15 3 60 20261102044114 20261102024114 25160 example.test. QsojXEAhWdogzzSV4O8nASo3HXJN2vEJ NKQpHdyioi0V2aNYgpc5TZW11Z3G9v1G L5kjz7A/JZ45J0x+2QenDQ==",
+        "unbound_individual_selection": "UNKNOWN; debug trace verifies both original signatures but not per-interval PC"
+      }
+    ],
+    "valid_proof_sufficiency": "UNKNOWN: mixed parameter envelope",
+    "raw_response": "after-isolated/raw-wire/T10-1-002-response.wire"
+  },
+  {
+    "stage": "after",
+    "case": "T11",
+    "records": [
+      {
+        "owner": "GSPQM39NH1AJ967T5RB35MBB97HB60BG.example.test.",
+        "base32hex_valid": true,
+        "decoded_owner_length": 20,
+        "next_hash": "JBAS736CHUNG3BB701JKJDHQKQLHVUG7",
+        "signature": "PASSED",
+        "rdata": "1 0 0 - jbas736chung3bb701jkjdhqkqlhvug7 A RRSIG NSEC3",
+        "rrsig": "GSPQM39NH1AJ967T5RB35MBB97HB60BG.example.test. 60 IN RRSIG NSEC3 15 3 60 20261102044115 20261102024115 25160 example.test. hMyvvBk1q1FaCf4rVppN5vDAt6+npBG5 /LshUIKh8PR6M6wYfBjy097xlMzoj+yI FxiNPj9bJ/Z0IzMuMJpDAg==",
+        "unbound_individual_selection": "UNKNOWN; debug trace verifies both original signatures but not per-interval PC"
+      },
+      {
+        "owner": "JBAS736CHUNG3BB701JKJDHQKQLHVUG7.example.test.",
+        "base32hex_valid": true,
+        "decoded_owner_length": 20,
+        "next_hash": "GSPQM39NH1AJ967T5RB35MBB97HB60BG",
+        "signature": "PASSED",
+        "rdata": "1 0 0 - gspqm39nh1aj967t5rb35mbb97hb60bg NS SOA RRSIG DNSKEY NSEC3",
+        "rrsig": "JBAS736CHUNG3BB701JKJDHQKQLHVUG7.example.test. 60 IN RRSIG NSEC3 15 3 60 20261102044115 20261102024115 25160 example.test. RY8T9xdBu+RVTB1c2mzitFM9KrlmrRC9 oct6bh92LG1geqfoqjFUE4qGrDRY7Kyu d17kW9NmDXeGtYs5i+3nBw==",
+        "unbound_individual_selection": "UNKNOWN; debug trace verifies both original signatures but not per-interval PC"
+      },
+      {
+        "owner": "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!.example.test.",
+        "base32hex_valid": false,
+        "decoded_owner_length": null,
+        "next_hash": "VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV",
+        "signature": "PASSED",
+        "rdata": "250 128 0 - vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv A RRSIG NSEC3",
+        "rrsig": "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!.example.test. 60 IN RRSIG NSEC3 15 3 60 20261102044115 20261102024115 25160 example.test. g8jzQdmGUUF87LUkDEj0QeVO5d5jp/uV s97GvHcaQJs6dWNAhiX2nNWz/VpKF2YV ueYiIwjCOewT7C6Ta2dEDQ==",
+        "unbound_individual_selection": "UNKNOWN; debug trace verifies both original signatures but not per-interval PC"
+      }
+    ],
+    "valid_proof_sufficiency": true,
+    "raw_response": "after-isolated/raw-wire/T11-1-002-response.wire"
+  },
+  {
+    "stage": "after",
+    "case": "T12",
+    "records": [],
+    "valid_proof_sufficiency": false,
+    "raw_response": "after-isolated/raw-wire/T12-1-002-response.wire"
+  }
+]

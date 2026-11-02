@@ -39,7 +39,8 @@ def variant(lab,response,case):
 async def run(out=ROOT,only=None):
     out.mkdir(parents=True,exist_ok=False);wire=out/'raw-wire';wire.mkdir();logs=out/'verifier-logs';logs.mkdir()
     baseline=subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip();raw=Path('results/runs/nsec3-audit')/uuid.uuid4().hex
-    env=dict(git_commit=baseline,business_source_commit='133b49a',python_version=platform.python_version(),os=platform.system(),
+    env=dict(git_commit=baseline,business_source_commit=subprocess.check_output(['git','log','-1','--format=%H','--','src/dns_investigator'],text=True).strip(),python_version=platform.python_version(),os=platform.system(),
+        harness_hashes={p.name:sha(p.read_bytes()) for p in Path('evaluation/nsec3_divergence').glob('*.py')},
         dnspython_version=version('dnspython'),cryptography_version=version('cryptography'),unbound_version='1.26.2',
         unbound_binary_sha256=sha(Path('results/runs/reference-tools/unbound-1.26.2/libunbound/libunbound-8.dll').read_bytes()),
         business_hashes={p.name:sha(p.read_bytes()) for p in Path('src/dns_investigator').glob('dnssec*.py')},dnssec_algorithm_policy=POLICY_VERSION,
@@ -51,6 +52,7 @@ async def run(out=ROOT,only=None):
     for case,repeat in plan:
         label=f'{case}-{repeat}';packets=[];phase=['project']
         async with signed_lab('nsec3_invalid_owner') as lab:
+            lab.audit_debug=len(sys.argv)>3 and sys.argv[3]=='debug'
             original=lab.answer
             def answer(i,q):
                 r=original(i,q)
@@ -75,6 +77,8 @@ async def run(out=ROOT,only=None):
             # Disposable local root-hints path is replaced by an explicit alias.
             text=conf.read_text();text='\n'.join(' root-hints: "CONTROLLED_ROOT_HINTS"' if l.strip().startswith('root-hints:') else l for l in text.splitlines())
             (logs/(label+'-reference.conf')).write_text(text,encoding='utf-8')
+            if (raw/label/'unbound-debug.log').exists():
+                (logs/(label+'-unbound-debug.log')).write_bytes((raw/label/'unbound-debug.log').read_bytes())
             target=[p for p in packets if p['qname']=='probe.example.test.' and p['qtype']==1 and p['server_index']==2]
             def canonical(p):
                 m=dns.message.from_wire((out/p['response']['path']).read_bytes())

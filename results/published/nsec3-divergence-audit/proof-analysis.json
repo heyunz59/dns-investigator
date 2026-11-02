@@ -43,7 +43,12 @@
         "*.example.test.": false
       },
       "project_used": "invalid owner rejects complete proof pool",
-      "unbound_used": "UNKNOWN: infer via differential tests plus source, not instrumented internal execution"
+      "unbound_used": "UNKNOWN: infer via differential tests plus source, not instrumented internal execution",
+      "covers_interpretation": "Strict base32hex interval",
+      "proof_role": "Authenticated closest-encloser exact match and wildcard cover, missing next-closer cover",
+      "necessary_for_valid_proof": true,
+      "may_ignore": false,
+      "ignore_basis": "Unusable owner; ignoring does not waive remaining proof requirements"
     },
     {
       "owner": "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!.example.test.",
@@ -74,7 +79,12 @@
         "*.example.test.": false
       },
       "project_used": "invalid owner rejects complete proof pool",
-      "unbound_used": "UNKNOWN: infer via differential tests plus source, not instrumented internal execution"
+      "unbound_used": "UNKNOWN: infer via differential tests plus source, not instrumented internal execution",
+      "covers_interpretation": "Raw lexical comparison only; invalid owner is not a valid hash interval",
+      "proof_role": "Invalid candidate, cannot form valid proof; reference fast-path condition supplied missing cover",
+      "necessary_for_valid_proof": false,
+      "may_ignore": true,
+      "ignore_basis": "Unusable owner; ignoring does not waive remaining proof requirements"
     }
   ]
 }
