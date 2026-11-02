@@ -1,0 +1,30 @@
+{
+  "baseline_commit": "3a0b1fa",
+  "investigated_commit": "9ac06c0ed01d30bf3e611a62a2806cb59af6a29d",
+  "case_id": "nsec3_invalid_owner",
+  "reproduction_confirmed": true,
+  "input_equivalence_confirmed": true,
+  "project_result": "BOGUS",
+  "reference_result": "SECURE",
+  "classification": [
+    "D:original reference fast-path difference",
+    "B:separate T05 excessive rejection"
+  ],
+  "root_cause_established": true,
+  "false_bogus_confirmed": {
+    "original": false,
+    "T05": true
+  },
+  "false_secure_risk": "Original reference uses malformed owner candidate; relaxing project without complete proof would be unsafe",
+  "rfc_conformance_assessment": "Valid proof subset should remain usable; no evidence of MUST reject whole response for unrelated malformed candidate",
+  "recommended_action": "filter malformed owner candidates, require remaining complete authenticated proof",
+  "fix_implemented": false,
+  "followup_tests_passed": null,
+  "independent_human_review_status": "PENDING",
+  "unresolved_questions": [
+    "Unbound internal PC not instrumented",
+    "T11 unknown flag/hash project policy remains limited",
+    "General malformed-response treatment not completely specified"
+  ],
+  "evidence_index": "evidence-manifest.json"
+}

@@ -1,0 +1,7 @@
+{
+  "baseline_tests": "python -m pytest -q: 356 passed in 25.21s",
+  "command": "python -m evaluation.nsec3_divergence.run",
+  "original_runs": 3,
+  "worker_os_exit_code": "UNKNOWN",
+  "unbound_debug_trace": "not enabled; original verbosity0 preserved; source and counterfactual evidence provided"
+}

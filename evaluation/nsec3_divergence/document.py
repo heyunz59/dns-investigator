@@ -4,8 +4,8 @@ from pathlib import Path
 from .run import ROOT,save,sha
 
 def document():
-    runs=json.loads((ROOT/'all-runs.json').read_text());proof=json.loads((ROOT/'proof-analysis.json').read_text())
-    env=json.loads((ROOT/'environment.json').read_text());first=runs[0]
+    runs=json.loads((ROOT/'all-runs.json').read_text(encoding='utf-8'));proof=json.loads((ROOT/'proof-analysis.json').read_text(encoding='utf-8'))
+    env=json.loads((ROOT/'environment.json').read_text(encoding='utf-8'));first=runs[0]
     env.update(validation_time=first['validation_time'],trust_anchor_fingerprint=first['anchor_fingerprint'],test_anchor=first['anchor'],
         signature_window=[first['validation_time']-3600,first['validation_time']+3600],hash_algorithm=1,iterations=0,salt='',flags=0,
         project_time_offset_seconds=first['project_validation_time']-first['validation_time'],unbound_cache='fresh process/context each run',baseline_tests='356 passed in 25.21s')
@@ -14,9 +14,9 @@ def document():
     for path,terms in {'src/dns_investigator/dnssec_proof.py':['def denial','base32 encoded','if any(c not in','def cover'],
         'src/dns_investigator/dnssec_validation.py':['def proof','covered=denial','DENIAL_DOES_NOT','def failed','BOGUS'],
         'src/dns_investigator/dnssec.py':['def publish'], 'src/dns_investigator/reporting.py':['def protocol_findings']}.items():
-        for n,line in enumerate(Path(path).read_text().splitlines(),1):
+        for n,line in enumerate(Path(path).read_text(encoding='utf-8').splitlines(),1):
             if any(t in line for t in terms):lines.append(f'- `{path}:{n}`：`{line.strip()}`')
-    source=Path('results/runs/nsec3-source/val_nsec3.c');s=source.read_text()
+    source=Path('results/runs/nsec3-source/val_nsec3.c');s=source.read_text(encoding='utf-8')
     refs=[f'- Unbound val_nsec3.c:{i}：{line.strip()}' for i,line in enumerate(s.splitlines(),1) if any(t in line for t in ['nsec3_covers(', 'find_covering_nsec3(', 'nsec3_find_closest_encloser(', 'nsec3_prove_nameerror(', 'sldns_b32_pton_extended_hex((char*)'])]
     (ROOT/'source-analysis.md').write_text('# 源码路径（修复前快照）\n\n'+ '\n'.join(lines)+'\n\n'+ '\n'.join(refs)+f'\n\nUnbound release-1.26.2 官方源码SHA256：{sha(source.read_bytes())}。来源 https://raw.githubusercontent.com/NLnetLabs/unbound/release-1.26.2/validator/val_nsec3.c 。\n\n关键区别：nsec3_covers先比较原始owner标签与查询hash、二进制next；普通区间路径直接成功，base32解码发生在后面的环绕路径。原始 ! 标签字典序小于合法hash，next全FF又大于查询hash，因此普通路径满足条件，无需走到解码失败。不是“忽略坏记录后用其余完整证明”。T02移除该记录后失败，T03缺少closest-encloser也失败。实际内部PC/单条选择未插桩，标记UNKNOWN；源码条件与最小反事实实验构成机制解释，不冒充调试回溯。\n\n项目：读取并验签NSEC3→owner字母表检查全局False→Session.proof局部SIGNATURE_CHECK_FAILED→已有父DS/子密钥可信上下文的Session.failed整体BOGUS→publish分配V→protocol_findings并入正式报告。全部E/V见verifier-logs/T01-1-project.json。',encoding='utf-8')
     table='\n'.join(f"|{r['case_id']}|{r['project_status']}|{r['unbound_status']}|{r['changed_factor']}|" for r in [runs[0]]+runs[3:])
