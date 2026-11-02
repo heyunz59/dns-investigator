@@ -43,6 +43,11 @@ def reason(result):
 
     validated_negative_ds=set();validated_protocol_attempts=set()
     for p in result.protocol_investigations:
+        terminal=facts.get(p.get('terminal_evidence_id'))
+        if (p.get('mode')=='trace' and p.get('completed') and terminal and
+            terminal.get('attempt_id')==p['attempt_id'] and terminal.get('authoritative_answer') and
+            terminal['result']=='NOERROR'):
+            validated_protocol_attempts.add(p['attempt_id'])
         v=p.get('validation')
         if not v:continue
         vs,es=validation_closure(v.get('validation_result_ids',[]),result.validation_results,set(facts))

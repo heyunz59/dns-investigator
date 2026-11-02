@@ -186,3 +186,17 @@ def test_non_aa_does_not_confirm_normal_authority():
     b=backend();e=dns(b,role='authoritative');e['data']['flags']['AA']=False
     d=evidence_bound_report(draft(),b).diagnostic_conclusion
     assert d.diagnosis_status=='INSUFFICIENT_EVIDENCE' and d.fault_detected is None
+
+
+@pytest.mark.parametrize('scenario',['normal','non_aa','timeout'])
+async def test_actual_delegation_trace_report(scenario):
+    from evaluation.protocol_lab import protocol_lab
+    async with protocol_lab(scenario) as lab:
+        b=lab.backend();returned=await b.call('query_authoritative',domain=b.target.domain,mode='trace',timeout=.1)
+    r=evidence_bound_report(draft(),b)
+    if scenario=='normal':assert r.diagnostic_conclusion.diagnosis_status=='NO_FAULT_OBSERVED'
+    else:
+        trace=next(d for d in [r.diagnostic_conclusion]+r.secondary_diagnoses if d.fault_layer=='Delegation')
+        assert returned['data']['stop_reason'] in trace.cause and trace.relevant_attempt_ids==['A1']
+        assert trace.diagnosis_status!='CONFIRMED_PROTOCOL_ISSUE'
+        assert trace.evidence_ids
