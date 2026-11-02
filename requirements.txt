@@ -3,3 +3,4 @@ dnspython==2.9.1
 httpx==0.28.1
 httpcore==1.0.9
 python-dotenv==1.2.4
+cryptography==50.0.0

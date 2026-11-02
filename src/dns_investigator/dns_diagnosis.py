@@ -104,6 +104,14 @@ def diagnose(evidence):
             localization={},root_cause_confirmed=False,explanation="跨时间或时间未知的响应/记录差异，不具备可靠同期定位条件。",
             limitations=["缺失、非法或无时区时间不补造；不能由文件生成时间推断查询时间。"],
             next_checks=[f"query_dns：按需对 {name} {typ} 在有真实测量时间的新调查中取得路径对照，避免将历史差异认作同期冲突。 "]))
+    for row in rows:
+        for ede in row.get("ede",[]):
+            findings.append(dict(code="EDE_REPORTED",stage="dns-edns",status="observed",provenance="server_reported",
+                finding_status="observed",severity="information",validation_result_ids=[],
+                scope=dict(target=row["qname"],record_type=row["qtype"],resolver=row.get("resolver"),source_mode=row.get("source_mode")),
+                evidence_ids=[row["evidence_id"]],observed_facts=[dict(evidence_id=row["evidence_id"],ede=ede)],localization={},root_cause_confirmed=False,
+                explanation=f"REPORTED_BY_SERVER：{row.get('resolver')} 自报 EDE {ede.get('code')} {ede.get('name','MALFORMED')}，不是本程序DNSSEC验证。",
+                limitations=["EDE可以伴随NOERROR；AD/DO或EDE不等于本地验证；Extra Text不可信。"],next_checks=[]))
     if not findings:
         complete=bool(rows) and all(comparable_response(r) and dns_outcome(r)["result_kind"]=="NOERROR" for r in rows)
         findings.append(dict(code="DNS_INCONCLUSIVE",stage="dns",status="no_anomaly_observed" if complete else "insufficient_information",

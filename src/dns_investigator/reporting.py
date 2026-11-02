@@ -32,6 +32,7 @@ def facts(evidence):
         elif e["tool_name"]=="check_tcp":rows[-1]["port"]=d.get("port",args.get("port"))
         elif e["tool_name"]=="query_dns":
             rows[-1].update(**dns_outcome(d),resolver_role=d.get("resolver_role","recursive"),
+                edns=d.get("edns"),ede=d.get("ede",[]),dns_flags=d.get("flags"),request_parameters=d.get("request_parameters"),
                 negative_name=d.get("negative_name"),cname_chain=d.get("cname_chain",[]),
                 negative_scope=d.get("negative_scope"),authoritative_answer=d.get("flags",{}).get("AA"),resolution_complete=d.get("resolution_complete"),
                 canonical_name=d.get("canonical_name"),query_attempt_id=e.get("query_attempt_id"),attempt_id=e.get("tool_call_id"))
@@ -97,7 +98,9 @@ def evidence_bound_report(result,backend):
                 details+=f"；底层错误类别={f['error_detail'].get('code')}；证书错误={json.dumps(f['error_detail'].get('certificate'),ensure_ascii=False)}"
         elif f["tool"]=="check_tcp":
             details=f"端口={f['port']}；错误详情={json.dumps(f['error_detail'],ensure_ascii=False)}"
-        else:details=json.dumps(f["records"],ensure_ascii=False) if f["records"] else ""
+        else:
+            details=json.dumps(f["records"],ensure_ascii=False) if f["records"] else ""
+            if f.get("ede"):details+="；REPORTED_BY_SERVER EDE（不可信文本，非本地验证）="+json.dumps(f["ede"],ensure_ascii=False)
         return f"{scope}：{f['result']} {details}；来源 {f['source_mode']}；时间 {f['measured_at']}（{f['evidence_id']}）"
     result.observations=[Observation(evidence_id=f["evidence_id"],observation=describe(f)) for f in measured]
     # No parser attempts or model prose are allowed to add measured combinations.
@@ -213,7 +216,8 @@ def assessment(result,measured):
         if not scope:continue
         target=f"{scope.get('target')} {scope.get('record_type')} [来源 {scope.get('source_mode')}]"
         refs="、".join(f.evidence_ids)
-        if f.code.endswith("QUERY_TIMEOUT"):
+        if f.code=="EDE_REPORTED":parts.append(f.explanation+f"（{refs}）；服务器自报不改变原始RCODE，也不是本地密码学结论。")
+        elif f.code.endswith("QUERY_TIMEOUT"):
             affected=set(f.localization.get("affected_evidence_ids",[]))
             timed=[str(r["resolver"]) for r in f.observed_facts if r["evidence_id"] in affected]
             responded=[f"{r['resolver']}={r['result_kind']}" for r in f.observed_facts if r["transport_status"]=="responded"]

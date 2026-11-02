@@ -41,6 +41,10 @@ class ExecutionIssue(BaseModel):
 
 
 class Finding(BaseModel):
+    provenance: str = "observed"
+    finding_status: str = "observed"
+    severity: str = "information"
+    validation_result_ids: list[str] = Field(default_factory=list)
     scope: dict = Field(default_factory=dict)
     observed_facts: list[dict] = Field(default_factory=list)
     localization: dict = Field(default_factory=dict)

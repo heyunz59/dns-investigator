@@ -28,7 +28,7 @@ def current_state(backend,response):
             row["record_aggregate"]=record_aggregate(row["records"],row.get("record_type"))
             row["records_omitted_count"]=len(row["records"])-16;row["records"]=row["records"][:16]
         measured.append(row)
-    findings=[{k:f[k] for k in ("code","status","scope","evidence_ids","explanation","limitations","next_checks")} for f in diagnose(backend.calls)]
+    findings=[{k:f[k] for k in ("code","status","scope","evidence_ids","explanation","limitations","next_checks","provenance","finding_status","validation_result_ids") if k in f} for f in diagnose(backend.calls)]
     partial=[dict(attempt_id=a["attempt_id"],queries=a["dns_execution_issues"]) for a in backend.attempts if a.get("dns_execution_issues")]
     scope=alias_paths(backend)
     blocked=[dict(tool_name=name,arguments=arguments) for name,arguments in (json.loads(x) for x in sorted(backend.blocked))]

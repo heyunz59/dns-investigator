@@ -3,12 +3,30 @@ import asyncio
 import ipaddress
 import time
 from contextvars import ContextVar
+from dataclasses import dataclass,asdict
+from datetime import datetime,timezone
 import dns.asyncquery
 import dns.flags
 import dns.message
 import dns.rcode
 import dns.resolver
 import dns.exception
+from .edns import metadata
+
+
+@dataclass(frozen=True)
+class WireOptions:
+    rd: bool | None = None
+    cd: bool = False
+    edns: int = 0
+    do: bool = False
+    payload: int = 1232
+    mode: str = "basic"
+    stage: str = "query"
+    zone: str | None = None
+
+
+WIRE_OPTIONS=ContextVar("dns_wire_options",default=None)
 
 TYPES = {"A", "AAAA", "CNAME", "NS", "SOA"}
 # Scoped to one logical DNS operation/task. The observer records Q allocation,
@@ -105,18 +123,20 @@ def classify_response(qname, qtype, rcode, flags, answer, authority):
 
 
 def parse_response(message, qname, qtype, server, role="recursive", transport="UDP"):
+    if len(message.answer)+len(message.authority)+len(message.additional)>512 or sum(len(r) for s in (message.answer,message.authority,message.additional) for r in s)>2048:
+        raise ValueError("DNS_RESPONSE_RESOURCE_LIMIT")
     def section(rrsets):
         return [dict(name=str(rr.name).rstrip("."), type=dns.rdatatype.to_text(rr.rdtype), ttl=rr.ttl,
-                     values=[x.to_text() for x in rr]) for rr in rrsets]
+                     rdclass=dns.rdataclass.to_text(rr.rdclass),values=[x.to_text() for x in rr]) for rr in rrsets]
     answer, authority = section(message.answer), section(message.authority)
     rcode = dns.rcode.to_text(message.rcode())
-    flags = {name: bool(message.flags & getattr(dns.flags, name)) for name in ("AA", "RD", "RA", "TC")}
+    flags = {name: bool(message.flags & getattr(dns.flags, name)) for name in ("AA", "RD", "RA", "TC","AD","CD")}
     classification=classify_response(qname,qtype,rcode,flags,answer,authority)
     return dict(qname=qname, qtype=qtype, record_type=qtype, resolver=server,
         responding_resolver=server, resolver_role=role, rcode=rcode,dns_rcode=rcode,transport_status="responded",
         flags=flags, answer=answer, authority=authority, additional=section(message.additional),
         transport=transport, execution_status="ok", error=None,
-        **classification,
+        qclass="IN",**metadata(message),**classification,
         soa_serials=[int(v.split()[2]) for rr in answer+authority if rr["type"] == "SOA" for v in rr["values"]])
 
 
@@ -126,13 +146,31 @@ class DNSClient:
         self.attempts = []
         self.repeats = {}
         self.system = [str(s) for s in dns.resolver.Resolver().nameservers]
+        self.deep_endpoint_policy=self._deep_endpoint
+
+    @staticmethod
+    def _deep_endpoint(server,port):
+        ip=ipaddress.ip_address(server)
+        mapped=getattr(ip,"ipv4_mapped",None)
+        return port==53 and mapped is None and ip.is_global and not ip.is_reserved and not ip.is_multicast and not ip.is_unspecified
+
+    async def request(self,name,typ,server,parent,options,timeout=3):
+        """Internal deep-mode entry; shares packet/Q/E/budgets, never recursive fallback."""
+        if server is None or not self.deep_endpoint_policy(server,53):
+            return dict(qname=name,qtype=typ,resolver=server,execution_status="error",transport_status="not_executed",
+                error=dict(code="DNS_ENDPOINT_NOT_AUTHORIZED",retryable=False),query_attempt_ids=[])
+        token=WIRE_OPTIONS.set(options)
+        try:return await self.query(name,typ,server,timeout,parent,role="authoritative")
+        finally:WIRE_OPTIONS.reset(token)
 
     def permitted(self, ip, authoritative=False):
         address = ipaddress.ip_address(ip)
         return address.is_global if authoritative else address.is_global or ip in self.system
 
     async def packet(self, name, typ, server, role, timeout, parent, tcp=False, port=53):
-        key=(name.lower().rstrip("."),typ,server,role,tcp)
+        options=WIRE_OPTIONS.get() or WireOptions(rd=role!="authoritative")
+        effective={**asdict(options),"rd":options.rd if options.rd is not None else role!="authoritative"}
+        key=(name.lower().rstrip("."),typ,server,role,tcp,port,tuple(effective.items()))
         scope=dict(qname=name,qtype=typ,resolver=server,resolver_role=role,transport_status="not_executed",dns_rcode=None)
         if self.repeats.get(key,0)>=2:
             return dict(execution_status="error",error={"code":"DNS_REPEAT_LIMIT","retryable":False},**scope)
@@ -140,14 +178,15 @@ class DNSClient:
             return dict(execution_status="error", error={"code":"DNS_BUDGET_EXHAUSTED", "retryable":False},**scope)
         self.repeats[key]=self.repeats.get(key,0)+1
         row = dict(query_attempt_id=f"Q{len(self.attempts)+1}", parent_tool_call_id=parent,
-                   qname=name,qtype=typ,server=server,port=port,resolver_role=role,transport="TCP" if tcp else "UDP",status="running")
+                   qname=name,qtype=typ,qclass="IN",server=server,port=port,resolver_role=role,transport="TCP" if tcp else "UDP",status="running",
+                   request_parameters=effective,requested_at=datetime.now(timezone.utc).isoformat())
         self.attempts.append(row)
         observer=ATTEMPT_OBSERVER.get()
         if observer is not None:observer(row)
         start=time.monotonic()
-        message=dns.message.make_query(name,typ)
-        if role == "authoritative":
-            message.flags &= ~dns.flags.RD
+        message=dns.message.make_query(name,typ,use_edns=options.edns,payload=options.payload,want_dnssec=options.do)
+        if not effective["rd"]:message.flags &= ~dns.flags.RD
+        if options.cd:message.flags|=dns.flags.CD
         try:
             response = await (dns.asyncquery.tcp if tcp else dns.asyncquery.udp)(message,server,timeout=timeout,port=port)
             data=parse_response(response,name,typ,server,role,row["transport"])
@@ -165,10 +204,12 @@ class DNSClient:
                       dns_rcode=None,rcode=None,transport_status="network_error",result_kind="EXECUTION_ERROR",
                       error={"code":"DNS_NETWORK_OR_PROTOCOL_ERROR","retryable":False},records=[])
         finally:
+            row["finished_at"]=datetime.now(timezone.utc).isoformat()
             row["duration_ms"]=round((time.monotonic()-start)*1000,2)
             self.backend.emit("dns_attempt",row)
         data["duration_ms"]=row["duration_ms"]
         data["query_attempt_id"]=row["query_attempt_id"]
+        data.update(request_parameters=effective,requested_at=row["requested_at"],finished_at=row["finished_at"])
         if data["execution_status"] == "ok":
             evidence=self.backend.add_dns_evidence(data,parent,row["query_attempt_id"])
             row["evidence_id"]=evidence["id"]
