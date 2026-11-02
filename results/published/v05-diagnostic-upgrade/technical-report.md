@@ -50,6 +50,6 @@ DNSSEC DS 关联建议先只读核对父 DS/子 DNSKEY 和轮换，再由有权�
 
 ## 验证与未完成项
 
-基线实际 410 passed in29.27s；最终 5e86226 **447 passed in28.87s，新增37项，0 failed/0 skipped**。完整保留 NSEC3、并发证据、TCP/HTTP安全、五工具、预算、fixture及历史回归。新测试验证范围、原因等级、E/V归属、修复关联、模拟边界、实际签名 DNS、真实旧日志加载、脚本模型失败保留证据。pip check 通过。远程 CI 实际状态见 ci-status.json（发布后补入）；不能用测试通过率代替语义验收。
+基线实际 410 passed in29.27s；最终 5e86226 **447 passed in28.87s，新增37项，0 failed/0 skipped**。完整保留 NSEC3、并发证据、TCP/HTTP安全、五工具、预算、fixture及历史回归。新测试验证范围、原因等级、E/V归属、修复关联、模拟边界、实际签名 DNS、真实旧日志加载、脚本模型失败保留证据。pip check 通过。远程 CI 已实际成功：[Actions 41407533244](https://github.com/heyunz59/dns-investigator/actions/runs/41407533244)，验收快照 dcb39cb9；完整 job/step 和测试摘要见 ci-status.json。后续仅追加此回执，不改业务源码；不能用测试通过率代替语义验收。
 
 未调用真实 DeepSeek，没有新增公网调查；FunctionModel 只验证框架失败回退，不冒充真实模型复测。独立人工语义复核 **PENDING**。当前规则覆盖有限，不能自动识别所有 Lame Delegation、客户端环境原因、接口业务意图或运维责任；LIKELY_CAUSE 不作无依据提升。历史 T01/T06/T10 与独立 DNSSEC 验证器的分歧仍保留，未扩展完整 DNSSEC。结构引用校验不能证明所有自然语言因果关系正确。建议未执行，未验证任何真实用户配置已经修好。
