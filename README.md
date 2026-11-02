@@ -124,3 +124,30 @@ v0.2 已完成 [48 次真实模型对照](results/published/evaluation-reliabili
 - CLI 退出码：0=通过本地结构要求，3=信息不足的有限结果，1=运行失败，2=输入/配置错误。有限结果不会被伪装成确定性根因诊断。
 - 原始记录格式 v2 的 attempts 是全部已观察到的网络工具调用尝试，evidence 仅含有效测量。框架参数拒绝、工具内部失败、重复与预算拒绝仍计入尝试；结构化最终输出不计入网络工具分母。
 - 网络测量具有时效性，公开仓库只存代码和材料，不会自动部署在线服务。
+
+## v0.6 本机 Web 界面
+
+在项目根目录安装并启动（Python 3.11+）：
+
+```powershell
+.venv\Scripts\python.exe -m pip install -e ".[web]"
+.venv\Scripts\python.exe -m dns_investigator.web
+```
+
+打开 http://127.0.0.1:8765 。也可使用安装后的 `dns-investigator-web` 命令。服务固定监听回环地址；不支持公网部署。
+
+在本机 `.env` 配置 `DEEPSEEK_API_KEY` 后，输入域名或 HTTP/HTTPS URL 即可启动现有 Agent。问题描述可选。进度来自 Agent 的实际证据回调；完成、受限、失败均保留真实状态。模型总结失败时仍可查看已有证据。原有工具授权、预算和网络策略不变，页面没有自动修复或任意命令接口。
+
+页面只有“解析与证据 / 排障详情 / 调查时间线”三个标签页。检查与修正建议均标为尚未执行。解析器对照只展示实际日志；没有时间或测量时明确标为未记录/未测量。证据按五项分页展开，可查看完整 A/Q/E/V 关联数据。故障位置使用已有结论中的文本，不推测 Root/TLD 节点。
+
+“历史记录”读取 `results/runs` 下最多 100 份最近 JSON；“导入历史 JSON 报告”接收最多 16 MB 的报告副本，生成随机本地 ID，不能指定服务器文件路径。导出为脱敏 JSON；本轮未提供 HTML 导出。
+
+受控历史/构造场景可单独准备（始终显示“示例数据 / 非真实公网测量”）：
+
+```powershell
+.venv\Scripts\python.exe scripts/prepare_web_demos.py
+```
+
+验证：`python -m pytest -q`。浏览器检查需另装 `playwright`，运行 `python scripts/check_web_browser.py`（先准备演示报告、启动服务）。Windows 自动使用 Chrome/Edge；其他平台运行 `python -m playwright install chromium`，或通过 `WEB_BROWSER` 指定浏览器路径。此脚本检查三种场景、三个标签页和移动端溢出，并生成截图。
+
+交付截图与验证说明见 [docs/v06-web/README.md](docs/v06-web/README.md)。回放只反映保存时刻；历史文件缺失的新字段不会补造。当前调查单实例串行执行，服务重启后正在执行的调查不恢复。
