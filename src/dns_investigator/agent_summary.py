@@ -1,5 +1,5 @@
 """Compact model context. Full packets and measurements remain in the evidence ledger."""
-from .reporting import facts,issues,protocols
+from .reporting import facts,issues,protocols,protocol_findings
 from .dns_diagnosis import diagnose
 from .alias_scope import alias_paths
 import hashlib
@@ -28,7 +28,7 @@ def current_state(backend,response):
             row["record_aggregate"]=record_aggregate(row["records"],row.get("record_type"))
             row["records_omitted_count"]=len(row["records"])-16;row["records"]=row["records"][:16]
         measured.append(row)
-    findings=[{k:f[k] for k in ("code","status","scope","evidence_ids","explanation","limitations","next_checks","provenance","finding_status","validation_result_ids") if k in f} for f in diagnose(backend.calls)]
+    findings=[{k:f[k] for k in ("code","status","scope","evidence_ids","explanation","limitations","next_checks","provenance","finding_status","validation_result_ids") if k in f} for f in diagnose(backend.calls)+protocol_findings(backend)]
     partial=[dict(attempt_id=a["attempt_id"],queries=a["dns_execution_issues"]) for a in backend.attempts if a.get("dns_execution_issues")]
     scope=alias_paths(backend)
     blocked=[dict(tool_name=name,arguments=arguments) for name,arguments in (json.loads(x) for x in sorted(backend.blocked))]
@@ -36,7 +36,7 @@ def current_state(backend,response):
         error=response.get("error"),new_evidence_ids=[e["id"] for e in backend.owned_evidence(response.get("tool_call_id",response.get("attempt_id")))],
         fact_summary=measured,current_findings=findings,execution_issue_summary=[i.model_dump() for i in issues(backend.attempts)],
         partial_dns_issues=partial,authority_investigations=[dict(attempt_id=a["attempt_id"],**a["authority_state"]) for a in backend.attempts if a.get("authority_state")],
-        protocol_investigations=protocols(backend.attempts),validation_results=getattr(backend,"validation_results",[]),
+        protocol_investigations=protocols(backend.attempts),validation_results=[{k:v[k] for k in ("id","kind","local_result","reason_code","evidence_ids","validation_result_ids","scope") if k in v} for v in getattr(backend,"validation_results",[])],
         allowed_dns_targets=list(scope.values()),finish_now=backend.finish_now,
         query_scope=dict(independent_tool_targets=[backend.target.domain],query_dns_targets=list(scope),
             system_resolver_argument=None,configured_public_resolvers=[r for r in backend.resolvers if r is not None],

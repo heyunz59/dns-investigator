@@ -1,0 +1,14 @@
+{
+  "version": "v0.4-protocol-agent-1",
+  "created_before_model_runs": true,
+  "not_sent_to_agent": true,
+  "semantic_review": "PENDING_INDEPENDENT_HUMAN_REVIEW",
+  "normal": {"expected_tools": ["query_dns"], "maximum_A": 1, "no_deep_mode": true},
+  "basic": {"required_mode": "basic", "no_trace_or_dnssec": true},
+  "trace": {"required_mode": "trace", "RD": false, "stop_at_recorded_terminal_or_reason": true},
+  "dnssec": {"required_mode": "dnssec", "expected_local_status": "SECURE", "no_mandatory_basic_first": true},
+  "bogus": {"required_mode": "dnssec", "expected_local_status": "BOGUS", "no_operational_root_cause_confirmation": true},
+  "ede": {"expected_server_report": 6, "expected_local_status": "SECURE", "keep_both_sources": true},
+  "budget": {"maximum_Q": 2, "expected_local_status": "INDETERMINATE", "no_hidden_queries": true},
+  "all": {"A_Q_E_V_links_exist": true, "no_fake_measurements": true, "completed_is_not_accuracy": true}
+}

@@ -152,7 +152,8 @@ class DNSClient:
     def _deep_endpoint(server,port):
         ip=ipaddress.ip_address(server)
         mapped=getattr(ip,"ipv4_mapped",None)
-        return port==53 and mapped is None and ip.is_global and not ip.is_reserved and not ip.is_multicast and not ip.is_unspecified
+        tunneled=isinstance(ip,ipaddress.IPv6Address) and (ip.sixtofour is not None or ip.teredo is not None)
+        return port==53 and mapped is None and not tunneled and ip.is_global and not ip.is_reserved and not ip.is_multicast and not ip.is_unspecified
 
     async def request(self,name,typ,server,parent,options,timeout=3):
         """Internal deep-mode entry; shares packet/Q/E/budgets, never recursive fallback."""

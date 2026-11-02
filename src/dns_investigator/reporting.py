@@ -52,6 +52,32 @@ def protocols(attempts):
         **{k:v for k,v in a["protocol_state"].items() if k not in {"discovery","responses"}}) for a in attempts if a.get("protocol_state")]
 
 
+def protocol_findings(backend):
+    all_v={v["id"]:v for v in getattr(backend,"validation_results",[])}
+    rows=[]
+    for p in protocols(backend.attempts):
+        validation=p.get("validation")
+        if not validation:continue
+        ids=validation.get("validation_result_ids",[]);pending=list(ids);used=set();evidence=[]
+        while pending:
+            vid=pending.pop()
+            if vid in used:continue
+            used.add(vid)
+            if vid not in all_v:raise ModelRetry("程序验证结果引用了不存在的V。")
+            evidence.extend(all_v[vid]["evidence_ids"]);pending.extend(all_v[vid].get("validation_result_ids",[]))
+        status=validation["dnssec_status"]
+        rows.append(dict(code="DNSSEC_VALIDATION",stage=validation.get("failure_stage","dnssec"),status="observed",
+            provenance="locally_validated" if used else "observed",finding_status="confirmed_protocol_failure" if status=="BOGUS" else "indeterminate" if status=="INDETERMINATE" else "observed",
+            severity="warning" if status=="BOGUS" else "information",validation_result_ids=ids,
+            scope=validation.get("validation_scope",dict(target=p["target"],record_type=p["record_type"])),
+            evidence_ids=list(dict.fromkeys(evidence)),observed_facts=[],localization={},root_cause_confirmed=False,
+            explanation=f"本程序DNSSEC结果={status}；执行={validation['validation_execution']}；原因={validation['reason_code']}；范围={validation.get('validation_scope')}。",
+            limitations=["仅针对所列信任锚、策略、时刻和E/V链；不确认运维根因、全部NS或未来结果。"],
+            next_checks=["验证范围已完成，无额外异常时停止；不由SECURE推断所有路径正常。"] if status=="SECURE" else
+                ["按所列失败阶段及E/V链核对材料、策略和管理员配置意图；必要时用同锚/时刻的外部验证器对照，不盲目重复查询或修改配置。"] ))
+    return rows
+
+
 def validate_issue_refs(result,attempts):
     known={i.attempt_id:i for i in issues(attempts)}
     for issue in result.execution_issues:
@@ -76,7 +102,7 @@ def evidence_bound_report(result,backend):
     result.validation_results=getattr(backend,"validation_results",[])
     result.authority_investigations=[dict(attempt_id=a["attempt_id"],target=a["input"].get("domain"),record_type=a["input"].get("record_type","A"),
         **a["authority_state"]) for a in backend.attempts if a.get("authority_state")]
-    result.findings=[Finding(**f) for f in diagnose(backend.calls)]
+    result.findings=[Finding(**f) for f in diagnose(backend.calls)+protocol_findings(backend)]
     allowed_targets=alias_paths(backend)
     for finding in result.findings:
         name=finding.scope.get("target")
@@ -172,7 +198,7 @@ def evidence_bound_report(result,backend):
         recommendations += [f"外部对照可用 curl.exe -v -L '{backend.target.url}'，保留证书校验；IPv4/IPv6 可分别用 -4/-6 对照，不修改系统配置。",
             "现有 HTTP 工具不能绑定指定后端。外部专项检查可用 curl.exe --resolve 域名:端口:IP 配合原始 HTTPS URL，保留 Host/SNI 和证书校验。"]
     if result.request_kind!="query" and not invalid:
-        priority={"RECURSIVE_RESPONSE_DISAGREEMENT":0,"RECURSIVE_AUTH_RESPONSE_MISMATCH":0,"AUTHORITATIVE_RESPONSE_DISAGREEMENT":0,
+        priority={"DNSSEC_VALIDATION":-1,"RECURSIVE_RESPONSE_DISAGREEMENT":0,"RECURSIVE_AUTH_RESPONSE_MISMATCH":0,"AUTHORITATIVE_RESPONSE_DISAGREEMENT":0,
                   "RECURSIVE_QUERY_TIMEOUT":1,"AUTHORITATIVE_QUERY_TIMEOUT":1,"ALIAS_RESOLUTION_INCOMPLETE":2}
         checks=list(dict.fromkeys(c for f in sorted(result.findings,key=lambda f:priority.get(f.code,3)) for c in f.next_checks))[:3]
         if any(p.get("query_stage")=="discovery" and p.get("execution_status")=="error" for p in result.dns_comparison.get("paths",[])):
@@ -201,12 +227,15 @@ def assessment(result,measured):
         refused=[i for i in result.execution_issues if i.error_code.startswith("HTTP_")]
         text="没有取得有效测量证据，无法确认故障原因。"
         if refused:text+=" HTTP 安全策略阻止请求（"+"、".join(i.attempt_id+":"+i.error_code for i in refused)+"），不是已测得的网络故障。"
+        for p in result.protocol_investigations:
+            text+=f" {p['mode']} 未完成：{(p.get('validation') or {}).get('reason_code',p.get('stop_reason'))}；不能据此断言DNS协议故障。"
         return text,"insufficient_evidence"
-    if result.request_kind=="query":return ("单项查询的本次结果如下；不据此诊断其他路径或唯一根因。"+
+    if result.request_kind=="query" and not result.protocol_investigations:return ("单项查询的本次结果如下；不据此诊断其他路径或唯一根因。"+
         (" HTTP 安全策略拒绝后续目标，未向被拒绝目标发起请求；不是测得的网络故障。" if any(f.get("security_refusal") for f in measured) else "")),"query_measured"
     parts=[];localized=False
     for p in result.protocol_investigations:
-        parts.append(f"{p['attempt_id']} {p['mode']}：追踪完成={p.get('completed')}，停止原因={p.get('stop_reason')}，最后推进区域={p.get('last_successful_zone')}；范围仅为所列路径/选中服务器，AA与Root Hints均不是DNSSEC信任证明。")
+        parts.append(f"{p['attempt_id']} {p['mode']}：追踪完成={p.get('trace_completed',p.get('completed'))}，停止原因={p.get('stop_reason')}，最后成功区域={p.get('last_successful_zone')}；范围仅为所列路径/选中服务器，AA与Root Hints均不是DNSSEC信任证明。")
+        if p.get("validation"):parts.append(f"本地验证：{json.dumps(p['validation'],ensure_ascii=False)}")
     for state in result.authority_investigations:
         progress=state.get("progress") or {}
         completion="本轮选中子集检查已完成" if state.get("completed") else "权威调查尚未完成"

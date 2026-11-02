@@ -42,7 +42,7 @@ async def test_trace_budget_preserves_last_level_without_phantom_evidence():
     assert b.attempts[0]["error"]["code"]=="PARTIAL_DNS_EXECUTION_ERROR"
 
 
-async def test_unimplemented_mode_cannot_silently_execute_basic():
+async def test_invalid_mode_cannot_silently_execute_basic():
     async with protocol_lab() as lab:
-        b=lab.backend();r=await b.call("query_authoritative",domain=b.target.domain,mode="dnssec")
-    assert r["error"]["code"]=="MODE_NOT_IMPLEMENTED" and not b.calls and not b.dns.attempts
+        b=lab.backend();r=await b.call("query_authoritative",domain=b.target.domain,mode="unsupported")
+    assert r["error"]["reason"]=="UNSUPPORTED_AUTHORITY_MODE" and not b.calls and not b.dns.attempts

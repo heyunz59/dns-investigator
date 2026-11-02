@@ -173,6 +173,8 @@ class ToolBackend:
                    execution_status="ok", data={}, error=None)
         try:
             if self.fixture is not None:
+                if name=="query_authoritative" and args.get("mode","basic")!="basic":
+                    return self.reject(attempt,"FIXTURE_DEEP_MODE_UNSUPPORTED","聚合fixture不能伪造独立追踪或本地验证；本模式请使用受控协议服务。不会回退真实网络。",emit=False)
                 def matching(item):
                     expected = item["match"]
                     if name == "query_dns":
@@ -300,7 +302,8 @@ class ToolBackend:
         if mode=="trace":
             from .trace import TraceEngine
             return await TraceEngine(self,PARENT.get(),mode,timeout).run(domain,record_type)
-        return dict(mode=mode,execution_status="error",error=dict(code="MODE_NOT_IMPLEMENTED",retryable=False))
+        from .dnssec import investigate_dnssec
+        return await investigate_dnssec(self,PARENT.get(),domain,record_type,timeout)
 
     async def check_tcp(self, ip, port, timeout=5):
         sock = socket.socket(socket.AF_INET6 if ipaddress.ip_address(ip).version == 6 else socket.AF_INET,
