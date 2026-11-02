@@ -1,0 +1,124 @@
+{
+  "conclusion": "success",
+  "databaseId": 41456982090,
+  "headSha": "077d7efb0c41eb5d3fcb787d1448985c1bb349db",
+  "jobs": [
+    {
+      "completedAt": "2026-11-02T13:55:31Z",
+      "conclusion": "success",
+      "databaseId": 125316039188,
+      "name": "test",
+      "startedAt": "2026-11-02T13:54:09Z",
+      "status": "completed",
+      "steps": [
+        {
+          "completedAt": "2026-11-02T13:54:10Z",
+          "conclusion": "success",
+          "name": "Set up job",
+          "number": 1,
+          "startedAt": "2026-11-02T13:54:09Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-02T13:54:13Z",
+          "conclusion": "success",
+          "name": "Run actions/checkout@v4",
+          "number": 2,
+          "startedAt": "2026-11-02T13:54:10Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-02T13:54:14Z",
+          "conclusion": "success",
+          "name": "Run actions/setup-python@v5",
+          "number": 3,
+          "startedAt": "2026-11-02T13:54:13Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-02T13:54:28Z",
+          "conclusion": "success",
+          "name": "Run python -m pip install -r requirements-dev.txt",
+          "number": 4,
+          "startedAt": "2026-11-02T13:54:14Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-02T13:54:30Z",
+          "conclusion": "success",
+          "name": "Run python -m pip install --no-deps -e .",
+          "number": 5,
+          "startedAt": "2026-11-02T13:54:28Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-02T13:54:56Z",
+          "conclusion": "success",
+          "name": "Run python -m pytest -q",
+          "number": 6,
+          "startedAt": "2026-11-02T13:54:30Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-02T13:54:57Z",
+          "conclusion": "success",
+          "name": "Run python -m pip wheel --no-deps . --wheel-dir dist",
+          "number": 7,
+          "startedAt": "2026-11-02T13:54:56Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-02T13:55:14Z",
+          "conclusion": "success",
+          "name": "Run python scripts/check_installation.py --wheel-dir dist --output results/runs/linux-installation.json",
+          "number": 8,
+          "startedAt": "2026-11-02T13:54:57Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-02T13:55:16Z",
+          "conclusion": "success",
+          "name": "Run actions/upload-artifact@v4",
+          "number": 9,
+          "startedAt": "2026-11-02T13:55:14Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-02T13:55:28Z",
+          "conclusion": "success",
+          "name": "Run python scripts/check_public.py",
+          "number": 10,
+          "startedAt": "2026-11-02T13:55:16Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-02T13:55:28Z",
+          "conclusion": "success",
+          "name": "Post Run actions/setup-python@v5",
+          "number": 19,
+          "startedAt": "2026-11-02T13:55:28Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-02T13:55:28Z",
+          "conclusion": "success",
+          "name": "Post Run actions/checkout@v4",
+          "number": 20,
+          "startedAt": "2026-11-02T13:55:28Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-02T13:55:28Z",
+          "conclusion": "success",
+          "name": "Complete job",
+          "number": 21,
+          "startedAt": "2026-11-02T13:55:28Z",
+          "status": "completed"
+        }
+      ],
+      "url": "https://github.com/heyunz59/dns-investigator/actions/runs/41456982090/job/125316039188"
+    }
+  ],
+  "status": "completed",
+  "url": "https://github.com/heyunz59/dns-investigator/actions/runs/41456982090"
+}

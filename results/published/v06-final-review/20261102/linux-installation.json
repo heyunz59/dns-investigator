@@ -1,0 +1,257 @@
+{
+  "python": "3.12.15",
+  "platform": "linux",
+  "model_calls": 0,
+  "network_measurements": 0,
+  "dependency_environment": "existing installed dependencies retained; actual project install replaced for each phase",
+  "wheel_sha256": "e14025b1afe34b782c901173ef8b17024cf52003e8b8bbcd9727c5bdd865b583",
+  "phases": [
+    {
+      "kind": "editable",
+      "import_location": "checkout/src",
+      "module_and_asset_hashes": {
+        "network_policy.py": "da4a1fcd8798f54233ab583aebfaa3a79a1d2f80e87269e11759302477589647",
+        "web_view.py": "23e408699d884c226f90a5b1e54b867f1d965f03afe8fdc033ff374acf715e03",
+        "tools.py": "b7fbc07541199eba896f0caa153f934807f8b75aa03f10147d8463046fb45dfc",
+        "config.py": "0a78d432da55507f009c9d68edf0b5dd010b77054a358c7d50b28c9f9fde37f1",
+        "dnssec_validation.py": "7d9b6a84f6631a836dc5a7358f08cdcf5ab7a0cab51d0a9ddf6fbca4743a5fb4",
+        "web.py": "7892f9a41f86e8819b6bfbb45e99faa79c2e085da2a4e84783749f814d765ad5",
+        "main.py": "81a998611deb950b5aed7dbab4f923b0dbc7e09c795a408401bced22ad0cec07",
+        "dns_wire.py": "2ca50eca606f1423791ed1398899b8f3e2314c94e758dcf548ef59a5b53ec5f0",
+        "reporting.py": "7aba9b8da398847d698048368422e3997ef773494073ded89cde219afc3e16eb",
+        "report_replay.py": "d09edad4092e07d4867a79362d3193fb0e1cfe4e5a2e43f0be54bdb59cf3a7d1",
+        "privacy.py": "c60a85b4e2c903e5afed81cd8afea8b1ae6a0f3200e9fec4419a1a9af41bfee7",
+        "accounting.py": "bb091800613b42aa22583c3873d21aac0ff7fed089afdd69a8498c46502c84a3",
+        "dns_compare.py": "1a86059f04aa3799c044faf06bfe00f7d33be192078676b1953b1d78442b0772",
+        "dnssec_proof.py": "54a525c261345cae371717b8c5c3eece55816cfeb7a64faac435c3109a968f01",
+        "dns_diagnosis.py": "7b6dd4f516a4149118b1dd7fbe516f500f92731fdcfcf0101528487b25ff3743",
+        "alias_scope.py": "766d8dd18223900812cd5a1e1c25210f6c25e6c26dcc42a1f16e54cc3842d60a",
+        "path_groups.py": "3ffd0dc85a4c5d0cfcfc32437a1d6f31c97030977a37176839cc4d3a77afc447",
+        "schemas.py": "906637cfb243d2188930aeabaf2a2258bc2c65200cd662c141a58da427ed92be",
+        "agent.py": "4edf0d529b40936ad76ec73148dc8ee685c8894eb938b6a92deac03632f6dbac",
+        "dnssec.py": "d25bda313334e0fb2b903204e150e50eb7cf5abdc96c16e5e6bd080a877eaa14",
+        "edns.py": "f1e231a4027fc0fe61da58fed08ee93899c9fb1cb51d0caa1c4c565df0ed3de6",
+        "http_safety.py": "64058fdede7c3aa7a149655a92839d0d09694f3cc693b571a5e14f82c8c7de59",
+        "trace.py": "498676eb2ab6a3ce8cbae41abb8b2f1bb596cfcc0bba9b54ab8342070cca8284",
+        "network_errors.py": "df4b93832d77a43d334771706d8c03ee8b89c91ce79289586cdb76349a65adc1",
+        "diagnostic_reasoner.py": "f1e3f2128da8bbc804c402e040b01d89cd13bcb9ebb0ff6e7e56ebcc452cff0f",
+        "authority.py": "4202f8d39de3d5e9364038bade4210d42ba714f3de8fe2f0fad582d459b83c69",
+        "trust.py": "71fc6b12812731b9011532eb9f7277cb60d4ac46479d8c8498558dce987afe6e",
+        "agent_summary.py": "39810c7811c708d2175085649ff67647550e6c57442fe205729e6fe804878e5e",
+        "target.py": "cc3e570dcdd7fdbe13dbd755a34ed7bf4ce7fab9cd4590dd03e918fd736d428c",
+        "remediation.py": "d6196feb1104cb48809fd37c4a5c5ea561530a59caa5751c89e8517537670020",
+        "__init__.py": "5946cc6b8957bf5b3277da5da64dedffdd4a91d1281ab9b0a54c35dbee47ad7a",
+        "request_context.py": "6d77a44d659289607190b0132e181b8fae7dd3bca16cc371ad416654a00b2d34",
+        "assets/web.html": "146c639f425641e0f2256a4402da633acfb40012b708ea9fd5501f0834511c4b",
+        "assets/icannbundle.pem": "18ce7215812d1a2cad8d9d4d3d7c26f7235a9b5ec6f0c1e214e15230fd4f9e24",
+        "assets/web.css": "a29eb68baa54a9535be34c18b5bffd15dfd72fe1a29ebb207f2708fb3ab1934f",
+        "assets/web.js": "bbae803d4833d32639886f0ee6e606bdfb6b3b854fd311eecdb3798a9ba67d8c",
+        "assets/report.html": "b0420dd2ea067d6a1d77eb1981a9709a0fd165834c890a7af0a22a45dd0aee63",
+        "assets/report.css": "e49746bfc4331d868cf37e28ac760b38a75091f980a8502f88750cd5db87090f",
+        "assets/root-anchors.xml": "3ccaab38830025ee0a0f6c1f25769427544f81ea2865aa860468f3ef5278b908",
+        "assets/named.root": "9fd5ae176fd100295e97f9def704e30eb2d0f033ecf06a42dae04ed4be69c70b",
+        "assets/anchor-authentication.json": "ea61f306bf1c09246c699905b4d275473cbfd21be7e3e951df96f40571fe26ef",
+        "assets/sources.json": "c7b775996341b1052fd78661992ed95f40b91a102f71ce604a0ab356bbd4dcfa",
+        "assets/root-anchors.p7s": "644e0e22842c6b7a57fda13d286941fd7449a179f0a3763578fa9a251d307dd1"
+      },
+      "cli_cases": [
+        {
+          "entry": "module",
+          "case": 0,
+          "exit_code": 0,
+          "json_object": true,
+          "status": "help"
+        },
+        {
+          "entry": "module",
+          "case": 1,
+          "exit_code": 2,
+          "json_object": true,
+          "status": "failed"
+        },
+        {
+          "entry": "module",
+          "case": 2,
+          "exit_code": 2,
+          "json_object": true,
+          "status": "failed"
+        },
+        {
+          "entry": "module",
+          "case": 3,
+          "exit_code": 2,
+          "json_object": true,
+          "status": "failed"
+        },
+        {
+          "entry": "module",
+          "case": 4,
+          "exit_code": 0,
+          "json_object": true,
+          "status": "ended"
+        },
+        {
+          "entry": "console",
+          "case": 0,
+          "exit_code": 0,
+          "json_object": true,
+          "status": "help"
+        },
+        {
+          "entry": "console",
+          "case": 1,
+          "exit_code": 2,
+          "json_object": true,
+          "status": "failed"
+        },
+        {
+          "entry": "console",
+          "case": 2,
+          "exit_code": 2,
+          "json_object": true,
+          "status": "failed"
+        },
+        {
+          "entry": "console",
+          "case": 3,
+          "exit_code": 2,
+          "json_object": true,
+          "status": "failed"
+        },
+        {
+          "entry": "console",
+          "case": 4,
+          "exit_code": 0,
+          "json_object": true,
+          "status": "ended"
+        }
+      ],
+      "PYTHONPATH": "removed",
+      "cwd": "temporary directory outside checkout"
+    },
+    {
+      "kind": "wheel",
+      "import_location": "installed site-packages",
+      "module_and_asset_hashes": {
+        "network_policy.py": "da4a1fcd8798f54233ab583aebfaa3a79a1d2f80e87269e11759302477589647",
+        "web_view.py": "23e408699d884c226f90a5b1e54b867f1d965f03afe8fdc033ff374acf715e03",
+        "tools.py": "b7fbc07541199eba896f0caa153f934807f8b75aa03f10147d8463046fb45dfc",
+        "config.py": "0a78d432da55507f009c9d68edf0b5dd010b77054a358c7d50b28c9f9fde37f1",
+        "dnssec_validation.py": "7d9b6a84f6631a836dc5a7358f08cdcf5ab7a0cab51d0a9ddf6fbca4743a5fb4",
+        "web.py": "7892f9a41f86e8819b6bfbb45e99faa79c2e085da2a4e84783749f814d765ad5",
+        "main.py": "81a998611deb950b5aed7dbab4f923b0dbc7e09c795a408401bced22ad0cec07",
+        "dns_wire.py": "2ca50eca606f1423791ed1398899b8f3e2314c94e758dcf548ef59a5b53ec5f0",
+        "reporting.py": "7aba9b8da398847d698048368422e3997ef773494073ded89cde219afc3e16eb",
+        "report_replay.py": "d09edad4092e07d4867a79362d3193fb0e1cfe4e5a2e43f0be54bdb59cf3a7d1",
+        "privacy.py": "c60a85b4e2c903e5afed81cd8afea8b1ae6a0f3200e9fec4419a1a9af41bfee7",
+        "accounting.py": "bb091800613b42aa22583c3873d21aac0ff7fed089afdd69a8498c46502c84a3",
+        "dns_compare.py": "1a86059f04aa3799c044faf06bfe00f7d33be192078676b1953b1d78442b0772",
+        "dnssec_proof.py": "54a525c261345cae371717b8c5c3eece55816cfeb7a64faac435c3109a968f01",
+        "dns_diagnosis.py": "7b6dd4f516a4149118b1dd7fbe516f500f92731fdcfcf0101528487b25ff3743",
+        "alias_scope.py": "766d8dd18223900812cd5a1e1c25210f6c25e6c26dcc42a1f16e54cc3842d60a",
+        "path_groups.py": "3ffd0dc85a4c5d0cfcfc32437a1d6f31c97030977a37176839cc4d3a77afc447",
+        "schemas.py": "906637cfb243d2188930aeabaf2a2258bc2c65200cd662c141a58da427ed92be",
+        "agent.py": "4edf0d529b40936ad76ec73148dc8ee685c8894eb938b6a92deac03632f6dbac",
+        "dnssec.py": "d25bda313334e0fb2b903204e150e50eb7cf5abdc96c16e5e6bd080a877eaa14",
+        "edns.py": "f1e231a4027fc0fe61da58fed08ee93899c9fb1cb51d0caa1c4c565df0ed3de6",
+        "http_safety.py": "64058fdede7c3aa7a149655a92839d0d09694f3cc693b571a5e14f82c8c7de59",
+        "trace.py": "498676eb2ab6a3ce8cbae41abb8b2f1bb596cfcc0bba9b54ab8342070cca8284",
+        "network_errors.py": "df4b93832d77a43d334771706d8c03ee8b89c91ce79289586cdb76349a65adc1",
+        "diagnostic_reasoner.py": "f1e3f2128da8bbc804c402e040b01d89cd13bcb9ebb0ff6e7e56ebcc452cff0f",
+        "authority.py": "4202f8d39de3d5e9364038bade4210d42ba714f3de8fe2f0fad582d459b83c69",
+        "trust.py": "71fc6b12812731b9011532eb9f7277cb60d4ac46479d8c8498558dce987afe6e",
+        "agent_summary.py": "39810c7811c708d2175085649ff67647550e6c57442fe205729e6fe804878e5e",
+        "target.py": "cc3e570dcdd7fdbe13dbd755a34ed7bf4ce7fab9cd4590dd03e918fd736d428c",
+        "remediation.py": "d6196feb1104cb48809fd37c4a5c5ea561530a59caa5751c89e8517537670020",
+        "__init__.py": "5946cc6b8957bf5b3277da5da64dedffdd4a91d1281ab9b0a54c35dbee47ad7a",
+        "request_context.py": "6d77a44d659289607190b0132e181b8fae7dd3bca16cc371ad416654a00b2d34",
+        "assets/web.html": "146c639f425641e0f2256a4402da633acfb40012b708ea9fd5501f0834511c4b",
+        "assets/icannbundle.pem": "18ce7215812d1a2cad8d9d4d3d7c26f7235a9b5ec6f0c1e214e15230fd4f9e24",
+        "assets/web.css": "a29eb68baa54a9535be34c18b5bffd15dfd72fe1a29ebb207f2708fb3ab1934f",
+        "assets/web.js": "bbae803d4833d32639886f0ee6e606bdfb6b3b854fd311eecdb3798a9ba67d8c",
+        "assets/report.html": "b0420dd2ea067d6a1d77eb1981a9709a0fd165834c890a7af0a22a45dd0aee63",
+        "assets/report.css": "e49746bfc4331d868cf37e28ac760b38a75091f980a8502f88750cd5db87090f",
+        "assets/root-anchors.xml": "3ccaab38830025ee0a0f6c1f25769427544f81ea2865aa860468f3ef5278b908",
+        "assets/named.root": "9fd5ae176fd100295e97f9def704e30eb2d0f033ecf06a42dae04ed4be69c70b",
+        "assets/anchor-authentication.json": "ea61f306bf1c09246c699905b4d275473cbfd21be7e3e951df96f40571fe26ef",
+        "assets/sources.json": "c7b775996341b1052fd78661992ed95f40b91a102f71ce604a0ab356bbd4dcfa",
+        "assets/root-anchors.p7s": "644e0e22842c6b7a57fda13d286941fd7449a179f0a3763578fa9a251d307dd1"
+      },
+      "cli_cases": [
+        {
+          "entry": "module",
+          "case": 0,
+          "exit_code": 0,
+          "json_object": true,
+          "status": "help"
+        },
+        {
+          "entry": "module",
+          "case": 1,
+          "exit_code": 2,
+          "json_object": true,
+          "status": "failed"
+        },
+        {
+          "entry": "module",
+          "case": 2,
+          "exit_code": 2,
+          "json_object": true,
+          "status": "failed"
+        },
+        {
+          "entry": "module",
+          "case": 3,
+          "exit_code": 2,
+          "json_object": true,
+          "status": "failed"
+        },
+        {
+          "entry": "module",
+          "case": 4,
+          "exit_code": 0,
+          "json_object": true,
+          "status": "ended"
+        },
+        {
+          "entry": "console",
+          "case": 0,
+          "exit_code": 0,
+          "json_object": true,
+          "status": "help"
+        },
+        {
+          "entry": "console",
+          "case": 1,
+          "exit_code": 2,
+          "json_object": true,
+          "status": "failed"
+        },
+        {
+          "entry": "console",
+          "case": 2,
+          "exit_code": 2,
+          "json_object": true,
+          "status": "failed"
+        },
+        {
+          "entry": "console",
+          "case": 3,
+          "exit_code": 2,
+          "json_object": true,
+          "status": "failed"
+        },
+        {
+          "entry": "console",
+          "case": 4,
+          "exit_code": 0,
+          "json_object": true,
+          "status": "ended"
+        }
+      ],
+      "PYTHONPATH": "removed",
+      "cwd": "temporary directory outside checkout"
+    }
+  ],
+  "status": "PASS"
+}

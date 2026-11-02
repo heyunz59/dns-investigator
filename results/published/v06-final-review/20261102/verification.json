@@ -9,6 +9,34 @@
   "browser_record": "final-source-replay/validation.json",
   "new_public_measurements": 0,
   "new_model_calls": 0,
-  "remote_ci": "PENDING_PUSH",
-  "independent_human_semantic_review": "NOT_RUN"
+  "remote_ci": {
+    "url": "https://github.com/heyunz59/dns-investigator/actions/runs/41456982090",
+    "conclusion": "success",
+    "head_sha": "077d7efb0c41eb5d3fcb787d1448985c1bb349db",
+    "pytest": "604 passed in 24.54s",
+    "linux_installation": "PASS",
+    "public_audit": "PASS"
+  },
+  "independent_human_semantic_review": "NOT_RUN",
+  "business_source_sha": "077d7efb0c41eb5d3fcb787d1448985c1bb349db",
+  "committed_source_manifest": {
+    "src/dns_investigator/report_replay.py": {
+      "windows_worktree_sha256": "0afa79294a2c0fde2c3deda551ce9d58bd2e91d99d2743bcd46f11e39c11a6e5",
+      "git_source_sha256": "d09edad4092e07d4867a79362d3193fb0e1cfe4e5a2e43f0be54bdb59cf3a7d1",
+      "source_equivalent_after_CRLF_to_LF": true
+    },
+    "src/dns_investigator/web_view.py": {
+      "windows_worktree_sha256": "6002e0adf16e0d6ea5e55e0037aba4baad87969d123237a0042f876944b0d5e8",
+      "git_source_sha256": "23e408699d884c226f90a5b1e54b867f1d965f03afe8fdc033ff374acf715e03",
+      "source_equivalent_after_CRLF_to_LF": true
+    }
+  },
+  "windows_installation": "PASS",
+  "local_public_audit": "PASS: all refs + staged candidate files",
+  "runtime_modified_files": [
+    "src/dns_investigator/report_replay.py",
+    "src/dns_investigator/web_view.py"
+  ],
+  "remaining_P0_P1": "None identified within targeted controlled verification; not a guarantee of all semantic judgements",
+  "freeze_recommendation": "Freeze v0.6 after targeted acceptance; no further expansion this round"
 }

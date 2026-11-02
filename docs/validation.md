@@ -132,3 +132,5 @@ DNS 单项查询虽只使用 DNS 工具，但额外查询了 AAAA，超出了用
 ## v0.6 封版定向修复（2026-11-02）
 
 基于 75c16f7；修改前 584 passed in 41.48s。只修混合故障首页映射及历史只读回放，不改协议、安全、预算或页面布局。[修复、反例、来源与边界](v06-final-review.md)。冻结输入和独立回放位于 results/published/v06-final-review/20261102/，本轮不调用模型、不重新测量公网。最终 pytest、安装及远程 CI 回执见该目录 verification.json。
+
+最终源码 077d7ef：Windows 604 passed in 44.21s；Linux CI 604 passed in 24.54s，无跳过；两端 editable/wheel、20 个严格 JSON CLI 用例及全部模块/资产通过。[远程 CI](https://github.com/heyunz59/dns-investigator/actions/runs/41456982090)。9 组实际本机浏览器/离线 HTML 复测存 final-source-replay/；无新增公网或模型调用，未独立人工评分。
