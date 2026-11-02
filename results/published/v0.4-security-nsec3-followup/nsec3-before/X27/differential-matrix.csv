@@ -1,0 +1,2 @@
+﻿case_id,input_hash,changed_factor,project_status,unbound_status,project_reason,unbound_reason,proof_sufficient,evidence_files,rfc_basis,interpretation
+X27,a223c7b0eefb3a9e6d506c1ca747ed0c7700669b2606d53d6a1fecb09cd7a29a,"('multi_rdata', True)",BOGUS,SECURE,DENIAL_DOES_NOT_COVER_QUESTION,,PENDING_PROTOCOL_ANALYSIS,verifier-logs/X27-1-project.json,RFC5155 8.1-8.4,not adjudicated from status equality

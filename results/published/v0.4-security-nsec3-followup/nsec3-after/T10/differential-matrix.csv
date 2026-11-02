@@ -1,0 +1,2 @@
+﻿case_id,input_hash,changed_factor,project_status,unbound_status,project_reason,unbound_reason,proof_sufficient,evidence_files,rfc_basis,interpretation
+T10,f554ae1ae0327da57fda6534427e64a762bb52ac32d3f6d1a74827da892cfba8,extra iterations=1 parameter,SECURE,BOGUS,SUPPORTED_NEGATIVE_ANSWER_AUTHENTICATED,validation failure <probe.example.test. A IN>: nameerror proof failed from 127.0.0.12,PENDING_PROTOCOL_ANALYSIS,verifier-logs/T10-1-project.json,RFC5155 8.1-8.4,not adjudicated from status equality

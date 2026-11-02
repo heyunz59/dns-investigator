@@ -58,6 +58,10 @@ notepad .env
 
 HTTP 默认只授权输入 URL 的 scheme/host/port；同主机标准 HTTP:80 → HTTPS:443 可升级。其他跨域或端口跳转会保留已收到的响应并明确拒绝。确需授权时由用户在本地配置 `HTTP_ALLOWED_ORIGINS`（逗号分隔完整 origin），内网还需单独配置 `HTTP_ALLOWED_NETWORKS`（逗号分隔精确 CIDR）；两者默认均空。允许 origin 不等于允许其解析到内网，模型不能扩大这两个配置。HTTP 不使用环境代理，不关闭证书验证。
 
+TCP 同时要求本次目标范围内、有效且有时效限制的 DNS 地址证据、授权端口与独立网络访问许可。默认只允许公共地址；需诊断可信内网时，由用户配置 `TCP_ALLOWED_NETWORKS=10.20.0.0/16` 等严格 CIDR（默认空，非法 CIDR 导致配置错误）。它与 HTTP CIDR、系统 DNS 解析器许可相互独立。链路本地、组播、未指定、已知元数据地址和受限 IPv6 过渡地址即使有宽 CIDR 也拒绝。fixture 不会授权真实 TCP 连接；安全拒绝记录为调用问题，不冒充目标连接失败。
+
+本轮 [TCP/NSEC3 专项复核材料](results/published/v0.4-security-nsec3-followup/review-summary.md)包含 410 项本地测试、TCP 修复前后矩阵及 28 个签名 DNS 场景的独立 Unbound 对照。NSEC3 未知 Hash/保留 Flags 候选不再毒化其余充分证明；过滤候选不等于证明成立。迭代、盐、Opt-Out、跨区及多 RData 等支持边界仍可能返回 INDETERMINATE。Unbound 状态相同不代表完整协议正确，具体分歧与未决风险均保留在材料中。
+
 ```powershell
 .\.venv\Scripts\python.exe -m dns_investigator.main "其他网站正常，但 https://example.com/ 打不开，请调查"
 .\.venv\Scripts\python.exe -m dns_investigator.main "查询 example.com 的 A 记录"

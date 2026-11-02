@@ -1,0 +1,25 @@
+{
+  "git_commit": "0faab0104817919dd8bdd3632e73136ca809c38b",
+  "business_source_commit": "0faab0104817919dd8bdd3632e73136ca809c38b",
+  "python_version": "3.12.14",
+  "os": "Windows",
+  "harness_hashes": {
+    "document.py": "bc92d158ba140a8ff624cf27aee6044aa1d9c188b8e776dd134e0b6e015d512d",
+    "finalize.py": "b9fbf6b87df06f011eb28fcdfe1deb4ec7837ab5814f3b29dd08fb9b9362b1d3",
+    "reference.py": "967bfea4ce53c25595cb9692878ba1cb3065569a8f49d80e0def60bc1be14fec",
+    "run.py": "2edb3404ecff74f6e9578cce39e92a3a161ecb01f51408ad5700d089ea9b8401",
+    "__init__.py": "3a101bfe965ffb76bd73d5827e2565d191cafdc89dcb15f5f386bf88a81e9692"
+  },
+  "dnspython_version": "2.9.1",
+  "cryptography_version": "50.0.0",
+  "unbound_version": "1.26.2",
+  "unbound_binary_sha256": "52e1d1af39f59aaaf43653776eb8346a11bbe2cf0b314893d28049077333a022",
+  "business_hashes": {
+    "dnssec.py": "d25bda313334e0fb2b903204e150e50eb7cf5abdc96c16e5e6bd080a877eaa14",
+    "dnssec_proof.py": "54a525c261345cae371717b8c5c3eece55816cfeb7a64faac435c3109a968f01",
+    "dnssec_validation.py": "7d9b6a84f6631a836dc5a7358f08cdcf5ab7a0cab51d0a9ddf6fbca4743a5fb4"
+  },
+  "dnssec_algorithm_policy": "dns-investigator-dnssec-v1:8,13,14,15;DS2,4;RSA2048-4096;NSEC3-0-empty-salt",
+  "experiment_configuration": "Original Unbound config unchanged; new spawned context per run; no historical cache; only observer/response-variant injection",
+  "source_mode": "actual controlled loopback UDP; no LLM; signing seeds test-only, private material not exported"
+}

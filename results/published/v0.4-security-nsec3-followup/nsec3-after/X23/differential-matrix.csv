@@ -1,0 +1,2 @@
+﻿case_id,input_hash,changed_factor,project_status,unbound_status,project_reason,unbound_reason,proof_sufficient,evidence_files,rfc_basis,interpretation
+X23,a3f2e51de4e1ebf2d39111f4f0a08a42b557a63e2b2de5cd503336895a10bc82,"('bad_signatures', True)",BOGUS,BOGUS,DENIAL_DOES_NOT_COVER_QUESTION,validation failure <probe.example.test. A IN>: signature crypto failed from 127.0.0.12 for <GSPQM39NH1AJ967T5RB35MBB97HB60BG.example.test. NSEC3 IN>,PENDING_PROTOCOL_ANALYSIS,verifier-logs/X23-1-project.json,RFC5155 8.1-8.4,not adjudicated from status equality

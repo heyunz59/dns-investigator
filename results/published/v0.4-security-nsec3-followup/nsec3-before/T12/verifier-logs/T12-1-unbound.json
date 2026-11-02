@@ -1,0 +1,12 @@
+{
+  "reference_version": "1.26.2",
+  "secure": false,
+  "bogus": true,
+  "havedata": false,
+  "nxdomain": true,
+  "rcode": 3,
+  "answer_wire_hex": "0000818300010000000200010570726f6265076578616d706c6504746573740000010001c012000600010000003b0020026e73c01204686f7374c012000000010000003c0000003c0000003c0000003cc012002e00010000003b006000060f020000003c6ae81b9c6ae7ff7c6248076578616d706c65047465737400da0ffe51ed471883ffc74346a4c39a1d391de0c23b6488bf6b2a2235539ee76c9c00a9b4f2216d30d1e2f4e7ce155722f5d2fb35a55997c79398cac232f31c0000002904d0000080000000",
+  "why_bogus": "validation failure <probe.example.test. A IN>: covering NSEC3 was not opt-out in an opt-out DS NOERROR/NODATA case from 127.0.0.12 for DS probe.example.test. while building chain of trust",
+  "provenance": "external_reference_not_project_V",
+  "network_scope": "controlled_loopback_independent_iterator"
+}

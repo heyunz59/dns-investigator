@@ -26,7 +26,7 @@ async def test_dns_never_grants_network_access(ip,monkeypatch):
         again=await b.call('check_tcp',ip=ip,port=443)
         assert again['error']['code']=='NON_RETRYABLE_DUPLICATE'
 
-@pytest.mark.parametrize('ip',['1.1.1.1','2606:4700:4700::1111','10.0.0.1'])
+@pytest.mark.parametrize('ip',['1.1.1.1','2606:4700:4700::1111','10.0.0.1','2606:4700:4700:0:0:0:0:1111','2606:4700:4700::ABCD'])
 async def test_authorized_numeric_connection(ip,monkeypatch):
     b=authorize(ToolBackend(parse_target('example.com')),ip)
     seen=[]
@@ -63,3 +63,53 @@ def test_separate_cidrs_and_configuration(monkeypatch):
     for ip in ['169.254.169.254','fd00:ec2::254','64:ff9b::a00:1']:
         b.tcp_networks=networks(('0.0.0.0/0','::/0'))
         with pytest.raises(InputRejected):b._tcp_address(ip)
+
+async def test_fixture_cannot_enter_direct_live_socket(monkeypatch):
+    b=ToolBackend(parse_target('example.com'),Path('data/fixtures/Q1.json'))
+    await b.call('query_dns',domain=b.target.domain)
+    def forbidden(*a,**k):raise AssertionError('fixture must never create a socket')
+    import dns_investigator.tools as module
+    with monkeypatch.context() as m:
+        m.setattr(module.socket,'socket',forbidden)
+        r=await b.call('check_tcp',ip='192.0.2.10',port=443)
+        assert r['source_mode']=='fixture'
+        with pytest.raises(InputRejected):await b.check_tcp('192.0.2.10',443)
+
+async def test_current_cname_authorizes_address_but_stale_chain_does_not(monkeypatch):
+    import dns.message,dns.rrset
+    from dns_investigator.dns_wire import parse_response
+    b=ToolBackend(parse_target('example.com'))
+    q=dns.message.make_query('example.com','A');r=dns.message.make_response(q)
+    r.answer.append(dns.rrset.from_text('example.com.',60,'IN','CNAME','alias.example.'))
+    first=b.add_dns_evidence(parse_response(r,'example.com','A','1.1.1.1'),'TEST_DNS')
+    q=dns.message.make_query('alias.example','A');r=dns.message.make_response(q)
+    r.answer.append(dns.rrset.from_text('alias.example.',60,'IN','A','1.1.1.1'))
+    b.add_dns_evidence(parse_response(r,'alias.example','A','1.1.1.1'),'TEST_DNS')
+    async def connect(*a):pass
+    monkeypatch.setattr(asyncio.get_running_loop(),'sock_connect',connect)
+    assert (await b.call('check_tcp',ip='1.1.1.1',port=443))['data']['status']=='CONNECTED'
+    first['started_at']=(datetime.now(timezone.utc)-timedelta(days=1)).isoformat()
+    assert (await b.call('check_tcp',ip='1.1.1.1',port=443))['error']['code']=='INVALID_INPUT'
+
+async def test_tools_only_loads_tcp_config_without_model_key(monkeypatch):
+    from types import SimpleNamespace
+    from dns_investigator import main
+    seen=[]
+    def factory(*args,**kwargs):
+        seen.append(kwargs);b=ToolBackend(*args,**kwargs)
+        async def call(*a,**kw):return {}
+        b.call=call;return b
+    monkeypatch.setenv('TCP_ALLOWED_NETWORKS','10.1.0.0/16')
+    monkeypatch.setattr(main,'ToolBackend',factory)
+    result=await main.run(SimpleNamespace(question='example.com',target=None,tools_only=True,fixture=None,save_tools=None))
+    assert result==0 and seen[0]['tcp_allowed_networks']==('10.1.0.0/16',)
+
+async def test_security_refusal_is_execution_issue_not_tcp_measurement():
+    from evaluation.fcd_acceptance import report
+    b=authorize(ToolBackend(parse_target('example.com')),'10.0.0.1');b.tcp_networks=()
+    r=await b.call('check_tcp',ip='10.0.0.1',port=443)
+    output=report(b)
+    assert r['error']['reason']=='TCP_TARGET_ADDRESS_NOT_AUTHORIZED'
+    assert {f['tool'] for f in output.measured_facts}=={'query_dns'}
+    assert output.execution_issues[0].error_code=='INVALID_INPUT'
+    assert all(e['tool_name']!='check_tcp' for e in b.calls)

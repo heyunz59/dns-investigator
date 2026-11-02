@@ -1,0 +1,10 @@
+{
+  "before_business_commit": "20bd1ac",
+  "before_import_check": {
+    "file_kind": "isolated snapshot",
+    "sha256": "fc409eb8f0d2b2fa786017bb232c35083a5ae5188274055144936fcfa971696b"
+  },
+  "after_business_commit": "844fa49",
+  "after_proof_sha256": "008e0d3bc2cc468654e7dd98d289a0228a65858b17346eb46d62d745ca427a67",
+  "metadata_note": "per-case audit harness worktree hashes describe current checkout, not PYTHONPATH snapshot; this import check and immutable archived baseline identify actually loaded pre-fix code"
+}

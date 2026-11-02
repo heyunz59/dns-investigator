@@ -1,5 +1,9 @@
 # 验证记录
 
+## TCP 网络许可与 NSEC3 候选兼容性（2026-11-02）
+
+实际基线 2bacd75e：362 passed in25.66s；最终业务 0faab010：410 passed in25.36s，0 failed/0 skipped。Windows IPv6 loopback 运行通过，依赖检查与 wheel 模块/资产字节核对通过。TCP 修复前后各26例采用注入 DNS、拦截 socket 连接，不冒充真实内网探测。NSEC3 before/intermediate/final 各28例为受控本机 UDP 与独立 Unbound1.26.2 实际对照；未知 Hash/Flags 六个拆分场景、Next Hash、坏签名与剩余证明不足均有原始报文。T01/T05/T06 保持 BOGUS/SECURE/BOGUS；T01/T06/T10 及能力受限边界的 Unbound 分歧保留，未声称全部协议一致。本轮模型调用0。完整矩阵、源码身份、元数据局限及实际 CI 见 [专项材料](../results/published/v0.4-security-nsec3-followup/review-summary.md)。语义与协议独立人工审计仍待完成。
+
 ## v0.4 协议诊断（2026-11-02）
 
 基线3a0b1fa：271 passed in11.93s。最终业务133b49a：356 passed in24.90s，当前Windows无skip，pip check通过；旧并发/CNAME/调用统计/不可重试及IPv6回环保留。37例受控真实UDP/TCP签名数据与独立Unbound1.26.2：30个声明核心场景状态一致，另7项策略/材料/畸形边界如实区别。畸形hash名本程序BOGUS而参考SECURE，明确列为机械差异候选，待协议复核，不谎称全部一致。不是未见holdout或整体语义准确率。

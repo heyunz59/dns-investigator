@@ -1,0 +1,2 @@
+﻿case_id,input_hash,changed_factor,project_status,unbound_status,project_reason,unbound_reason,proof_sufficient,evidence_files,rfc_basis,interpretation
+T09,e947098f7c888d252277b56c3ba4001d71d2de3935b9225ac0f5a3fe19712bbb,valid semantics but invalid signatures,BOGUS,BOGUS,DENIAL_DOES_NOT_COVER_QUESTION,validation failure <probe.example.test. A IN>: signature crypto failed from 127.0.0.12 for <GSPQM39NH1AJ967T5RB35MBB97HB60BG.example.test. NSEC3 IN>,PENDING_PROTOCOL_ANALYSIS,verifier-logs/T09-1-project.json,RFC5155 8.1-8.4,not adjudicated from status equality

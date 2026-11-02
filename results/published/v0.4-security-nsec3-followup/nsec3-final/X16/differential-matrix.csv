@@ -1,0 +1,2 @@
+﻿case_id,input_hash,changed_factor,project_status,unbound_status,project_reason,unbound_reason,proof_sufficient,evidence_files,rfc_basis,interpretation
+X16,1a3e1d69e6b58d33290dad10a8d7be6bb39d29e761d4c90dc328968740ba2044,"('reserved_flags', False)",BOGUS,BOGUS,DENIAL_DOES_NOT_COVER_QUESTION,validation failure <probe.example.test. A IN>: nameerror proof failed from 127.0.0.12,PENDING_PROTOCOL_ANALYSIS,verifier-logs/X16-1-project.json,RFC5155 8.1-8.4,not adjudicated from status equality

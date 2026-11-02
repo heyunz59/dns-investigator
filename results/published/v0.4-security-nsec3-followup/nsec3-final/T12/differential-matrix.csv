@@ -1,0 +1,2 @@
+﻿case_id,input_hash,changed_factor,project_status,unbound_status,project_reason,unbound_reason,proof_sufficient,evidence_files,rfc_basis,interpretation
+T12,3b0c46047de8c15b9276d4b7059a7fe344a6c8cb3d3765b4382a816e794e79ed,no denial records,BOGUS,BOGUS,DENIAL_DOES_NOT_COVER_QUESTION,validation failure <probe.example.test. A IN>: covering NSEC3 was not opt-out in an opt-out DS NOERROR/NODATA case from 127.0.0.12 for DS probe.example.test. while building chain of trust,PENDING_PROTOCOL_ANALYSIS,verifier-logs/T12-1-project.json,RFC5155 8.1-8.4,not adjudicated from status equality

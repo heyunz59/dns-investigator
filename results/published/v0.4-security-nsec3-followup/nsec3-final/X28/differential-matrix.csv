@@ -1,0 +1,2 @@
+﻿case_id,input_hash,changed_factor,project_status,unbound_status,project_reason,unbound_reason,proof_sufficient,evidence_files,rfc_basis,interpretation
+X28,09d9a90a9e8648878b2168486ebf040251e0994f93c2294058e3985ef024ff8c,"('opt_out', False)",INDETERMINATE,BOGUS,NSEC3_PARAMETERS_OR_OPT_OUT,validation failure <probe.example.test. A IN>: nameerror proof failed from 127.0.0.12,PENDING_PROTOCOL_ANALYSIS,verifier-logs/X28-1-project.json,RFC5155 8.1-8.4,not adjudicated from status equality

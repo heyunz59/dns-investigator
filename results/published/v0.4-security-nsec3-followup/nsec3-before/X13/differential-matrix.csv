@@ -1,0 +1,2 @@
+﻿case_id,input_hash,changed_factor,project_status,unbound_status,project_reason,unbound_reason,proof_sufficient,evidence_files,rfc_basis,interpretation
+X13,8e3ed9b012376e0b9528d74a9527be61f91be80b0966656bf982d15b859f9a9d,"('unknown_hash', True)",INDETERMINATE,SECURE,NSEC3_PARAMETERS_OR_OPT_OUT,,PENDING_PROTOCOL_ANALYSIS,verifier-logs/X13-1-project.json,RFC5155 8.1-8.4,not adjudicated from status equality

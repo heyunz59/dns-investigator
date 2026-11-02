@@ -1,0 +1,324 @@
+[
+  {
+    "phase": "project",
+    "server_index": 0,
+    "qname": "probe.example.test.",
+    "qtype": 1,
+    "query": {
+      "path": "raw-wire/X26-1-000-query.wire",
+      "sha256": "977202b6e49b01ab72a4ac57af87a16c846c03822fd8b5a2ec23e8939243e6ae"
+    },
+    "response": {
+      "path": "raw-wire/X26-1-000-response.wire",
+      "sha256": "d7c96dd79a67c57c2e75494dcf257934472063fa64087c8308d6924c3352252b"
+    }
+  },
+  {
+    "phase": "project",
+    "server_index": 1,
+    "qname": "probe.example.test.",
+    "qtype": 1,
+    "query": {
+      "path": "raw-wire/X26-1-001-query.wire",
+      "sha256": "632e00dcf6b7160ac8ffaad3a6d499026fbd112fa6cf1d8334a8df8baee79934"
+    },
+    "response": {
+      "path": "raw-wire/X26-1-001-response.wire",
+      "sha256": "054b8bb30ad8722d48456846ca04edd35b9d9396a378226c944d7392e42b39b6"
+    }
+  },
+  {
+    "phase": "project",
+    "server_index": 2,
+    "qname": "probe.example.test.",
+    "qtype": 1,
+    "query": {
+      "path": "raw-wire/X26-1-002-query.wire",
+      "sha256": "ec41b188a0bceb69934b1ae1878d9ff04a07cc0c9d3ed73c0ba0851deefd6950"
+    },
+    "response": {
+      "path": "raw-wire/X26-1-002-response.wire",
+      "sha256": "223cf21c36f1cb54053d9beb023e15b899eaa5c6d4e83ef5126c11cdffad003e"
+    }
+  },
+  {
+    "phase": "project",
+    "server_index": 0,
+    "qname": ".",
+    "qtype": 48,
+    "query": {
+      "path": "raw-wire/X26-1-003-query.wire",
+      "sha256": "c460655a5d5450df308acfba004f60e8fad276d088b1bb574af598376833778d"
+    },
+    "response": {
+      "path": "raw-wire/X26-1-003-response.wire",
+      "sha256": "d86624a42258a123bf77555bad9dd6e7a918330c689fcdaa3c1898493333d61f"
+    }
+  },
+  {
+    "phase": "project",
+    "server_index": 0,
+    "qname": "test.",
+    "qtype": 43,
+    "query": {
+      "path": "raw-wire/X26-1-004-query.wire",
+      "sha256": "390f167fb72b6711a9e021070d83b1fea2166f5082ae8ba8ed196e775178f426"
+    },
+    "response": {
+      "path": "raw-wire/X26-1-004-response.wire",
+      "sha256": "eb0ff13b7e571cbb20eacc7868267a100d0cda16a8ae850bcdbbe020d5614361"
+    }
+  },
+  {
+    "phase": "project",
+    "server_index": 1,
+    "qname": "test.",
+    "qtype": 48,
+    "query": {
+      "path": "raw-wire/X26-1-005-query.wire",
+      "sha256": "f6d0c757191d70d3f845efe2d0bacef16934327ee4e81712c0ce1964a666c957"
+    },
+    "response": {
+      "path": "raw-wire/X26-1-005-response.wire",
+      "sha256": "7e55ddb4f2549d60a37c900fe1a6d2c4615235656b04610dc2a26d2a817a9b84"
+    }
+  },
+  {
+    "phase": "project",
+    "server_index": 1,
+    "qname": "example.test.",
+    "qtype": 43,
+    "query": {
+      "path": "raw-wire/X26-1-006-query.wire",
+      "sha256": "c590c4ba7f3ee2c365fa3c42700510f41a7549847968bd4ef705499cb7ff04b2"
+    },
+    "response": {
+      "path": "raw-wire/X26-1-006-response.wire",
+      "sha256": "31b9a28ac7cad6adcba4822992ca181f152a4a14033aa8eaadb923a71262aed9"
+    }
+  },
+  {
+    "phase": "project",
+    "server_index": 2,
+    "qname": "example.test.",
+    "qtype": 48,
+    "query": {
+      "path": "raw-wire/X26-1-007-query.wire",
+      "sha256": "19e6873dfa6af03b07a24fa39586a311981380466552bac227318f180bfb49d6"
+    },
+    "response": {
+      "path": "raw-wire/X26-1-007-response.wire",
+      "sha256": "4e19ef7b69bf5e29580e43b8a38f1beb26daf7f55666c5d6612765e83a19da57"
+    }
+  },
+  {
+    "phase": "unbound",
+    "server_index": 0,
+    "qname": ".",
+    "qtype": 2,
+    "query": {
+      "path": "raw-wire/X26-1-008-query.wire",
+      "sha256": "2ce5f87820288a5cdd95735592f1694436243c00e255f5ad0577ed955742be52"
+    },
+    "response": {
+      "path": "raw-wire/X26-1-008-response.wire",
+      "sha256": "02a423716fd98673abb35da2ce6a2903b67021a4603f14cb197c1457942b80c8"
+    }
+  },
+  {
+    "phase": "unbound",
+    "server_index": 0,
+    "qname": "probe.example.test.",
+    "qtype": 1,
+    "query": {
+      "path": "raw-wire/X26-1-009-query.wire",
+      "sha256": "381db3101bd97822f3a791d674e25ee25cbb10a44fc5b4d568ff9b3b7cd0926c"
+    },
+    "response": {
+      "path": "raw-wire/X26-1-009-response.wire",
+      "sha256": "ee0024495a365329c69d0d9ca23dfd39ac7220162c97f485ed94764016b51593"
+    }
+  },
+  {
+    "phase": "unbound",
+    "server_index": 0,
+    "qname": "probe.example.test.",
+    "qtype": 1,
+    "query": {
+      "path": "raw-wire/X26-1-010-query.wire",
+      "sha256": "e9f361e757dc4503040b11c18aec070009fe884f06558126cb55ec9b13ca1d10"
+    },
+    "response": {
+      "path": "raw-wire/X26-1-010-response.wire",
+      "sha256": "f350cfcca1f43f0ca147e6d5b38614a63a9279a2e65ff184a9830ca676c00378"
+    }
+  },
+  {
+    "phase": "unbound",
+    "server_index": 1,
+    "qname": "probe.example.test.",
+    "qtype": 1,
+    "query": {
+      "path": "raw-wire/X26-1-011-query.wire",
+      "sha256": "6ad4b01a8753f33f7fb5f94765a784ceec26eaf79f81e21a77518b886417e089"
+    },
+    "response": {
+      "path": "raw-wire/X26-1-011-response.wire",
+      "sha256": "29f19c1680492625fe77f1ef5df36a20ff1195b618848e5d492d99704863f194"
+    }
+  },
+  {
+    "phase": "unbound",
+    "server_index": 2,
+    "qname": "probe.example.test.",
+    "qtype": 1,
+    "query": {
+      "path": "raw-wire/X26-1-012-query.wire",
+      "sha256": "2133c79004176eac87ff82c412caa794b00b8e7c63beefd4139f77619cc91d36"
+    },
+    "response": {
+      "path": "raw-wire/X26-1-012-response.wire",
+      "sha256": "a86cc9d012f1388de8bd07c4007dc34d5b2ce31920e60affdac75ed4ee61b327"
+    }
+  },
+  {
+    "phase": "unbound",
+    "server_index": 0,
+    "qname": ".",
+    "qtype": 48,
+    "query": {
+      "path": "raw-wire/X26-1-013-query.wire",
+      "sha256": "24f80cf1f356fbe13ca496ea08fac2b332d895e6872d00f7cb8ed7f4a25bbc56"
+    },
+    "response": {
+      "path": "raw-wire/X26-1-013-response.wire",
+      "sha256": "e6fe23260a54bfa83fee1f2b4f6b940c5d4aa984a31b1b3274c1e0aa89e5a760"
+    }
+  },
+  {
+    "phase": "unbound",
+    "server_index": 0,
+    "qname": "test.",
+    "qtype": 43,
+    "query": {
+      "path": "raw-wire/X26-1-014-query.wire",
+      "sha256": "91b067ec558d97b11fcbcafad4e7119ace62420c76fb9f90ac490e2729c305fa"
+    },
+    "response": {
+      "path": "raw-wire/X26-1-014-response.wire",
+      "sha256": "abe92e2c6e5da6c772bb47837f5eb2d73ca8af857eaf6b27b1199ef79c06bf0a"
+    }
+  },
+  {
+    "phase": "unbound",
+    "server_index": 1,
+    "qname": "test.",
+    "qtype": 48,
+    "query": {
+      "path": "raw-wire/X26-1-015-query.wire",
+      "sha256": "ac427c9795489dd8e415159bc2d6dd507e48e8313f2ca6131f3372761d32db24"
+    },
+    "response": {
+      "path": "raw-wire/X26-1-015-response.wire",
+      "sha256": "accc9002f00ee70c584079b2f544cf68bb13ac7358f12285c7076b33bf5c35fb"
+    }
+  },
+  {
+    "phase": "unbound",
+    "server_index": 1,
+    "qname": "example.test.",
+    "qtype": 43,
+    "query": {
+      "path": "raw-wire/X26-1-016-query.wire",
+      "sha256": "d408f0368467435cfbb2b2c0903c9a0743ca8d1aaa3a1d97f93233b27b19db63"
+    },
+    "response": {
+      "path": "raw-wire/X26-1-016-response.wire",
+      "sha256": "38cca74cdfdb1036951687661484c013e90b2cd9a9987426897a27cdfeac54c7"
+    }
+  },
+  {
+    "phase": "unbound",
+    "server_index": 2,
+    "qname": "example.test.",
+    "qtype": 48,
+    "query": {
+      "path": "raw-wire/X26-1-017-query.wire",
+      "sha256": "d1aedea758d73b888634a27886bf5047a21d4ee33542ab3c68bcb225d5ceac75"
+    },
+    "response": {
+      "path": "raw-wire/X26-1-017-response.wire",
+      "sha256": "9a20d3db1af45c8d0ae9d1ed62f7e7eb092146fe8b56895a5613f773334529bf"
+    }
+  },
+  {
+    "phase": "unbound",
+    "server_index": 2,
+    "qname": "probe.example.test.",
+    "qtype": 1,
+    "query": {
+      "path": "raw-wire/X26-1-018-query.wire",
+      "sha256": "f19b08d1264630dc036d5f1cd66a2d12a0708dfe57a95a0e3445181285509fa1"
+    },
+    "response": {
+      "path": "raw-wire/X26-1-018-response.wire",
+      "sha256": "4cbdab34187b18ec8678ad78d849339b2d66fdbfc59595f39d881c2a179e9de4"
+    }
+  },
+  {
+    "phase": "unbound",
+    "server_index": 2,
+    "qname": "probe.example.test.",
+    "qtype": 1,
+    "query": {
+      "path": "raw-wire/X26-1-019-query.wire",
+      "sha256": "e3bae6fb46f70c2d1f3a7f261ee2f21ac68bac4edeb7bb3b4837cf64ebfd7d16"
+    },
+    "response": {
+      "path": "raw-wire/X26-1-019-response.wire",
+      "sha256": "ef2e60506f918b83c3599efe8f408d131b758eb9d8635a815627fbdb3470342d"
+    }
+  },
+  {
+    "phase": "unbound",
+    "server_index": 2,
+    "qname": "probe.example.test.",
+    "qtype": 1,
+    "query": {
+      "path": "raw-wire/X26-1-020-query.wire",
+      "sha256": "0d23857f4432bf0a812f5bfc654f7dce70d41fd3bfe68db246c7398f9ce37e39"
+    },
+    "response": {
+      "path": "raw-wire/X26-1-020-response.wire",
+      "sha256": "e7cda655f942834cb5953f729df15bfffd3d3e519f284d0b9811ae92cf687f37"
+    }
+  },
+  {
+    "phase": "unbound",
+    "server_index": 2,
+    "qname": "probe.example.test.",
+    "qtype": 1,
+    "query": {
+      "path": "raw-wire/X26-1-021-query.wire",
+      "sha256": "7510419a442c80c4c7630036750c48ddacb2d353e7745d98f4c75f95ec8c6859"
+    },
+    "response": {
+      "path": "raw-wire/X26-1-021-response.wire",
+      "sha256": "5439ef18673fea1d99041b1baafc036421b0165ebb379a1a33574c859fc0a708"
+    }
+  },
+  {
+    "phase": "unbound",
+    "server_index": 2,
+    "qname": "probe.example.test.",
+    "qtype": 1,
+    "query": {
+      "path": "raw-wire/X26-1-022-query.wire",
+      "sha256": "ede36bfa5174c004179532ec766a3057ab7e46cafb9869090b2939406fe381c8"
+    },
+    "response": {
+      "path": "raw-wire/X26-1-022-response.wire",
+      "sha256": "89b9a65e91ecaadbcd0b4eb88d776cc908a42b2f107f80225b33f0338a77ed29"
+    }
+  }
+]

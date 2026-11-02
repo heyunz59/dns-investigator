@@ -1,0 +1,80 @@
+{
+  "qname": "probe.example.test.",
+  "qtype": "A",
+  "qclass": "IN",
+  "zone": "example.test.",
+  "closest_encloser": "example.test.",
+  "next_closer": "probe.example.test.",
+  "wildcard": "*.example.test.",
+  "hashes": {
+    "example.test.": "JBAS736CHUNG3BB701JKJDHQKQLHVUG7",
+    "probe.example.test.": "9VBMDRN5GAIGLEM11UAC4DILR4CPMA1R",
+    "*.example.test.": "6CAN7N9ISON37DM8PIL7TS42F3KFOO3N"
+  },
+  "records": [
+    {
+      "owner": "JBAS736CHUNG3BB701JKJDHQKQLHVUG7.example.test.",
+      "owner_hash": "JBAS736CHUNG3BB701JKJDHQKQLHVUG7",
+      "next_hash": "9VBMDRN5GAIGLEM11UAC4DILR4CPMA1R",
+      "bitmap": [
+        "NS",
+        "SOA",
+        "RRSIG",
+        "DNSKEY",
+        "NSEC3"
+      ],
+      "base32hex_valid": true,
+      "signature_validation": "PASSED",
+      "signature": "JBAS736CHUNG3BB701JKJDHQKQLHVUG7.example.test. 60 IN RRSIG NSEC3 15 3 60 20261102051213 20261102031213 25160 example.test. 1d6fpWwvXl1VCJmQytOkL7+RjW2D7xcR 5cJKvup3/Y9iHc6Q1yxh3qqValOjvTeH fJYufuIlEOU06U97fF1RCA==",
+      "parameters": {
+        "algorithm": 1,
+        "iterations": 0,
+        "salt": "",
+        "flags": 0
+      },
+      "covers": {
+        "example.test.": false,
+        "probe.example.test.": false,
+        "*.example.test.": true
+      },
+      "exact": {
+        "example.test.": true,
+        "probe.example.test.": false,
+        "*.example.test.": false
+      },
+      "project_used": "invalid owner rejects complete proof pool",
+      "unbound_used": "UNKNOWN: infer via differential tests plus source, not instrumented internal execution"
+    },
+    {
+      "owner": "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!.example.test.",
+      "owner_hash": "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!",
+      "next_hash": "VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV",
+      "bitmap": [
+        "A",
+        "RRSIG",
+        "NSEC3"
+      ],
+      "base32hex_valid": false,
+      "signature_validation": "PASSED",
+      "signature": "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!.example.test. 60 IN RRSIG NSEC3 15 3 60 20261102051213 20261102031213 25160 example.test. zeO/tKugK4TMpZQsck3SlXnUCVv6zHnZ 8Na0g44D/ozeOXs92yQ9Jc6Z+Kum2j+O 2e5MEDqb8woI/Mu3fwMXDw==",
+      "parameters": {
+        "algorithm": 1,
+        "iterations": 0,
+        "salt": "",
+        "flags": 0
+      },
+      "covers": {
+        "example.test.": true,
+        "probe.example.test.": true,
+        "*.example.test.": true
+      },
+      "exact": {
+        "example.test.": false,
+        "probe.example.test.": false,
+        "*.example.test.": false
+      },
+      "project_used": "invalid owner rejects complete proof pool",
+      "unbound_used": "UNKNOWN: infer via differential tests plus source, not instrumented internal execution"
+    }
+  ]
+}

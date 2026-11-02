@@ -1,0 +1,2 @@
+﻿case_id,input_hash,changed_factor,project_status,unbound_status,project_reason,unbound_reason,proof_sufficient,evidence_files,rfc_basis,interpretation
+X15,aa69c1a85ec52b0272e78e8597e683978c58740d9c0f62e1f9c5cee05967c6ef,"('reserved_flags', True)",SECURE,SECURE,SUPPORTED_NEGATIVE_ANSWER_AUTHENTICATED,,PENDING_PROTOCOL_ANALYSIS,verifier-logs/X15-1-project.json,RFC5155 8.1-8.4,not adjudicated from status equality

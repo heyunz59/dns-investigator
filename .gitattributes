@@ -5,3 +5,4 @@ src/dns_investigator/assets/named.root -whitespace
 results/published/nsec3-divergence-audit/** -text whitespace=cr-at-eol
 # Diagnostic vendor output retains its original trailing whitespace.
 results/published/nsec3-divergence-audit/reference-debug/verifier-logs/*.log -whitespace
+results/published/v0.4-security-nsec3-followup/** -text whitespace=cr-at-eol
