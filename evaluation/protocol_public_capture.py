@@ -6,11 +6,11 @@ from dns_investigator.target import parse_target
 from evaluation.fcd_acceptance import report
 
 
-async def capture(out):
+async def capture(out,domain="cloudflare.com"):
     if out.exists():raise FileExistsError("Preserve experiments")
     rows=[]
     for mode in ("trace","dnssec"):
-        b=ToolBackend(parse_target("cloudflare.com"));b.max_auth_servers=1;b.dns_tool_timeout=12;b.dns.limit=16
+        b=ToolBackend(parse_target(domain));b.max_auth_servers=1;b.dns_tool_timeout=12;b.dns.limit=16
         returned=await b.call("query_authoritative",domain=b.target.domain,mode=mode,timeout=2)
         rows.append(dict(mode=mode,returned=returned,attempts=b.attempts,dns_attempts=b.dns.attempts,
             evidence=b.calls,validation_results=getattr(b,"validation_results",[]),report=report(b).model_dump()))
@@ -21,5 +21,5 @@ async def capture(out):
 
 
 if __name__=="__main__":
-    parser=argparse.ArgumentParser();parser.add_argument("out",type=Path)
-    asyncio.run(capture(parser.parse_args().out))
+    parser=argparse.ArgumentParser();parser.add_argument("out",type=Path);parser.add_argument("--domain",default="cloudflare.com")
+    args=parser.parse_args();asyncio.run(capture(args.out,args.domain))

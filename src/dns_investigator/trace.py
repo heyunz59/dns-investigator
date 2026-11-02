@@ -125,6 +125,9 @@ class TraceEngine:
                         last_reason="NON_AUTHORITATIVE_ANSWER" if r.get("answer") else "UNRELATED_OR_NON_PROGRESSING_REFERRAL";continue
                     referral=max(refs,key=lambda x:len(name(x["name"]).labels));child=text(name(referral["name"]))
                     if r.get("flags",{}).get("AA"):last_reason="INCONSISTENT_REFERRAL_AA";continue
+                    # A valid parent referral is an observed successful layer,
+                    # even if the child NS-address dependency cannot be resolved.
+                    if depth==0:self.state["last_successful_zone"]=zone
                     selected=[];dependency_errors=[]
                     for host in referral["values"][:self.backend.max_auth_servers]:
                         host=text(name(host));glue=[]

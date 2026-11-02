@@ -21,7 +21,9 @@ async def test_independent_wire_trace_and_boundaries(monkeypatch,scenario,comple
     assert "trace" in report(b).diagnostic_assessment
     if scenario=="out_of_bailiwick":assert any(q["qname"]=="ns.other.test." and q["index"]==3 for q in lab.received)
     if scenario=="unrelated":assert {q["index"] for q in lab.received}=={0}
-    if scenario=="cycle":assert state["stop_reason"]=="NS_OR_ALIAS_DEPENDENCY_CYCLE"
+    if scenario=="cycle":
+        assert state["stop_reason"]=="NS_OR_ALIAS_DEPENDENCY_CYCLE"
+        assert state["last_successful_zone"]=="test."
     if scenario=="truncation":assert [q["transport"] for q in b.dns.attempts][:2]==["UDP","TCP"]
     if scenario=="cname":assert any(q["qname"]=="target.other.test." for q in lab.received)
     if scenario=="timeout":assert state["last_successful_zone"]=="test." and state["last_delegated_zone"]=="example.test."
