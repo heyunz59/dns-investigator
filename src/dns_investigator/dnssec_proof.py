@@ -8,7 +8,7 @@ class ProofUnsupported(Exception):pass
 def nsec3_candidate(rr,zone):
     """Eligibility only; never establishes signature validity or proof sufficiency."""
     if len(rr)!=1:return 'policy_limited','NSEC3_RRSET_STRUCTURE'
-    if rr.name.parent()!=zone:return 'ignored','NSEC3_WRONG_OWNER_ZONE'
+    if rr.name.parent()!=zone:return 'policy_limited','NSEC3_OWNER_ZONE_AMBIGUOUS'
     data=rr[0]
     if data.algorithm!=1:return 'ignored','NSEC3_UNKNOWN_HASH'
     if data.flags not in {0,1}:return 'ignored','NSEC3_RESERVED_FLAGS'

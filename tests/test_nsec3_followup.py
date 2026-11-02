@@ -15,6 +15,10 @@ def test_ineligible_candidates_cannot_poison_or_complete_proof(kind,complete):
     if kind=='next':d=d.replace(next=b'\xff'*19)
     rr=dns.rrset.from_rdata_list(rr.name,60,[d])
     if kind=='zone':rr.name=dns.name.from_text('0'*32+'.other.example.test.')
+    if kind=='zone':
+        assert nsec3_candidate(rr,z)[0]=='policy_limited'
+        with pytest.raises(ProofUnsupported,match='OWNER_ZONE'):denial(q,1,'NXDOMAIN',z,valid+[rr],lambda:None)
+        return
     assert nsec3_candidate(rr,z)[0]=='ignored'
     assert denial(q,1,'NXDOMAIN',z,valid+[rr],lambda:None) is complete
 
