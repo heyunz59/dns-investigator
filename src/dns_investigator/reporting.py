@@ -96,6 +96,7 @@ def validate_fact_claims(result,evidence):
 def evidence_bound_report(result,backend):
     """Authoritative facts + constrained candidate relationships, no prose fact synthesis."""
     measured=facts(backend.calls)
+    result.measurement_provenance={e['id']:dict(measurement_location=e.get('measurement_location'),execution_status=e.get('execution_status'),query_attempt_id=e.get('query_attempt_id'),query_attempt_recorded=any(q.get('query_attempt_id')==e.get('query_attempt_id') and q.get('evidence_id')==e['id'] for q in backend.dns.attempts),attempt_id=e.get('tool_call_id'),attempt_recorded=any(a['attempt_id']==e.get('tool_call_id') for a in backend.attempts)) for e in backend.calls}
     result.request_context=getattr(backend,'request_context',{})
     result.measured_facts=measured
     result.execution_issues=issues(backend.attempts)
@@ -230,7 +231,7 @@ def evidence_bound_report(result,backend):
     # Legacy fields retain their audit-detail role; the high-level summary is the
     # single user-facing diagnosis. Keep exact no-evidence and single-query output.
     if measured and result.request_kind!='query':
-        heading=result.diagnostic_conclusion.summary if result.diagnostic_conclusion else '并列观测，未确定主次：'+'；'.join(d.summary for d in result.secondary_diagnoses)
+        heading=(result.diagnostic_summary.get('title')+'。'+result.diagnostic_summary['explanation']) if result.diagnostic_summary.get('title') else result.diagnostic_conclusion.summary if result.diagnostic_conclusion else '并列观测，未确定主次：'+'；'.join(d.summary for d in result.secondary_diagnoses)
         result.conclusion=heading+' '+result.conclusion
         result.diagnostic_assessment=heading+' '+result.diagnostic_assessment
     return result

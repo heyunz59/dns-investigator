@@ -180,7 +180,26 @@ def attach(result,backend=None):
         for step in steps:step.id=f'D{i+1}-'+step.id
         d.remediation_steps=[s for s in steps if s.action_type!='VERIFY']
         d.verification_steps=[s for s in steps if s.action_type=='VERIFY']
+        if d.diagnostic_group_id:
+            server=d.location[0]['resolver']
+            for step in steps:
+                step.diagnostic_group_ids=[d.diagnostic_group_id];step.query_attempt_ids=d.query_attempt_ids
+                step.applicable_scope=[dict(row,query_attempt_id=result.measurement_provenance[row['evidence_id']].get('query_attempt_id') if result.measurement_provenance[row['evidence_id']].get('query_attempt_recorded') else None) for row in d.affected_scope]
+                step.title=f"{server} 路径："+step.title
+                text={
+                    'CHECK':f'核对 {server} 本组 {d.grouped_observation_count} 次已测查询的可达性，并与所列同名同类型正常路径对照；分别记录复测时间与结果，不自动扩大查询范围。',
+                    'POSSIBLE_FIX':f'仅当复测确认 {server} 的服务或本机访问策略有具体配置问题且具备权限时，修正对应设置；本次没有依据修改目标域名 DNS 记录。',
+                    'VERIFY':f'从相同位置复测 {server} 的授权查询，记录时间、新 E/Q 与响应或错误类别；一次恢复不等于永久修复。'}[step.action_type]
+                step.description=text;step.instructions=[text]
+                step.safety_notes.append('内部发现的 NS 名称不自动获得 query_dns 独立目标授权；必要时使用原发现流程或先取得相应授权。')
+                step.method['group_queries']=d.affected_scope
         result.remediation_plan+=steps
+    from .path_groups import overview
+    overview(result)
+    if result.diagnostic_groups and any(g.grouped_observation_count>1 for g in result.diagnostic_groups):
+        special=[s for s in result.recommendations if any(x in s for x in ('.invalid','fixture/synthetic','安全策略'))]
+        result.recommendations=list(dict.fromkeys(special+[g.remediation_steps[0].description for g in result.diagnostic_groups]+[
+            '对照所列同名同类型、同来源/位置/时间的成功路径；仅在确认具体配置问题且具备管理权限后操作，不直接修改目标域名记录。']))
     # Candidate wording is never promoted to a validated fact. Only reviewed scoped
     # relationships survive, and source limitations accompany the model's ranking.
     result.candidate_analysis=[dict(hypothesis_id=h.id,statement=h.statement,status='CANDIDATE',

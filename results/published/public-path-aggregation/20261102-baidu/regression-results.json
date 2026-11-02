@@ -1,0 +1,20 @@
+{
+  "baseline": "f5fa411",
+  "baseline_pytest": {
+    "passed": 551,
+    "seconds": 40.44
+  },
+  "final_pytest": {
+    "passed": 571,
+    "failed": 0,
+    "skipped": 0,
+    "seconds": 40.69
+  },
+  "added_tests": 20,
+  "pip_check": "PASS",
+  "mode": "historical replay; constructed unit cases; actual local browser only",
+  "new_public_measurements": 0,
+  "new_model_calls": 0,
+  "ci": "PENDING_ACTUAL_RUN",
+  "independent_human_semantic_acceptance": "NOT_RUN"
+}

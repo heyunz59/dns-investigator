@@ -19,9 +19,11 @@ def summary(result):
     def short(text):return str(text)[:260]+('…（完整内容见日志）' if len(str(text))>260 else '')
     d=result.get('diagnostic_conclusion')
     all_d=([d] if d else [])+result.get('secondary_diagnoses',[])
-    if not d and all_d:print('并列异常/未完成范围：没有足够依据选择唯一主诊断。')
+    overview=result.get('diagnostic_summary') or {}
+    if overview.get('title'):print('诊断结论：'+overview['title']);print(overview['explanation'])
+    elif not d and all_d:print('并列异常/未完成范围：没有足够依据选择唯一主诊断。')
     for index,item in enumerate(all_d):
-        label='诊断结论' if d and index==0 else '并列/次要观测'
+        label='路径异常组' if item.get('diagnostic_group_id') else '诊断结论' if d and index==0 else '并列/次要观测'
         print(label+'：'+item['summary']+' ['+item['diagnosis_status']+']')
         print('位置：'+short(item['fault_location']))
         print('观测与等级：'+short(item['cause'])+' ['+item['cause_status']+']')

@@ -66,6 +66,9 @@ class RemediationBranch(BaseModel):
 
 
 class RemediationStep(BaseModel):
+    diagnostic_group_ids: list[str] = Field(default_factory=list)
+    query_attempt_ids: list[str] = Field(default_factory=list)
+    applicable_scope: list[dict] = Field(default_factory=list)
     method: dict = Field(default_factory=dict)
     branches: list[RemediationBranch] = Field(default_factory=list)
     id: str
@@ -87,6 +90,10 @@ class RemediationStep(BaseModel):
 
 
 class DiagnosticConclusion(BaseModel):
+    diagnostic_group_id: str | None = None
+    grouped_observation_count: int = 1
+    query_attempt_ids: list[str] = Field(default_factory=list)
+    grouped_findings: list[dict] = Field(default_factory=list)
     status_code: int | None = None
     error_details: dict = Field(default_factory=dict)
     location: list[dict] = Field(default_factory=list)
@@ -126,6 +133,9 @@ class DiagnosticConclusion(BaseModel):
 
 
 class InvestigationResult(BaseModel):
+    diagnostic_groups: list[DiagnosticConclusion] = Field(default_factory=list)
+    diagnostic_summary: dict = Field(default_factory=dict)
+    measurement_provenance: dict = Field(default_factory=dict)
     request_context: dict = Field(default_factory=dict)
     diagnosis_selection_mode: Literal['primary','parallel'] = 'primary'
     diagnostic_conclusion: DiagnosticConclusion | None = None

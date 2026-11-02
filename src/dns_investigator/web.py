@@ -20,6 +20,8 @@ ENV = Environment(loader=FileSystemLoader(str(ASSETS)), autoescape=select_autoes
 LABELS = {'CONFIRMED_PROTOCOL_ISSUE': '已确认协议异常', 'FAULT_LOCALIZED': '已定位异常范围，根因未确认', 'LIKELY_CAUSE': '存在候选原因，尚待验证', 'NO_FAULT_OBSERVED': '本次未观察到明确故障', 'INSUFFICIENT_EVIDENCE': '证据不足，暂无法确定'}
 
 def present(log):
+    from .report_replay import canonical
+    log=canonical(log)
     r = log.get('result', log)
     if not isinstance(r, dict): r = {}
     d = r.get('diagnostic_conclusion') or {}
@@ -31,7 +33,8 @@ def present(log):
         checks = [next((s for s in x.get('remediation_steps', []) if s.get('action_type') == 'CHECK'), None) for x in diagnoses]
         checks = [s for s in checks if s]
         steps = checks + [s for s in steps if s not in checks]
-    return dict(title='多个独立异常，无法确认唯一主因' if parallel else d.get('summary') or r.get('diagnostic_assessment') or r.get('conclusion') or '尚无有效测量',
+    overview=r.get('diagnostic_summary') or {}
+    view=dict(title=overview.get('title') or ('多个独立异常，无法确认唯一主因' if parallel else d.get('summary') or r.get('diagnostic_assessment') or r.get('conclusion') or '尚无有效测量'),
         label='多个异常并列' if parallel else LABELS.get(status, LABELS['INSUFFICIENT_EVIDENCE']),
         tone='uncertain' if parallel else 'good' if status == 'NO_FAULT_OBSERVED' else 'bad' if status in ('CONFIRMED_PROTOCOL_ISSUE', 'FAULT_LOCALIZED') else 'uncertain',
         diagnoses=diagnoses, steps=steps, location=d.get('fault_location') or '未取得可确认的位置',
@@ -41,7 +44,11 @@ def present(log):
         validations=log.get('validation_results') or r.get('validation_results', []),
         attempts=log.get('attempts', []), dns_attempts=log.get('dns_attempts', []),
         limitations=r.get('limitations', []) + ([r['report_fallback_reason']] if r.get('report_fallback_reason') else []),
-        issues=r.get('execution_issues', []), state=log.get('status', '历史回放'), result=r)
+        issues=r.get('execution_issues', []), state=log.get('status', '历史回放'), result=r,diagnostic_groups=r.get('diagnostic_groups',[]),diagnostic_summary=overview)
+    if overview.get('title'):
+        view.update(label='部分路径异常' if overview.get('successful_dns') else '路径超时，缺少对照',tone='uncertain',
+            location='；'.join(g['fault_location'] for g in r.get('diagnostic_groups',[])),explanation=overview['explanation'])
+    return view
 
 class Start(BaseModel):
     target: str = Field(min_length=1, max_length=2048)
@@ -93,7 +100,8 @@ def create_app(history_dir=Path('results/runs')):
     async def report(key: str): return present(read(key))
     @app.get('/api/reports/{key}/export')
     async def export(key: str):
-        return Response(json.dumps(read(key), ensure_ascii=False, indent=2), media_type='application/json', headers={'Content-Disposition': 'attachment; filename="investigation.json"'})
+        from .report_replay import canonical
+        return Response(json.dumps(canonical(read(key)), ensure_ascii=False, indent=2), media_type='application/json', headers={'Content-Disposition': 'attachment; filename="investigation.json"'})
     @app.post('/api/import')
     async def import_report(request: Request):
         chunks = bytearray()

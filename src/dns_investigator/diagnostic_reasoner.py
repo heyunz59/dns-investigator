@@ -200,6 +200,8 @@ def reason(result):
             '本次已测范围未发现明确异常。' if normal else '没有足够有效测量完成故障定位。',
             '仅为本次已测路径的状态，不确认客户端原因。' if facts else '没有取得有效测量证据，无法确认故障原因。',
             list(facts),'NO_FAULT_OBSERVED' if normal else 'INSUFFICIENT_EVIDENCE',detected=False if normal else None)
+    from .path_groups import aggregate
+    candidates=aggregate(result,candidates,facts)
     primary,secondary=select_diagnoses(result,candidates,facts,add)
     for d in ([primary] if primary else [])+secondary:
         d.relevant_attempt_ids=list(dict.fromkeys(d.relevant_attempt_ids+[i.attempt_id for i in result.execution_issues]))
@@ -258,6 +260,16 @@ def select_diagnoses(result,candidates,facts,add):
 def validate_diagnostics(result,attempts):
     es={f['evidence_id'] for f in result.measured_facts};vs={v['id'] for v in result.validation_results}
     codes={f.code for f in result.findings};aids={a['attempt_id'] for a in attempts}
+    group_ids=[g.diagnostic_group_id for g in result.diagnostic_groups]
+    if len(group_ids)!=len(set(group_ids)):raise ValueError('Duplicate diagnostic group')
+    from .path_groups import qualify,stamp,WINDOW_SECONDS
+    facts={f['evidence_id']:f for f in result.measured_facts}
+    for g in result.diagnostic_groups:
+        rows=[facts[e] for e in g.direct_evidence_ids]
+        if g.grouped_observation_count!=len(set(g.direct_evidence_ids)) or not all(qualify(f,result.measurement_provenance) and f.get('transport_status')=='timeout' and f.get('resolver_role')=='recursive' for f in rows):raise ValueError('Invalid grouped observation')
+        if len({(f.get('resolver'),f.get('source_mode'),result.measurement_provenance[f['evidence_id']].get('measurement_location')) for f in rows})!=1 or max(stamp(f) for f in rows)-min(stamp(f) for f in rows)>WINDOW_SECONDS:raise ValueError('Incompatible group scope')
+        expected={result.measurement_provenance[e].get('query_attempt_id') for e in g.direct_evidence_ids if result.measurement_provenance[e].get('query_attempt_recorded')}-{None}
+        if set(g.query_attempt_ids)!=expected:raise ValueError('Grouped Q sources do not match E')
     for d in [result.diagnostic_conclusion]+result.secondary_diagnoses:
         if d is None:continue
         if not set(d.direct_evidence_ids+d.dependency_evidence_ids).issubset(d.evidence_ids) or not set(d.direct_validation_ids+d.dependency_validation_ids).issubset(d.validation_ids):
