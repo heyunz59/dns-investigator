@@ -1,0 +1,7 @@
+{
+  "status": "REPRODUCED",
+  "environment": "fresh uninstalled venv; outside checkout; no PYTHONPATH",
+  "exit_code": 1,
+  "error": "ModuleNotFoundError: No module named dns_investigator",
+  "stdout_empty": true
+}

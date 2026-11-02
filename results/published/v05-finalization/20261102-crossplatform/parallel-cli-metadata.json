@@ -1,0 +1,9 @@
+{
+  "mode": "actual CLI run with constructed report and stubbed investigation; no model/network calls",
+  "exit_code": 0,
+  "complete_report_unchanged": true,
+  "redaction": "only local log path replaced; original stdout retained ignored locally",
+  "actions": 3,
+  "http_check": true,
+  "tcp_check": true
+}

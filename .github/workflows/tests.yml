@@ -8,6 +8,13 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - run: pip install -r requirements-dev.txt
+      - run: python -m pip install -r requirements-dev.txt
+      - run: python -m pip install --no-deps -e .
       - run: python -m pytest -q
+      - run: python -m pip wheel --no-deps . --wheel-dir dist
+      - run: python scripts/check_installation.py --wheel-dir dist --output results/runs/linux-installation.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: linux-installation
+          path: results/runs/linux-installation.json
       - run: python scripts/check_public.py

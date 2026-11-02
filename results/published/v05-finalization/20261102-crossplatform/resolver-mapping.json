@@ -1,0 +1,240 @@
+[
+  {
+    "case": "system",
+    "source": "constructed provenance and authorization metadata; no network measurement",
+    "fact": {
+      "evidence_id": "E1",
+      "target": "probe.example",
+      "record_type": "A",
+      "resolver": "10.0.0.53",
+      "source_mode": "live"
+    },
+    "parent_attempts": [
+      {
+        "attempt_id": "A1",
+        "tool_name": "query_dns",
+        "input": {
+          "domain": "probe.example",
+          "record_type": "A",
+          "resolver": null
+        }
+      }
+    ],
+    "method": {
+      "kind": "current_tool",
+      "supported_by_current_tools": true,
+      "parameters": {
+        "domain": "probe.example",
+        "record_type": "A",
+        "resolver": null
+      },
+      "parameters_constructed": true,
+      "authorization_status": "accepted_by_current_validation",
+      "can_execute_now": false,
+      "description": "参数映射经本次工具准入检查；尚未执行，也未预留预算。新调查仍须重新校验目标、解析器和预算；系统配置可能已变化。",
+      "tool_name": "query_dns"
+    },
+    "policy_and_ledgers_unchanged": true
+  },
+  {
+    "case": "explicit_public",
+    "source": "constructed provenance and authorization metadata; no network measurement",
+    "fact": {
+      "evidence_id": "E1",
+      "target": "probe.example",
+      "record_type": "A",
+      "resolver": "1.1.1.1",
+      "source_mode": "live"
+    },
+    "parent_attempts": [
+      {
+        "attempt_id": "A1",
+        "tool_name": "query_dns",
+        "input": {
+          "domain": "probe.example",
+          "record_type": "A",
+          "resolver": "1.1.1.1"
+        }
+      }
+    ],
+    "method": {
+      "kind": "current_tool",
+      "supported_by_current_tools": true,
+      "parameters": {
+        "domain": "probe.example",
+        "record_type": "A",
+        "resolver": "1.1.1.1"
+      },
+      "parameters_constructed": true,
+      "authorization_status": "accepted_by_current_validation",
+      "can_execute_now": false,
+      "description": "参数映射经本次工具准入检查；尚未执行，也未预留预算。新调查仍须重新校验目标、解析器和预算；系统配置可能已变化。",
+      "tool_name": "query_dns"
+    },
+    "policy_and_ledgers_unchanged": true
+  },
+  {
+    "case": "unauthorized_private",
+    "source": "constructed provenance and authorization metadata; no network measurement",
+    "fact": {
+      "evidence_id": "E1",
+      "target": "probe.example",
+      "record_type": "A",
+      "resolver": "10.20.0.53",
+      "source_mode": "live"
+    },
+    "parent_attempts": [
+      {
+        "attempt_id": "A1",
+        "tool_name": "query_dns",
+        "input": {
+          "domain": "probe.example",
+          "record_type": "A",
+          "resolver": "10.20.0.53"
+        }
+      }
+    ],
+    "method": {
+      "kind": "external_read_only",
+      "supported_by_current_tools": false,
+      "parameters": {
+        "domain": "probe.example",
+        "record_type": "A",
+        "resolver": "10.20.0.53"
+      },
+      "parameters_constructed": true,
+      "authorization_status": "rejected",
+      "can_execute_now": false,
+      "description": "解析器路径来源或当前授权不完整；仅外部只读核对，不扩展 DNS_RESOLVERS。"
+    },
+    "policy_and_ledgers_unchanged": true
+  },
+  {
+    "case": "historical_unknown",
+    "source": "constructed provenance and authorization metadata; no network measurement",
+    "fact": {
+      "evidence_id": "E1",
+      "target": "probe.example",
+      "record_type": "A",
+      "resolver": "10.0.0.53",
+      "source_mode": "live"
+    },
+    "parent_attempts": [],
+    "method": {
+      "kind": "external_read_only",
+      "supported_by_current_tools": false,
+      "parameters": {},
+      "parameters_constructed": false,
+      "authorization_status": "unknown",
+      "can_execute_now": false,
+      "description": "解析器路径来源或当前授权不完整；仅外部只读核对，不扩展 DNS_RESOLVERS。"
+    },
+    "policy_and_ledgers_unchanged": true
+  },
+  {
+    "case": "compare_system",
+    "source": "constructed provenance and authorization metadata; no network measurement",
+    "fact": {
+      "evidence_id": "E1",
+      "target": "probe.example",
+      "record_type": "A",
+      "resolver": "10.0.0.53",
+      "source_mode": "live"
+    },
+    "parent_attempts": [
+      {
+        "attempt_id": "A1",
+        "tool_name": "compare_resolvers",
+        "input": {
+          "domain": "probe.example",
+          "record_type": "A",
+          "resolver": null
+        }
+      }
+    ],
+    "method": {
+      "kind": "current_tool",
+      "supported_by_current_tools": true,
+      "parameters": {
+        "domain": "probe.example",
+        "record_type": "A",
+        "resolver": null
+      },
+      "parameters_constructed": true,
+      "authorization_status": "accepted_by_current_validation",
+      "can_execute_now": false,
+      "description": "参数映射经本次工具准入检查；尚未执行，也未预留预算。新调查仍须重新校验目标、解析器和预算；系统配置可能已变化。",
+      "tool_name": "query_dns"
+    },
+    "policy_and_ledgers_unchanged": true
+  },
+  {
+    "case": "compare_public",
+    "source": "constructed provenance and authorization metadata; no network measurement",
+    "fact": {
+      "evidence_id": "E1",
+      "target": "probe.example",
+      "record_type": "A",
+      "resolver": "1.1.1.1",
+      "source_mode": "live"
+    },
+    "parent_attempts": [
+      {
+        "attempt_id": "A1",
+        "tool_name": "compare_resolvers",
+        "input": {
+          "domain": "probe.example",
+          "record_type": "A",
+          "resolver": null
+        }
+      }
+    ],
+    "method": {
+      "kind": "current_tool",
+      "supported_by_current_tools": true,
+      "parameters": {
+        "domain": "probe.example",
+        "record_type": "A",
+        "resolver": "1.1.1.1"
+      },
+      "parameters_constructed": true,
+      "authorization_status": "accepted_by_current_validation",
+      "can_execute_now": false,
+      "description": "参数映射经本次工具准入检查；尚未执行，也未预留预算。新调查仍须重新校验目标、解析器和预算；系统配置可能已变化。",
+      "tool_name": "query_dns"
+    },
+    "policy_and_ledgers_unchanged": true
+  },
+  {
+    "case": "compare_overlap",
+    "source": "constructed provenance and authorization metadata; no network measurement",
+    "fact": {
+      "evidence_id": "E1",
+      "target": "probe.example",
+      "record_type": "A",
+      "resolver": "1.1.1.1",
+      "source_mode": "live"
+    },
+    "parent_attempts": [
+      {
+        "attempt_id": "A1",
+        "tool_name": "compare_resolvers",
+        "input": {
+          "domain": "probe.example",
+          "record_type": "A",
+          "resolver": null
+        }
+      }
+    ],
+    "method": {
+      "kind": "external_read_only",
+      "supported_by_current_tools": false,
+      "parameters": {},
+      "parameters_constructed": false,
+      "authorization_status": "unknown",
+      "can_execute_now": false,
+      "description": "解析器路径来源或当前授权不完整；仅外部只读核对，不扩展 DNS_RESOLVERS。"
+    },
+    "policy_and_ledgers_unchanged": true
+  }
+]

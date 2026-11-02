@@ -1,5 +1,43 @@
 """Read-only checks and conditional changes; instructions are never executed."""
 from .schemas import RemediationStep,RemediationBranch
+import ipaddress
+
+
+def dns_method(f,backend):
+    """Read original call intent, then use the existing admission check without I/O."""
+    result=dict(kind='external_read_only',supported_by_current_tools=False,parameters={},
+        parameters_constructed=False,authorization_status='unknown',can_execute_now=False,
+        description='解析器路径来源或当前授权不完整；仅外部只读核对，不扩展 DNS_RESOLVERS。')
+    if backend is None:return result
+    evidence=next((e for e in backend.calls if e['id']==f.get('evidence_id')),None)
+    if evidence is None:return result
+    parent=next((a for a in backend.attempts if a['attempt_id']==evidence.get('tool_call_id')),None)
+    if parent is None:return result
+    args=parent.get('input',{});actual=f.get('resolver')
+    if not args.get('domain') or args['domain'].lower().rstrip('.')!=f['target'].lower().rstrip('.') or args.get('record_type','A')!=f.get('record_type'):return result
+    try:
+        server=str(ipaddress.ip_address(actual))
+        if parent['tool_name']=='query_dns':
+            requested=args.get('resolver')
+            if requested is not None and str(ipaddress.ip_address(requested))!=server:return result
+            resolver=requested
+        elif parent['tool_name']=='compare_resolvers':
+            explicit={str(ipaddress.ip_address(r)) for r in backend.resolvers if r is not None}
+            system={str(ipaddress.ip_address(r)) for r in backend.dns.system[:2]} if None in backend.resolvers else set()
+            if server in explicit and server not in system:resolver=server
+            elif server in system and server not in explicit:resolver=None
+            else:return result # overlap has no per-packet original-path metadata
+        else:return result
+        parameters=dict(domain=f['target'],record_type=f['record_type'],resolver=resolver)
+        result.update(parameters=parameters,parameters_constructed=True)
+        backend._validate('query_dns',parameters)
+        if resolver is None and not backend.dns.system:return result
+    except (ValueError,TypeError):
+        result['authorization_status']='rejected';return result
+    result.update(kind='current_tool',tool_name='query_dns',supported_by_current_tools=True,
+        authorization_status='accepted_by_current_validation',
+        description='参数映射经本次工具准入检查；尚未执行，也未预留预算。新调查仍须重新校验目标、解析器和预算；系统配置可能已变化。')
+    return result
 
 
 def branches(d):
@@ -48,7 +86,7 @@ def branches(d):
         branch('仍无有效证据或被安全策略阻止','不能证明远端服务故障','先核对参数/授权/执行问题，不自动扩大目标范围。')]
 
 
-def plan(diagnosis, query=False):
+def plan(diagnosis, query=False,backend=None):
     d=diagnosis
     if query and d.diagnosis_status=='NO_FAULT_OBSERVED':return []
     if d.diagnosis_status=='NO_FAULT_OBSERVED' or d.primary_issue=='FOCUS_UNMEASURED':
@@ -120,9 +158,7 @@ def plan(diagnosis, query=False):
         elif not synthetic and d.affected_scope:
             f=d.affected_scope[0]
             if d.fault_layer=='Recursive DNS' and f.get('record_type'):
-                step.method=dict(kind='current_tool',tool_name='query_dns',supported_by_current_tools=True,
-                    parameters=dict(domain=f['target'],record_type=f['record_type'],resolver=f.get('resolver')),
-                    description='后续新的授权调查中的候选检查；仍须目标、解析器、时效和预算校验，尚未执行。')
+                step.method=dns_method(f,backend)
             elif d.fault_layer=='TCP/Network Transport':
                 step.method=dict(kind='current_tool',tool_name='check_tcp',supported_by_current_tools=True,
                     parameters=dict(ip=f['target'],port=f.get('port')),
@@ -130,7 +166,7 @@ def plan(diagnosis, query=False):
     return steps
 
 
-def attach(result):
+def attach(result,backend=None):
     from .diagnostic_reasoner import reason
     result.diagnostic_conclusion,result.secondary_diagnoses=reason(result)
     if result.report_fallback_reason:
@@ -140,7 +176,7 @@ def attach(result):
     result.remediation_plan=[]
     for i,d in enumerate([result.diagnostic_conclusion]+result.secondary_diagnoses):
         if d is None:continue
-        steps=plan(d,result.request_kind=='query')
+        steps=plan(d,result.request_kind=='query',backend)
         for step in steps:step.id=f'D{i+1}-'+step.id
         d.remediation_steps=[s for s in steps if s.action_type!='VERIFY']
         d.verification_steps=[s for s in steps if s.action_type=='VERIFY']

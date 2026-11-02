@@ -1,0 +1,240 @@
+{
+  "python": "3.12.14",
+  "platform": "win32",
+  "model_calls": 0,
+  "network_measurements": 0,
+  "dependency_environment": "existing installed dependencies retained; actual project install replaced for each phase",
+  "wheel_sha256": "b2f3702a62f7d2ddb055bf8c621e1fa74164448a03ad047d1829b8b9c36bf75c",
+  "phases": [
+    {
+      "kind": "editable",
+      "import_location": "checkout/src",
+      "module_and_asset_hashes": {
+        "accounting.py": "bb091800613b42aa22583c3873d21aac0ff7fed089afdd69a8498c46502c84a3",
+        "agent.py": "a6c4357a34fb1a6ab50dc4afb994fa3a45e064190d2c12a3ed2b64f1e42124f5",
+        "agent_summary.py": "66bdd1e46dd25d817758b717b71451d3d2352400da39efd24896f4519543e539",
+        "alias_scope.py": "8de965f6b153abf61e771f9bc9793dc2874f1396a47e63daf44e2d27df66b758",
+        "authority.py": "7bfd81fb62a1d472ee1ed41da4637bf31de776628cfad74e7dd54010aeccb865",
+        "config.py": "78b2b5a6690ec4b83f1d08ba3135d263870850bf1806ae39f6e052ab464592df",
+        "diagnostic_reasoner.py": "358649a608260a8269f9031334ddff41a73949b4a5c30e7ebe8f40845737b4cf",
+        "dnssec.py": "d25bda313334e0fb2b903204e150e50eb7cf5abdc96c16e5e6bd080a877eaa14",
+        "dnssec_proof.py": "54a525c261345cae371717b8c5c3eece55816cfeb7a64faac435c3109a968f01",
+        "dnssec_validation.py": "7d9b6a84f6631a836dc5a7358f08cdcf5ab7a0cab51d0a9ddf6fbca4743a5fb4",
+        "dns_compare.py": "edc5a0105b2488821902e838ba53f29529ce4534729d90ff591b7d87aee0f646",
+        "dns_diagnosis.py": "cd93ecad0382f9b1493bd08a09bcfd4ec51f2941b0e5d72cf5462719a7ee4c20",
+        "dns_wire.py": "cf6826b283f8e692566037fd809601b58779e3292d8823aa9234a930d05b605e",
+        "edns.py": "f1e231a4027fc0fe61da58fed08ee93899c9fb1cb51d0caa1c4c565df0ed3de6",
+        "http_safety.py": "436ae30bb75cada0728af29b21f9ddd46ffc03abc15c3f408d3514f4e9eb24c9",
+        "main.py": "f21a04885a166d011f88e8606f19856723ddc00bd1fa7ba6fea17b6e8c47e5c6",
+        "network_errors.py": "df4b93832d77a43d334771706d8c03ee8b89c91ce79289586cdb76349a65adc1",
+        "network_policy.py": "da4a1fcd8798f54233ab583aebfaa3a79a1d2f80e87269e11759302477589647",
+        "privacy.py": "c60a85b4e2c903e5afed81cd8afea8b1ae6a0f3200e9fec4419a1a9af41bfee7",
+        "remediation.py": "bc15b5c6b8361e56ea8283beca61813f764a78c80a0dad67c98ea4b2724f260f",
+        "reporting.py": "a472802471a94d55e8ddc110031799c54db6b89a5b3fc063be5fdba94541dff2",
+        "request_context.py": "6d77a44d659289607190b0132e181b8fae7dd3bca16cc371ad416654a00b2d34",
+        "schemas.py": "caadb57bc3ba2d1be54d88eeee5b52ccc09dd1abacb1bec69214105598157d6d",
+        "target.py": "cc3e570dcdd7fdbe13dbd755a34ed7bf4ce7fab9cd4590dd03e918fd736d428c",
+        "tools.py": "8fc44bbdc09576a561edf3ba8eab61f5291b04abd99d42bdf7d39df0c50e5374",
+        "trace.py": "498676eb2ab6a3ce8cbae41abb8b2f1bb596cfcc0bba9b54ab8342070cca8284",
+        "trust.py": "71fc6b12812731b9011532eb9f7277cb60d4ac46479d8c8498558dce987afe6e",
+        "__init__.py": "5946cc6b8957bf5b3277da5da64dedffdd4a91d1281ab9b0a54c35dbee47ad7a",
+        "assets/anchor-authentication.json": "77dd7aa91788b2eccf9c078b0a4835f50c88feac1fe7ea88d9fb152141f18f35",
+        "assets/icannbundle.pem": "18ce7215812d1a2cad8d9d4d3d7c26f7235a9b5ec6f0c1e214e15230fd4f9e24",
+        "assets/named.root": "9fd5ae176fd100295e97f9def704e30eb2d0f033ecf06a42dae04ed4be69c70b",
+        "assets/root-anchors.p7s": "644e0e22842c6b7a57fda13d286941fd7449a179f0a3763578fa9a251d307dd1",
+        "assets/root-anchors.xml": "3ccaab38830025ee0a0f6c1f25769427544f81ea2865aa860468f3ef5278b908",
+        "assets/sources.json": "c4e35a60e4b2288eeb2f4e606e1738628ae832f3f5c2eacc20098a0024a3b445"
+      },
+      "cli_cases": [
+        {
+          "entry": "module",
+          "case": 0,
+          "exit_code": 0,
+          "json_object": true,
+          "status": "help"
+        },
+        {
+          "entry": "module",
+          "case": 1,
+          "exit_code": 2,
+          "json_object": true,
+          "status": "failed"
+        },
+        {
+          "entry": "module",
+          "case": 2,
+          "exit_code": 2,
+          "json_object": true,
+          "status": "failed"
+        },
+        {
+          "entry": "module",
+          "case": 3,
+          "exit_code": 2,
+          "json_object": true,
+          "status": "failed"
+        },
+        {
+          "entry": "module",
+          "case": 4,
+          "exit_code": 0,
+          "json_object": true,
+          "status": "ended"
+        },
+        {
+          "entry": "console",
+          "case": 0,
+          "exit_code": 0,
+          "json_object": true,
+          "status": "help"
+        },
+        {
+          "entry": "console",
+          "case": 1,
+          "exit_code": 2,
+          "json_object": true,
+          "status": "failed"
+        },
+        {
+          "entry": "console",
+          "case": 2,
+          "exit_code": 2,
+          "json_object": true,
+          "status": "failed"
+        },
+        {
+          "entry": "console",
+          "case": 3,
+          "exit_code": 2,
+          "json_object": true,
+          "status": "failed"
+        },
+        {
+          "entry": "console",
+          "case": 4,
+          "exit_code": 0,
+          "json_object": true,
+          "status": "ended"
+        }
+      ],
+      "PYTHONPATH": "removed",
+      "cwd": "temporary directory outside checkout"
+    },
+    {
+      "kind": "wheel",
+      "import_location": "installed site-packages",
+      "module_and_asset_hashes": {
+        "accounting.py": "bb091800613b42aa22583c3873d21aac0ff7fed089afdd69a8498c46502c84a3",
+        "agent.py": "a6c4357a34fb1a6ab50dc4afb994fa3a45e064190d2c12a3ed2b64f1e42124f5",
+        "agent_summary.py": "66bdd1e46dd25d817758b717b71451d3d2352400da39efd24896f4519543e539",
+        "alias_scope.py": "8de965f6b153abf61e771f9bc9793dc2874f1396a47e63daf44e2d27df66b758",
+        "authority.py": "7bfd81fb62a1d472ee1ed41da4637bf31de776628cfad74e7dd54010aeccb865",
+        "config.py": "78b2b5a6690ec4b83f1d08ba3135d263870850bf1806ae39f6e052ab464592df",
+        "diagnostic_reasoner.py": "358649a608260a8269f9031334ddff41a73949b4a5c30e7ebe8f40845737b4cf",
+        "dnssec.py": "d25bda313334e0fb2b903204e150e50eb7cf5abdc96c16e5e6bd080a877eaa14",
+        "dnssec_proof.py": "54a525c261345cae371717b8c5c3eece55816cfeb7a64faac435c3109a968f01",
+        "dnssec_validation.py": "7d9b6a84f6631a836dc5a7358f08cdcf5ab7a0cab51d0a9ddf6fbca4743a5fb4",
+        "dns_compare.py": "edc5a0105b2488821902e838ba53f29529ce4534729d90ff591b7d87aee0f646",
+        "dns_diagnosis.py": "cd93ecad0382f9b1493bd08a09bcfd4ec51f2941b0e5d72cf5462719a7ee4c20",
+        "dns_wire.py": "cf6826b283f8e692566037fd809601b58779e3292d8823aa9234a930d05b605e",
+        "edns.py": "f1e231a4027fc0fe61da58fed08ee93899c9fb1cb51d0caa1c4c565df0ed3de6",
+        "http_safety.py": "436ae30bb75cada0728af29b21f9ddd46ffc03abc15c3f408d3514f4e9eb24c9",
+        "main.py": "f21a04885a166d011f88e8606f19856723ddc00bd1fa7ba6fea17b6e8c47e5c6",
+        "network_errors.py": "df4b93832d77a43d334771706d8c03ee8b89c91ce79289586cdb76349a65adc1",
+        "network_policy.py": "da4a1fcd8798f54233ab583aebfaa3a79a1d2f80e87269e11759302477589647",
+        "privacy.py": "c60a85b4e2c903e5afed81cd8afea8b1ae6a0f3200e9fec4419a1a9af41bfee7",
+        "remediation.py": "bc15b5c6b8361e56ea8283beca61813f764a78c80a0dad67c98ea4b2724f260f",
+        "reporting.py": "a472802471a94d55e8ddc110031799c54db6b89a5b3fc063be5fdba94541dff2",
+        "request_context.py": "6d77a44d659289607190b0132e181b8fae7dd3bca16cc371ad416654a00b2d34",
+        "schemas.py": "caadb57bc3ba2d1be54d88eeee5b52ccc09dd1abacb1bec69214105598157d6d",
+        "target.py": "cc3e570dcdd7fdbe13dbd755a34ed7bf4ce7fab9cd4590dd03e918fd736d428c",
+        "tools.py": "8fc44bbdc09576a561edf3ba8eab61f5291b04abd99d42bdf7d39df0c50e5374",
+        "trace.py": "498676eb2ab6a3ce8cbae41abb8b2f1bb596cfcc0bba9b54ab8342070cca8284",
+        "trust.py": "71fc6b12812731b9011532eb9f7277cb60d4ac46479d8c8498558dce987afe6e",
+        "__init__.py": "5946cc6b8957bf5b3277da5da64dedffdd4a91d1281ab9b0a54c35dbee47ad7a",
+        "assets/anchor-authentication.json": "77dd7aa91788b2eccf9c078b0a4835f50c88feac1fe7ea88d9fb152141f18f35",
+        "assets/icannbundle.pem": "18ce7215812d1a2cad8d9d4d3d7c26f7235a9b5ec6f0c1e214e15230fd4f9e24",
+        "assets/named.root": "9fd5ae176fd100295e97f9def704e30eb2d0f033ecf06a42dae04ed4be69c70b",
+        "assets/root-anchors.p7s": "644e0e22842c6b7a57fda13d286941fd7449a179f0a3763578fa9a251d307dd1",
+        "assets/root-anchors.xml": "3ccaab38830025ee0a0f6c1f25769427544f81ea2865aa860468f3ef5278b908",
+        "assets/sources.json": "c4e35a60e4b2288eeb2f4e606e1738628ae832f3f5c2eacc20098a0024a3b445"
+      },
+      "cli_cases": [
+        {
+          "entry": "module",
+          "case": 0,
+          "exit_code": 0,
+          "json_object": true,
+          "status": "help"
+        },
+        {
+          "entry": "module",
+          "case": 1,
+          "exit_code": 2,
+          "json_object": true,
+          "status": "failed"
+        },
+        {
+          "entry": "module",
+          "case": 2,
+          "exit_code": 2,
+          "json_object": true,
+          "status": "failed"
+        },
+        {
+          "entry": "module",
+          "case": 3,
+          "exit_code": 2,
+          "json_object": true,
+          "status": "failed"
+        },
+        {
+          "entry": "module",
+          "case": 4,
+          "exit_code": 0,
+          "json_object": true,
+          "status": "ended"
+        },
+        {
+          "entry": "console",
+          "case": 0,
+          "exit_code": 0,
+          "json_object": true,
+          "status": "help"
+        },
+        {
+          "entry": "console",
+          "case": 1,
+          "exit_code": 2,
+          "json_object": true,
+          "status": "failed"
+        },
+        {
+          "entry": "console",
+          "case": 2,
+          "exit_code": 2,
+          "json_object": true,
+          "status": "failed"
+        },
+        {
+          "entry": "console",
+          "case": 3,
+          "exit_code": 2,
+          "json_object": true,
+          "status": "failed"
+        },
+        {
+          "entry": "console",
+          "case": 4,
+          "exit_code": 0,
+          "json_object": true,
+          "status": "ended"
+        }
+      ],
+      "PYTHONPATH": "removed",
+      "cwd": "temporary directory outside checkout"
+    }
+  ],
+  "editable_restored": true,
+  "status": "PASS"
+}

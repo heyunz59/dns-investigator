@@ -1,0 +1,9 @@
+{
+  "conclusion": "failure",
+  "headSha": "9e2645ad311ed767b482f823eb98bf74df7fd08b",
+  "status": "completed",
+  "url": "https://github.com/heyunz59/dns-investigator/actions/runs/41414761379",
+  "passed": 501,
+  "failed": 7,
+  "failure": "CLI subprocess import: project not installed; pytest pythonpath is process local"
+}

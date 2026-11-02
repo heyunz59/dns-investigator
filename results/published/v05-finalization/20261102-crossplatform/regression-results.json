@@ -1,0 +1,20 @@
+{
+  "baseline": "9e2645ad311ed767b482f823eb98bf74df7fd08b",
+  "baseline_local_pytest": {
+    "passed": 508,
+    "seconds": 41.3
+  },
+  "final_local_pytest": {
+    "passed": 523,
+    "failed": 0,
+    "skipped": 0,
+    "seconds": 41.74,
+    "added_tests": 15
+  },
+  "pip_check": "PASS",
+  "windows_installation": "windows-installation.json",
+  "linux_ci": "PENDING_ACTUAL_RUN",
+  "business_source_commit": "PENDING_COMMIT",
+  "model_calls": 0,
+  "review": "AI-assisted implementation verification, not independent human semantic acceptance"
+}

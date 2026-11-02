@@ -27,14 +27,19 @@ def summary(result):
         print('观测与等级：'+short(item['cause'])+' ['+item['cause_status']+']')
         print('选择依据：'+item.get('selection_reason','旧报告缺少问题上下文。'))
         print('直接依据：'+', '.join(item.get('direct_evidence_ids',[])+item.get('direct_validation_ids',[])))
-    shown=0
+    actions=[]
+    if result.get('diagnosis_selection_mode')=='parallel':
+        for item in all_d:
+            check=next((s for s in item.get('remediation_steps',[]) if s['action_type']=='CHECK'),None)
+            if check:actions.append((item,check))
+        if len(actions)>3:print(f'检查摘要仅展示前3项，另有 {len(actions)-3} 项独立观测的 CHECK 见完整日志/--verbose；不据此确认主次。')
     for item in all_d:
         for step in item.get('remediation_steps',[])+item.get('verification_steps',[]):
-            if shown>=3:break
-            print(step['action_type']+'（尚未执行）：'+short(step['description']));shown+=1
-            for b in step.get('branches',[])[:2]:print('  '+short(b['condition']+' → '+b['interpretation']+' → '+b['next_action']))
-        if item.get('verification_steps'):print('验证方式：'+short(item['verification_steps'][0]['verification_method']))
-        if shown>=3:break
+            if not any(existing is step for _,existing in actions):actions.append((item,step))
+    for item,step in actions[:3]:
+        print('['+item['primary_issue']+'] '+step['action_type']+'（尚未执行）：'+short(step['description']))
+        for b in step.get('branches',[])[:2]:print('  '+short(b['condition']+' → '+b['interpretation']+' → '+b['next_action']))
+        print('验证方式：'+short(step['verification_method']))
     for issue in result.get('execution_issues',[]):print('执行问题（不是远端故障）：'+issue['attempt_id']+' '+issue['error_code']+'；目标='+issue.get('target','未知'))
     if result.get('report_fallback_reason'):print('程序回退；模型总结失败：'+result['report_fallback_reason'])
     for item in all_d:

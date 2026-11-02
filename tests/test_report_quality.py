@@ -101,7 +101,10 @@ def test_dns_timeout_is_not_a_returned_rcode():
     check=d['remediation_steps'][0]
     assert len(check['branches'])==4
     assert all(b['condition'].startswith('如果后续') and b['interpretation'] and b['next_action'] for b in check['branches'])
-    assert check['method']['tool_name']=='query_dns' and check['executed'] is False
+    # Replayed system identity lacks the original resolver configuration in this
+    # backend: do not claim the recorded numeric address is currently executable.
+    assert check['method']['supported_by_current_tools'] is False
+    assert check['method']['authorization_status']=='unknown' and check['executed'] is False
 
 
 @pytest.mark.parametrize('status',[401,403,404,429,500,502,503,504])
