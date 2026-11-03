@@ -1,0 +1,152 @@
+[
+  {
+    "path": "results/published/v0.4-protocol/reference-133b49a.json",
+    "bytes": 7572604,
+    "sha256": "494e48c321c2b173a80017feaba68e873f19feb44f140d47678720ad9c9acb7b"
+  },
+  {
+    "path": "results/published/nsec3-divergence-audit/full-reference-isolated.json",
+    "bytes": 7572535,
+    "sha256": "757df67e1553f8fd34d7a63c78b2fe02fb8a16271bcd908f57ca6288d009afc6"
+  },
+  {
+    "path": "results/published/nsec3-divergence-audit/full-reference-after.json",
+    "bytes": 7572518,
+    "sha256": "156ea1dc787cbc8352807973e9bb64175db4e2764db6b4978272063fe5f14146"
+  },
+  {
+    "path": "results/published/v0.4-protocol/reference-9bd82d9.json",
+    "bytes": 7141052,
+    "sha256": "d97015d65fe4c195e6942332dbd8f30abbd2bfca88581121662168732119b9a6"
+  },
+  {
+    "path": "results/published/v0.4-protocol/reference-a525dc2.json",
+    "bytes": 6930304,
+    "sha256": "058b7b0b8a393ab0b11a02016021ca846674edb2032e673f2af6260660845270"
+  },
+  {
+    "path": "results/published/v0.4-protocol/reference-c46a54b.json",
+    "bytes": 6598242,
+    "sha256": "cc377865136a307982bbec0601d6859505558df6ff8053932d1c36318b01383a"
+  },
+  {
+    "path": "results/published/v0.4-protocol/reference-819a5de.json",
+    "bytes": 6164245,
+    "sha256": "e4bdae8aba76c6ae4a3362e23abb34bc59145dd824bc4e5c8f36ff2152b2b0c7"
+  },
+  {
+    "path": "results/published/v06-final-review/20261102/before.json",
+    "bytes": 4242459,
+    "sha256": "a7191237bba0389fb9b84d4b0a3078adeb63c92f2f313573ff7ee3d8ff7a5d82"
+  },
+  {
+    "path": "results/published/v0.4-protocol/reference-matrix-initial.json",
+    "bytes": 4003776,
+    "sha256": "15d9f2cc7a181b89a9d3c9a16e2e699e89ab8d708015815830b9ac9a8f3258c4"
+  },
+  {
+    "path": "results/published/v0.4-protocol/reference-matrix-v2.json",
+    "bytes": 4003747,
+    "sha256": "40aac38dce38b16757c34e6c01151ad250de9ac6d9851b187c991f8b7c34e1f6"
+  },
+  {
+    "path": "results/published/v05-report-quality-fixes/20261102-report-quality/reports-after.json",
+    "bytes": 2541603,
+    "sha256": "b020e9291e2fa9b2bc760f63e0f304d5584c8b0834e36c7d61dd6535a946505a"
+  },
+  {
+    "path": "results/published/v0.4-protocol/trace-controlled.json",
+    "bytes": 1732332,
+    "sha256": "0ddcaf69fc2bac9216088e011d1c322235441c47b3950d6b185f89edf6c10915"
+  },
+  {
+    "path": "results/published/v05-report-quality-fixes/20261102-report-quality/expanded-baseline/before.json",
+    "bytes": 1727592,
+    "sha256": "8333fd2cd88b33808bbfb52ff360d8820b3defeb8d2afa74be7f81714f056bd7"
+  },
+  {
+    "path": "results/published/v05-report-quality-fixes/20261102-report-quality/supplemental-baseline/before.json",
+    "bytes": 1498355,
+    "sha256": "7e2966c543dcebbb5a9d58df71bf7a156cd478928f47f6b3c63b52780e42d50d"
+  },
+  {
+    "path": "results/published/v05-report-quality-fixes/20261102-report-quality/before.json",
+    "bytes": 1191559,
+    "sha256": "c7e9e1f87078626ea652c91fdd131ed4e03f886e510586f186d25df75a6f0ec1"
+  },
+  {
+    "path": "results/published/v06-final-review/20261102/final-replay/baidu.html",
+    "bytes": 1078324,
+    "sha256": "ab0de1a0cc40f9bf4133edf3612893a6df886bccf7fb38130b95577910c2ffa4"
+  },
+  {
+    "path": "results/published/v06-final-review/20261102/final-source-replay/baidu.html",
+    "bytes": 1078324,
+    "sha256": "ab0de1a0cc40f9bf4133edf3612893a6df886bccf7fb38130b95577910c2ffa4"
+  },
+  {
+    "path": "docs/v06-polish/baidu-report.html",
+    "bytes": 1053360,
+    "sha256": "4c429c46e0bd4a1b6cad41e39920828d7386df77896ace220073c8d25f2baea2"
+  },
+  {
+    "path": "results/published/security-stability/current-offline.json",
+    "bytes": 894251,
+    "sha256": "1a168fff05e59bc1be74d5ccf37077276f0bad7d72b6ef62d1facb1724ad52b1"
+  },
+  {
+    "path": "results/published/v0.4-protocol/public-c46a54b.json",
+    "bytes": 877293,
+    "sha256": "3f4d9da05a923433c1a8544f5d46d4ea3cdf1a44b87ca41f51b0a42ab1e79226"
+  },
+  {
+    "path": "results/published/public-path-aggregation/20261102-baidu/after-investigation.json",
+    "bytes": 841910,
+    "sha256": "186ba265ecf4140984f5e44db03b969df0a748b00ca136a6b625a0ffae162f71"
+  },
+  {
+    "path": "results/published/security-stability/baseline-offline.json",
+    "bytes": 823723,
+    "sha256": "d5ff8302fc6ffac99ff9f01317ea1f2d1e62c17e15a9a55f9d54b27da93f0fb7"
+  },
+  {
+    "path": "results/published/dns-accuracy-f0787c0/controlled-intermediate/b35d45cd4f084aef951234d357967ee1.json",
+    "bytes": 717279,
+    "sha256": "590dd9338c5174c3fce70d8b729f55d870faca2ba0bc45c833ec5ee8f1c14045"
+  },
+  {
+    "path": "results/published/v05-report-quality-fixes/20261102-report-quality/location-before-after.json",
+    "bytes": 650637,
+    "sha256": "da02b70937910f86dd44fbf039fa452f35b6f06a28bd000dc0b2e073bed02648"
+  },
+  {
+    "path": "results/published/security-stability/real-model-comparison/baseline/ff3cd2c66f064c4b94e3dd2974ff6491.json",
+    "bytes": 583138,
+    "sha256": "87960a6d44401c11ed89e9719d94bc03b62ffe50dfb73ad67a9b8aff35b9ba39"
+  },
+  {
+    "path": "results/published/security-stability/real-model-comparison/baseline/9f43d9b2fbab411c88b752c9fe47602e.json",
+    "bytes": 580786,
+    "sha256": "9c8d72ba7bcd00386283fccdf4e95d7aa1cc2c78b01973a9da542ea15b6ea404"
+  },
+  {
+    "path": "results/published/public-path-aggregation/20261102-baidu/after-web.json",
+    "bytes": 548398,
+    "sha256": "9e5d571ffd0b75b991d1e1737929c42d55314617223f488b321ed371bacfa3a5"
+  },
+  {
+    "path": "results/published/v06-final-review/20261102/final-replay/imported/case7.json",
+    "bytes": 525588,
+    "sha256": "621ad5cde580ccd8c20268ed37f7256bc94ae7b53657b03ac4769b6deea41f99"
+  },
+  {
+    "path": "results/published/v06-final-review/20261102/final-source-replay/imported/case7.json",
+    "bytes": 525588,
+    "sha256": "621ad5cde580ccd8c20268ed37f7256bc94ae7b53657b03ac4769b6deea41f99"
+  },
+  {
+    "path": "data/regressions/baidu-investigation.json",
+    "bytes": 510780,
+    "sha256": "d71618858ed81eb38f6113250a3910817465e5b45c63b5d901ebce391421fdd4"
+  }
+]

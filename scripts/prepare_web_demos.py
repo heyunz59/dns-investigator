@@ -4,7 +4,7 @@ from pathlib import Path
 from evaluation.report_quality import report
 
 def main():
-    rows=json.loads(Path('results/published/v05-report-quality-fixes/20261102-report-quality/before.json').read_text(encoding='utf8'))['cases']
+    rows=json.loads(Path('tests/fixtures/reports/report-quality.json').read_text(encoding='utf8'))['cases']
     path=Path('results/runs');path.mkdir(exist_ok=True,parents=True)
     for row in rows:
         log={k:row.get(k,[]) for k in ['evidence','attempts','dns_attempts','validation_results']}

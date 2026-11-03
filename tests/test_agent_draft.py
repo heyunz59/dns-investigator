@@ -78,6 +78,6 @@ async def test_complex_authority_script_returns_minimal_valid_decision(tmp_path)
 
 
 def test_legacy_formal_report_still_reads():
-    for p in (ROOT/"results/published/dns-accuracy-f0787c0/controlled-final").glob("*.json"):
-        obj=json.loads(p.read_text(encoding="utf-8"))
-        if isinstance(obj,dict) and "result" in obj:InvestigationResult.model_validate(obj["result"])
+    rows=json.loads((ROOT/"tests/fixtures/reports/legacy-controlled.json").read_text(encoding="utf-8"))["cases"]
+    assert rows
+    for row in rows:InvestigationResult.model_validate(row["result"])

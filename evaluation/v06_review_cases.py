@@ -3,7 +3,7 @@ import json
 from pathlib import Path
 
 BASE = Path(__file__).resolve().parents[1]
-BEFORE = BASE / 'results/published/v06-final-review/20261102/before.json'
+BEFORE = BASE / 'tests/fixtures/reports/mixed-faults.json'
 
 
 def cases():

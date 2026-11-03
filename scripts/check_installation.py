@@ -23,6 +23,9 @@ def verify(root,kind,cwd):
     assert probe.returncode==0,probe.stderr
     installed=Path(probe.stdout.strip()).resolve().parent
     assert installed.is_relative_to(root/'src')==(kind=='editable'), 'Wrong package import location'
+    metadata=run([str(py),'-c',"import json; from importlib.metadata import version,entry_points; import dns_investigator; from dns_investigator.trust import anchors; from dns_investigator.web import create_app; from fastapi.testclient import TestClient; assert version('dns-investigator')==dns_investigator.__version__=='0.6.0rc1'; assert callable(next(e for e in entry_points(group='console_scripts') if e.name=='dns-investigator-web').load()); c=TestClient(create_app()); assert c.get('/').status_code==200; assert c.get('/assets/web.js').status_code==200; assert anchors()['authentication']; print(json.dumps({'version':version('dns-investigator'),'web_app':'PASS','authenticated_assets':'PASS'}))"],cwd=cwd,env=env)
+    assert metadata.returncode==0,metadata.stderr
+    package_checks=json.loads(metadata.stdout)
     inventory={}
     for source in (root/'src/dns_investigator').rglob('*'):
         if not source.is_file() or '__pycache__' in source.parts or source.suffix=='.pyc':continue
@@ -42,7 +45,7 @@ def verify(root,kind,cwd):
             assert isinstance(obj,dict)
             if i==4:assert obj['mode']=='tools_only' and obj['evidence']
             results.append(dict(entry=entry,case=i,exit_code=result.returncode,json_object=True,status=obj['status']))
-    return dict(kind=kind,import_location='checkout/src' if kind=='editable' else 'installed site-packages',
+    return dict(package_checks=package_checks,kind=kind,import_location='checkout/src' if kind=='editable' else 'installed site-packages',
         module_and_asset_hashes=inventory,cli_cases=results,PYTHONPATH='removed',cwd='temporary directory outside checkout')
 
 

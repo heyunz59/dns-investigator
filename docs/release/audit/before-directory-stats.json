@@ -1,0 +1,106 @@
+{
+  ".env.example": {
+    "files": 1,
+    "bytes": 549
+  },
+  ".gitattributes": {
+    "files": 1,
+    "bytes": 554
+  },
+  ".github": {
+    "files": 1,
+    "bytes": 720
+  },
+  ".github/workflows": {
+    "files": 1,
+    "bytes": 720
+  },
+  ".gitignore": {
+    "files": 1,
+    "bytes": 140
+  },
+  "README.md": {
+    "files": 1,
+    "bytes": 22266
+  },
+  "data": {
+    "files": 19,
+    "bytes": 591104
+  },
+  "data/fixtures": {
+    "files": 18,
+    "bytes": 80324
+  },
+  "data/regressions": {
+    "files": 1,
+    "bytes": 510780
+  },
+  "docs": {
+    "files": 53,
+    "bytes": 5547465
+  },
+  "docs/screenshots": {
+    "files": 4,
+    "bytes": 318250
+  },
+  "docs/v06-polish": {
+    "files": 20,
+    "bytes": 3458171
+  },
+  "docs/v06-web": {
+    "files": 12,
+    "bytes": 1598593
+  },
+  "evaluation": {
+    "files": 48,
+    "bytes": 214162
+  },
+  "evaluation/nsec3_divergence": {
+    "files": 5,
+    "bytes": 36795
+  },
+  "pyproject.toml": {
+    "files": 1,
+    "bytes": 813
+  },
+  "requirements-dev.txt": {
+    "files": 1,
+    "bytes": 126
+  },
+  "requirements-lock.txt": {
+    "files": 1,
+    "bytes": 954
+  },
+  "requirements-web.txt": {
+    "files": 1,
+    "bytes": 73
+  },
+  "requirements.txt": {
+    "files": 1,
+    "bytes": 128
+  },
+  "results": {
+    "files": 6307,
+    "bytes": 141695281
+  },
+  "results/published": {
+    "files": 6307,
+    "bytes": 141695281
+  },
+  "scripts": {
+    "files": 16,
+    "bytes": 45150
+  },
+  "src": {
+    "files": 43,
+    "bytes": 342764
+  },
+  "src/dns_investigator": {
+    "files": 43,
+    "bytes": 342764
+  },
+  "tests": {
+    "files": 40,
+    "bytes": 226082
+  }
+}

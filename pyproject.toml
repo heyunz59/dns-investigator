@@ -1,15 +1,18 @@
 [build-system]
-requires = ["setuptools>=75"]
+requires = ["setuptools>=77"]
 build-backend = "setuptools.build_meta"
 
 [project]
 name = "dns-investigator"
-version = "0.4.0.dev0"
+readme = "README.md"
+license = "MIT"
+license-files = ["LICENSE", "THIRD_PARTY_NOTICES.md"]
 description = "Evidence-based DNS investigation agent using DeepSeek"
 requires-python = ">=3.11"
-dynamic = ["dependencies"]
+dynamic = ["dependencies", "version"]
 
 [tool.setuptools.dynamic]
+version = {attr = "dns_investigator.__version__"}
 dependencies = {file = ["requirements.txt"]}
 
 [tool.setuptools.packages.find]
@@ -23,6 +26,7 @@ dns-investigator = "dns_investigator.main:main"
 dns-investigator-web = "dns_investigator.web:main"
 
 [project.optional-dependencies]
+dev = ["pytest==9.2.0", "pytest-asyncio==1.4.1", "matplotlib==3.11.2"]
 web = ["fastapi>=0.115,<1", "uvicorn>=0.30,<1", "jinja2>=3.1.6,<4"]
 
 [tool.pytest.ini_options]

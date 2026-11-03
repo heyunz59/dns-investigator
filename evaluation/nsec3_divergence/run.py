@@ -9,7 +9,7 @@ from .reference import reference,reference_ports
 from dns_investigator.dnssec_proof import denial,between
 from dns_investigator.dnssec_validation import POLICY_VERSION
 
-ROOT=Path('results/published/nsec3-divergence-audit')
+ROOT=Path('results/runs')/('nsec3-audit-'+uuid.uuid4().hex)
 FACTORS=['unchanged original','remove malformed','malformed only','valid ring','valid ring + extra malformed','same as T01 incomplete + malformed','replace malformed by valid noncovering owner','signed exact Q hash contradicts NXDOMAIN','valid semantics but invalid signatures','extra iterations=1 parameter','extra unknown algorithm/flags','no denial records']
 def sha(b):return hashlib.sha256(b).hexdigest()
 def save(p,d):p.parent.mkdir(parents=True,exist_ok=True);p.write_text(json.dumps(d,ensure_ascii=False,indent=2),encoding='utf-8')

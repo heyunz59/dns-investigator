@@ -65,7 +65,7 @@ def test_compare_paths_require_unique_origin(server,resolver):
 
 
 def parallel_report():
-    p=Path('results/published/v05-report-quality-fixes/20261102-report-quality/before.json')
+    p=Path('tests/fixtures/reports/report-quality.json')
     row=next(r for r in json.loads(p.read_text(encoding='utf-8'))['cases'] if r['case']=='multi-ambiguous')
     return report(row)
 

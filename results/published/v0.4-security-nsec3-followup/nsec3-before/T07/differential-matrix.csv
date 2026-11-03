@@ -1,2 +1,0 @@
-﻿case_id,input_hash,changed_factor,project_status,unbound_status,project_reason,unbound_reason,proof_sufficient,evidence_files,rfc_basis,interpretation
-T07,2bdae8bbb195a9c31ad6fcdc9eaae40ad6c2c6c448c67531a049e55f8b3f48ee,replace malformed by valid noncovering owner,BOGUS,BOGUS,DENIAL_DOES_NOT_COVER_QUESTION,validation failure <probe.example.test. A IN>: nameerror proof failed from 127.0.0.12,PENDING_PROTOCOL_ANALYSIS,verifier-logs/T07-1-project.json,RFC5155 8.1-8.4,not adjudicated from status equality

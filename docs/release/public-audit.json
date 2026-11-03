@@ -1,0 +1,10 @@
+{
+  "result": "PASS",
+  "mode": "unchanged_check_public_rules_batched_git_blob_reads",
+  "source_head": "a8fd68983c11c5841275f0a4423e2110525ff278",
+  "history_commits": 84,
+  "unique_blobs": 6633,
+  "current_files": 184,
+  "scope": "all Git refs and current tracked/staged files; private untracked manual reviews excluded",
+  "limitation": "Pattern scan and review of candidate artifacts, not independent exhaustive privacy certification."
+}

@@ -1,6 +1,0 @@
-{
-  "business_commit": "0faab0104817919dd8bdd3632e73136ca809c38b",
-  "proof_sha256": "54a525c261345cae371717b8c5c3eece55816cfeb7a64faac435c3109a968f01",
-  "before": "20bd1ac isolated archived source; see loaded-source-check.json",
-  "intermediate": "844fa49; retained nsec3-after, not final acceptance"
-}

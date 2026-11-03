@@ -1,6 +1,2 @@
--r requirements.txt
-pytest==9.2.0
-pytest-asyncio==1.4.1
-matplotlib==3.11.2
-cryptography==50.0.0
--r requirements-web.txt
+# Compatibility installer; run from the repository root.
+.[web,dev]

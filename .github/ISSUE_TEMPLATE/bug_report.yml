@@ -1,0 +1,20 @@
+name: Bug report
+description: Report a reproducible, sanitized problem
+body:
+  - type: markdown
+    attributes:
+      value: "Remove credentials, private addresses, personal paths and raw model logs. For security vulnerabilities follow SECURITY.md; do not disclose exploit details here."
+  - type: textarea
+    id: environment
+    attributes:
+      label: Version and environment
+      description: Commit/package version, OS, Python, fixture or live mode; no secrets.
+    validations:
+      required: true
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: Reproduction and observed behavior
+      description: Sanitized command/input, expected behavior, actual outcome and minimal evidence.
+    validations:
+      required: true

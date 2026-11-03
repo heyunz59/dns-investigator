@@ -9,8 +9,8 @@ from dns_investigator.diagnostic_reasoner import validate_diagnostics
 from dns_investigator.request_context import context
 from dns_investigator.target import parse_target
 
-ROOT=Path('results/published/v05-report-quality-fixes/20261102-report-quality')
-ROWS={r['case']:r for r in json.loads((ROOT/'before.json').read_text(encoding='utf-8'))['cases']}
+ROOT=Path('tests/fixtures/reports')
+ROWS={r['case']:r for r in json.loads((ROOT/'report-quality.json').read_text(encoding='utf-8'))['cases']}
 
 
 def test_direct_ds_location_and_complete_dependencies():

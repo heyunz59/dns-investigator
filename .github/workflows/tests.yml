@@ -1,20 +1,33 @@
 name: Offline tests
 on: [push, pull_request]
+permissions:
+  contents: read
 jobs:
   test:
-    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: ubuntu-latest
+            python: '3.11'
+          - os: ubuntu-latest
+            python: '3.12'
+          - os: windows-latest
+            python: '3.12'
+    runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
-          python-version: '3.12'
-      - run: python -m pip install -r requirements-dev.txt
-      - run: python -m pip install --no-deps -e .
+          python-version: ${{ matrix.python }}
+      - run: python -m pip install -e ".[web,dev]"
+      - run: python -m pip check
       - run: python -m pytest -q
+      - run: python scripts/check_repository.py
       - run: python -m pip wheel --no-deps . --wheel-dir dist
-      - run: python scripts/check_installation.py --wheel-dir dist --output results/runs/linux-installation.json
+      - run: python scripts/check_installation.py --wheel-dir dist --output results/runs/installation.json
       - uses: actions/upload-artifact@v4
         with:
-          name: linux-installation
-          path: results/runs/linux-installation.json
+          name: installation-${{ matrix.os }}-${{ matrix.python }}
+          path: results/runs/installation.json
       - run: python scripts/check_public.py

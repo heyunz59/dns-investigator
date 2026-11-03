@@ -2,8 +2,8 @@
 src/dns_investigator/assets/* -text whitespace=cr-at-eol
 src/dns_investigator/assets/named.root -whitespace
 *.wire -text
-results/published/nsec3-divergence-audit/** -text whitespace=cr-at-eol
 # Diagnostic vendor output retains its original trailing whitespace.
-results/published/nsec3-divergence-audit/reference-debug/verifier-logs/*.log -whitespace
-results/published/v0.4-security-nsec3-followup/** -text whitespace=cr-at-eol
-data/regressions/baidu-investigation.json -text
+data/regressions/baidu-investigation.json -text whitespace=cr-at-eol
+
+# Preserve documented regression provenance hashes across OS checkouts.
+tests/fixtures/**/*.json -text whitespace=cr-at-eol

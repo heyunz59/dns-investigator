@@ -1,0 +1,3164 @@
+[
+  {
+    "consumer": ".github/workflows/tests.yml",
+    "line": 11,
+    "path_candidates": [
+      "requirements-dev.txt"
+    ]
+  },
+  {
+    "consumer": ".github/workflows/tests.yml",
+    "line": 15,
+    "path_candidates": [
+      "scripts/check_installation.py",
+      "results/runs/linux-installation.json"
+    ]
+  },
+  {
+    "consumer": ".github/workflows/tests.yml",
+    "line": 19,
+    "path_candidates": [
+      "results/runs/linux-installation.json"
+    ]
+  },
+  {
+    "consumer": "README.md",
+    "line": 3,
+    "path_candidates": [
+      "results/published/public-path-aggregation/20261102-baidu/review-summary.md"
+    ]
+  },
+  {
+    "consumer": "README.md",
+    "line": 5,
+    "path_candidates": [
+      "docs/v0.4-validation.md"
+    ]
+  },
+  {
+    "consumer": "README.md",
+    "line": 9,
+    "path_candidates": [
+      "docs/final-verification.md"
+    ]
+  },
+  {
+    "consumer": "README.md",
+    "line": 11,
+    "path_candidates": [
+      "docs/security-stability-fixes.md"
+    ]
+  },
+  {
+    "consumer": "README.md",
+    "line": 13,
+    "path_candidates": [
+      "docs/fcd-acceptance-fixes.md"
+    ]
+  },
+  {
+    "consumer": "README.md",
+    "line": 15,
+    "path_candidates": [
+      "docs/dns-accuracy-upgrade.md"
+    ]
+  },
+  {
+    "consumer": "README.md",
+    "line": 17,
+    "path_candidates": [
+      "docs/report-acceptance-fixes.md"
+    ]
+  },
+  {
+    "consumer": "README.md",
+    "line": 19,
+    "path_candidates": [
+      "docs/manual-review-fixes.md"
+    ]
+  },
+  {
+    "consumer": "README.md",
+    "line": 21,
+    "path_candidates": [
+      "docs/v0.3-targeted-fixes.md"
+    ]
+  },
+  {
+    "consumer": "README.md",
+    "line": 25,
+    "path_candidates": [
+      "docs/dns-v3.md"
+    ]
+  },
+  {
+    "consumer": "README.md",
+    "line": 43,
+    "path_candidates": [
+      "docs/reliability-v2.md",
+      "docs/reliability-v2.md",
+      "docs/validation.md",
+      "docs/validation.md"
+    ]
+  },
+  {
+    "consumer": "README.md",
+    "line": 45,
+    "path_candidates": [
+      "docs/PRD.md",
+      "docs/PRD.md"
+    ]
+  },
+  {
+    "consumer": "README.md",
+    "line": 53,
+    "path_candidates": [
+      "requirements-dev.txt"
+    ]
+  },
+  {
+    "consumer": "README.md",
+    "line": 65,
+    "path_candidates": [
+      "results/published/v0.4-security-nsec3-followup/review-summary.md"
+    ]
+  },
+  {
+    "consumer": "README.md",
+    "line": 79,
+    "path_candidates": [
+      "data/fixtures/C5.json"
+    ]
+  },
+  {
+    "consumer": "README.md",
+    "line": 89,
+    "path_candidates": [
+      "evaluation/summarize.py",
+      "results/evaluation-raw/review.csv"
+    ]
+  },
+  {
+    "consumer": "README.md",
+    "line": 94,
+    "path_candidates": [
+      "results/published/evaluation-20261031/README.md"
+    ]
+  },
+  {
+    "consumer": "README.md",
+    "line": 96,
+    "path_candidates": [
+      "results/published/evaluation-reliability-20261031T035848Z/README.md"
+    ]
+  },
+  {
+    "consumer": "README.md",
+    "line": 98,
+    "path_candidates": [
+      "docs/architecture.md",
+      "docs/architecture.md",
+      "results/published/",
+      "results/runs/",
+      "results/evaluation-raw/",
+      "scripts/publish_tools.py",
+      "scripts/check_public.py"
+    ]
+  },
+  {
+    "consumer": "README.md",
+    "line": 102,
+    "path_candidates": [
+      "scripts/check_installation.py",
+      "results/runs/install.json"
+    ]
+  },
+  {
+    "consumer": "README.md",
+    "line": 104,
+    "path_candidates": [
+      "results/published/v05-finalization/20261102-crossplatform/review-summary.md"
+    ]
+  },
+  {
+    "consumer": "README.md",
+    "line": 108,
+    "path_candidates": [
+      "results/published/v05-report-quality-fixes/20261102-report-quality/review-summary.md"
+    ]
+  },
+  {
+    "consumer": "README.md",
+    "line": 114,
+    "path_candidates": [
+      "results/published/v05-diagnostic-upgrade/technical-report.md"
+    ]
+  },
+  {
+    "consumer": "README.md",
+    "line": 124,
+    "path_candidates": [
+      "requirements_met"
+    ]
+  },
+  {
+    "consumer": "README.md",
+    "line": 145,
+    "path_candidates": [
+      "results/runs"
+    ]
+  },
+  {
+    "consumer": "README.md",
+    "line": 155,
+    "path_candidates": [
+      "docs/v06-polish/README.md",
+      "docs/v06-polish/README.md",
+      "docs/v06-web/README.md",
+      "docs/v06-web/README.md"
+    ]
+  },
+  {
+    "consumer": "README.md",
+    "line": 162,
+    "path_candidates": [
+      "scripts/check_web_product_browser.py",
+      "docs/v06-polish/"
+    ]
+  },
+  {
+    "consumer": "README.md",
+    "line": 165,
+    "path_candidates": [
+      "docs/v06-final-review.md"
+    ]
+  },
+  {
+    "consumer": "docs/PRD.md",
+    "line": 227,
+    "path_candidates": [
+      "requirements.txt"
+    ]
+  },
+  {
+    "consumer": "docs/PRD.md",
+    "line": 230,
+    "path_candidates": [
+      "src/"
+    ]
+  },
+  {
+    "consumer": "docs/PRD.md",
+    "line": 236,
+    "path_candidates": [
+      "data/fixtures/"
+    ]
+  },
+  {
+    "consumer": "docs/PRD.md",
+    "line": 241,
+    "path_candidates": [
+      "results/"
+    ]
+  },
+  {
+    "consumer": "docs/PRD.md",
+    "line": 245,
+    "path_candidates": [
+      "docs/"
+    ]
+  },
+  {
+    "consumer": "docs/PRD.md",
+    "line": 282,
+    "path_candidates": [
+      "docs/PRD.md"
+    ]
+  },
+  {
+    "consumer": "docs/architecture.md",
+    "line": 23,
+    "path_candidates": []
+  },
+  {
+    "consumer": "docs/architecture.md",
+    "line": 97,
+    "path_candidates": [
+      "docs/ai/models/deepseek/"
+    ]
+  },
+  {
+    "consumer": "docs/dns-accuracy-changes.txt",
+    "line": 1,
+    "path_candidates": [
+      "docs/architecture.md"
+    ]
+  },
+  {
+    "consumer": "docs/dns-accuracy-changes.txt",
+    "line": 2,
+    "path_candidates": [
+      "docs/dns-accuracy-changes.txt"
+    ]
+  },
+  {
+    "consumer": "docs/dns-accuracy-changes.txt",
+    "line": 3,
+    "path_candidates": [
+      "docs/dns-accuracy-upgrade.md"
+    ]
+  },
+  {
+    "consumer": "docs/dns-accuracy-changes.txt",
+    "line": 4,
+    "path_candidates": [
+      "docs/PRD.md"
+    ]
+  },
+  {
+    "consumer": "docs/dns-accuracy-changes.txt",
+    "line": 5,
+    "path_candidates": [
+      "docs/validation.md"
+    ]
+  },
+  {
+    "consumer": "docs/dns-accuracy-changes.txt",
+    "line": 18,
+    "path_candidates": [
+      "results/published/dns-accuracy-f0787c0/accepted-source-replay.json"
+    ]
+  },
+  {
+    "consumer": "docs/dns-accuracy-changes.txt",
+    "line": 19,
+    "path_candidates": [
+      "results/published/dns-accuracy-f0787c0/after.json"
+    ]
+  },
+  {
+    "consumer": "docs/dns-accuracy-changes.txt",
+    "line": 20,
+    "path_candidates": [
+      "results/published/dns-accuracy-f0787c0/baseline-replay.json"
+    ]
+  },
+  {
+    "consumer": "docs/dns-accuracy-changes.txt",
+    "line": 21,
+    "path_candidates": [
+      "results/published/dns-accuracy-f0787c0/before.json"
+    ]
+  },
+  {
+    "consumer": "docs/dns-accuracy-changes.txt",
+    "line": 22,
+    "path_candidates": [
+      "results/published/dns-accuracy-f0787c0/controlled-current/accepted-wire-manifest.json"
+    ]
+  },
+  {
+    "consumer": "docs/dns-accuracy-changes.txt",
+    "line": 23,
+    "path_candidates": [
+      "results/published/dns-accuracy-f0787c0/controlled-current/mismatch-wire.json"
+    ]
+  },
+  {
+    "consumer": "docs/dns-accuracy-changes.txt",
+    "line": 24,
+    "path_candidates": [
+      "results/published/dns-accuracy-f0787c0/controlled-current/serial-wire.json"
+    ]
+  },
+  {
+    "consumer": "docs/dns-accuracy-changes.txt",
+    "line": 25,
+    "path_candidates": [
+      "results/published/dns-accuracy-f0787c0/controlled-current/timeout-wire.json"
+    ]
+  },
+  {
+    "consumer": "docs/dns-accuracy-changes.txt",
+    "line": 26,
+    "path_candidates": [
+      "results/published/dns-accuracy-f0787c0/controlled-final/669ed9ec776c4821a34c7b0353b6236e.json"
+    ]
+  },
+  {
+    "consumer": "docs/dns-accuracy-changes.txt",
+    "line": 27,
+    "path_candidates": [
+      "results/published/dns-accuracy-f0787c0/controlled-final/845b0b96cddb496fa246d986a7ebd686.json"
+    ]
+  },
+  {
+    "consumer": "docs/dns-accuracy-changes.txt",
+    "line": 28,
+    "path_candidates": [
+      "results/published/dns-accuracy-f0787c0/controlled-final/e03423d0d8ab4bb3b3e304c249feb367.json"
+    ]
+  },
+  {
+    "consumer": "docs/dns-accuracy-changes.txt",
+    "line": 29,
+    "path_candidates": [
+      "results/published/dns-accuracy-f0787c0/controlled-final/f380e03db1e646cfa6822d2cf954b973.json"
+    ]
+  },
+  {
+    "consumer": "docs/dns-accuracy-changes.txt",
+    "line": 30,
+    "path_candidates": [
+      "results/published/dns-accuracy-f0787c0/controlled-final/final-manifest.json"
+    ]
+  },
+  {
+    "consumer": "docs/dns-accuracy-changes.txt",
+    "line": 31,
+    "path_candidates": [
+      "results/published/dns-accuracy-f0787c0/controlled-final/final-wire-manifest.json"
+    ]
+  },
+  {
+    "consumer": "docs/dns-accuracy-changes.txt",
+    "line": 32,
+    "path_candidates": [
+      "results/published/dns-accuracy-f0787c0/controlled-final/mismatch-wire.json"
+    ]
+  },
+  {
+    "consumer": "docs/dns-accuracy-changes.txt",
+    "line": 33,
+    "path_candidates": [
+      "results/published/dns-accuracy-f0787c0/controlled-final/serial-wire.json"
+    ]
+  },
+  {
+    "consumer": "docs/dns-accuracy-changes.txt",
+    "line": 34,
+    "path_candidates": [
+      "results/published/dns-accuracy-f0787c0/controlled-final/timeout-wire.json"
+    ]
+  },
+  {
+    "consumer": "docs/dns-accuracy-changes.txt",
+    "line": 35,
+    "path_candidates": [
+      "results/published/dns-accuracy-f0787c0/controlled-intermediate/8c687649e28e45509fecc5258da38b94.json"
+    ]
+  },
+  {
+    "consumer": "docs/dns-accuracy-changes.txt",
+    "line": 36,
+    "path_candidates": [
+      "results/published/dns-accuracy-f0787c0/controlled-intermediate/954a82c2005048f3b70c530746a3d4b5.json"
+    ]
+  },
+  {
+    "consumer": "docs/dns-accuracy-changes.txt",
+    "line": 37,
+    "path_candidates": [
+      "results/published/dns-accuracy-f0787c0/controlled-intermediate/ab050406ff334deab545dc1831e7ee57.json"
+    ]
+  },
+  {
+    "consumer": "docs/dns-accuracy-changes.txt",
+    "line": 38,
+    "path_candidates": [
+      "results/published/dns-accuracy-f0787c0/controlled-intermediate/b35d45cd4f084aef951234d357967ee1.json"
+    ]
+  },
+  {
+    "consumer": "docs/dns-accuracy-changes.txt",
+    "line": 39,
+    "path_candidates": [
+      "results/published/dns-accuracy-f0787c0/controlled-intermediate/mismatch-wire.json"
+    ]
+  },
+  {
+    "consumer": "docs/dns-accuracy-changes.txt",
+    "line": 40,
+    "path_candidates": [
+      "results/published/dns-accuracy-f0787c0/controlled-intermediate/new-manifest.json"
+    ]
+  },
+  {
+    "consumer": "docs/dns-accuracy-changes.txt",
+    "line": 41,
+    "path_candidates": [
+      "results/published/dns-accuracy-f0787c0/controlled-intermediate/serial-wire.json"
+    ]
+  },
+  {
+    "consumer": "docs/dns-accuracy-changes.txt",
+    "line": 42,
+    "path_candidates": [
+      "results/published/dns-accuracy-f0787c0/controlled-intermediate/timeout-wire.json"
+    ]
+  },
+  {
+    "consumer": "docs/dns-accuracy-changes.txt",
+    "line": 43,
+    "path_candidates": [
+      "results/published/dns-accuracy-f0787c0/controlled-old/0cd54d2400f846d78ec43b58b72e60e0.json"
+    ]
+  },
+  {
+    "consumer": "docs/dns-accuracy-changes.txt",
+    "line": 44,
+    "path_candidates": [
+      "results/published/dns-accuracy-f0787c0/controlled-old/479bf9852a2a4196b7e9b68ebc8d5a90.json"
+    ]
+  },
+  {
+    "consumer": "docs/dns-accuracy-changes.txt",
+    "line": 45,
+    "path_candidates": [
+      "results/published/dns-accuracy-f0787c0/controlled-old/64e8906129a049a0968649400c35b7c5.json"
+    ]
+  },
+  {
+    "consumer": "docs/dns-accuracy-changes.txt",
+    "line": 46,
+    "path_candidates": [
+      "results/published/dns-accuracy-f0787c0/controlled-old/6e8e08f24eef458e97f8d6b1dc59e7be.json"
+    ]
+  },
+  {
+    "consumer": "docs/dns-accuracy-changes.txt",
+    "line": 47,
+    "path_candidates": [
+      "results/published/dns-accuracy-f0787c0/controlled-old/old-manifest.json"
+    ]
+  },
+  {
+    "consumer": "docs/dns-accuracy-changes.txt",
+    "line": 48,
+    "path_candidates": [
+      "results/published/dns-accuracy-f0787c0/controlled-release/9bef66cb1aeb44caa0e6066c6c74a57a.json"
+    ]
+  },
+  {
+    "consumer": "docs/dns-accuracy-changes.txt",
+    "line": 49,
+    "path_candidates": [
+      "results/published/dns-accuracy-f0787c0/controlled-release/mismatch-wire.json"
+    ]
+  },
+  {
+    "consumer": "docs/dns-accuracy-changes.txt",
+    "line": 50,
+    "path_candidates": [
+      "results/published/dns-accuracy-f0787c0/controlled-release/release-manifest.json"
+    ]
+  },
+  {
+    "consumer": "docs/dns-accuracy-changes.txt",
+    "line": 51,
+    "path_candidates": [
+      "results/published/dns-accuracy-f0787c0/controlled-release/release-wire-manifest.json"
+    ]
+  },
+  {
+    "consumer": "docs/dns-accuracy-changes.txt",
+    "line": 52,
+    "path_candidates": [
+      "results/published/dns-accuracy-f0787c0/controlled-release/serial-wire.json"
+    ]
+  },
+  {
+    "consumer": "docs/dns-accuracy-changes.txt",
+    "line": 53,
+    "path_candidates": [
+      "results/published/dns-accuracy-f0787c0/controlled-release/timeout-wire.json"
+    ]
+  },
+  {
+    "consumer": "docs/dns-accuracy-changes.txt",
+    "line": 54,
+    "path_candidates": [
+      "results/published/dns-accuracy-f0787c0/delivery-replay.json"
+    ]
+  },
+  {
+    "consumer": "docs/dns-accuracy-changes.txt",
+    "line": 55,
+    "path_candidates": [
+      "results/published/dns-accuracy-f0787c0/final-after.json"
+    ]
+  },
+  {
+    "consumer": "docs/dns-accuracy-changes.txt",
+    "line": 56,
+    "path_candidates": [
+      "results/published/dns-accuracy-f0787c0/partial-before-typed/09969c131ec148879f70210dd95a5055.json"
+    ]
+  },
+  {
+    "consumer": "docs/dns-accuracy-changes.txt",
+    "line": 57,
+    "path_candidates": [
+      "results/published/dns-accuracy-f0787c0/partial-before-typed/manifest.json"
+    ]
+  },
+  {
+    "consumer": "docs/dns-accuracy-changes.txt",
+    "line": 58,
+    "path_candidates": [
+      "results/published/dns-accuracy-f0787c0/partial-before-typed/raw-fixture.json"
+    ]
+  },
+  {
+    "consumer": "docs/dns-accuracy-changes.txt",
+    "line": 59,
+    "path_candidates": [
+      "results/published/dns-accuracy-f0787c0/partial-current/75e327b491474a3fb56deb9630dc165a.json"
+    ]
+  },
+  {
+    "consumer": "docs/dns-accuracy-changes.txt",
+    "line": 60,
+    "path_candidates": [
+      "results/published/dns-accuracy-f0787c0/partial-current/manifest.json"
+    ]
+  },
+  {
+    "consumer": "docs/dns-accuracy-changes.txt",
+    "line": 61,
+    "path_candidates": [
+      "results/published/dns-accuracy-f0787c0/partial-current/raw-fixture.json"
+    ]
+  },
+  {
+    "consumer": "docs/dns-accuracy-changes.txt",
+    "line": 62,
+    "path_candidates": [
+      "results/published/dns-accuracy-f0787c0/public-audit-latest.json"
+    ]
+  },
+  {
+    "consumer": "docs/dns-accuracy-changes.txt",
+    "line": 63,
+    "path_candidates": [
+      "results/published/dns-accuracy-f0787c0/release-replay.json"
+    ]
+  },
+  {
+    "consumer": "docs/dns-accuracy-changes.txt",
+    "line": 64,
+    "path_candidates": [
+      "results/published/dns-accuracy-f0787c0/summary.json"
+    ]
+  },
+  {
+    "consumer": "docs/dns-accuracy-changes.txt",
+    "line": 65,
+    "path_candidates": [
+      "src/dns_investigator/accounting.py"
+    ]
+  },
+  {
+    "consumer": "docs/dns-accuracy-changes.txt",
+    "line": 66,
+    "path_candidates": [
+      "src/dns_investigator/agent.py"
+    ]
+  },
+  {
+    "consumer": "docs/dns-accuracy-changes.txt",
+    "line": 67,
+    "path_candidates": [
+      "src/dns_investigator/alias_scope.py"
+    ]
+  },
+  {
+    "consumer": "docs/dns-accuracy-changes.txt",
+    "line": 68,
+    "path_candidates": [
+      "src/dns_investigator/dns_compare.py"
+    ]
+  },
+  {
+    "consumer": "docs/dns-accuracy-changes.txt",
+    "line": 69,
+    "path_candidates": [
+      "src/dns_investigator/dns_diagnosis.py"
+    ]
+  },
+  {
+    "consumer": "docs/dns-accuracy-changes.txt",
+    "line": 70,
+    "path_candidates": [
+      "src/dns_investigator/dns_wire.py"
+    ]
+  },
+  {
+    "consumer": "docs/dns-accuracy-changes.txt",
+    "line": 71,
+    "path_candidates": [
+      "src/dns_investigator/main.py"
+    ]
+  },
+  {
+    "consumer": "docs/dns-accuracy-changes.txt",
+    "line": 72,
+    "path_candidates": [
+      "src/dns_investigator/reporting.py"
+    ]
+  },
+  {
+    "consumer": "docs/dns-accuracy-changes.txt",
+    "line": 73,
+    "path_candidates": [
+      "src/dns_investigator/schemas.py"
+    ]
+  },
+  {
+    "consumer": "docs/dns-accuracy-changes.txt",
+    "line": 74,
+    "path_candidates": [
+      "src/dns_investigator/tools.py"
+    ]
+  },
+  {
+    "consumer": "docs/dns-accuracy-upgrade.md",
+    "line": 3,
+    "path_candidates": [
+      "docs/manual-reviews/"
+    ]
+  },
+  {
+    "consumer": "docs/dns-accuracy-upgrade.md",
+    "line": 19,
+    "path_candidates": [
+      "evaluation/accuracy_cases.py",
+      "results/published/dns-accuracy-f0787c0/before.json"
+    ]
+  },
+  {
+    "consumer": "docs/dns-accuracy-upgrade.md",
+    "line": 81,
+    "path_candidates": [
+      "evaluation.capture_accuracy",
+      "results/runs/my-new-replay.json"
+    ]
+  },
+  {
+    "consumer": "docs/dns-accuracy-upgrade.md",
+    "line": 82,
+    "path_candidates": [
+      "evaluation.accuracy_model_run",
+      "results/runs/my-new-wire"
+    ]
+  },
+  {
+    "consumer": "docs/dns-v3.md",
+    "line": 35,
+    "path_candidates": [
+      "results/published/dns-v3/live-tools.json"
+    ]
+  },
+  {
+    "consumer": "docs/dns-v3.md",
+    "line": 37,
+    "path_candidates": [
+      "results/published/dns-v3/live-agent.json"
+    ]
+  },
+  {
+    "consumer": "docs/dns-v3.md",
+    "line": 39,
+    "path_candidates": [
+      "results/published/dns-v3/model-fixture-pilot/"
+    ]
+  },
+  {
+    "consumer": "docs/dns-v3.md",
+    "line": 41,
+    "path_candidates": [
+      "results/published/dns-v3/d2-retest.json"
+    ]
+  },
+  {
+    "consumer": "docs/fcd-acceptance-fixes.md",
+    "line": 3,
+    "path_candidates": [
+      "docs/manual-reviews/"
+    ]
+  },
+  {
+    "consumer": "docs/fcd-acceptance-fixes.md",
+    "line": 21,
+    "path_candidates": [
+      "evaluation.fcd_acceptance",
+      "results/published/fcd-acceptance/"
+    ]
+  },
+  {
+    "consumer": "docs/final-verification.md",
+    "line": 3,
+    "path_candidates": [
+      "docs/manual-reviews/"
+    ]
+  },
+  {
+    "consumer": "docs/final-verification.md",
+    "line": 25,
+    "path_candidates": [
+      "results/runs/final-verification-baseline-source/src",
+      "results/published/final-verification/before-controlled-v2.json"
+    ]
+  },
+  {
+    "consumer": "docs/final-verification.md",
+    "line": 101,
+    "path_candidates": [
+      "results/runs/report-acceptance-cd66b576b1f748978cc6922ef8637d5a/"
+    ]
+  },
+  {
+    "consumer": "docs/final-verification.md",
+    "line": 116,
+    "path_candidates": [
+      "results/published/final-verification/changed-files.txt"
+    ]
+  },
+  {
+    "consumer": "docs/final-verification.md",
+    "line": 124,
+    "path_candidates": [
+      "evaluation.final_counterexamples",
+      "results/runs/",
+      "data/fixtures/Q1.json"
+    ]
+  },
+  {
+    "consumer": "docs/manual-review-fixes.md",
+    "line": 5,
+    "path_candidates": [
+      "docs/manual-reviews/",
+      "results/runs"
+    ]
+  },
+  {
+    "consumer": "docs/manual-review-fixes.md",
+    "line": 48,
+    "path_candidates": [
+      "results/published/manual-fixes-ea2cbd11156f4c729d6f991a1f802d5e/",
+      "data.json"
+    ]
+  },
+  {
+    "consumer": "docs/reliability-v2.md",
+    "line": 13,
+    "path_candidates": [
+      "requirements_met"
+    ]
+  },
+  {
+    "consumer": "docs/reliability-v2.md",
+    "line": 15,
+    "path_candidates": [
+      "requirements_met"
+    ]
+  },
+  {
+    "consumer": "docs/report-acceptance-fixes.md",
+    "line": 3,
+    "path_candidates": [
+      "docs/manual-reviews/"
+    ]
+  },
+  {
+    "consumer": "docs/report-acceptance-fixes.md",
+    "line": 30,
+    "path_candidates": [
+      "results/published/report-acceptance-0fb8ba950e694abb8bb05f201958222b/"
+    ]
+  },
+  {
+    "consumer": "docs/security-stability-fixes.md",
+    "line": 33,
+    "path_candidates": [
+      "results/published/security-stability/baseline-offline.json",
+      "results/published/security-stability/current-offline.json"
+    ]
+  },
+  {
+    "consumer": "docs/security-stability-fixes.md",
+    "line": 58,
+    "path_candidates": [
+      "results/published/security-stability/failure-analysis.json"
+    ]
+  },
+  {
+    "consumer": "docs/security-stability-fixes.md",
+    "line": 66,
+    "path_candidates": [
+      "results/published/security-stability/real-model-comparison/summary.json",
+      "results/runs/security-stability-{baseline-512141e"
+    ]
+  },
+  {
+    "consumer": "docs/security-stability-fixes.md",
+    "line": 97,
+    "path_candidates": [
+      "evaluation/summarize_security_stability.py",
+      "results/runs"
+    ]
+  },
+  {
+    "consumer": "docs/v0.3-files.txt",
+    "line": 3,
+    "path_candidates": [
+      "data/fixtures/dns-v3/D1.json"
+    ]
+  },
+  {
+    "consumer": "docs/v0.3-files.txt",
+    "line": 4,
+    "path_candidates": [
+      "data/fixtures/dns-v3/D10.json"
+    ]
+  },
+  {
+    "consumer": "docs/v0.3-files.txt",
+    "line": 5,
+    "path_candidates": [
+      "data/fixtures/dns-v3/D2.json"
+    ]
+  },
+  {
+    "consumer": "docs/v0.3-files.txt",
+    "line": 6,
+    "path_candidates": [
+      "data/fixtures/dns-v3/D3.json"
+    ]
+  },
+  {
+    "consumer": "docs/v0.3-files.txt",
+    "line": 7,
+    "path_candidates": [
+      "data/fixtures/dns-v3/D4.json"
+    ]
+  },
+  {
+    "consumer": "docs/v0.3-files.txt",
+    "line": 8,
+    "path_candidates": [
+      "data/fixtures/dns-v3/D5.json"
+    ]
+  },
+  {
+    "consumer": "docs/v0.3-files.txt",
+    "line": 9,
+    "path_candidates": [
+      "data/fixtures/dns-v3/D6.json"
+    ]
+  },
+  {
+    "consumer": "docs/v0.3-files.txt",
+    "line": 10,
+    "path_candidates": [
+      "data/fixtures/dns-v3/D7.json"
+    ]
+  },
+  {
+    "consumer": "docs/v0.3-files.txt",
+    "line": 11,
+    "path_candidates": [
+      "data/fixtures/dns-v3/D8.json"
+    ]
+  },
+  {
+    "consumer": "docs/v0.3-files.txt",
+    "line": 12,
+    "path_candidates": [
+      "data/fixtures/dns-v3/D9.json"
+    ]
+  },
+  {
+    "consumer": "docs/v0.3-files.txt",
+    "line": 13,
+    "path_candidates": [
+      "docs/architecture.md"
+    ]
+  },
+  {
+    "consumer": "docs/v0.3-files.txt",
+    "line": 14,
+    "path_candidates": [
+      "docs/dns-v3.md"
+    ]
+  },
+  {
+    "consumer": "docs/v0.3-files.txt",
+    "line": 15,
+    "path_candidates": [
+      "docs/reliability-v2.md"
+    ]
+  },
+  {
+    "consumer": "docs/v0.3-files.txt",
+    "line": 16,
+    "path_candidates": [
+      "docs/v0.3-files.txt"
+    ]
+  },
+  {
+    "consumer": "docs/v0.3-files.txt",
+    "line": 17,
+    "path_candidates": [
+      "docs/validation.md"
+    ]
+  },
+  {
+    "consumer": "docs/v0.3-files.txt",
+    "line": 23,
+    "path_candidates": [
+      "results/published/dns-v3/d2-retest.json"
+    ]
+  },
+  {
+    "consumer": "docs/v0.3-files.txt",
+    "line": 24,
+    "path_candidates": [
+      "results/published/dns-v3/live-agent.json"
+    ]
+  },
+  {
+    "consumer": "docs/v0.3-files.txt",
+    "line": 25,
+    "path_candidates": [
+      "results/published/dns-v3/live-tools.json"
+    ]
+  },
+  {
+    "consumer": "docs/v0.3-files.txt",
+    "line": 26,
+    "path_candidates": [
+      "results/published/dns-v3/model-fixture-pilot/052303ec45df4847b54516b27cedbdb9.json"
+    ]
+  },
+  {
+    "consumer": "docs/v0.3-files.txt",
+    "line": 27,
+    "path_candidates": [
+      "results/published/dns-v3/model-fixture-pilot/0d792e0702d243cd8ba980be8a1068e2.json"
+    ]
+  },
+  {
+    "consumer": "docs/v0.3-files.txt",
+    "line": 28,
+    "path_candidates": [
+      "results/published/dns-v3/model-fixture-pilot/1345a7eb4a4d4e269dfcde1a4af861b9.json"
+    ]
+  },
+  {
+    "consumer": "docs/v0.3-files.txt",
+    "line": 29,
+    "path_candidates": [
+      "results/published/dns-v3/model-fixture-pilot/1ad07d792c374aac92cd41b7ad0181f5.json"
+    ]
+  },
+  {
+    "consumer": "docs/v0.3-files.txt",
+    "line": 30,
+    "path_candidates": [
+      "results/published/dns-v3/model-fixture-pilot/256b169d57084e9795c18339798d7ecd.json"
+    ]
+  },
+  {
+    "consumer": "docs/v0.3-files.txt",
+    "line": 31,
+    "path_candidates": [
+      "results/published/dns-v3/model-fixture-pilot/262d35eca9fd43b382e8ec0238381e66.json"
+    ]
+  },
+  {
+    "consumer": "docs/v0.3-files.txt",
+    "line": 32,
+    "path_candidates": [
+      "results/published/dns-v3/model-fixture-pilot/2df335772753443ab6082e2e0dc2de75.json"
+    ]
+  },
+  {
+    "consumer": "docs/v0.3-files.txt",
+    "line": 33,
+    "path_candidates": [
+      "results/published/dns-v3/model-fixture-pilot/a3267598a4254067af18295c5ced4470.json"
+    ]
+  },
+  {
+    "consumer": "docs/v0.3-files.txt",
+    "line": 34,
+    "path_candidates": [
+      "results/published/dns-v3/model-fixture-pilot/c1cce2ad5d85407fafcfb91576915f88.json"
+    ]
+  },
+  {
+    "consumer": "docs/v0.3-files.txt",
+    "line": 35,
+    "path_candidates": [
+      "results/published/dns-v3/model-fixture-pilot/d192c70a03cf4f46a2b32ad04e1deb50.json"
+    ]
+  },
+  {
+    "consumer": "docs/v0.3-files.txt",
+    "line": 36,
+    "path_candidates": [
+      "results/published/dns-v3/model-fixture-pilot/metrics.json"
+    ]
+  },
+  {
+    "consumer": "docs/v0.3-files.txt",
+    "line": 37,
+    "path_candidates": [
+      "results/published/dns-v3/model-fixture-pilot/summary.json"
+    ]
+  },
+  {
+    "consumer": "docs/v0.3-files.txt",
+    "line": 40,
+    "path_candidates": [
+      "src/dns_investigator/__init__.py"
+    ]
+  },
+  {
+    "consumer": "docs/v0.3-files.txt",
+    "line": 41,
+    "path_candidates": [
+      "src/dns_investigator/accounting.py"
+    ]
+  },
+  {
+    "consumer": "docs/v0.3-files.txt",
+    "line": 42,
+    "path_candidates": [
+      "src/dns_investigator/agent.py"
+    ]
+  },
+  {
+    "consumer": "docs/v0.3-files.txt",
+    "line": 43,
+    "path_candidates": [
+      "src/dns_investigator/authority.py"
+    ]
+  },
+  {
+    "consumer": "docs/v0.3-files.txt",
+    "line": 44,
+    "path_candidates": [
+      "src/dns_investigator/config.py"
+    ]
+  },
+  {
+    "consumer": "docs/v0.3-files.txt",
+    "line": 45,
+    "path_candidates": [
+      "src/dns_investigator/dns_compare.py"
+    ]
+  },
+  {
+    "consumer": "docs/v0.3-files.txt",
+    "line": 46,
+    "path_candidates": [
+      "src/dns_investigator/dns_diagnosis.py"
+    ]
+  },
+  {
+    "consumer": "docs/v0.3-files.txt",
+    "line": 47,
+    "path_candidates": [
+      "src/dns_investigator/dns_wire.py"
+    ]
+  },
+  {
+    "consumer": "docs/v0.3-files.txt",
+    "line": 48,
+    "path_candidates": [
+      "src/dns_investigator/schemas.py"
+    ]
+  },
+  {
+    "consumer": "docs/v0.3-files.txt",
+    "line": 49,
+    "path_candidates": [
+      "src/dns_investigator/tools.py"
+    ]
+  },
+  {
+    "consumer": "docs/v0.3-targeted-fixes.md",
+    "line": 41,
+    "path_candidates": [
+      "scripts/verify_v3_targeted_fixes.py",
+      "results/published/v3-targeted-7599982d892d46e19fe4999f157cd3b0/"
+    ]
+  },
+  {
+    "consumer": "docs/v0.4-capabilities.md",
+    "line": 3,
+    "path_candidates": [
+      "results/published/v0.4-protocol/baseline.json"
+    ]
+  },
+  {
+    "consumer": "docs/v0.4-validation.md",
+    "line": 96,
+    "path_candidates": [
+      "evaluation.protocol_public_capture",
+      "results/runs/new-public-sample.json"
+    ]
+  },
+  {
+    "consumer": "docs/v0.4-validation.md",
+    "line": 104,
+    "path_candidates": [
+      "scripts/import_root_anchor.py",
+      "src/dns_investigator/assets"
+    ]
+  },
+  {
+    "consumer": "docs/v0.4-validation.md",
+    "line": 123,
+    "path_candidates": [
+      "results/published/v0.4-protocol/",
+      "results/runs/"
+    ]
+  },
+  {
+    "consumer": "docs/v06-final-review.md",
+    "line": 35,
+    "path_candidates": [
+      "results/published/v06-final-review/20261102/before.json"
+    ]
+  },
+  {
+    "consumer": "docs/v06-polish/README.md",
+    "line": 35,
+    "path_candidates": [
+      "src/dns_investigator/web.py",
+      "scripts/check_web_product_browser.py"
+    ]
+  },
+  {
+    "consumer": "docs/v06-web/README.md",
+    "line": 23,
+    "path_candidates": [
+      "requirements-dev.txt",
+      "requirements-web.txt",
+      "src/dns_investigator/web.py",
+      "scripts/prepare_web_demos.py"
+    ]
+  },
+  {
+    "consumer": "docs/validation.md",
+    "line": 5,
+    "path_candidates": [
+      "results/published/public-path-aggregation/20261102-baidu/review-summary.md"
+    ]
+  },
+  {
+    "consumer": "docs/validation.md",
+    "line": 9,
+    "path_candidates": []
+  },
+  {
+    "consumer": "docs/validation.md",
+    "line": 13,
+    "path_candidates": [
+      "results/published"
+    ]
+  },
+  {
+    "consumer": "docs/validation.md",
+    "line": 17,
+    "path_candidates": [
+      "results/published/v05-diagnostic-upgrade/technical-report.md"
+    ]
+  },
+  {
+    "consumer": "docs/validation.md",
+    "line": 21,
+    "path_candidates": []
+  },
+  {
+    "consumer": "docs/validation.md",
+    "line": 27,
+    "path_candidates": [
+      "results/published/v0.4-protocol/"
+    ]
+  },
+  {
+    "consumer": "docs/validation.md",
+    "line": 35,
+    "path_candidates": [
+      "results/published/final-verification/"
+    ]
+  },
+  {
+    "consumer": "docs/validation.md",
+    "line": 39,
+    "path_candidates": [
+      "docs/manual-reviews/",
+      "results/runs/report-acceptance-49ea513fa33b49179ec1f3cbf3130214/"
+    ]
+  },
+  {
+    "consumer": "docs/validation.md",
+    "line": 41,
+    "path_candidates": [
+      "results/published/security-stability/{baseline"
+    ]
+  },
+  {
+    "consumer": "docs/validation.md",
+    "line": 45,
+    "path_candidates": [
+      "results/published/security-stability/real-model-comparison/"
+    ]
+  },
+  {
+    "consumer": "docs/validation.md",
+    "line": 49,
+    "path_candidates": [
+      "results/published/fcd-acceptance/"
+    ]
+  },
+  {
+    "consumer": "docs/validation.md",
+    "line": 53,
+    "path_candidates": [
+      "docs/manual-reviews/",
+      "results/runs/report-acceptance-017a6b7b14654057bb4c1ecbbe5b6926/",
+      "scripts/check_public.py"
+    ]
+  },
+  {
+    "consumer": "docs/validation.md",
+    "line": 57,
+    "path_candidates": [
+      "results/published/dns-accuracy-f0787c0/summary.json"
+    ]
+  },
+  {
+    "consumer": "docs/validation.md",
+    "line": 61,
+    "path_candidates": [
+      "results/published/report-acceptance-0fb8ba950e694abb8bb05f201958222b/metadata.json"
+    ]
+  },
+  {
+    "consumer": "docs/validation.md",
+    "line": 67,
+    "path_candidates": [
+      "results/published/manual-fixes-ea2cbd11156f4c729d6f991a1f802d5e/"
+    ]
+  },
+  {
+    "consumer": "docs/validation.md",
+    "line": 69,
+    "path_candidates": [
+      "docs/manual-reviews/"
+    ]
+  },
+  {
+    "consumer": "docs/validation.md",
+    "line": 75,
+    "path_candidates": [
+      "results/published/v3-targeted-7599982d892d46e19fe4999f157cd3b0/"
+    ]
+  },
+  {
+    "consumer": "docs/validation.md",
+    "line": 81,
+    "path_candidates": [
+      "results/published/dns-v3/"
+    ]
+  },
+  {
+    "consumer": "docs/validation.md",
+    "line": 91,
+    "path_candidates": [
+      "results/published/live-agent-reliability-v2.json"
+    ]
+  },
+  {
+    "consumer": "docs/validation.md",
+    "line": 93,
+    "path_candidates": [
+      "results/published/live-agent-reliability-v2-final.json"
+    ]
+  },
+  {
+    "consumer": "docs/validation.md",
+    "line": 97,
+    "path_candidates": [
+      "results/published/evaluation-reliability-20261031T035848Z/README.md"
+    ]
+  },
+  {
+    "consumer": "docs/validation.md",
+    "line": 103,
+    "path_candidates": [
+      "requirements-lock.txt"
+    ]
+  },
+  {
+    "consumer": "docs/validation.md",
+    "line": 126,
+    "path_candidates": [
+      "results/published/evaluation-20261031/"
+    ]
+  },
+  {
+    "consumer": "docs/validation.md",
+    "line": 134,
+    "path_candidates": [
+      "results/published/v06-final-review/20261102/"
+    ]
+  },
+  {
+    "consumer": "evaluation/README.md",
+    "line": 5,
+    "path_candidates": [
+      "docs/v0.4-validation.md"
+    ]
+  },
+  {
+    "consumer": "evaluation/README.md",
+    "line": 7,
+    "path_candidates": [
+      "evaluation.final_counterexamples"
+    ]
+  },
+  {
+    "consumer": "evaluation/README.md",
+    "line": 9,
+    "path_candidates": [
+      "docs/security-stability-fixes.md"
+    ]
+  },
+  {
+    "consumer": "evaluation/README.md",
+    "line": 11,
+    "path_candidates": [
+      "evaluation/dns_v3.py",
+      "evaluation/dns_v3_metrics.py",
+      "results/runs/"
+    ]
+  },
+  {
+    "consumer": "evaluation/README.md",
+    "line": 13,
+    "path_candidates": [
+      "docs/reliability-v2.md"
+    ]
+  },
+  {
+    "consumer": "evaluation/README.md",
+    "line": 15,
+    "path_candidates": [
+      "evaluation/publish_review.py",
+      "results/evaluation-raw/",
+      "results/published/",
+      "evaluation/summarize.py",
+      "results/published/",
+      "results/published/"
+    ]
+  },
+  {
+    "consumer": "evaluation/README.md",
+    "line": 25,
+    "path_candidates": [
+      "evaluation/summarize.py",
+      "results/evaluation-raw/review.csv"
+    ]
+  },
+  {
+    "consumer": "evaluation/README.md",
+    "line": 29,
+    "path_candidates": [
+      "results/evaluation-raw/",
+      "results/published/"
+    ]
+  },
+  {
+    "consumer": "evaluation/README.md",
+    "line": 31,
+    "path_candidates": [
+      "results/published/evaluation-20261031/"
+    ]
+  },
+  {
+    "consumer": "evaluation/accuracy_partial_run.py",
+    "line": 27,
+    "path_candidates": [
+      "src/dns_investigator"
+    ]
+  },
+  {
+    "consumer": "evaluation/analyze_summary_failures.py",
+    "line": 9,
+    "path_candidates": [
+      "results/published/dns-accuracy-f0787c0"
+    ]
+  },
+  {
+    "consumer": "evaluation/analyze_summary_failures.py",
+    "line": 35,
+    "path_candidates": [
+      "results/published/security-stability/failure-analysis.json"
+    ]
+  },
+  {
+    "consumer": "evaluation/capture_accuracy.py",
+    "line": 21,
+    "path_candidates": [
+      "results/published/dns-v3/live-agent.json"
+    ]
+  },
+  {
+    "consumer": "evaluation/dns_v3.py",
+    "line": 20,
+    "path_candidates": [
+      "results/runs"
+    ]
+  },
+  {
+    "consumer": "evaluation/dns_v3.py",
+    "line": 26,
+    "path_candidates": [
+      "data/fixtures/dns-v3/D{i}.json"
+    ]
+  },
+  {
+    "consumer": "evaluation/dnssec_reference_capture.py",
+    "line": 10,
+    "path_candidates": [
+      "results/runs/dnssec-reference"
+    ]
+  },
+  {
+    "consumer": "evaluation/dnssec_reference_capture.py",
+    "line": 16,
+    "path_candidates": [
+      "results/runs/reference-tools/unbound-1.26.2"
+    ]
+  },
+  {
+    "consumer": "evaluation/dnssec_reference_capture.py",
+    "line": 23,
+    "path_candidates": [
+      "src/dns_investigator"
+    ]
+  },
+  {
+    "consumer": "evaluation/dnssec_reference_capture.py",
+    "line": 26,
+    "path_candidates": [
+      "results/runs/reference-tools/download.json"
+    ]
+  },
+  {
+    "consumer": "evaluation/fcd_acceptance.py",
+    "line": 46,
+    "path_candidates": [
+      "results/runs"
+    ]
+  },
+  {
+    "consumer": "evaluation/fcd_acceptance.py",
+    "line": 51,
+    "path_candidates": [
+      "src/dns_investigator"
+    ]
+  },
+  {
+    "consumer": "evaluation/final_verification_review.py",
+    "line": 37,
+    "path_candidates": [
+      "results/published/final-verification"
+    ]
+  },
+  {
+    "consumer": "evaluation/final_verification_review.py",
+    "line": 42,
+    "path_candidates": [
+      "results/runs/final-verification-model-{arm}-{ref}"
+    ]
+  },
+  {
+    "consumer": "evaluation/final_verification_review.py",
+    "line": 68,
+    "path_candidates": [
+      "results/published/security-stability/real-model-comparison"
+    ]
+  },
+  {
+    "consumer": "evaluation/finalize_report_quality.py",
+    "line": 47,
+    "path_candidates": [
+      "src/dns_investigator"
+    ]
+  },
+  {
+    "consumer": "evaluation/finalize_tcp_nsec3_followup.py",
+    "line": 11,
+    "path_candidates": [
+      "results/published/v0.4-security-nsec3-followup"
+    ]
+  },
+  {
+    "consumer": "evaluation/finalize_tcp_nsec3_followup.py",
+    "line": 98,
+    "path_candidates": [
+      "src/dns_investigator/dnssec_proof.py"
+    ]
+  },
+  {
+    "consumer": "evaluation/nsec3_divergence/document.py",
+    "line": 14,
+    "path_candidates": [
+      "src/dns_investigator/dnssec_proof.py"
+    ]
+  },
+  {
+    "consumer": "evaluation/nsec3_divergence/document.py",
+    "line": 15,
+    "path_candidates": [
+      "src/dns_investigator/dnssec_validation.py"
+    ]
+  },
+  {
+    "consumer": "evaluation/nsec3_divergence/document.py",
+    "line": 16,
+    "path_candidates": [
+      "src/dns_investigator/dnssec.py",
+      "src/dns_investigator/reporting.py"
+    ]
+  },
+  {
+    "consumer": "evaluation/nsec3_divergence/document.py",
+    "line": 19,
+    "path_candidates": [
+      "results/runs/nsec3-source/val_nsec3.c"
+    ]
+  },
+  {
+    "consumer": "evaluation/nsec3_divergence/finalize.py",
+    "line": 37,
+    "path_candidates": [
+      "requirements"
+    ]
+  },
+  {
+    "consumer": "evaluation/nsec3_divergence/finalize.py",
+    "line": 41,
+    "path_candidates": [
+      "results/published/v0.4-protocol/reference-133b49a.json"
+    ]
+  },
+  {
+    "consumer": "evaluation/nsec3_divergence/finalize.py",
+    "line": 66,
+    "path_candidates": [
+      "results/runs/nsec3-debug-original"
+    ]
+  },
+  {
+    "consumer": "evaluation/nsec3_divergence/run.py",
+    "line": 12,
+    "path_candidates": [
+      "results/published/nsec3-divergence-audit"
+    ]
+  },
+  {
+    "consumer": "evaluation/nsec3_divergence/run.py",
+    "line": 41,
+    "path_candidates": [
+      "results/runs/nsec3-audit"
+    ]
+  },
+  {
+    "consumer": "evaluation/nsec3_divergence/run.py",
+    "line": 42,
+    "path_candidates": [
+      "src/dns_investigator"
+    ]
+  },
+  {
+    "consumer": "evaluation/nsec3_divergence/run.py",
+    "line": 45,
+    "path_candidates": [
+      "results/runs/reference-tools/unbound-1.26.2/libunbound/libunbound-8.dll"
+    ]
+  },
+  {
+    "consumer": "evaluation/nsec3_divergence/run.py",
+    "line": 46,
+    "path_candidates": [
+      "src/dns_investigator"
+    ]
+  },
+  {
+    "consumer": "evaluation/nsec3_divergence/run.py",
+    "line": 73,
+    "path_candidates": [
+      "results/runs/reference-tools/unbound-1.26.2"
+    ]
+  },
+  {
+    "consumer": "evaluation/protocol_agent_capture.py",
+    "line": 38,
+    "path_candidates": [
+      "src/dns_investigator"
+    ]
+  },
+  {
+    "consumer": "evaluation/protocol_edns_capture.py",
+    "line": 33,
+    "path_candidates": [
+      "src/dns_investigator"
+    ]
+  },
+  {
+    "consumer": "evaluation/protocol_public_capture.py",
+    "line": 19,
+    "path_candidates": [
+      "src/dns_investigator"
+    ]
+  },
+  {
+    "consumer": "evaluation/protocol_review.py",
+    "line": 38,
+    "path_candidates": [
+      "src/dns_investigator"
+    ]
+  },
+  {
+    "consumer": "evaluation/public_path_replay.py",
+    "line": 15,
+    "path_candidates": [
+      "data/regressions/baidu-investigation.json"
+    ]
+  },
+  {
+    "consumer": "evaluation/public_path_replay.py",
+    "line": 37,
+    "path_candidates": [
+      "results/runs/public-path-aggregation/browser-history"
+    ]
+  },
+  {
+    "consumer": "evaluation/replay_final_findings.py",
+    "line": 13,
+    "path_candidates": [
+      "results/published/security-stability/real-model-comparison",
+      "results/published/final-verification/real-model-comparison"
+    ]
+  },
+  {
+    "consumer": "evaluation/report_quality.py",
+    "line": 22,
+    "path_candidates": [
+      "results/published/v05-diagnostic-upgrade/final-release"
+    ]
+  },
+  {
+    "consumer": "evaluation/report_quality.py",
+    "line": 73,
+    "path_candidates": [
+      "src/dns_investigator/diagnostic_reasoner.py"
+    ]
+  },
+  {
+    "consumer": "evaluation/run_eval.py",
+    "line": 27,
+    "path_candidates": [
+      "results/evaluation-raw"
+    ]
+  },
+  {
+    "consumer": "evaluation/run_eval.py",
+    "line": 35,
+    "path_candidates": [
+      "src/dns_investigator"
+    ]
+  },
+  {
+    "consumer": "evaluation/run_eval.py",
+    "line": 41,
+    "path_candidates": [
+      "data/fixtures/{case"
+    ]
+  },
+  {
+    "consumer": "evaluation/run_eval.py",
+    "line": 58,
+    "path_candidates": [
+      "requirements_met",
+      "requirements_met"
+    ]
+  },
+  {
+    "consumer": "evaluation/summarize.py",
+    "line": 48,
+    "path_candidates": [
+      "results/published"
+    ]
+  },
+  {
+    "consumer": "evaluation/summarize_accuracy.py",
+    "line": 40,
+    "path_candidates": [
+      "results/published/dns-accuracy-f0787c0"
+    ]
+  },
+  {
+    "consumer": "evaluation/summarize_accuracy.py",
+    "line": 52,
+    "path_candidates": [
+      "results/runs/dns-accuracy-20261101-{arm}"
+    ]
+  },
+  {
+    "consumer": "evaluation/summarize_accuracy.py",
+    "line": 60,
+    "path_candidates": [
+      "src/dns_investigator/{name}"
+    ]
+  },
+  {
+    "consumer": "evaluation/summarize_accuracy.py",
+    "line": 71,
+    "path_candidates": [
+      "results/runs"
+    ]
+  },
+  {
+    "consumer": "evaluation/summarize_accuracy.py",
+    "line": 75,
+    "path_candidates": [
+      "src/dns_investigator/{name}"
+    ]
+  },
+  {
+    "consumer": "evaluation/summarize_accuracy.py",
+    "line": 78,
+    "path_candidates": [
+      "results/runs/dns-accuracy-20261101-accepted"
+    ]
+  },
+  {
+    "consumer": "evaluation/summarize_accuracy.py",
+    "line": 94,
+    "path_candidates": [
+      "requirements"
+    ]
+  },
+  {
+    "consumer": "evaluation/summarize_security_stability.py",
+    "line": 24,
+    "path_candidates": [
+      "data",
+      "src/dns_investigator/{name}"
+    ]
+  },
+  {
+    "consumer": "evaluation/tcp_security_capture.py",
+    "line": 16,
+    "path_candidates": [
+      "src/dns_investigator/tools.py"
+    ]
+  },
+  {
+    "consumer": "evaluation/trace_capture.py",
+    "line": 19,
+    "path_candidates": [
+      "src/dns_investigator"
+    ]
+  },
+  {
+    "consumer": "evaluation/v05_reports.py",
+    "line": 28,
+    "path_candidates": [
+      "src/dns_investigator/reporting.py"
+    ]
+  },
+  {
+    "consumer": "evaluation/v05_reports.py",
+    "line": 70,
+    "path_candidates": [
+      "src/dns_investigator"
+    ]
+  },
+  {
+    "consumer": "evaluation/v06_final_review.py",
+    "line": 25,
+    "path_candidates": [
+      "data/regressions/baidu-investigation.json"
+    ]
+  },
+  {
+    "consumer": "evaluation/v06_final_review.py",
+    "line": 92,
+    "path_candidates": [
+      "src/dns_investigator/web_view.py",
+      "src/dns_investigator/report_replay.py"
+    ]
+  },
+  {
+    "consumer": "evaluation/v06_review_cases.py",
+    "line": 6,
+    "path_candidates": [
+      "results/published/v06-final-review/20261102/before.json"
+    ]
+  },
+  {
+    "consumer": "pyproject.toml",
+    "line": 13,
+    "path_candidates": [
+      "requirements.txt"
+    ]
+  },
+  {
+    "consumer": "pyproject.toml",
+    "line": 19,
+    "path_candidates": []
+  },
+  {
+    "consumer": "requirements-dev.txt",
+    "line": 1,
+    "path_candidates": [
+      "requirements.txt"
+    ]
+  },
+  {
+    "consumer": "requirements-dev.txt",
+    "line": 6,
+    "path_candidates": [
+      "requirements-web.txt"
+    ]
+  },
+  {
+    "consumer": "requirements-web.txt",
+    "line": 1,
+    "path_candidates": [
+      "requirements.txt"
+    ]
+  },
+  {
+    "consumer": "results/published/evaluation-reliability-20261031T035848Z/README.md",
+    "line": 32,
+    "path_candidates": [
+      "requirements_met"
+    ]
+  },
+  {
+    "consumer": "results/published/final-verification/changed-files.txt",
+    "line": 2,
+    "path_candidates": [
+      "docs/architecture.md"
+    ]
+  },
+  {
+    "consumer": "results/published/final-verification/changed-files.txt",
+    "line": 3,
+    "path_candidates": [
+      "docs/final-verification.md"
+    ]
+  },
+  {
+    "consumer": "results/published/final-verification/changed-files.txt",
+    "line": 4,
+    "path_candidates": [
+      "docs/validation.md"
+    ]
+  },
+  {
+    "consumer": "results/published/final-verification/changed-files.txt",
+    "line": 12,
+    "path_candidates": [
+      "results/published/final-verification/AI-semantic-findings.json"
+    ]
+  },
+  {
+    "consumer": "results/published/final-verification/changed-files.txt",
+    "line": 13,
+    "path_candidates": [
+      "results/published/final-verification/after-boundary-fixes.json"
+    ]
+  },
+  {
+    "consumer": "results/published/final-verification/changed-files.txt",
+    "line": 14,
+    "path_candidates": [
+      "results/published/final-verification/after-final-4be929d.json"
+    ]
+  },
+  {
+    "consumer": "results/published/final-verification/changed-files.txt",
+    "line": 15,
+    "path_candidates": [
+      "results/published/final-verification/after-final-source.json"
+    ]
+  },
+  {
+    "consumer": "results/published/final-verification/changed-files.txt",
+    "line": 16,
+    "path_candidates": [
+      "results/published/final-verification/before-controlled-v2.json"
+    ]
+  },
+  {
+    "consumer": "results/published/final-verification/changed-files.txt",
+    "line": 17,
+    "path_candidates": [
+      "results/published/final-verification/before-counterexamples.json"
+    ]
+  },
+  {
+    "consumer": "results/published/final-verification/changed-files.txt",
+    "line": 18,
+    "path_candidates": [
+      "results/published/final-verification/changed-files.txt"
+    ]
+  },
+  {
+    "consumer": "results/published/final-verification/changed-files.txt",
+    "line": 19,
+    "path_candidates": [
+      "results/published/final-verification/checks.json"
+    ]
+  },
+  {
+    "consumer": "results/published/final-verification/changed-files.txt",
+    "line": 20,
+    "path_candidates": [
+      "results/published/final-verification/finding-replay-4be929d.json"
+    ]
+  },
+  {
+    "consumer": "results/published/final-verification/changed-files.txt",
+    "line": 21,
+    "path_candidates": [
+      "results/published/final-verification/finding-replay-92be49a.json"
+    ]
+  },
+  {
+    "consumer": "results/published/final-verification/changed-files.txt",
+    "line": 22,
+    "path_candidates": [
+      "results/published/final-verification/historical-AI-review.json"
+    ]
+  },
+  {
+    "consumer": "results/published/final-verification/changed-files.txt",
+    "line": 23,
+    "path_candidates": [
+      "results/published/final-verification/public-audit.json"
+    ]
+  },
+  {
+    "consumer": "results/published/final-verification/changed-files.txt",
+    "line": 24,
+    "path_candidates": [
+      "results/published/final-verification/real-model-comparison/baseline/01b26e08771b4f58add83a1826386aae.json"
+    ]
+  },
+  {
+    "consumer": "results/published/final-verification/changed-files.txt",
+    "line": 25,
+    "path_candidates": [
+      "results/published/final-verification/real-model-comparison/baseline/12500f287a8b4fac868e83568fd894b0.json"
+    ]
+  },
+  {
+    "consumer": "results/published/final-verification/changed-files.txt",
+    "line": 26,
+    "path_candidates": [
+      "results/published/final-verification/real-model-comparison/baseline/519ff591c8674eecac1a597c3763dd89.json"
+    ]
+  },
+  {
+    "consumer": "results/published/final-verification/changed-files.txt",
+    "line": 27,
+    "path_candidates": [
+      "results/published/final-verification/real-model-comparison/baseline/7d988c8870f849fea7790974a597edfa.json"
+    ]
+  },
+  {
+    "consumer": "results/published/final-verification/changed-files.txt",
+    "line": 28,
+    "path_candidates": [
+      "results/published/final-verification/real-model-comparison/baseline/c4fb22808da349859c7e9dafe63566c4.json"
+    ]
+  },
+  {
+    "consumer": "results/published/final-verification/changed-files.txt",
+    "line": 29,
+    "path_candidates": [
+      "results/published/final-verification/real-model-comparison/baseline/c7c1440b3fe04be088a0c61afacbec0e.json"
+    ]
+  },
+  {
+    "consumer": "results/published/final-verification/changed-files.txt",
+    "line": 30,
+    "path_candidates": [
+      "results/published/final-verification/real-model-comparison/baseline/experiment.json"
+    ]
+  },
+  {
+    "consumer": "results/published/final-verification/changed-files.txt",
+    "line": 31,
+    "path_candidates": [
+      "results/published/final-verification/real-model-comparison/baseline/fbf806b1943d4bec9869b69437981de0.json"
+    ]
+  },
+  {
+    "consumer": "results/published/final-verification/changed-files.txt",
+    "line": 32,
+    "path_candidates": [
+      "results/published/final-verification/real-model-comparison/baseline/manifest.json"
+    ]
+  },
+  {
+    "consumer": "results/published/final-verification/changed-files.txt",
+    "line": 33,
+    "path_candidates": [
+      "results/published/final-verification/real-model-comparison/current/0a53f42ee08148bc8f256d287f299766.json"
+    ]
+  },
+  {
+    "consumer": "results/published/final-verification/changed-files.txt",
+    "line": 34,
+    "path_candidates": [
+      "results/published/final-verification/real-model-comparison/current/0ded012c1d0c4ff68e662e2ca279da3a.json"
+    ]
+  },
+  {
+    "consumer": "results/published/final-verification/changed-files.txt",
+    "line": 35,
+    "path_candidates": [
+      "results/published/final-verification/real-model-comparison/current/5ef0b16dd67642d2bde8e40545e8647c.json"
+    ]
+  },
+  {
+    "consumer": "results/published/final-verification/changed-files.txt",
+    "line": 36,
+    "path_candidates": [
+      "results/published/final-verification/real-model-comparison/current/c6fe948d820346c597cb8963213204df.json"
+    ]
+  },
+  {
+    "consumer": "results/published/final-verification/changed-files.txt",
+    "line": 37,
+    "path_candidates": [
+      "results/published/final-verification/real-model-comparison/current/d59a255c5c594a2caa1b8e2aca65dca2.json"
+    ]
+  },
+  {
+    "consumer": "results/published/final-verification/changed-files.txt",
+    "line": 38,
+    "path_candidates": [
+      "results/published/final-verification/real-model-comparison/current/e1f1101febf542b891ec508b3869bb7f.json"
+    ]
+  },
+  {
+    "consumer": "results/published/final-verification/changed-files.txt",
+    "line": 39,
+    "path_candidates": [
+      "results/published/final-verification/real-model-comparison/current/experiment.json"
+    ]
+  },
+  {
+    "consumer": "results/published/final-verification/changed-files.txt",
+    "line": 40,
+    "path_candidates": [
+      "results/published/final-verification/real-model-comparison/current/fefcf3988aac4ef187a875269080c635.json"
+    ]
+  },
+  {
+    "consumer": "results/published/final-verification/changed-files.txt",
+    "line": 41,
+    "path_candidates": [
+      "results/published/final-verification/real-model-comparison/current/manifest.json"
+    ]
+  },
+  {
+    "consumer": "results/published/final-verification/changed-files.txt",
+    "line": 42,
+    "path_candidates": [
+      "results/published/final-verification/real-model-comparison/summary.json"
+    ]
+  },
+  {
+    "consumer": "results/published/final-verification/changed-files.txt",
+    "line": 43,
+    "path_candidates": [
+      "results/published/final-verification/time-bounds-after.json"
+    ]
+  },
+  {
+    "consumer": "results/published/final-verification/changed-files.txt",
+    "line": 44,
+    "path_candidates": [
+      "results/published/final-verification/time-bounds-before.json"
+    ]
+  },
+  {
+    "consumer": "results/published/final-verification/changed-files.txt",
+    "line": 45,
+    "path_candidates": [
+      "src/dns_investigator/agent.py"
+    ]
+  },
+  {
+    "consumer": "results/published/final-verification/changed-files.txt",
+    "line": 46,
+    "path_candidates": [
+      "src/dns_investigator/agent_summary.py"
+    ]
+  },
+  {
+    "consumer": "results/published/final-verification/changed-files.txt",
+    "line": 47,
+    "path_candidates": [
+      "src/dns_investigator/alias_scope.py"
+    ]
+  },
+  {
+    "consumer": "results/published/final-verification/changed-files.txt",
+    "line": 48,
+    "path_candidates": [
+      "src/dns_investigator/authority.py"
+    ]
+  },
+  {
+    "consumer": "results/published/final-verification/changed-files.txt",
+    "line": 49,
+    "path_candidates": [
+      "src/dns_investigator/dns_diagnosis.py"
+    ]
+  },
+  {
+    "consumer": "results/published/final-verification/changed-files.txt",
+    "line": 50,
+    "path_candidates": [
+      "src/dns_investigator/dns_wire.py"
+    ]
+  },
+  {
+    "consumer": "results/published/final-verification/changed-files.txt",
+    "line": 51,
+    "path_candidates": [
+      "src/dns_investigator/reporting.py"
+    ]
+  },
+  {
+    "consumer": "results/published/final-verification/changed-files.txt",
+    "line": 52,
+    "path_candidates": [
+      "src/dns_investigator/tools.py"
+    ]
+  },
+  {
+    "consumer": "results/published/nsec3-divergence-audit/source-analysis.md",
+    "line": 3,
+    "path_candidates": [
+      "src/dns_investigator/dnssec_proof.py"
+    ]
+  },
+  {
+    "consumer": "results/published/nsec3-divergence-audit/source-analysis.md",
+    "line": 4,
+    "path_candidates": [
+      "src/dns_investigator/dnssec_proof.py"
+    ]
+  },
+  {
+    "consumer": "results/published/nsec3-divergence-audit/source-analysis.md",
+    "line": 5,
+    "path_candidates": [
+      "src/dns_investigator/dnssec_proof.py"
+    ]
+  },
+  {
+    "consumer": "results/published/nsec3-divergence-audit/source-analysis.md",
+    "line": 6,
+    "path_candidates": [
+      "src/dns_investigator/dnssec_proof.py"
+    ]
+  },
+  {
+    "consumer": "results/published/nsec3-divergence-audit/source-analysis.md",
+    "line": 7,
+    "path_candidates": [
+      "src/dns_investigator/dnssec_validation.py"
+    ]
+  },
+  {
+    "consumer": "results/published/nsec3-divergence-audit/source-analysis.md",
+    "line": 8,
+    "path_candidates": [
+      "src/dns_investigator/dnssec_validation.py"
+    ]
+  },
+  {
+    "consumer": "results/published/nsec3-divergence-audit/source-analysis.md",
+    "line": 9,
+    "path_candidates": [
+      "src/dns_investigator/dnssec_validation.py"
+    ]
+  },
+  {
+    "consumer": "results/published/nsec3-divergence-audit/source-analysis.md",
+    "line": 10,
+    "path_candidates": [
+      "src/dns_investigator/dnssec_validation.py"
+    ]
+  },
+  {
+    "consumer": "results/published/nsec3-divergence-audit/source-analysis.md",
+    "line": 11,
+    "path_candidates": [
+      "src/dns_investigator/dnssec_validation.py"
+    ]
+  },
+  {
+    "consumer": "results/published/nsec3-divergence-audit/source-analysis.md",
+    "line": 12,
+    "path_candidates": [
+      "src/dns_investigator/dnssec_validation.py"
+    ]
+  },
+  {
+    "consumer": "results/published/nsec3-divergence-audit/source-analysis.md",
+    "line": 13,
+    "path_candidates": [
+      "src/dns_investigator/dnssec_validation.py"
+    ]
+  },
+  {
+    "consumer": "results/published/nsec3-divergence-audit/source-analysis.md",
+    "line": 14,
+    "path_candidates": [
+      "src/dns_investigator/dnssec.py"
+    ]
+  },
+  {
+    "consumer": "results/published/nsec3-divergence-audit/source-analysis.md",
+    "line": 15,
+    "path_candidates": [
+      "src/dns_investigator/reporting.py"
+    ]
+  },
+  {
+    "consumer": "results/published/public-path-aggregation/20261102-baidu/review-summary.md",
+    "line": 7,
+    "path_candidates": [
+      "data/regressions/baidu-investigation.json"
+    ]
+  },
+  {
+    "consumer": "results/published/security-stability/changed-files.txt",
+    "line": 3,
+    "path_candidates": [
+      "docs/architecture.md"
+    ]
+  },
+  {
+    "consumer": "results/published/security-stability/changed-files.txt",
+    "line": 4,
+    "path_candidates": [
+      "docs/security-stability-fixes.md"
+    ]
+  },
+  {
+    "consumer": "results/published/security-stability/changed-files.txt",
+    "line": 5,
+    "path_candidates": [
+      "docs/validation.md"
+    ]
+  },
+  {
+    "consumer": "results/published/security-stability/changed-files.txt",
+    "line": 12,
+    "path_candidates": [
+      "requirements-dev.txt"
+    ]
+  },
+  {
+    "consumer": "results/published/security-stability/changed-files.txt",
+    "line": 13,
+    "path_candidates": [
+      "requirements-lock.txt"
+    ]
+  },
+  {
+    "consumer": "results/published/security-stability/changed-files.txt",
+    "line": 14,
+    "path_candidates": [
+      "requirements.txt"
+    ]
+  },
+  {
+    "consumer": "results/published/security-stability/changed-files.txt",
+    "line": 15,
+    "path_candidates": [
+      "results/published/security-stability/baseline-offline.json"
+    ]
+  },
+  {
+    "consumer": "results/published/security-stability/changed-files.txt",
+    "line": 16,
+    "path_candidates": [
+      "results/published/security-stability/changed-files.txt"
+    ]
+  },
+  {
+    "consumer": "results/published/security-stability/changed-files.txt",
+    "line": 17,
+    "path_candidates": [
+      "results/published/security-stability/current-offline.json"
+    ]
+  },
+  {
+    "consumer": "results/published/security-stability/changed-files.txt",
+    "line": 18,
+    "path_candidates": [
+      "results/published/security-stability/failure-analysis.json"
+    ]
+  },
+  {
+    "consumer": "results/published/security-stability/changed-files.txt",
+    "line": 19,
+    "path_candidates": [
+      "results/published/security-stability/public-audit.json"
+    ]
+  },
+  {
+    "consumer": "results/published/security-stability/changed-files.txt",
+    "line": 20,
+    "path_candidates": [
+      "results/published/security-stability/real-model-comparison/baseline/03ca3ede1f3a42c4b41aa6e6080d3e82.json"
+    ]
+  },
+  {
+    "consumer": "results/published/security-stability/changed-files.txt",
+    "line": 21,
+    "path_candidates": [
+      "results/published/security-stability/real-model-comparison/baseline/043fec0176cb49e6b34f6493d4888f32.json"
+    ]
+  },
+  {
+    "consumer": "results/published/security-stability/changed-files.txt",
+    "line": 22,
+    "path_candidates": [
+      "results/published/security-stability/real-model-comparison/baseline/9f43d9b2fbab411c88b752c9fe47602e.json"
+    ]
+  },
+  {
+    "consumer": "results/published/security-stability/changed-files.txt",
+    "line": 23,
+    "path_candidates": [
+      "results/published/security-stability/real-model-comparison/baseline/c449df4db2f549d0a9febe969fc7e306.json"
+    ]
+  },
+  {
+    "consumer": "results/published/security-stability/changed-files.txt",
+    "line": 24,
+    "path_candidates": [
+      "results/published/security-stability/real-model-comparison/baseline/c7fe4d498a1e497689f2926061d180d6.json"
+    ]
+  },
+  {
+    "consumer": "results/published/security-stability/changed-files.txt",
+    "line": 25,
+    "path_candidates": [
+      "results/published/security-stability/real-model-comparison/baseline/cf907c1e66c44901b535957d422f70f3.json"
+    ]
+  },
+  {
+    "consumer": "results/published/security-stability/changed-files.txt",
+    "line": 26,
+    "path_candidates": [
+      "results/published/security-stability/real-model-comparison/baseline/experiment.json"
+    ]
+  },
+  {
+    "consumer": "results/published/security-stability/changed-files.txt",
+    "line": 27,
+    "path_candidates": [
+      "results/published/security-stability/real-model-comparison/baseline/ff3cd2c66f064c4b94e3dd2974ff6491.json"
+    ]
+  },
+  {
+    "consumer": "results/published/security-stability/changed-files.txt",
+    "line": 28,
+    "path_candidates": [
+      "results/published/security-stability/real-model-comparison/baseline/manifest.json"
+    ]
+  },
+  {
+    "consumer": "results/published/security-stability/changed-files.txt",
+    "line": 29,
+    "path_candidates": [
+      "results/published/security-stability/real-model-comparison/current/285c1b130d59402a8c5c8429b785cf11.json"
+    ]
+  },
+  {
+    "consumer": "results/published/security-stability/changed-files.txt",
+    "line": 30,
+    "path_candidates": [
+      "results/published/security-stability/real-model-comparison/current/3048a02d70674b4c8a5959cb6c944396.json"
+    ]
+  },
+  {
+    "consumer": "results/published/security-stability/changed-files.txt",
+    "line": 31,
+    "path_candidates": [
+      "results/published/security-stability/real-model-comparison/current/3b9e00f21cb343468f8ed2895002249e.json"
+    ]
+  },
+  {
+    "consumer": "results/published/security-stability/changed-files.txt",
+    "line": 32,
+    "path_candidates": [
+      "results/published/security-stability/real-model-comparison/current/4fc472702fab470da8f1a463bf25320f.json"
+    ]
+  },
+  {
+    "consumer": "results/published/security-stability/changed-files.txt",
+    "line": 33,
+    "path_candidates": [
+      "results/published/security-stability/real-model-comparison/current/8df53450b57e440e8ac76e0abddd770e.json"
+    ]
+  },
+  {
+    "consumer": "results/published/security-stability/changed-files.txt",
+    "line": 34,
+    "path_candidates": [
+      "results/published/security-stability/real-model-comparison/current/a368ef7cd3d94038b4b6ceaecaeb5192.json"
+    ]
+  },
+  {
+    "consumer": "results/published/security-stability/changed-files.txt",
+    "line": 35,
+    "path_candidates": [
+      "results/published/security-stability/real-model-comparison/current/a6cfcd2b69004029be8ae03c170e00d1.json"
+    ]
+  },
+  {
+    "consumer": "results/published/security-stability/changed-files.txt",
+    "line": 36,
+    "path_candidates": [
+      "results/published/security-stability/real-model-comparison/current/experiment.json"
+    ]
+  },
+  {
+    "consumer": "results/published/security-stability/changed-files.txt",
+    "line": 37,
+    "path_candidates": [
+      "results/published/security-stability/real-model-comparison/current/manifest.json"
+    ]
+  },
+  {
+    "consumer": "results/published/security-stability/changed-files.txt",
+    "line": 38,
+    "path_candidates": [
+      "results/published/security-stability/real-model-comparison/summary.json"
+    ]
+  },
+  {
+    "consumer": "results/published/security-stability/changed-files.txt",
+    "line": 40,
+    "path_candidates": [
+      "src/dns_investigator/agent.py"
+    ]
+  },
+  {
+    "consumer": "results/published/security-stability/changed-files.txt",
+    "line": 41,
+    "path_candidates": [
+      "src/dns_investigator/agent_summary.py"
+    ]
+  },
+  {
+    "consumer": "results/published/security-stability/changed-files.txt",
+    "line": 42,
+    "path_candidates": [
+      "src/dns_investigator/authority.py"
+    ]
+  },
+  {
+    "consumer": "results/published/security-stability/changed-files.txt",
+    "line": 43,
+    "path_candidates": [
+      "src/dns_investigator/config.py"
+    ]
+  },
+  {
+    "consumer": "results/published/security-stability/changed-files.txt",
+    "line": 44,
+    "path_candidates": [
+      "src/dns_investigator/dns_compare.py"
+    ]
+  },
+  {
+    "consumer": "results/published/security-stability/changed-files.txt",
+    "line": 45,
+    "path_candidates": [
+      "src/dns_investigator/dns_diagnosis.py"
+    ]
+  },
+  {
+    "consumer": "results/published/security-stability/changed-files.txt",
+    "line": 46,
+    "path_candidates": [
+      "src/dns_investigator/dns_wire.py"
+    ]
+  },
+  {
+    "consumer": "results/published/security-stability/changed-files.txt",
+    "line": 47,
+    "path_candidates": [
+      "src/dns_investigator/http_safety.py"
+    ]
+  },
+  {
+    "consumer": "results/published/security-stability/changed-files.txt",
+    "line": 48,
+    "path_candidates": [
+      "src/dns_investigator/reporting.py"
+    ]
+  },
+  {
+    "consumer": "results/published/security-stability/changed-files.txt",
+    "line": 49,
+    "path_candidates": [
+      "src/dns_investigator/schemas.py"
+    ]
+  },
+  {
+    "consumer": "results/published/security-stability/changed-files.txt",
+    "line": 50,
+    "path_candidates": [
+      "src/dns_investigator/tools.py"
+    ]
+  },
+  {
+    "consumer": "results/published/v05-finalization/20261102-crossplatform/review-summary.md",
+    "line": 3,
+    "path_candidates": [
+      "docs/manual-reviews/"
+    ]
+  },
+  {
+    "consumer": "results/published/v05-report-quality-fixes/20261102-report-quality/review-summary.md",
+    "line": 3,
+    "path_candidates": [
+      "docs/manual-reviews/"
+    ]
+  },
+  {
+    "consumer": "scripts/check_installation.py",
+    "line": 27,
+    "path_candidates": [
+      "src/dns_investigator"
+    ]
+  },
+  {
+    "consumer": "scripts/check_installation.py",
+    "line": 29,
+    "path_candidates": [
+      "src/dns_investigator"
+    ]
+  },
+  {
+    "consumer": "scripts/check_installation.py",
+    "line": 35,
+    "path_candidates": [
+      "data/fixtures/Q1.json"
+    ]
+  },
+  {
+    "consumer": "scripts/check_public.py",
+    "line": 17,
+    "path_candidates": [
+      "results/runs/",
+      "results/evaluation-raw/"
+    ]
+  },
+  {
+    "consumer": "scripts/check_web_browser.py",
+    "line": 3,
+    "path_candidates": [
+      "docs/v06-web"
+    ]
+  },
+  {
+    "consumer": "scripts/check_web_live.py",
+    "line": 13,
+    "path_candidates": [
+      "docs/v06-web/live-check.json"
+    ]
+  },
+  {
+    "consumer": "scripts/check_web_product_browser.py",
+    "line": 11,
+    "path_candidates": [
+      "docs/v06-polish"
+    ]
+  },
+  {
+    "consumer": "scripts/check_web_product_browser.py",
+    "line": 29,
+    "path_candidates": [
+      "data/regressions/baidu-investigation.json"
+    ]
+  },
+  {
+    "consumer": "scripts/check_web_product_browser.py",
+    "line": 33,
+    "path_candidates": [
+      "src/dns_investigator/assets/web.html"
+    ]
+  },
+  {
+    "consumer": "scripts/check_web_product_browser.py",
+    "line": 34,
+    "path_candidates": [
+      "src/dns_investigator/assets/web.js"
+    ]
+  },
+  {
+    "consumer": "scripts/check_web_product_browser.py",
+    "line": 35,
+    "path_candidates": [
+      "src/dns_investigator/assets/web.css"
+    ]
+  },
+  {
+    "consumer": "scripts/check_web_product_browser.py",
+    "line": 39,
+    "path_candidates": []
+  },
+  {
+    "consumer": "scripts/check_web_product_browser.py",
+    "line": 40,
+    "path_candidates": []
+  },
+  {
+    "consumer": "scripts/check_web_product_browser.py",
+    "line": 49,
+    "path_candidates": [
+      "data/regressions/baidu-investigation.json"
+    ]
+  },
+  {
+    "consumer": "scripts/evidence_page.py",
+    "line": 9,
+    "path_candidates": [
+      "data",
+      "results/published/{filename}.json"
+    ]
+  },
+  {
+    "consumer": "scripts/evidence_page.py",
+    "line": 19,
+    "path_candidates": [
+      "docs/screenshots/{filename}.html"
+    ]
+  },
+  {
+    "consumer": "scripts/package_evaluation.py",
+    "line": 8,
+    "path_candidates": [
+      "results/evaluation-raw/20261031T033230Z"
+    ]
+  },
+  {
+    "consumer": "scripts/package_evaluation.py",
+    "line": 9,
+    "path_candidates": [
+      "results/published/evaluation-20261031"
+    ]
+  },
+  {
+    "consumer": "scripts/prepare_web_demos.py",
+    "line": 7,
+    "path_candidates": [
+      "results/published/v05-report-quality-fixes/20261102-report-quality/before.json"
+    ]
+  },
+  {
+    "consumer": "scripts/prepare_web_demos.py",
+    "line": 8,
+    "path_candidates": [
+      "results/runs"
+    ]
+  },
+  {
+    "consumer": "scripts/verify_dns_v3.py",
+    "line": 13,
+    "path_candidates": [
+      "results/runs"
+    ]
+  },
+  {
+    "consumer": "scripts/verify_manual_review_fixes.py",
+    "line": 17,
+    "path_candidates": [
+      "results/runs"
+    ]
+  },
+  {
+    "consumer": "scripts/verify_manual_review_fixes.py",
+    "line": 19,
+    "path_candidates": [
+      "src/dns_investigator"
+    ]
+  },
+  {
+    "consumer": "scripts/verify_manual_review_fixes.py",
+    "line": 25,
+    "path_candidates": [
+      "data/fixtures/MISSING.json"
+    ]
+  },
+  {
+    "consumer": "scripts/verify_report_acceptance.py",
+    "line": 26,
+    "path_candidates": [
+      "results/runs"
+    ]
+  },
+  {
+    "consumer": "scripts/verify_report_acceptance.py",
+    "line": 27,
+    "path_candidates": [
+      "src/dns_investigator"
+    ]
+  },
+  {
+    "consumer": "scripts/verify_report_acceptance.py",
+    "line": 55,
+    "path_candidates": [
+      "results/published/manual-fixes-ea2cbd11156f4c729d6f991a1f802d5e"
+    ]
+  },
+  {
+    "consumer": "scripts/verify_report_acceptance.py",
+    "line": 64,
+    "path_candidates": [
+      "docs/manual-reviews/20261031_5223c06_"
+    ]
+  },
+  {
+    "consumer": "scripts/verify_v3_targeted_fixes.py",
+    "line": 19,
+    "path_candidates": [
+      "results/runs"
+    ]
+  },
+  {
+    "consumer": "src/dns_investigator/accounting.py",
+    "line": 1,
+    "path_candidates": [
+      "requirements."
+    ]
+  },
+  {
+    "consumer": "src/dns_investigator/accounting.py",
+    "line": 18,
+    "path_candidates": [
+      "requirements"
+    ]
+  },
+  {
+    "consumer": "src/dns_investigator/accounting.py",
+    "line": 19,
+    "path_candidates": [
+      "requirements"
+    ]
+  },
+  {
+    "consumer": "src/dns_investigator/agent.py",
+    "line": 182,
+    "path_candidates": [
+      "results/runs"
+    ]
+  },
+  {
+    "consumer": "src/dns_investigator/agent.py",
+    "line": 250,
+    "path_candidates": [
+      "requirements_met"
+    ]
+  },
+  {
+    "consumer": "src/dns_investigator/agent.py",
+    "line": 260,
+    "path_candidates": [
+      "requirements_met"
+    ]
+  },
+  {
+    "consumer": "src/dns_investigator/agent.py",
+    "line": 265,
+    "path_candidates": [
+      "requirements_met"
+    ]
+  },
+  {
+    "consumer": "src/dns_investigator/web.py",
+    "line": 61,
+    "path_candidates": [
+      "results/runs"
+    ]
+  },
+  {
+    "consumer": "tests/test_accounting_v2.py",
+    "line": 31,
+    "path_candidates": [
+      "data/fixtures/MISSING.json"
+    ]
+  },
+  {
+    "consumer": "tests/test_agent.py",
+    "line": 31,
+    "path_candidates": [
+      "data/fixtures/Q1.json"
+    ]
+  },
+  {
+    "consumer": "tests/test_agent_draft.py",
+    "line": 25,
+    "path_candidates": [
+      "data/fixtures/Q1.json"
+    ]
+  },
+  {
+    "consumer": "tests/test_agent_draft.py",
+    "line": 81,
+    "path_candidates": [
+      "results/published/dns-accuracy-f0787c0/controlled-final"
+    ]
+  },
+  {
+    "consumer": "tests/test_cli.py",
+    "line": 8,
+    "path_candidates": [
+      "data/fixtures/C2.json"
+    ]
+  },
+  {
+    "consumer": "tests/test_dns_accuracy.py",
+    "line": 112,
+    "path_candidates": [
+      "data/fixtures/Q1.json"
+    ]
+  },
+  {
+    "consumer": "tests/test_dns_v3.py",
+    "line": 121,
+    "path_candidates": [
+      "data/fixtures/dns-v3/{case}.json"
+    ]
+  },
+  {
+    "consumer": "tests/test_dns_v3.py",
+    "line": 148,
+    "path_candidates": [
+      "data/fixtures/dns-v3/D4.json"
+    ]
+  },
+  {
+    "consumer": "tests/test_dnssec_boundaries.py",
+    "line": 100,
+    "path_candidates": [
+      "src",
+      "src/dns_investigator/assets"
+    ]
+  },
+  {
+    "consumer": "tests/test_dnssec_boundaries.py",
+    "line": 110,
+    "path_candidates": [
+      "src",
+      "src/dns_investigator/assets"
+    ]
+  },
+  {
+    "consumer": "tests/test_final_verification.py",
+    "line": 1,
+    "path_candidates": [
+      "requirements."
+    ]
+  },
+  {
+    "consumer": "tests/test_path_groups.py",
+    "line": 15,
+    "path_candidates": [
+      "data/regressions/baidu-investigation.json"
+    ]
+  },
+  {
+    "consumer": "tests/test_path_groups.py",
+    "line": 126,
+    "path_candidates": [
+      "results/published/v05-diagnostic-upgrade/final-release/dnssec-ds_mismatch.json"
+    ]
+  },
+  {
+    "consumer": "tests/test_reliability.py",
+    "line": 33,
+    "path_candidates": [
+      "data/fixtures/MISSING.json"
+    ]
+  },
+  {
+    "consumer": "tests/test_reliability.py",
+    "line": 42,
+    "path_candidates": [
+      "data/fixtures/MISSING.json"
+    ]
+  },
+  {
+    "consumer": "tests/test_reliability_v2.py",
+    "line": 16,
+    "path_candidates": [
+      "data/fixtures"
+    ]
+  },
+  {
+    "consumer": "tests/test_reliability_v2.py",
+    "line": 39,
+    "path_candidates": [
+      "requirements_met"
+    ]
+  },
+  {
+    "consumer": "tests/test_reliability_v2.py",
+    "line": 48,
+    "path_candidates": [
+      "requirements_met"
+    ]
+  },
+  {
+    "consumer": "tests/test_reliability_v2.py",
+    "line": 149,
+    "path_candidates": [
+      "requirements_met"
+    ]
+  },
+  {
+    "consumer": "tests/test_report_quality.py",
+    "line": 12,
+    "path_candidates": [
+      "results/published/v05-report-quality-fixes/20261102-report-quality"
+    ]
+  },
+  {
+    "consumer": "tests/test_report_quality.py",
+    "line": 194,
+    "path_candidates": [
+      "data/fixtures/Q1.json"
+    ]
+  },
+  {
+    "consumer": "tests/test_review_rules.py",
+    "line": 21,
+    "path_candidates": [
+      "requirements_met"
+    ]
+  },
+  {
+    "consumer": "tests/test_tcp_policy.py",
+    "line": 68,
+    "path_candidates": [
+      "data/fixtures/Q1.json"
+    ]
+  },
+  {
+    "consumer": "tests/test_tools.py",
+    "line": 14,
+    "path_candidates": [
+      "data/fixtures"
+    ]
+  },
+  {
+    "consumer": "tests/test_v05_closure.py",
+    "line": 68,
+    "path_candidates": [
+      "results/published/v05-report-quality-fixes/20261102-report-quality/before.json"
+    ]
+  },
+  {
+    "consumer": "tests/test_v05_reasoning.py",
+    "line": 125,
+    "path_candidates": [
+      "data/fixtures/Q1.json"
+    ]
+  },
+  {
+    "consumer": "tests/test_v05_reasoning.py",
+    "line": 156,
+    "path_candidates": [
+      "data/fixtures/Q1.json"
+    ]
+  },
+  {
+    "consumer": "tests/test_v05_reasoning.py",
+    "line": 164,
+    "path_candidates": [
+      "results/published",
+      "evaluation-reliability-*/*.json"
+    ]
+  },
+  {
+    "consumer": "tests/test_v05_reasoning.py",
+    "line": 166,
+    "path_candidates": [
+      "results/published/nsec3-divergence-audit"
+    ]
+  },
+  {
+    "consumer": "tests/test_v06_final_review.py",
+    "line": 158,
+    "path_candidates": [
+      "data/regressions/baidu-investigation.json"
+    ]
+  },
+  {
+    "consumer": "tests/test_web.py",
+    "line": 12,
+    "path_candidates": [
+      "results/published/v05-report-quality-fixes/20261102-report-quality/before.json"
+    ]
+  },
+  {
+    "consumer": "tests/test_web_product.py",
+    "line": 14,
+    "path_candidates": [
+      "data/regressions/baidu-investigation.json"
+    ]
+  },
+  {
+    "consumer": "tests/test_web_product.py",
+    "line": 63,
+    "path_candidates": [
+      "results/published/v05-report-quality-fixes/20261102-report-quality/before.json"
+    ]
+  },
+  {
+    "consumer": "tests/test_web_product.py",
+    "line": 140,
+    "path_candidates": [
+      "data/fixtures/Q1.json"
+    ]
+  }
+]

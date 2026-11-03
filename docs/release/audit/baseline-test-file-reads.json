@@ -1,0 +1,561 @@
+{
+  "data/fixtures/C1.json": [
+    "tests/test_reliability_v2.py::test_invalid_backend_call_counts_without_evidence",
+    "tests/test_tools.py::test_fixture_cases[C1-NOERROR]"
+  ],
+  "data/fixtures/C2.json": [
+    "tests/test_cli.py::test_missing_target_prompts_then_runs_offline",
+    "tests/test_tools.py::test_budget_and_scope",
+    "tests/test_tools.py::test_fixture_cases[C2-NXDOMAIN]"
+  ],
+  "data/fixtures/C3.json": [
+    "tests/test_reliability_v2.py::test_c3_needs_two_valid_resolver_measurements",
+    "tests/test_tools.py::test_fixture_cases[C3-TIMEOUT]"
+  ],
+  "data/fixtures/C4.json": [
+    "tests/test_tools.py::test_fixture_cases[C4-NOERROR]"
+  ],
+  "data/fixtures/C5.json": [
+    "tests/test_tools.py::test_fixture_cases[C5-NOERROR]"
+  ],
+  "data/fixtures/C6c.json": [
+    "tests/test_tools.py::test_fixture_cases[C6c-NOERROR]"
+  ],
+  "data/fixtures/MISSING.json": [
+    "tests/test_accounting_v2.py::test_attempt_terminal_events_not_duplicated",
+    "tests/test_reliability.py::test_fixture_dns_parameters_are_exact[extra0]",
+    "tests/test_reliability.py::test_fixture_dns_parameters_are_exact[extra1]",
+    "tests/test_reliability.py::test_missing_fixture_no_live_fallback",
+    "tests/test_reliability_v2.py::test_fixture_unavailable_and_duplicate_are_not_measurements"
+  ],
+  "data/fixtures/Q1.json": [
+    "tests/test_agent.py::test_real_framework_tool_loop",
+    "tests/test_agent_draft.py::test_invalid_hypothesis_reference_produces_precise_retry_and_useful_fallback",
+    "tests/test_agent_draft.py::test_model_cannot_smuggle_program_facts_into_draft",
+    "tests/test_agent_draft.py::test_valid_minimal_decision_needs_no_generated_report_fields",
+    "tests/test_dns_accuracy.py::test_final_model_failure_keeps_useful_scoped_report",
+    "tests/test_reliability_v2.py::test_framework_schema_rejection_counted_once_and_final_excluded",
+    "tests/test_reliability_v2.py::test_model_failure_preserves_successful_evidence_and_attempt",
+    "tests/test_reliability_v2.py::test_soft_budget_allows_summary_and_hard_budget_blocks_batch",
+    "tests/test_tcp_policy.py::test_fixture_cannot_enter_direct_live_socket",
+    "tests/test_tools.py::test_fixture_cases[Q1-NOERROR]",
+    "tests/test_v05_reasoning.py::test_failed_agent_keeps_report_and_failed_status",
+    "tests/test_v05_reasoning.py::test_fixture_single_query_is_short_no_fix",
+    "tests/test_web_product.py::test_real_agent_cancel_persists_ledger"
+  ],
+  "data/fixtures/dns-v3/D1.json": [
+    "tests/test_dns_v3.py::test_d_cases[D1]"
+  ],
+  "data/fixtures/dns-v3/D10.json": [
+    "tests/test_dns_v3.py::test_d_cases[D10]"
+  ],
+  "data/fixtures/dns-v3/D2.json": [
+    "tests/test_dns_v3.py::test_d_cases[D2]"
+  ],
+  "data/fixtures/dns-v3/D3.json": [
+    "tests/test_dns_v3.py::test_d_cases[D3]"
+  ],
+  "data/fixtures/dns-v3/D4.json": [
+    "tests/test_dns_v3.py::test_agent_registers_five_and_selects_new_tools",
+    "tests/test_dns_v3.py::test_d_cases[D4]"
+  ],
+  "data/fixtures/dns-v3/D5.json": [
+    "tests/test_dns_v3.py::test_d_cases[D5]"
+  ],
+  "data/fixtures/dns-v3/D6.json": [
+    "tests/test_dns_v3.py::test_d_cases[D6]"
+  ],
+  "data/fixtures/dns-v3/D7.json": [
+    "tests/test_dns_v3.py::test_d_cases[D7]"
+  ],
+  "data/fixtures/dns-v3/D8.json": [
+    "tests/test_dns_v3.py::test_d_cases[D8]"
+  ],
+  "data/fixtures/dns-v3/D9.json": [
+    "tests/test_dns_v3.py::test_d_cases[D9]"
+  ],
+  "data/regressions/baidu-investigation.json": [
+    "tests/test_path_groups.py::test_cli_uses_same_scoped_overview_not_independent_root_causes",
+    "tests/test_path_groups.py::test_real_log_all_ledgers_preserved_and_two_path_groups",
+    "tests/test_path_groups.py::test_replay_failure_report_keeps_failed_execution_and_all_evidence",
+    "tests/test_path_groups.py::test_web_import_history_export_and_summary_match_formal_report",
+    "tests/test_v06_final_review.py::test_original_baidu_file_and_all_ledgers_remain_identical",
+    "tests/test_web_product.py::test_baidu_short_summary_and_scoped_comparisons"
+  ],
+  "evaluation/accuracy_expectations.json": [
+    "tests/test_dns_accuracy.py::test_fixed_evidence_acceptance[alias]",
+    "tests/test_dns_accuracy.py::test_fixed_evidence_acceptance[cdn]",
+    "tests/test_dns_accuracy.py::test_fixed_evidence_acceptance[no_measurement]",
+    "tests/test_dns_accuracy.py::test_fixed_evidence_acceptance[non_aa]",
+    "tests/test_dns_accuracy.py::test_fixed_evidence_acceptance[normal]",
+    "tests/test_dns_accuracy.py::test_fixed_evidence_acceptance[nxdomain]",
+    "tests/test_dns_accuracy.py::test_fixed_evidence_acceptance[partial]",
+    "tests/test_dns_accuracy.py::test_fixed_evidence_acceptance[recursive_auth]",
+    "tests/test_dns_accuracy.py::test_fixed_evidence_acceptance[referral]",
+    "tests/test_dns_accuracy.py::test_fixed_evidence_acceptance[serial]",
+    "tests/test_dns_accuracy.py::test_fixed_evidence_acceptance[servfail]",
+    "tests/test_dns_accuracy.py::test_fixed_evidence_acceptance[timeout]",
+    "tests/test_dns_accuracy.py::test_fixed_evidence_acceptance[ttl]"
+  ],
+  "pyproject.toml": [
+    "collection"
+  ],
+  "results/published/dns-accuracy-f0787c0/controlled-final/669ed9ec776c4821a34c7b0353b6236e.json": [
+    "tests/test_agent_draft.py::test_legacy_formal_report_still_reads"
+  ],
+  "results/published/dns-accuracy-f0787c0/controlled-final/845b0b96cddb496fa246d986a7ebd686.json": [
+    "tests/test_agent_draft.py::test_legacy_formal_report_still_reads"
+  ],
+  "results/published/dns-accuracy-f0787c0/controlled-final/e03423d0d8ab4bb3b3e304c249feb367.json": [
+    "tests/test_agent_draft.py::test_legacy_formal_report_still_reads"
+  ],
+  "results/published/dns-accuracy-f0787c0/controlled-final/f380e03db1e646cfa6822d2cf954b973.json": [
+    "tests/test_agent_draft.py::test_legacy_formal_report_still_reads"
+  ],
+  "results/published/dns-accuracy-f0787c0/controlled-final/final-manifest.json": [
+    "tests/test_agent_draft.py::test_legacy_formal_report_still_reads"
+  ],
+  "results/published/dns-accuracy-f0787c0/controlled-final/final-wire-manifest.json": [
+    "tests/test_agent_draft.py::test_legacy_formal_report_still_reads"
+  ],
+  "results/published/dns-accuracy-f0787c0/controlled-final/mismatch-wire.json": [
+    "tests/test_agent_draft.py::test_legacy_formal_report_still_reads"
+  ],
+  "results/published/dns-accuracy-f0787c0/controlled-final/serial-wire.json": [
+    "tests/test_agent_draft.py::test_legacy_formal_report_still_reads"
+  ],
+  "results/published/dns-accuracy-f0787c0/controlled-final/timeout-wire.json": [
+    "tests/test_agent_draft.py::test_legacy_formal_report_still_reads"
+  ],
+  "results/published/evaluation-reliability-20261031T035848Z/0fec340a86a64e0ca21943bfeea2206f.json": [
+    "tests/test_v05_reasoning.py::test_real_historical_reports_load_without_inventing_new_diagnosis"
+  ],
+  "results/published/evaluation-reliability-20261031T035848Z/10a883fee1bf4ecbafebd3204d671082.json": [
+    "tests/test_v05_reasoning.py::test_real_historical_reports_load_without_inventing_new_diagnosis"
+  ],
+  "results/published/evaluation-reliability-20261031T035848Z/1524381767a945708640df01dc15cc24.json": [
+    "tests/test_v05_reasoning.py::test_real_historical_reports_load_without_inventing_new_diagnosis"
+  ],
+  "results/published/evaluation-reliability-20261031T035848Z/1af393afd7eb49c89be91011d591400b.json": [
+    "tests/test_v05_reasoning.py::test_real_historical_reports_load_without_inventing_new_diagnosis"
+  ],
+  "results/published/evaluation-reliability-20261031T035848Z/2ec16ecc9bd3437290afe1bcddf0b321.json": [
+    "tests/test_v05_reasoning.py::test_real_historical_reports_load_without_inventing_new_diagnosis"
+  ],
+  "results/published/evaluation-reliability-20261031T035848Z/2f4731d9389f4c058c71ceea3f2c9422.json": [
+    "tests/test_v05_reasoning.py::test_real_historical_reports_load_without_inventing_new_diagnosis"
+  ],
+  "results/published/evaluation-reliability-20261031T035848Z/346306490d3740f79d4e91eea4ed1454.json": [
+    "tests/test_v05_reasoning.py::test_real_historical_reports_load_without_inventing_new_diagnosis"
+  ],
+  "results/published/evaluation-reliability-20261031T035848Z/3a1091999387466d918c6d269e275173.json": [
+    "tests/test_v05_reasoning.py::test_real_historical_reports_load_without_inventing_new_diagnosis"
+  ],
+  "results/published/evaluation-reliability-20261031T035848Z/3b76d79366bb4d39b2c6fcaa4c82c3e8.json": [
+    "tests/test_v05_reasoning.py::test_real_historical_reports_load_without_inventing_new_diagnosis"
+  ],
+  "results/published/evaluation-reliability-20261031T035848Z/3cf8ab1ad12e46519c1a15f96aaefd7f.json": [
+    "tests/test_v05_reasoning.py::test_real_historical_reports_load_without_inventing_new_diagnosis"
+  ],
+  "results/published/evaluation-reliability-20261031T035848Z/3e923683d6404b0baa3696a7fc917db6.json": [
+    "tests/test_v05_reasoning.py::test_real_historical_reports_load_without_inventing_new_diagnosis"
+  ],
+  "results/published/evaluation-reliability-20261031T035848Z/43492de50ecb4d16a328ccd62b63b82a.json": [
+    "tests/test_v05_reasoning.py::test_real_historical_reports_load_without_inventing_new_diagnosis"
+  ],
+  "results/published/evaluation-reliability-20261031T035848Z/4efc0eed4401405a9c1f00720be231e1.json": [
+    "tests/test_v05_reasoning.py::test_real_historical_reports_load_without_inventing_new_diagnosis"
+  ],
+  "results/published/evaluation-reliability-20261031T035848Z/511c1ec1ff804010b2bc20ece07b4a0b.json": [
+    "tests/test_v05_reasoning.py::test_real_historical_reports_load_without_inventing_new_diagnosis"
+  ],
+  "results/published/evaluation-reliability-20261031T035848Z/536326b5085447c9ad3afb5ab7c4b822.json": [
+    "tests/test_v05_reasoning.py::test_real_historical_reports_load_without_inventing_new_diagnosis"
+  ],
+  "results/published/evaluation-reliability-20261031T035848Z/581f17e9373f4ea3b60130b640aa2e0e.json": [
+    "tests/test_v05_reasoning.py::test_real_historical_reports_load_without_inventing_new_diagnosis"
+  ],
+  "results/published/evaluation-reliability-20261031T035848Z/6022aa5a458a43aeb5ef3d6492ce0095.json": [
+    "tests/test_v05_reasoning.py::test_real_historical_reports_load_without_inventing_new_diagnosis"
+  ],
+  "results/published/evaluation-reliability-20261031T035848Z/69c946cb029f49659abb0525bf5c8ad6.json": [
+    "tests/test_v05_reasoning.py::test_real_historical_reports_load_without_inventing_new_diagnosis"
+  ],
+  "results/published/evaluation-reliability-20261031T035848Z/7b783f7a32864092bbcdc3742f4ff378.json": [
+    "tests/test_v05_reasoning.py::test_real_historical_reports_load_without_inventing_new_diagnosis"
+  ],
+  "results/published/evaluation-reliability-20261031T035848Z/7c503436262e4ab18e212bbaae2b4ba0.json": [
+    "tests/test_v05_reasoning.py::test_real_historical_reports_load_without_inventing_new_diagnosis"
+  ],
+  "results/published/evaluation-reliability-20261031T035848Z/7d8e397f422d4455b5cfd8cf6210fa19.json": [
+    "tests/test_v05_reasoning.py::test_real_historical_reports_load_without_inventing_new_diagnosis"
+  ],
+  "results/published/evaluation-reliability-20261031T035848Z/8369eeddd2d74d7ab92996a557b17c1a.json": [
+    "tests/test_v05_reasoning.py::test_real_historical_reports_load_without_inventing_new_diagnosis"
+  ],
+  "results/published/evaluation-reliability-20261031T035848Z/89dd0ea37dde4e07aa5c3cecf341a14a.json": [
+    "tests/test_v05_reasoning.py::test_real_historical_reports_load_without_inventing_new_diagnosis"
+  ],
+  "results/published/evaluation-reliability-20261031T035848Z/8e306400f75a40ca9b819358183a1a1b.json": [
+    "tests/test_v05_reasoning.py::test_real_historical_reports_load_without_inventing_new_diagnosis"
+  ],
+  "results/published/evaluation-reliability-20261031T035848Z/8e58649900b345c8a6bd624ac07f483a.json": [
+    "tests/test_v05_reasoning.py::test_real_historical_reports_load_without_inventing_new_diagnosis"
+  ],
+  "results/published/evaluation-reliability-20261031T035848Z/9565f5383f7042db8563e32314d8f908.json": [
+    "tests/test_v05_reasoning.py::test_real_historical_reports_load_without_inventing_new_diagnosis"
+  ],
+  "results/published/evaluation-reliability-20261031T035848Z/9ca60453ec554d47920ec08b48a82d87.json": [
+    "tests/test_v05_reasoning.py::test_real_historical_reports_load_without_inventing_new_diagnosis"
+  ],
+  "results/published/evaluation-reliability-20261031T035848Z/a01e4fb2c32948d7a633cf1f17402f24.json": [
+    "tests/test_v05_reasoning.py::test_real_historical_reports_load_without_inventing_new_diagnosis"
+  ],
+  "results/published/evaluation-reliability-20261031T035848Z/b992e976ae7843218806d45ccc1908bc.json": [
+    "tests/test_v05_reasoning.py::test_real_historical_reports_load_without_inventing_new_diagnosis"
+  ],
+  "results/published/evaluation-reliability-20261031T035848Z/b9c1b8aa68934629befb7c479dabdb23.json": [
+    "tests/test_v05_reasoning.py::test_real_historical_reports_load_without_inventing_new_diagnosis"
+  ],
+  "results/published/evaluation-reliability-20261031T035848Z/c08e2771435648dab40a4d20f76aa299.json": [
+    "tests/test_v05_reasoning.py::test_real_historical_reports_load_without_inventing_new_diagnosis"
+  ],
+  "results/published/evaluation-reliability-20261031T035848Z/c4c77c05566e425bb3c51a9cb9d0f2d0.json": [
+    "tests/test_v05_reasoning.py::test_real_historical_reports_load_without_inventing_new_diagnosis"
+  ],
+  "results/published/evaluation-reliability-20261031T035848Z/cases.json": [
+    "tests/test_v05_reasoning.py::test_real_historical_reports_load_without_inventing_new_diagnosis"
+  ],
+  "results/published/evaluation-reliability-20261031T035848Z/ccae00f52f0143128918674d06f87cae.json": [
+    "tests/test_v05_reasoning.py::test_real_historical_reports_load_without_inventing_new_diagnosis"
+  ],
+  "results/published/evaluation-reliability-20261031T035848Z/d165625c04314dea85933b81fa6a780f.json": [
+    "tests/test_v05_reasoning.py::test_real_historical_reports_load_without_inventing_new_diagnosis"
+  ],
+  "results/published/evaluation-reliability-20261031T035848Z/d1889c5ffc6d43efa6c7e01c23844c6d.json": [
+    "tests/test_v05_reasoning.py::test_real_historical_reports_load_without_inventing_new_diagnosis"
+  ],
+  "results/published/evaluation-reliability-20261031T035848Z/db240f3a6b7d4053a78c071c777c6266.json": [
+    "tests/test_v05_reasoning.py::test_real_historical_reports_load_without_inventing_new_diagnosis"
+  ],
+  "results/published/evaluation-reliability-20261031T035848Z/dd141bdd7799440b8a1b1c8f6daac5e7.json": [
+    "tests/test_v05_reasoning.py::test_real_historical_reports_load_without_inventing_new_diagnosis"
+  ],
+  "results/published/evaluation-reliability-20261031T035848Z/df51e0f489454c87baac0c3e84a30269.json": [
+    "tests/test_v05_reasoning.py::test_real_historical_reports_load_without_inventing_new_diagnosis"
+  ],
+  "results/published/evaluation-reliability-20261031T035848Z/e6491b6251054d0b98bb62946319428c.json": [
+    "tests/test_v05_reasoning.py::test_real_historical_reports_load_without_inventing_new_diagnosis"
+  ],
+  "results/published/evaluation-reliability-20261031T035848Z/ea72adc2d25b40c2a1a81113a1f1859c.json": [
+    "tests/test_v05_reasoning.py::test_real_historical_reports_load_without_inventing_new_diagnosis"
+  ],
+  "results/published/evaluation-reliability-20261031T035848Z/ef618d749e844b36acdd4dce00a7d763.json": [
+    "tests/test_v05_reasoning.py::test_real_historical_reports_load_without_inventing_new_diagnosis"
+  ],
+  "results/published/evaluation-reliability-20261031T035848Z/experiment.json": [
+    "tests/test_v05_reasoning.py::test_real_historical_reports_load_without_inventing_new_diagnosis"
+  ],
+  "results/published/evaluation-reliability-20261031T035848Z/f3e4bb9e605c48a5ba290c9d0daa183f.json": [
+    "tests/test_v05_reasoning.py::test_real_historical_reports_load_without_inventing_new_diagnosis"
+  ],
+  "results/published/evaluation-reliability-20261031T035848Z/f588bf4eeee3492f82c2eebed211df86.json": [
+    "tests/test_v05_reasoning.py::test_real_historical_reports_load_without_inventing_new_diagnosis"
+  ],
+  "results/published/evaluation-reliability-20261031T035848Z/f7abf2fa979440529c59a44409a0d3f4.json": [
+    "tests/test_v05_reasoning.py::test_real_historical_reports_load_without_inventing_new_diagnosis"
+  ],
+  "results/published/evaluation-reliability-20261031T035848Z/f7b7beed89e54bd4af7a7512e981c384.json": [
+    "tests/test_v05_reasoning.py::test_real_historical_reports_load_without_inventing_new_diagnosis"
+  ],
+  "results/published/evaluation-reliability-20261031T035848Z/fbbc6da3ce3c4e72a7f2bafa6df4946f.json": [
+    "tests/test_v05_reasoning.py::test_real_historical_reports_load_without_inventing_new_diagnosis"
+  ],
+  "results/published/evaluation-reliability-20261031T035848Z/fe4d6a0e82a44102b1c4e2f594599ad9.json": [
+    "tests/test_v05_reasoning.py::test_real_historical_reports_load_without_inventing_new_diagnosis"
+  ],
+  "results/published/evaluation-reliability-20261031T035848Z/ff07e6c21c87478198f26e49ab73752b.json": [
+    "tests/test_v05_reasoning.py::test_real_historical_reports_load_without_inventing_new_diagnosis"
+  ],
+  "results/published/evaluation-reliability-20261031T035848Z/rule-checks.json": [
+    "tests/test_v05_reasoning.py::test_real_historical_reports_load_without_inventing_new_diagnosis"
+  ],
+  "results/published/nsec3-divergence-audit/after-fix/verifier-logs/T01-1-project.json": [
+    "tests/test_v05_reasoning.py::test_real_historical_reports_load_without_inventing_new_diagnosis"
+  ],
+  "results/published/nsec3-divergence-audit/after-fix/verifier-logs/T01-2-project.json": [
+    "tests/test_v05_reasoning.py::test_real_historical_reports_load_without_inventing_new_diagnosis"
+  ],
+  "results/published/nsec3-divergence-audit/after-isolated/verifier-logs/T01-1-project.json": [
+    "tests/test_v05_reasoning.py::test_real_historical_reports_load_without_inventing_new_diagnosis"
+  ],
+  "results/published/nsec3-divergence-audit/after-isolated/verifier-logs/T01-2-project.json": [
+    "tests/test_v05_reasoning.py::test_real_historical_reports_load_without_inventing_new_diagnosis"
+  ],
+  "results/published/nsec3-divergence-audit/after-isolated/verifier-logs/T01-3-project.json": [
+    "tests/test_v05_reasoning.py::test_real_historical_reports_load_without_inventing_new_diagnosis"
+  ],
+  "results/published/nsec3-divergence-audit/after-isolated/verifier-logs/T02-1-project.json": [
+    "tests/test_v05_reasoning.py::test_real_historical_reports_load_without_inventing_new_diagnosis"
+  ],
+  "results/published/nsec3-divergence-audit/after-isolated/verifier-logs/T03-1-project.json": [
+    "tests/test_v05_reasoning.py::test_real_historical_reports_load_without_inventing_new_diagnosis"
+  ],
+  "results/published/nsec3-divergence-audit/after-isolated/verifier-logs/T04-1-project.json": [
+    "tests/test_v05_reasoning.py::test_real_historical_reports_load_without_inventing_new_diagnosis"
+  ],
+  "results/published/nsec3-divergence-audit/after-isolated/verifier-logs/T05-1-project.json": [
+    "tests/test_v05_reasoning.py::test_real_historical_reports_load_without_inventing_new_diagnosis"
+  ],
+  "results/published/nsec3-divergence-audit/after-isolated/verifier-logs/T06-1-project.json": [
+    "tests/test_v05_reasoning.py::test_real_historical_reports_load_without_inventing_new_diagnosis"
+  ],
+  "results/published/nsec3-divergence-audit/after-isolated/verifier-logs/T07-1-project.json": [
+    "tests/test_v05_reasoning.py::test_real_historical_reports_load_without_inventing_new_diagnosis"
+  ],
+  "results/published/nsec3-divergence-audit/after-isolated/verifier-logs/T08-1-project.json": [
+    "tests/test_v05_reasoning.py::test_real_historical_reports_load_without_inventing_new_diagnosis"
+  ],
+  "results/published/nsec3-divergence-audit/after-isolated/verifier-logs/T09-1-project.json": [
+    "tests/test_v05_reasoning.py::test_real_historical_reports_load_without_inventing_new_diagnosis"
+  ],
+  "results/published/nsec3-divergence-audit/after-isolated/verifier-logs/T10-1-project.json": [
+    "tests/test_v05_reasoning.py::test_real_historical_reports_load_without_inventing_new_diagnosis"
+  ],
+  "results/published/nsec3-divergence-audit/after-isolated/verifier-logs/T11-1-project.json": [
+    "tests/test_v05_reasoning.py::test_real_historical_reports_load_without_inventing_new_diagnosis"
+  ],
+  "results/published/nsec3-divergence-audit/after-isolated/verifier-logs/T12-1-project.json": [
+    "tests/test_v05_reasoning.py::test_real_historical_reports_load_without_inventing_new_diagnosis"
+  ],
+  "results/published/nsec3-divergence-audit/reference-debug/verifier-logs/T01-1-project.json": [
+    "tests/test_v05_reasoning.py::test_real_historical_reports_load_without_inventing_new_diagnosis"
+  ],
+  "results/published/nsec3-divergence-audit/t07-corrected-v2/verifier-logs/T07-1-project.json": [
+    "tests/test_v05_reasoning.py::test_real_historical_reports_load_without_inventing_new_diagnosis"
+  ],
+  "results/published/nsec3-divergence-audit/verifier-logs/T01-1-project.json": [
+    "tests/test_v05_reasoning.py::test_real_historical_reports_load_without_inventing_new_diagnosis"
+  ],
+  "results/published/nsec3-divergence-audit/verifier-logs/T01-2-project.json": [
+    "tests/test_v05_reasoning.py::test_real_historical_reports_load_without_inventing_new_diagnosis"
+  ],
+  "results/published/nsec3-divergence-audit/verifier-logs/T01-3-project.json": [
+    "tests/test_v05_reasoning.py::test_real_historical_reports_load_without_inventing_new_diagnosis"
+  ],
+  "results/published/nsec3-divergence-audit/verifier-logs/T02-1-project.json": [
+    "tests/test_v05_reasoning.py::test_real_historical_reports_load_without_inventing_new_diagnosis"
+  ],
+  "results/published/nsec3-divergence-audit/verifier-logs/T03-1-project.json": [
+    "tests/test_v05_reasoning.py::test_real_historical_reports_load_without_inventing_new_diagnosis"
+  ],
+  "results/published/nsec3-divergence-audit/verifier-logs/T04-1-project.json": [
+    "tests/test_v05_reasoning.py::test_real_historical_reports_load_without_inventing_new_diagnosis"
+  ],
+  "results/published/nsec3-divergence-audit/verifier-logs/T05-1-project.json": [
+    "tests/test_v05_reasoning.py::test_real_historical_reports_load_without_inventing_new_diagnosis"
+  ],
+  "results/published/nsec3-divergence-audit/verifier-logs/T06-1-project.json": [
+    "tests/test_v05_reasoning.py::test_real_historical_reports_load_without_inventing_new_diagnosis"
+  ],
+  "results/published/nsec3-divergence-audit/verifier-logs/T07-1-project.json": [
+    "tests/test_v05_reasoning.py::test_real_historical_reports_load_without_inventing_new_diagnosis"
+  ],
+  "results/published/nsec3-divergence-audit/verifier-logs/T08-1-project.json": [
+    "tests/test_v05_reasoning.py::test_real_historical_reports_load_without_inventing_new_diagnosis"
+  ],
+  "results/published/nsec3-divergence-audit/verifier-logs/T09-1-project.json": [
+    "tests/test_v05_reasoning.py::test_real_historical_reports_load_without_inventing_new_diagnosis"
+  ],
+  "results/published/nsec3-divergence-audit/verifier-logs/T10-1-project.json": [
+    "tests/test_v05_reasoning.py::test_real_historical_reports_load_without_inventing_new_diagnosis"
+  ],
+  "results/published/nsec3-divergence-audit/verifier-logs/T11-1-project.json": [
+    "tests/test_v05_reasoning.py::test_real_historical_reports_load_without_inventing_new_diagnosis"
+  ],
+  "results/published/nsec3-divergence-audit/verifier-logs/T12-1-project.json": [
+    "tests/test_v05_reasoning.py::test_real_historical_reports_load_without_inventing_new_diagnosis"
+  ],
+  "results/published/v05-diagnostic-upgrade/final-release/dnssec-ds_mismatch.json": [
+    "tests/test_path_groups.py::test_dnssec_bogus_not_swallowed_by_timeout"
+  ],
+  "results/published/v05-report-quality-fixes/20261102-report-quality/before.json": [
+    "collection",
+    "tests/test_v05_closure.py::test_parallel_gets_check_for_each_issue_without_mutating_json",
+    "tests/test_v05_closure.py::test_parallel_truncation_is_explicit",
+    "tests/test_v05_closure.py::test_primary_still_gets_first_action",
+    "tests/test_web_product.py::test_dnssec_direct_dependencies_and_html"
+  ],
+  "results/published/v06-final-review/20261102/before.json": [
+    "tests/test_v06_final_review.py::test_invalid_or_explicit_unknown_result_context_never_falls_back_to_root[None]",
+    "tests/test_v06_final_review.py::test_invalid_or_explicit_unknown_result_context_never_falls_back_to_root[TCP]",
+    "tests/test_v06_final_review.py::test_invalid_or_explicit_unknown_result_context_never_falls_back_to_root[bad1]",
+    "tests/test_v06_final_review.py::test_invalid_or_explicit_unknown_result_context_never_falls_back_to_root[bad3]",
+    "tests/test_v06_final_review.py::test_invalid_or_explicit_unknown_result_context_never_falls_back_to_root[bad4]",
+    "tests/test_v06_final_review.py::test_invalid_or_explicit_unknown_result_context_never_falls_back_to_root[bad5]",
+    "tests/test_v06_final_review.py::test_invalid_or_explicit_unknown_result_context_never_falls_back_to_root[bad6]",
+    "tests/test_v06_final_review.py::test_invalid_or_explicit_unknown_result_context_never_falls_back_to_root[bad7]",
+    "tests/test_v06_final_review.py::test_missing_context_is_unknown_and_incomplete_logs_remain_loadable",
+    "tests/test_v06_final_review.py::test_mixed_view_html_cli_json_preserve_formal_selection[dnssec_timeout]",
+    "tests/test_v06_final_review.py::test_mixed_view_html_cli_json_preserve_formal_selection[http_timeout]",
+    "tests/test_v06_final_review.py::test_mixed_view_html_cli_json_preserve_formal_selection[indeterminate_timeout]",
+    "tests/test_v06_final_review.py::test_mixed_view_html_cli_json_preserve_formal_selection[only_timeouts]",
+    "tests/test_v06_final_review.py::test_mixed_view_html_cli_json_preserve_formal_selection[partial_timeouts]",
+    "tests/test_v06_final_review.py::test_mixed_view_html_cli_json_preserve_formal_selection[tcp_timeout]",
+    "tests/test_v06_final_review.py::test_replay_never_constructs_live_backend_and_is_environment_independent",
+    "tests/test_v06_final_review.py::test_valid_stored_context_selects_original_tcp_not_timeout[conflict]",
+    "tests/test_v06_final_review.py::test_valid_stored_context_selects_original_tcp_not_timeout[result_only]",
+    "tests/test_v06_final_review.py::test_valid_stored_context_selects_original_tcp_not_timeout[root_fallback]"
+  ],
+  "src/dns_investigator/assets/anchor-authentication.json": [
+    "tests/test_dnssec_boundaries.py::test_authenticated_import_failure_preserves_snapshot",
+    "tests/test_dnssec_boundaries.py::test_stale_anchor_and_failed_import_leave_snapshot_unchanged"
+  ],
+  "src/dns_investigator/assets/icannbundle.pem": [
+    "tests/test_dnssec_boundaries.py::test_authenticated_import_failure_preserves_snapshot",
+    "tests/test_dnssec_boundaries.py::test_stale_anchor_and_failed_import_leave_snapshot_unchanged"
+  ],
+  "src/dns_investigator/assets/report.css": [
+    "tests/test_v06_final_review.py::test_mixed_view_html_cli_json_preserve_formal_selection[dnssec_timeout]",
+    "tests/test_v06_final_review.py::test_mixed_view_html_cli_json_preserve_formal_selection[http_timeout]",
+    "tests/test_v06_final_review.py::test_mixed_view_html_cli_json_preserve_formal_selection[indeterminate_timeout]",
+    "tests/test_v06_final_review.py::test_mixed_view_html_cli_json_preserve_formal_selection[only_timeouts]",
+    "tests/test_v06_final_review.py::test_mixed_view_html_cli_json_preserve_formal_selection[partial_timeouts]",
+    "tests/test_v06_final_review.py::test_mixed_view_html_cli_json_preserve_formal_selection[tcp_timeout]",
+    "tests/test_web_product.py::test_dnssec_direct_dependencies_and_html",
+    "tests/test_web_product.py::test_html_untrusted_export_and_json_compatibility"
+  ],
+  "src/dns_investigator/assets/report.html": [
+    "tests/test_v06_final_review.py::test_mixed_view_html_cli_json_preserve_formal_selection[dnssec_timeout]"
+  ],
+  "src/dns_investigator/assets/root-anchors.p7s": [
+    "tests/test_dnssec_boundaries.py::test_authenticated_import_failure_preserves_snapshot"
+  ],
+  "src/dns_investigator/assets/root-anchors.xml": [
+    "tests/test_dnssec_boundaries.py::test_authenticated_import_failure_preserves_snapshot",
+    "tests/test_dnssec_boundaries.py::test_stale_anchor_and_failed_import_leave_snapshot_unchanged"
+  ],
+  "src/dns_investigator/assets/web.html": [
+    "tests/test_path_groups.py::test_web_import_history_export_and_summary_match_formal_report"
+  ],
+  "src/dns_investigator/web.py": [
+    "tests/test_path_groups.py::test_web_import_history_export_and_summary_match_formal_report"
+  ],
+  "tests/test_accounting_v2.py": [
+    "collection"
+  ],
+  "tests/test_agent.py": [
+    "collection"
+  ],
+  "tests/test_agent_draft.py": [
+    "collection"
+  ],
+  "tests/test_alias_scope.py": [
+    "collection"
+  ],
+  "tests/test_authority_states.py": [
+    "collection"
+  ],
+  "tests/test_authority_v3.py": [
+    "collection"
+  ],
+  "tests/test_cli.py": [
+    "collection"
+  ],
+  "tests/test_controlled_accuracy.py": [
+    "collection"
+  ],
+  "tests/test_dns_accuracy.py": [
+    "collection"
+  ],
+  "tests/test_dns_time.py": [
+    "collection"
+  ],
+  "tests/test_dns_v3.py": [
+    "collection"
+  ],
+  "tests/test_dnssec_boundaries.py": [
+    "collection"
+  ],
+  "tests/test_dnssec_proof_edges.py": [
+    "collection"
+  ],
+  "tests/test_fcd_acceptance.py": [
+    "collection"
+  ],
+  "tests/test_final_agent_context.py": [
+    "collection"
+  ],
+  "tests/test_final_verification.py": [
+    "collection"
+  ],
+  "tests/test_http_security.py": [
+    "collection"
+  ],
+  "tests/test_manual_review_fixes.py": [
+    "collection"
+  ],
+  "tests/test_nsec3_audit.py": [
+    "collection"
+  ],
+  "tests/test_nsec3_followup.py": [
+    "collection"
+  ],
+  "tests/test_path_groups.py": [
+    "collection"
+  ],
+  "tests/test_protocol_dnssec.py": [
+    "collection"
+  ],
+  "tests/test_protocol_edns.py": [
+    "collection"
+  ],
+  "tests/test_protocol_reporting.py": [
+    "collection"
+  ],
+  "tests/test_protocol_trace.py": [
+    "collection"
+  ],
+  "tests/test_reliability.py": [
+    "collection"
+  ],
+  "tests/test_reliability_v2.py": [
+    "collection"
+  ],
+  "tests/test_report_acceptance.py": [
+    "collection"
+  ],
+  "tests/test_report_quality.py": [
+    "collection"
+  ],
+  "tests/test_review_rules.py": [
+    "collection"
+  ],
+  "tests/test_tcp_policy.py": [
+    "collection"
+  ],
+  "tests/test_tools.py": [
+    "collection"
+  ],
+  "tests/test_v05_closure.py": [
+    "collection"
+  ],
+  "tests/test_v05_reasoning.py": [
+    "collection"
+  ],
+  "tests/test_v05_schema.py": [
+    "collection"
+  ],
+  "tests/test_v06_final_review.py": [
+    "collection"
+  ],
+  "tests/test_v3_targeted_fixes.py": [
+    "collection"
+  ],
+  "tests/test_web.py": [
+    "collection"
+  ],
+  "tests/test_web_product.py": [
+    "collection"
+  ]
+}

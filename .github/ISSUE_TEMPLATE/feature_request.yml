@@ -1,0 +1,15 @@
+name: Feature request
+description: Propose a focused improvement
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem and proposed behavior
+      description: Explain the user need, scope, evidence and validation. Do not include private logs.
+    validations:
+      required: true
+  - type: textarea
+    id: safety
+    attributes:
+      label: Safety and compatibility
+      description: Network permissions, budgets, data provenance and alternatives.

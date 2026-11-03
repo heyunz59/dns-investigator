@@ -1,0 +1,1260 @@
+[
+  {
+    "sha256": "cfed09013fa3b6a7ca53d031574c0db2e121a45f459eec5494f5b208f8466b14",
+    "files": [
+      "data/fixtures/C1.json",
+      "results/published/evaluation-reliability-20261031T035848Z/fixtures/C1.json"
+    ]
+  },
+  {
+    "sha256": "1a710c5ec25d690e9f71049dabece0dd8a933394fed28fd415ef51b8568146d0",
+    "files": [
+      "data/fixtures/C2.json",
+      "results/published/evaluation-reliability-20261031T035848Z/fixtures/C2.json"
+    ]
+  },
+  {
+    "sha256": "ce9aa43f80ce7c4fb97563e07ad44f989b6dd49e5d002a0130e9e515828bbfd4",
+    "files": [
+      "data/fixtures/C3.json",
+      "results/published/evaluation-reliability-20261031T035848Z/fixtures/C3.json"
+    ]
+  },
+  {
+    "sha256": "1faab3512d9b83ddfaaf88cf4adabdeb38e61e17a520cf9c06e7979011575f35",
+    "files": [
+      "data/fixtures/C4.json",
+      "results/published/evaluation-reliability-20261031T035848Z/fixtures/C4.json"
+    ]
+  },
+  {
+    "sha256": "53d0c8feb94dc7fc87b51af765777104fac7d332a94c734b900bed8c6fb1db09",
+    "files": [
+      "data/fixtures/C5.json",
+      "results/published/evaluation-reliability-20261031T035848Z/fixtures/C5.json"
+    ]
+  },
+  {
+    "sha256": "d0e084dc5030a49086bf34bcb4a2827cf40592104a9483e6dfc23171bb3d01b7",
+    "files": [
+      "data/fixtures/C6c.json",
+      "results/published/evaluation-reliability-20261031T035848Z/fixtures/C6c.json"
+    ]
+  },
+  {
+    "sha256": "95d093eed74be8596a227a5d6759449b818dc6a14171486921c82db549473927",
+    "files": [
+      "data/fixtures/MISSING.json",
+      "results/published/evaluation-reliability-20261031T035848Z/fixtures/MISSING.json"
+    ]
+  },
+  {
+    "sha256": "f7e907b841b74f538650496ac52996b257c0a149b4cc1582d9f8c960322223d9",
+    "files": [
+      "data/fixtures/Q1.json",
+      "results/published/evaluation-reliability-20261031T035848Z/fixtures/Q1.json"
+    ]
+  },
+  {
+    "sha256": "f8c7db1ee4dc861f26eec1f938a88252f233728b120c6b227f6bc6090ee93e9e",
+    "files": [
+      "data/fixtures/dns-v3/D1.json",
+      "data/fixtures/dns-v3/D10.json"
+    ]
+  },
+  {
+    "sha256": "43f3d929aadee36b48f2fd6dd61ecc9724ca67c4f751d175b7115a299d461c80",
+    "files": [
+      "results/published/dns-accuracy-f0787c0/partial-before-typed/raw-fixture.json",
+      "results/published/dns-accuracy-f0787c0/partial-current/raw-fixture.json"
+    ]
+  },
+  {
+    "sha256": "017b960ba97f482afeedab2247b791a1522ecfa8a9dedcc90fd25b28da8f9981",
+    "files": [
+      "results/published/nsec3-divergence-audit/after-fix/environment.json",
+      "results/published/nsec3-divergence-audit/after-isolated/environment.json"
+    ]
+  },
+  {
+    "sha256": "ec15df1e7dd378898c4fcfb5348729e612937c26b985a426b1f72307fcd185b8",
+    "files": [
+      "results/published/nsec3-divergence-audit/after-fix/raw-wire/T01-2-010-query.wire",
+      "results/published/nsec3-divergence-audit/after-isolated/raw-wire/T10-1-010-query.wire"
+    ]
+  },
+  {
+    "sha256": "b39c0ed714a33127fb829c467a35535c4485aefa0489d50aeb331d46447c4afc",
+    "files": [
+      "results/published/nsec3-divergence-audit/after-fix/raw-wire/T01-2-010-response.wire",
+      "results/published/nsec3-divergence-audit/after-isolated/raw-wire/T10-1-010-response.wire"
+    ]
+  },
+  {
+    "sha256": "87edbcb8d4eefac6bb66f53dc991e1dca1b6395018a8da11bc2be1405939fead",
+    "files": [
+      "results/published/nsec3-divergence-audit/after-isolated/raw-wire/T06-1-011-response.wire",
+      "results/published/v0.4-security-nsec3-followup/nsec3-before/X14/raw-wire/X14-1-001-response.wire"
+    ]
+  },
+  {
+    "sha256": "889fe9f9063d7270ad97278a9715356603ba796f07ba72e6ed5ce3c26db7520c",
+    "files": [
+      "results/published/nsec3-divergence-audit/after-isolated/raw-wire/T08-1-002-query.wire",
+      "results/published/v0.4-security-nsec3-followup/nsec3-final/T05/raw-wire/T05-1-000-query.wire"
+    ]
+  },
+  {
+    "sha256": "190fa6399557c43fc0441ed85280d5f7e0e6b4d5c9e6646dd301c418ff65264a",
+    "files": [
+      "results/published/nsec3-divergence-audit/after-isolated/raw-wire/T09-1-019-query.wire",
+      "results/published/v0.4-security-nsec3-followup/nsec3-after/X28/raw-wire/X28-1-011-query.wire"
+    ]
+  },
+  {
+    "sha256": "03142b80670173a66dbd3964101a0ea64ca8e42866ebc565b9b5add6bd46c611",
+    "files": [
+      "results/published/nsec3-divergence-audit/after-isolated/raw-wire/T12-1-009-query.wire",
+      "results/published/v0.4-security-nsec3-followup/nsec3-final/T09/raw-wire/T09-1-022-query.wire"
+    ]
+  },
+  {
+    "sha256": "52418807963afded14c8df1d64ed22c6bc34cd32bb1223af62a4b2b26c4632ae",
+    "files": [
+      "results/published/nsec3-divergence-audit/raw-wire/T01-3-011-response.wire",
+      "results/published/v0.4-security-nsec3-followup/nsec3-after/X14/raw-wire/X14-1-001-response.wire"
+    ]
+  },
+  {
+    "sha256": "e523a8fc0e6d6a1799fe3999b9b79dc296abf33d8ef221be642027d63f4c9e7a",
+    "files": [
+      "results/published/nsec3-divergence-audit/reference-debug/all-runs.json",
+      "results/published/nsec3-divergence-audit/reference-debug/original-reproduction.json"
+    ]
+  },
+  {
+    "sha256": "dff69c68e8eb92fc4869246d1716729af59838d624bd8552dac413cecd505c73",
+    "files": [
+      "results/published/nsec3-divergence-audit/t07-corrected-v2/all-runs.json",
+      "results/published/nsec3-divergence-audit/t07-corrected-v2/original-reproduction.json"
+    ]
+  },
+  {
+    "sha256": "3ae878b80c477a02b5d4a5d36cc3488bc3afad56dcf9ba98d8c76889e75e1411",
+    "files": [
+      "results/published/nsec3-divergence-audit/t07-corrected-v2/environment.json",
+      "results/published/nsec3-divergence-audit/t07-corrected/environment.json"
+    ]
+  },
+  {
+    "sha256": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+    "files": [
+      "results/published/nsec3-divergence-audit/t07-corrected-v2/proof-analysis.json",
+      "results/published/v0.4-security-nsec3-followup/nsec3-after/T02/proof-analysis.json",
+      "results/published/v0.4-security-nsec3-followup/nsec3-after/T03/proof-analysis.json",
+      "results/published/v0.4-security-nsec3-followup/nsec3-after/T04/proof-analysis.json",
+      "results/published/v0.4-security-nsec3-followup/nsec3-after/T05/proof-analysis.json",
+      "results/published/v0.4-security-nsec3-followup/nsec3-after/T06/proof-analysis.json",
+      "results/published/v0.4-security-nsec3-followup/nsec3-after/T07/proof-analysis.json",
+      "results/published/v0.4-security-nsec3-followup/nsec3-after/T08/proof-analysis.json",
+      "results/published/v0.4-security-nsec3-followup/nsec3-after/T09/proof-analysis.json",
+      "results/published/v0.4-security-nsec3-followup/nsec3-after/T10/proof-analysis.json",
+      "results/published/v0.4-security-nsec3-followup/nsec3-after/T11/proof-analysis.json",
+      "results/published/v0.4-security-nsec3-followup/nsec3-after/T12/proof-analysis.json",
+      "results/published/v0.4-security-nsec3-followup/nsec3-after/X13/proof-analysis.json",
+      "results/published/v0.4-security-nsec3-followup/nsec3-after/X14/proof-analysis.json",
+      "results/published/v0.4-security-nsec3-followup/nsec3-after/X15/proof-analysis.json",
+      "results/published/v0.4-security-nsec3-followup/nsec3-after/X16/proof-analysis.json",
+      "results/published/v0.4-security-nsec3-followup/nsec3-after/X17/proof-analysis.json",
+      "results/published/v0.4-security-nsec3-followup/nsec3-after/X18/proof-analysis.json",
+      "results/published/v0.4-security-nsec3-followup/nsec3-after/X19/proof-analysis.json",
+      "results/published/v0.4-security-nsec3-followup/nsec3-after/X20/proof-analysis.json",
+      "results/published/v0.4-security-nsec3-followup/nsec3-after/X21/proof-analysis.json",
+      "results/published/v0.4-security-nsec3-followup/nsec3-after/X22/proof-analysis.json",
+      "results/published/v0.4-security-nsec3-followup/nsec3-after/X23/proof-analysis.json",
+      "results/published/v0.4-security-nsec3-followup/nsec3-after/X24/proof-analysis.json",
+      "results/published/v0.4-security-nsec3-followup/nsec3-after/X25/proof-analysis.json",
+      "results/published/v0.4-security-nsec3-followup/nsec3-after/X26/proof-analysis.json",
+      "results/published/v0.4-security-nsec3-followup/nsec3-after/X27/proof-analysis.json",
+      "results/published/v0.4-security-nsec3-followup/nsec3-after/X28/proof-analysis.json",
+      "results/published/v0.4-security-nsec3-followup/nsec3-before/T02/proof-analysis.json",
+      "results/published/v0.4-security-nsec3-followup/nsec3-before/T03/proof-analysis.json",
+      "results/published/v0.4-security-nsec3-followup/nsec3-before/T04/proof-analysis.json",
+      "results/published/v0.4-security-nsec3-followup/nsec3-before/T05/proof-analysis.json",
+      "results/published/v0.4-security-nsec3-followup/nsec3-before/T06/proof-analysis.json",
+      "results/published/v0.4-security-nsec3-followup/nsec3-before/T07/proof-analysis.json",
+      "results/published/v0.4-security-nsec3-followup/nsec3-before/T08/proof-analysis.json",
+      "results/published/v0.4-security-nsec3-followup/nsec3-before/T09/proof-analysis.json",
+      "results/published/v0.4-security-nsec3-followup/nsec3-before/T10/proof-analysis.json",
+      "results/published/v0.4-security-nsec3-followup/nsec3-before/T11/proof-analysis.json",
+      "results/published/v0.4-security-nsec3-followup/nsec3-before/T12/proof-analysis.json",
+      "results/published/v0.4-security-nsec3-followup/nsec3-before/X13/proof-analysis.json",
+      "results/published/v0.4-security-nsec3-followup/nsec3-before/X14/proof-analysis.json",
+      "results/published/v0.4-security-nsec3-followup/nsec3-before/X15/proof-analysis.json",
+      "results/published/v0.4-security-nsec3-followup/nsec3-before/X16/proof-analysis.json",
+      "results/published/v0.4-security-nsec3-followup/nsec3-before/X17/proof-analysis.json",
+      "results/published/v0.4-security-nsec3-followup/nsec3-before/X18/proof-analysis.json",
+      "results/published/v0.4-security-nsec3-followup/nsec3-before/X19/proof-analysis.json",
+      "results/published/v0.4-security-nsec3-followup/nsec3-before/X20/proof-analysis.json",
+      "results/published/v0.4-security-nsec3-followup/nsec3-before/X21/proof-analysis.json",
+      "results/published/v0.4-security-nsec3-followup/nsec3-before/X22/proof-analysis.json",
+      "results/published/v0.4-security-nsec3-followup/nsec3-before/X23/proof-analysis.json",
+      "results/published/v0.4-security-nsec3-followup/nsec3-before/X24/proof-analysis.json",
+      "results/published/v0.4-security-nsec3-followup/nsec3-before/X25/proof-analysis.json",
+      "results/published/v0.4-security-nsec3-followup/nsec3-before/X26/proof-analysis.json",
+      "results/published/v0.4-security-nsec3-followup/nsec3-before/X27/proof-analysis.json",
+      "results/published/v0.4-security-nsec3-followup/nsec3-before/X28/proof-analysis.json",
+      "results/published/v0.4-security-nsec3-followup/nsec3-final/T02/proof-analysis.json",
+      "results/published/v0.4-security-nsec3-followup/nsec3-final/T03/proof-analysis.json",
+      "results/published/v0.4-security-nsec3-followup/nsec3-final/T04/proof-analysis.json",
+      "results/published/v0.4-security-nsec3-followup/nsec3-final/T05/proof-analysis.json",
+      "results/published/v0.4-security-nsec3-followup/nsec3-final/T06/proof-analysis.json",
+      "results/published/v0.4-security-nsec3-followup/nsec3-final/T07/proof-analysis.json",
+      "results/published/v0.4-security-nsec3-followup/nsec3-final/T08/proof-analysis.json",
+      "results/published/v0.4-security-nsec3-followup/nsec3-final/T09/proof-analysis.json",
+      "results/published/v0.4-security-nsec3-followup/nsec3-final/T10/proof-analysis.json",
+      "results/published/v0.4-security-nsec3-followup/nsec3-final/T11/proof-analysis.json",
+      "results/published/v0.4-security-nsec3-followup/nsec3-final/T12/proof-analysis.json",
+      "results/published/v0.4-security-nsec3-followup/nsec3-final/X13/proof-analysis.json",
+      "results/published/v0.4-security-nsec3-followup/nsec3-final/X14/proof-analysis.json",
+      "results/published/v0.4-security-nsec3-followup/nsec3-final/X15/proof-analysis.json",
+      "results/published/v0.4-security-nsec3-followup/nsec3-final/X16/proof-analysis.json",
+      "results/published/v0.4-security-nsec3-followup/nsec3-final/X17/proof-analysis.json",
+      "results/published/v0.4-security-nsec3-followup/nsec3-final/X18/proof-analysis.json",
+      "results/published/v0.4-security-nsec3-followup/nsec3-final/X19/proof-analysis.json",
+      "results/published/v0.4-security-nsec3-followup/nsec3-final/X20/proof-analysis.json",
+      "results/published/v0.4-security-nsec3-followup/nsec3-final/X21/proof-analysis.json",
+      "results/published/v0.4-security-nsec3-followup/nsec3-final/X22/proof-analysis.json",
+      "results/published/v0.4-security-nsec3-followup/nsec3-final/X23/proof-analysis.json",
+      "results/published/v0.4-security-nsec3-followup/nsec3-final/X24/proof-analysis.json",
+      "results/published/v0.4-security-nsec3-followup/nsec3-final/X25/proof-analysis.json",
+      "results/published/v0.4-security-nsec3-followup/nsec3-final/X26/proof-analysis.json",
+      "results/published/v0.4-security-nsec3-followup/nsec3-final/X27/proof-analysis.json",
+      "results/published/v0.4-security-nsec3-followup/nsec3-final/X28/proof-analysis.json"
+    ]
+  },
+  {
+    "sha256": "140d3d7cc9aaac6816ae15b8da8f0fa8ff4a2257b523b0c0bf38d269597da204",
+    "files": [
+      "results/published/nsec3-divergence-audit/t07-corrected-v2/raw-wire/T07-1-018-query.wire",
+      "results/published/v0.4-security-nsec3-followup/nsec3-before/X22/raw-wire/X22-1-019-query.wire"
+    ]
+  },
+  {
+    "sha256": "5b5a372489650a9d5d1d922e12e81a8fb99b4520a51f3330cdbb93b5ba82d2e0",
+    "files": [
+      "results/published/nsec3-divergence-audit/verifier-logs/T01-1-unbound.json",
+      "results/published/nsec3-divergence-audit/verifier-logs/T01-2-unbound.json",
+      "results/published/nsec3-divergence-audit/verifier-logs/T01-3-unbound.json",
+      "results/published/nsec3-divergence-audit/verifier-logs/T04-1-unbound.json",
+      "results/published/nsec3-divergence-audit/verifier-logs/T05-1-unbound.json",
+      "results/published/nsec3-divergence-audit/verifier-logs/T06-1-unbound.json",
+      "results/published/nsec3-divergence-audit/verifier-logs/T07-1-unbound.json",
+      "results/published/nsec3-divergence-audit/verifier-logs/T11-1-unbound.json"
+    ]
+  },
+  {
+    "sha256": "5b121b4d588805e85699dbbeeafbb9afddebe9d8c6ffdfa743b44b63a8cc47df",
+    "files": [
+      "results/published/nsec3-divergence-audit/verifier-logs/T02-1-unbound.json",
+      "results/published/nsec3-divergence-audit/verifier-logs/T03-1-unbound.json",
+      "results/published/nsec3-divergence-audit/verifier-logs/T08-1-unbound.json",
+      "results/published/nsec3-divergence-audit/verifier-logs/T10-1-unbound.json"
+    ]
+  },
+  {
+    "sha256": "25e6d78c102b55d0b3ce5ce4e0d182eee37e49aaf65ad1413e67380e9a382056",
+    "files": [
+      "results/published/nsec3-divergence-audit/verifier-logs/T06-1-reference.conf",
+      "results/published/nsec3-divergence-audit/verifier-logs/T07-1-reference.conf"
+    ]
+  },
+  {
+    "sha256": "4707e41591762912cd64ef7cba4f8710e4ec3e511871e1aab269337e877a25bc",
+    "files": [
+      "results/published/public-path-aggregation/20261102-baidu/after-cli.txt",
+      "results/published/v06-final-review/20261102/final-replay/baidu-cli.txt",
+      "results/published/v06-final-review/20261102/final-source-replay/baidu-cli.txt"
+    ]
+  },
+  {
+    "sha256": "9c319331e7fe62828b57322587237c91fc9723453af11d915ace88dd72e22d48",
+    "files": [
+      "results/published/v0.4-security-nsec3-followup/nsec3-after/T01/all-runs.json",
+      "results/published/v0.4-security-nsec3-followup/nsec3-after/T01/original-reproduction.json"
+    ]
+  },
+  {
+    "sha256": "1e53d8e9f636e78ed0e32443877fbd26237f697e016af8defcf62b6852e01f6f",
+    "files": [
+      "results/published/v0.4-security-nsec3-followup/nsec3-after/T01/environment.json",
+      "results/published/v0.4-security-nsec3-followup/nsec3-after/T02/environment.json",
+      "results/published/v0.4-security-nsec3-followup/nsec3-after/T03/environment.json",
+      "results/published/v0.4-security-nsec3-followup/nsec3-after/T04/environment.json",
+      "results/published/v0.4-security-nsec3-followup/nsec3-after/T05/environment.json",
+      "results/published/v0.4-security-nsec3-followup/nsec3-after/T06/environment.json",
+      "results/published/v0.4-security-nsec3-followup/nsec3-after/T07/environment.json",
+      "results/published/v0.4-security-nsec3-followup/nsec3-after/T08/environment.json",
+      "results/published/v0.4-security-nsec3-followup/nsec3-after/T09/environment.json",
+      "results/published/v0.4-security-nsec3-followup/nsec3-after/T10/environment.json",
+      "results/published/v0.4-security-nsec3-followup/nsec3-after/T11/environment.json",
+      "results/published/v0.4-security-nsec3-followup/nsec3-after/T12/environment.json",
+      "results/published/v0.4-security-nsec3-followup/nsec3-after/X13/environment.json",
+      "results/published/v0.4-security-nsec3-followup/nsec3-after/X14/environment.json",
+      "results/published/v0.4-security-nsec3-followup/nsec3-after/X15/environment.json",
+      "results/published/v0.4-security-nsec3-followup/nsec3-after/X16/environment.json",
+      "results/published/v0.4-security-nsec3-followup/nsec3-after/X17/environment.json",
+      "results/published/v0.4-security-nsec3-followup/nsec3-after/X18/environment.json",
+      "results/published/v0.4-security-nsec3-followup/nsec3-after/X19/environment.json",
+      "results/published/v0.4-security-nsec3-followup/nsec3-after/X20/environment.json",
+      "results/published/v0.4-security-nsec3-followup/nsec3-after/X21/environment.json",
+      "results/published/v0.4-security-nsec3-followup/nsec3-after/X22/environment.json",
+      "results/published/v0.4-security-nsec3-followup/nsec3-after/X23/environment.json",
+      "results/published/v0.4-security-nsec3-followup/nsec3-after/X24/environment.json",
+      "results/published/v0.4-security-nsec3-followup/nsec3-after/X25/environment.json",
+      "results/published/v0.4-security-nsec3-followup/nsec3-after/X26/environment.json",
+      "results/published/v0.4-security-nsec3-followup/nsec3-after/X27/environment.json",
+      "results/published/v0.4-security-nsec3-followup/nsec3-after/X28/environment.json",
+      "results/published/v0.4-security-nsec3-followup/nsec3-before/T01/environment.json",
+      "results/published/v0.4-security-nsec3-followup/nsec3-before/T02/environment.json",
+      "results/published/v0.4-security-nsec3-followup/nsec3-before/T03/environment.json",
+      "results/published/v0.4-security-nsec3-followup/nsec3-before/T04/environment.json",
+      "results/published/v0.4-security-nsec3-followup/nsec3-before/T05/environment.json",
+      "results/published/v0.4-security-nsec3-followup/nsec3-before/T06/environment.json",
+      "results/published/v0.4-security-nsec3-followup/nsec3-before/T07/environment.json",
+      "results/published/v0.4-security-nsec3-followup/nsec3-before/T08/environment.json",
+      "results/published/v0.4-security-nsec3-followup/nsec3-before/T09/environment.json",
+      "results/published/v0.4-security-nsec3-followup/nsec3-before/T10/environment.json",
+      "results/published/v0.4-security-nsec3-followup/nsec3-before/T11/environment.json",
+      "results/published/v0.4-security-nsec3-followup/nsec3-before/T12/environment.json",
+      "results/published/v0.4-security-nsec3-followup/nsec3-before/X13/environment.json",
+      "results/published/v0.4-security-nsec3-followup/nsec3-before/X14/environment.json",
+      "results/published/v0.4-security-nsec3-followup/nsec3-before/X15/environment.json",
+      "results/published/v0.4-security-nsec3-followup/nsec3-before/X16/environment.json",
+      "results/published/v0.4-security-nsec3-followup/nsec3-before/X17/environment.json",
+      "results/published/v0.4-security-nsec3-followup/nsec3-before/X18/environment.json",
+      "results/published/v0.4-security-nsec3-followup/nsec3-before/X19/environment.json",
+      "results/published/v0.4-security-nsec3-followup/nsec3-before/X20/environment.json",
+      "results/published/v0.4-security-nsec3-followup/nsec3-before/X21/environment.json",
+      "results/published/v0.4-security-nsec3-followup/nsec3-before/X22/environment.json",
+      "results/published/v0.4-security-nsec3-followup/nsec3-before/X23/environment.json",
+      "results/published/v0.4-security-nsec3-followup/nsec3-before/X24/environment.json",
+      "results/published/v0.4-security-nsec3-followup/nsec3-before/X25/environment.json",
+      "results/published/v0.4-security-nsec3-followup/nsec3-before/X26/environment.json",
+      "results/published/v0.4-security-nsec3-followup/nsec3-before/X27/environment.json",
+      "results/published/v0.4-security-nsec3-followup/nsec3-before/X28/environment.json"
+    ]
+  },
+  {
+    "sha256": "269acd0f20898ffb936e9db7c5c12db9714cea82fb7aee2a71ccf9c44df07de2",
+    "files": [
+      "results/published/v0.4-security-nsec3-followup/nsec3-after/T02/all-runs.json",
+      "results/published/v0.4-security-nsec3-followup/nsec3-after/T02/original-reproduction.json"
+    ]
+  },
+  {
+    "sha256": "40ead5b2ff3c24323990a5229ee0e7a8db6a57dadbf7ccd5fb173da17405a0f1",
+    "files": [
+      "results/published/v0.4-security-nsec3-followup/nsec3-after/T03/all-runs.json",
+      "results/published/v0.4-security-nsec3-followup/nsec3-after/T03/original-reproduction.json"
+    ]
+  },
+  {
+    "sha256": "1033cc0c9d923d53ad9c4a246567fea45a01307086aca64d49bab7e736da8c1f",
+    "files": [
+      "results/published/v0.4-security-nsec3-followup/nsec3-after/T04/all-runs.json",
+      "results/published/v0.4-security-nsec3-followup/nsec3-after/T04/original-reproduction.json"
+    ]
+  },
+  {
+    "sha256": "031bb14705c615ad1d5f76ea85c01d6f7aa810e15d70a4dcf0f1cd99148e65dd",
+    "files": [
+      "results/published/v0.4-security-nsec3-followup/nsec3-after/T05/all-runs.json",
+      "results/published/v0.4-security-nsec3-followup/nsec3-after/T05/original-reproduction.json"
+    ]
+  },
+  {
+    "sha256": "71f10329f1d9b3bf73f466107c8a19c9c48105e03958170664938f60fba56d8d",
+    "files": [
+      "results/published/v0.4-security-nsec3-followup/nsec3-after/T05/raw-wire/T05-1-000-response.wire",
+      "results/published/v0.4-security-nsec3-followup/nsec3-before/X28/raw-wire/X28-1-010-response.wire"
+    ]
+  },
+  {
+    "sha256": "ac245acab6f4aab0562ae16316b4551ab40d7b6f1934281d638b152634a3b5a4",
+    "files": [
+      "results/published/v0.4-security-nsec3-followup/nsec3-after/T06/all-runs.json",
+      "results/published/v0.4-security-nsec3-followup/nsec3-after/T06/original-reproduction.json"
+    ]
+  },
+  {
+    "sha256": "e46323f171a0c6169e2199f7693f5937ce6fc2c76f55da03374f5ea1155bb827",
+    "files": [
+      "results/published/v0.4-security-nsec3-followup/nsec3-after/T07/all-runs.json",
+      "results/published/v0.4-security-nsec3-followup/nsec3-after/T07/original-reproduction.json"
+    ]
+  },
+  {
+    "sha256": "885e93991c06e7347d4306069f02f7e841846efa0ab251d459328331446eba30",
+    "files": [
+      "results/published/v0.4-security-nsec3-followup/nsec3-after/T08/all-runs.json",
+      "results/published/v0.4-security-nsec3-followup/nsec3-after/T08/original-reproduction.json"
+    ]
+  },
+  {
+    "sha256": "4bc22a2b87d1e58ebba7472f9880b24c73eabe5d8ac43d0f87fe4751b86c0c2b",
+    "files": [
+      "results/published/v0.4-security-nsec3-followup/nsec3-after/T09/all-runs.json",
+      "results/published/v0.4-security-nsec3-followup/nsec3-after/T09/original-reproduction.json"
+    ]
+  },
+  {
+    "sha256": "9e34e7e9e2ebf7d5a1c43f726af03fdcfefa735ec7a0e572d8cac5474860bd62",
+    "files": [
+      "results/published/v0.4-security-nsec3-followup/nsec3-after/T10/all-runs.json",
+      "results/published/v0.4-security-nsec3-followup/nsec3-after/T10/original-reproduction.json"
+    ]
+  },
+  {
+    "sha256": "507d75bf5966370d0a2deac7125316ed2654429487a779a94b8b00f7595259e6",
+    "files": [
+      "results/published/v0.4-security-nsec3-followup/nsec3-after/T11/all-runs.json",
+      "results/published/v0.4-security-nsec3-followup/nsec3-after/T11/original-reproduction.json"
+    ]
+  },
+  {
+    "sha256": "96dd2f51ad9a520e5ab46ad472c4f3bbba256433e26353b1c70a425b87821e93",
+    "files": [
+      "results/published/v0.4-security-nsec3-followup/nsec3-after/T12/all-runs.json",
+      "results/published/v0.4-security-nsec3-followup/nsec3-after/T12/original-reproduction.json"
+    ]
+  },
+  {
+    "sha256": "a4ebb4bffca24bbab57ffc1332f983fe045000dcc6b3a62536797b216c85c129",
+    "files": [
+      "results/published/v0.4-security-nsec3-followup/nsec3-after/X13/all-runs.json",
+      "results/published/v0.4-security-nsec3-followup/nsec3-after/X13/original-reproduction.json"
+    ]
+  },
+  {
+    "sha256": "c1ef7e38432c0882d0f56d84407eae8645ad107dbce812fcfe1ff1a92649bb8f",
+    "files": [
+      "results/published/v0.4-security-nsec3-followup/nsec3-after/X14/all-runs.json",
+      "results/published/v0.4-security-nsec3-followup/nsec3-after/X14/original-reproduction.json"
+    ]
+  },
+  {
+    "sha256": "20b00c4ed6db4fe459ddfb324613e1e08488fb5e3ecf32118f08b3547d48ce83",
+    "files": [
+      "results/published/v0.4-security-nsec3-followup/nsec3-after/X15/all-runs.json",
+      "results/published/v0.4-security-nsec3-followup/nsec3-after/X15/original-reproduction.json"
+    ]
+  },
+  {
+    "sha256": "164ab7598e2c74459bc4f60c43536d0d4bc17df10f87b586ceccb7529fd7d702",
+    "files": [
+      "results/published/v0.4-security-nsec3-followup/nsec3-after/X15/verifier-logs/X15-1-reference.conf",
+      "results/published/v0.4-security-nsec3-followup/nsec3-after/X16/verifier-logs/X16-1-reference.conf"
+    ]
+  },
+  {
+    "sha256": "103cc6a595862f72a1b62cdf1d321cb111d74f58fc83129601dabe19608a580e",
+    "files": [
+      "results/published/v0.4-security-nsec3-followup/nsec3-after/X16/all-runs.json",
+      "results/published/v0.4-security-nsec3-followup/nsec3-after/X16/original-reproduction.json"
+    ]
+  },
+  {
+    "sha256": "a208e783ad536c68f573fc745f3a1206d57a7978a9e98403f6b1715f695d62b0",
+    "files": [
+      "results/published/v0.4-security-nsec3-followup/nsec3-after/X17/all-runs.json",
+      "results/published/v0.4-security-nsec3-followup/nsec3-after/X17/original-reproduction.json"
+    ]
+  },
+  {
+    "sha256": "4476ff106f529f691d2086d68bb8d43904ab6c13a86f95347b87e1ce36cacab3",
+    "files": [
+      "results/published/v0.4-security-nsec3-followup/nsec3-after/X17/verifier-logs/X17-1-reference.conf",
+      "results/published/v0.4-security-nsec3-followup/nsec3-after/X18/verifier-logs/X18-1-reference.conf"
+    ]
+  },
+  {
+    "sha256": "96851fc371a1af66ca0a3db8bfac416b2f902181792bc049755c5bbaa088e72b",
+    "files": [
+      "results/published/v0.4-security-nsec3-followup/nsec3-after/X18/all-runs.json",
+      "results/published/v0.4-security-nsec3-followup/nsec3-after/X18/original-reproduction.json"
+    ]
+  },
+  {
+    "sha256": "4d6434f625593aaa82019de3e7ae4c1ade6a0efe9247a476e9315ec8b78ac96b",
+    "files": [
+      "results/published/v0.4-security-nsec3-followup/nsec3-after/X19/all-runs.json",
+      "results/published/v0.4-security-nsec3-followup/nsec3-after/X19/original-reproduction.json"
+    ]
+  },
+  {
+    "sha256": "787fa210c8837838dade115e6e53145df4643ce61b2f5f4f03b2674f90981eba",
+    "files": [
+      "results/published/v0.4-security-nsec3-followup/nsec3-after/X20/all-runs.json",
+      "results/published/v0.4-security-nsec3-followup/nsec3-after/X20/original-reproduction.json"
+    ]
+  },
+  {
+    "sha256": "80b9657f467725a87a5c0dac60c7ca710bcd0c1ff522818fea44641505148562",
+    "files": [
+      "results/published/v0.4-security-nsec3-followup/nsec3-after/X21/all-runs.json",
+      "results/published/v0.4-security-nsec3-followup/nsec3-after/X21/original-reproduction.json"
+    ]
+  },
+  {
+    "sha256": "906e7eac10352e542b7c8b0ddc3e6423c76574363323d874b0f76bb49a755950",
+    "files": [
+      "results/published/v0.4-security-nsec3-followup/nsec3-after/X22/all-runs.json",
+      "results/published/v0.4-security-nsec3-followup/nsec3-after/X22/original-reproduction.json"
+    ]
+  },
+  {
+    "sha256": "9b2c7f6ce4a50e57f1df60a3eaa17832b6e320cf58c11bf917769105fba7c210",
+    "files": [
+      "results/published/v0.4-security-nsec3-followup/nsec3-after/X23/all-runs.json",
+      "results/published/v0.4-security-nsec3-followup/nsec3-after/X23/original-reproduction.json"
+    ]
+  },
+  {
+    "sha256": "f155b207d571320ccbe66e5d51befbd017893c499c7233c0d8ab60af23afab55",
+    "files": [
+      "results/published/v0.4-security-nsec3-followup/nsec3-after/X24/all-runs.json",
+      "results/published/v0.4-security-nsec3-followup/nsec3-after/X24/original-reproduction.json"
+    ]
+  },
+  {
+    "sha256": "1321436bcce205fe84916dcc958e8b00470983b8d15aca01011693b85887dbdd",
+    "files": [
+      "results/published/v0.4-security-nsec3-followup/nsec3-after/X25/all-runs.json",
+      "results/published/v0.4-security-nsec3-followup/nsec3-after/X25/original-reproduction.json"
+    ]
+  },
+  {
+    "sha256": "aad02e069d54029b3868ed5aef3acf4f7823c92b58467b04020abb82afa0010b",
+    "files": [
+      "results/published/v0.4-security-nsec3-followup/nsec3-after/X26/all-runs.json",
+      "results/published/v0.4-security-nsec3-followup/nsec3-after/X26/original-reproduction.json"
+    ]
+  },
+  {
+    "sha256": "82b696b85f17a87a57ecf8526806b82fd406aecf9f84299fcdc5095d0cde93ab",
+    "files": [
+      "results/published/v0.4-security-nsec3-followup/nsec3-after/X27/all-runs.json",
+      "results/published/v0.4-security-nsec3-followup/nsec3-after/X27/original-reproduction.json"
+    ]
+  },
+  {
+    "sha256": "fa787444e7253a4fc4d3d1b4ffea9a043e675f061483e6decd8b32e38a886516",
+    "files": [
+      "results/published/v0.4-security-nsec3-followup/nsec3-after/X28/all-runs.json",
+      "results/published/v0.4-security-nsec3-followup/nsec3-after/X28/original-reproduction.json"
+    ]
+  },
+  {
+    "sha256": "92f7ea880c860b45d8ffae6d41b28ba5c2b272c1762d6ebb9aae6f70e504fdd6",
+    "files": [
+      "results/published/v0.4-security-nsec3-followup/nsec3-before/T01/all-runs.json",
+      "results/published/v0.4-security-nsec3-followup/nsec3-before/T01/original-reproduction.json"
+    ]
+  },
+  {
+    "sha256": "1e5a9af8194d83e6c879517d24641411c2750e09d8791f798fefb84c6cf52615",
+    "files": [
+      "results/published/v0.4-security-nsec3-followup/nsec3-before/T02/all-runs.json",
+      "results/published/v0.4-security-nsec3-followup/nsec3-before/T02/original-reproduction.json"
+    ]
+  },
+  {
+    "sha256": "0ac9f70c7a4bafa7ca04cfa1b3ac61ba8ac711a7a5e123fc2514a311bb60533d",
+    "files": [
+      "results/published/v0.4-security-nsec3-followup/nsec3-before/T03/all-runs.json",
+      "results/published/v0.4-security-nsec3-followup/nsec3-before/T03/original-reproduction.json"
+    ]
+  },
+  {
+    "sha256": "13266ea45fc95373414d2c23a66af1c4c51f15e45863136c8dc708b85b4fe7ca",
+    "files": [
+      "results/published/v0.4-security-nsec3-followup/nsec3-before/T04/all-runs.json",
+      "results/published/v0.4-security-nsec3-followup/nsec3-before/T04/original-reproduction.json"
+    ]
+  },
+  {
+    "sha256": "4fb6f54e53c4cd5700eb096f11e30779c7f315c8571cfb68cd8cf61119b828cd",
+    "files": [
+      "results/published/v0.4-security-nsec3-followup/nsec3-before/T05/all-runs.json",
+      "results/published/v0.4-security-nsec3-followup/nsec3-before/T05/original-reproduction.json"
+    ]
+  },
+  {
+    "sha256": "f447be1432bcc72c39749020495fa7e9a514973dfc332a296967ab52feea920c",
+    "files": [
+      "results/published/v0.4-security-nsec3-followup/nsec3-before/T06/all-runs.json",
+      "results/published/v0.4-security-nsec3-followup/nsec3-before/T06/original-reproduction.json"
+    ]
+  },
+  {
+    "sha256": "7d3dc07a7f96531f2a76270454bcddaa53988842142be25ed9c96cd889d94b2a",
+    "files": [
+      "results/published/v0.4-security-nsec3-followup/nsec3-before/T07/all-runs.json",
+      "results/published/v0.4-security-nsec3-followup/nsec3-before/T07/original-reproduction.json"
+    ]
+  },
+  {
+    "sha256": "7d521567a8772cc6cb0ff7d2b62600008a5e0931b2ea505478b2fa750eb5afca",
+    "files": [
+      "results/published/v0.4-security-nsec3-followup/nsec3-before/T08/all-runs.json",
+      "results/published/v0.4-security-nsec3-followup/nsec3-before/T08/original-reproduction.json"
+    ]
+  },
+  {
+    "sha256": "823619acc3b71eb88ec4032a5a6066648f31e9b47a4f859fe530c5de92c6f69a",
+    "files": [
+      "results/published/v0.4-security-nsec3-followup/nsec3-before/T09/all-runs.json",
+      "results/published/v0.4-security-nsec3-followup/nsec3-before/T09/original-reproduction.json"
+    ]
+  },
+  {
+    "sha256": "ea548344e1262aac065ac775a0ae63f373e2510602c2459246bb2765bb4c2a6c",
+    "files": [
+      "results/published/v0.4-security-nsec3-followup/nsec3-before/T10/all-runs.json",
+      "results/published/v0.4-security-nsec3-followup/nsec3-before/T10/original-reproduction.json"
+    ]
+  },
+  {
+    "sha256": "489b3c979261327e1403cd90a5d6415df28778115471c2302fb0ffa1f4a4dee0",
+    "files": [
+      "results/published/v0.4-security-nsec3-followup/nsec3-before/T11/all-runs.json",
+      "results/published/v0.4-security-nsec3-followup/nsec3-before/T11/original-reproduction.json"
+    ]
+  },
+  {
+    "sha256": "c448d7e89c13dfcd15ad2a716b8ae7ab040645258adfc08bee64a20708db9d92",
+    "files": [
+      "results/published/v0.4-security-nsec3-followup/nsec3-before/T12/all-runs.json",
+      "results/published/v0.4-security-nsec3-followup/nsec3-before/T12/original-reproduction.json"
+    ]
+  },
+  {
+    "sha256": "dfb30bcafed221d899f3f8d370c3cb967d0b9ed5249bab22499f46ea92dc79a8",
+    "files": [
+      "results/published/v0.4-security-nsec3-followup/nsec3-before/X13/all-runs.json",
+      "results/published/v0.4-security-nsec3-followup/nsec3-before/X13/original-reproduction.json"
+    ]
+  },
+  {
+    "sha256": "2b35183fcc0f14dc40512d366b250b3441e141af9e8ce8c65d1fc58a734cda58",
+    "files": [
+      "results/published/v0.4-security-nsec3-followup/nsec3-before/X14/all-runs.json",
+      "results/published/v0.4-security-nsec3-followup/nsec3-before/X14/original-reproduction.json"
+    ]
+  },
+  {
+    "sha256": "f63f6e420cac9a9b2a354bcc24ed4325db01b4ff01a06ff5321df2c0a502347d",
+    "files": [
+      "results/published/v0.4-security-nsec3-followup/nsec3-before/X15/all-runs.json",
+      "results/published/v0.4-security-nsec3-followup/nsec3-before/X15/original-reproduction.json"
+    ]
+  },
+  {
+    "sha256": "0ab967bb81b5d9891b89a4596e512ba538e9c80f52c0b69cb459af88c8b6cb8f",
+    "files": [
+      "results/published/v0.4-security-nsec3-followup/nsec3-before/X16/all-runs.json",
+      "results/published/v0.4-security-nsec3-followup/nsec3-before/X16/original-reproduction.json"
+    ]
+  },
+  {
+    "sha256": "8d0278894e78010cbf5b855e56f054e8e261f6e3100d35e7b729183903c11fa0",
+    "files": [
+      "results/published/v0.4-security-nsec3-followup/nsec3-before/X17/all-runs.json",
+      "results/published/v0.4-security-nsec3-followup/nsec3-before/X17/original-reproduction.json"
+    ]
+  },
+  {
+    "sha256": "7073eace776c55b5ce28f2f6836d12b84dbf9fd2ba0097da3b0f2b1f909e3696",
+    "files": [
+      "results/published/v0.4-security-nsec3-followup/nsec3-before/X18/all-runs.json",
+      "results/published/v0.4-security-nsec3-followup/nsec3-before/X18/original-reproduction.json"
+    ]
+  },
+  {
+    "sha256": "eca74a268902712fe00f5890679477b97c314edcd7e8c45b49492587f369ea04",
+    "files": [
+      "results/published/v0.4-security-nsec3-followup/nsec3-before/X18/verifier-logs/X18-1-reference.conf",
+      "results/published/v0.4-security-nsec3-followup/nsec3-before/X19/verifier-logs/X19-1-reference.conf"
+    ]
+  },
+  {
+    "sha256": "524d68659231b672eba3d98f5efc5e343ca8b8630b124e3f79ea804b1df60f42",
+    "files": [
+      "results/published/v0.4-security-nsec3-followup/nsec3-before/X19/all-runs.json",
+      "results/published/v0.4-security-nsec3-followup/nsec3-before/X19/original-reproduction.json"
+    ]
+  },
+  {
+    "sha256": "07a1335cfdc6a5a3afa4a1ff15038e2b8c1df1a9a2e4e4c2c2945596a80f6b40",
+    "files": [
+      "results/published/v0.4-security-nsec3-followup/nsec3-before/X20/all-runs.json",
+      "results/published/v0.4-security-nsec3-followup/nsec3-before/X20/original-reproduction.json"
+    ]
+  },
+  {
+    "sha256": "cf1dcddeb347e6dc7c90877409c6524d90ef1b0f290b6dcaa7f677ca7c3793c9",
+    "files": [
+      "results/published/v0.4-security-nsec3-followup/nsec3-before/X21/all-runs.json",
+      "results/published/v0.4-security-nsec3-followup/nsec3-before/X21/original-reproduction.json"
+    ]
+  },
+  {
+    "sha256": "56eb6e83ded2885c2782a31263079b916d80a6baa7d18bbc45e8c93b6064a4dd",
+    "files": [
+      "results/published/v0.4-security-nsec3-followup/nsec3-before/X22/all-runs.json",
+      "results/published/v0.4-security-nsec3-followup/nsec3-before/X22/original-reproduction.json"
+    ]
+  },
+  {
+    "sha256": "22037b75f00240644ed7afd9c9bbd2dede54476fc08c9d5f16e5988e1e01e84d",
+    "files": [
+      "results/published/v0.4-security-nsec3-followup/nsec3-before/X23/all-runs.json",
+      "results/published/v0.4-security-nsec3-followup/nsec3-before/X23/original-reproduction.json"
+    ]
+  },
+  {
+    "sha256": "8020589dceb74546cdabac7bba7245337817587093f745d9f84372d8820cfd65",
+    "files": [
+      "results/published/v0.4-security-nsec3-followup/nsec3-before/X24/all-runs.json",
+      "results/published/v0.4-security-nsec3-followup/nsec3-before/X24/original-reproduction.json"
+    ]
+  },
+  {
+    "sha256": "cd9929559d040f0f6d0b6f1d28291ad2f8adb3c892300afb5546ae1fe0802a64",
+    "files": [
+      "results/published/v0.4-security-nsec3-followup/nsec3-before/X25/all-runs.json",
+      "results/published/v0.4-security-nsec3-followup/nsec3-before/X25/original-reproduction.json"
+    ]
+  },
+  {
+    "sha256": "0e16a1533aadee59da3eccab02e2f35224f5162df3c9a57c9e3ee582b50bf3c6",
+    "files": [
+      "results/published/v0.4-security-nsec3-followup/nsec3-before/X26/all-runs.json",
+      "results/published/v0.4-security-nsec3-followup/nsec3-before/X26/original-reproduction.json"
+    ]
+  },
+  {
+    "sha256": "428b6f462edaff3f52220391ddf05bf4128219c1354bb38646a65499522771e4",
+    "files": [
+      "results/published/v0.4-security-nsec3-followup/nsec3-before/X27/all-runs.json",
+      "results/published/v0.4-security-nsec3-followup/nsec3-before/X27/original-reproduction.json"
+    ]
+  },
+  {
+    "sha256": "96c36e8e7922ec88272bfd6ac599e1d871af811f0557883cbc06673aa4f4dfce",
+    "files": [
+      "results/published/v0.4-security-nsec3-followup/nsec3-before/X28/all-runs.json",
+      "results/published/v0.4-security-nsec3-followup/nsec3-before/X28/original-reproduction.json"
+    ]
+  },
+  {
+    "sha256": "7ceb57d5ffeec68bbcaaeda1da74a44b95beef3be310ff2645e299df67dbcd51",
+    "files": [
+      "results/published/v0.4-security-nsec3-followup/nsec3-final/T01/all-runs.json",
+      "results/published/v0.4-security-nsec3-followup/nsec3-final/T01/original-reproduction.json"
+    ]
+  },
+  {
+    "sha256": "8a07c506458385f9ac9c86586c8eecebdad5bae0ba982d03555cda873fdcabd2",
+    "files": [
+      "results/published/v0.4-security-nsec3-followup/nsec3-final/T01/environment.json",
+      "results/published/v0.4-security-nsec3-followup/nsec3-final/T02/environment.json",
+      "results/published/v0.4-security-nsec3-followup/nsec3-final/T03/environment.json",
+      "results/published/v0.4-security-nsec3-followup/nsec3-final/T04/environment.json",
+      "results/published/v0.4-security-nsec3-followup/nsec3-final/T05/environment.json",
+      "results/published/v0.4-security-nsec3-followup/nsec3-final/T06/environment.json",
+      "results/published/v0.4-security-nsec3-followup/nsec3-final/T07/environment.json",
+      "results/published/v0.4-security-nsec3-followup/nsec3-final/T08/environment.json",
+      "results/published/v0.4-security-nsec3-followup/nsec3-final/T09/environment.json",
+      "results/published/v0.4-security-nsec3-followup/nsec3-final/T10/environment.json",
+      "results/published/v0.4-security-nsec3-followup/nsec3-final/T11/environment.json",
+      "results/published/v0.4-security-nsec3-followup/nsec3-final/T12/environment.json",
+      "results/published/v0.4-security-nsec3-followup/nsec3-final/X13/environment.json",
+      "results/published/v0.4-security-nsec3-followup/nsec3-final/X14/environment.json",
+      "results/published/v0.4-security-nsec3-followup/nsec3-final/X15/environment.json",
+      "results/published/v0.4-security-nsec3-followup/nsec3-final/X16/environment.json",
+      "results/published/v0.4-security-nsec3-followup/nsec3-final/X17/environment.json",
+      "results/published/v0.4-security-nsec3-followup/nsec3-final/X18/environment.json",
+      "results/published/v0.4-security-nsec3-followup/nsec3-final/X19/environment.json",
+      "results/published/v0.4-security-nsec3-followup/nsec3-final/X20/environment.json",
+      "results/published/v0.4-security-nsec3-followup/nsec3-final/X21/environment.json",
+      "results/published/v0.4-security-nsec3-followup/nsec3-final/X22/environment.json",
+      "results/published/v0.4-security-nsec3-followup/nsec3-final/X23/environment.json",
+      "results/published/v0.4-security-nsec3-followup/nsec3-final/X24/environment.json",
+      "results/published/v0.4-security-nsec3-followup/nsec3-final/X25/environment.json",
+      "results/published/v0.4-security-nsec3-followup/nsec3-final/X26/environment.json",
+      "results/published/v0.4-security-nsec3-followup/nsec3-final/X27/environment.json",
+      "results/published/v0.4-security-nsec3-followup/nsec3-final/X28/environment.json"
+    ]
+  },
+  {
+    "sha256": "2adac732c1a02e6d385984531e4eb4d7bb24f5e7b37dd4a023d25186cce1b54e",
+    "files": [
+      "results/published/v0.4-security-nsec3-followup/nsec3-final/T02/all-runs.json",
+      "results/published/v0.4-security-nsec3-followup/nsec3-final/T02/original-reproduction.json"
+    ]
+  },
+  {
+    "sha256": "68eb4704325736d690c44b0ec9c550e8de190203571154186da3a7d9348811c5",
+    "files": [
+      "results/published/v0.4-security-nsec3-followup/nsec3-final/T03/all-runs.json",
+      "results/published/v0.4-security-nsec3-followup/nsec3-final/T03/original-reproduction.json"
+    ]
+  },
+  {
+    "sha256": "bdedb6a88d14f86b0c176058791686ebb2fe71287c4e5bc50bda1c7e6303fc79",
+    "files": [
+      "results/published/v0.4-security-nsec3-followup/nsec3-final/T04/all-runs.json",
+      "results/published/v0.4-security-nsec3-followup/nsec3-final/T04/original-reproduction.json"
+    ]
+  },
+  {
+    "sha256": "a38f8bf1b81c13178fc7e3ce90143805311db172fc6dab1a2752d47642759fbd",
+    "files": [
+      "results/published/v0.4-security-nsec3-followup/nsec3-final/T05/all-runs.json",
+      "results/published/v0.4-security-nsec3-followup/nsec3-final/T05/original-reproduction.json"
+    ]
+  },
+  {
+    "sha256": "56ec8eb1cf926ce1c22f245b37ae583331f51c5b7c83ce324694534e1629c60e",
+    "files": [
+      "results/published/v0.4-security-nsec3-followup/nsec3-final/T06/all-runs.json",
+      "results/published/v0.4-security-nsec3-followup/nsec3-final/T06/original-reproduction.json"
+    ]
+  },
+  {
+    "sha256": "ec7e0d3d7282ca6e4e2a525bd74d5d51cd3d00efc8766e44fc15ecde2a3dc15c",
+    "files": [
+      "results/published/v0.4-security-nsec3-followup/nsec3-final/T07/all-runs.json",
+      "results/published/v0.4-security-nsec3-followup/nsec3-final/T07/original-reproduction.json"
+    ]
+  },
+  {
+    "sha256": "ae08b59dec3f5f8c1123128c899469d38d147fdc0e98ad10c8ff9bc84573385b",
+    "files": [
+      "results/published/v0.4-security-nsec3-followup/nsec3-final/T08/all-runs.json",
+      "results/published/v0.4-security-nsec3-followup/nsec3-final/T08/original-reproduction.json"
+    ]
+  },
+  {
+    "sha256": "92ff1cccef66411b40c62b5c3462405a51535ddd65bc5b237a2ce25286d0018b",
+    "files": [
+      "results/published/v0.4-security-nsec3-followup/nsec3-final/T09/all-runs.json",
+      "results/published/v0.4-security-nsec3-followup/nsec3-final/T09/original-reproduction.json"
+    ]
+  },
+  {
+    "sha256": "278f0af1d63632fc061ee6aae618a350360e81a86792a8fa05703048527daaca",
+    "files": [
+      "results/published/v0.4-security-nsec3-followup/nsec3-final/T10/all-runs.json",
+      "results/published/v0.4-security-nsec3-followup/nsec3-final/T10/original-reproduction.json"
+    ]
+  },
+  {
+    "sha256": "135e115fcd62d8a3bbe637f94246982dcd99b57bc1956f582d8f6b0a390fea29",
+    "files": [
+      "results/published/v0.4-security-nsec3-followup/nsec3-final/T11/all-runs.json",
+      "results/published/v0.4-security-nsec3-followup/nsec3-final/T11/original-reproduction.json"
+    ]
+  },
+  {
+    "sha256": "6415536fe901bb14bf60109f02c99af4d1191f84b64d7dca0b8dd3cc24799b41",
+    "files": [
+      "results/published/v0.4-security-nsec3-followup/nsec3-final/T12/all-runs.json",
+      "results/published/v0.4-security-nsec3-followup/nsec3-final/T12/original-reproduction.json"
+    ]
+  },
+  {
+    "sha256": "d10d77cfe2362c07353640be14550ef0fdd9ec71cb114220c701fe83a66b1626",
+    "files": [
+      "results/published/v0.4-security-nsec3-followup/nsec3-final/X13/all-runs.json",
+      "results/published/v0.4-security-nsec3-followup/nsec3-final/X13/original-reproduction.json"
+    ]
+  },
+  {
+    "sha256": "ad828cde63a6a8f256f30cae4af6f5546fbea9e4db783bbd521506a009a049d3",
+    "files": [
+      "results/published/v0.4-security-nsec3-followup/nsec3-final/X14/all-runs.json",
+      "results/published/v0.4-security-nsec3-followup/nsec3-final/X14/original-reproduction.json"
+    ]
+  },
+  {
+    "sha256": "1a3f901950d5ca5402a7ccd67e0495dc8b2704d35813f29c565b348766942270",
+    "files": [
+      "results/published/v0.4-security-nsec3-followup/nsec3-final/X15/all-runs.json",
+      "results/published/v0.4-security-nsec3-followup/nsec3-final/X15/original-reproduction.json"
+    ]
+  },
+  {
+    "sha256": "c8427205611535fdd9d27c3db7062ec58d15ef2937f07dd980c5bb870a17e11d",
+    "files": [
+      "results/published/v0.4-security-nsec3-followup/nsec3-final/X16/all-runs.json",
+      "results/published/v0.4-security-nsec3-followup/nsec3-final/X16/original-reproduction.json"
+    ]
+  },
+  {
+    "sha256": "61755cb5884230f29f179025cbf45c7db10dda228a69a874cacce37d5c223034",
+    "files": [
+      "results/published/v0.4-security-nsec3-followup/nsec3-final/X16/raw-wire/X16-1-019-query.wire",
+      "results/published/v0.4-security-nsec3-followup/nsec3-final/X21/raw-wire/X21-1-011-query.wire"
+    ]
+  },
+  {
+    "sha256": "721c1bcc3a6970cda5f9d734668fb9e91a91705904a4be5b34a4f2adf71c9c34",
+    "files": [
+      "results/published/v0.4-security-nsec3-followup/nsec3-final/X17/all-runs.json",
+      "results/published/v0.4-security-nsec3-followup/nsec3-final/X17/original-reproduction.json"
+    ]
+  },
+  {
+    "sha256": "2e0747e1d95056d2ff89aca9a45478fe2189e77e21fbf8821db5a35754a9a8c0",
+    "files": [
+      "results/published/v0.4-security-nsec3-followup/nsec3-final/X18/all-runs.json",
+      "results/published/v0.4-security-nsec3-followup/nsec3-final/X18/original-reproduction.json"
+    ]
+  },
+  {
+    "sha256": "249cab10acdb873b6cb7e8d866f44e27772bbf4e136394725f687d35ff6b0802",
+    "files": [
+      "results/published/v0.4-security-nsec3-followup/nsec3-final/X19/all-runs.json",
+      "results/published/v0.4-security-nsec3-followup/nsec3-final/X19/original-reproduction.json"
+    ]
+  },
+  {
+    "sha256": "2c1ee4de3fc7776caef3b7ed28c5735d2dab8e09465aef108079fc6cf5e96ddd",
+    "files": [
+      "results/published/v0.4-security-nsec3-followup/nsec3-final/X20/all-runs.json",
+      "results/published/v0.4-security-nsec3-followup/nsec3-final/X20/original-reproduction.json"
+    ]
+  },
+  {
+    "sha256": "498c425d08e6aecbdeed980b3935f28de120260e85ee3df1e3a4bb69c422d295",
+    "files": [
+      "results/published/v0.4-security-nsec3-followup/nsec3-final/X21/all-runs.json",
+      "results/published/v0.4-security-nsec3-followup/nsec3-final/X21/original-reproduction.json"
+    ]
+  },
+  {
+    "sha256": "e055cbb1dae04219de8a07f69a0b6264f2911042474da89902283009d5184471",
+    "files": [
+      "results/published/v0.4-security-nsec3-followup/nsec3-final/X22/all-runs.json",
+      "results/published/v0.4-security-nsec3-followup/nsec3-final/X22/original-reproduction.json"
+    ]
+  },
+  {
+    "sha256": "2013c6fc2982366be13561416bb57837311c692f011a897670988d133dc19717",
+    "files": [
+      "results/published/v0.4-security-nsec3-followup/nsec3-final/X23/all-runs.json",
+      "results/published/v0.4-security-nsec3-followup/nsec3-final/X23/original-reproduction.json"
+    ]
+  },
+  {
+    "sha256": "9f4730706ff84ba9e52827ec1df00117bda6ee2d94ea9b55e430a397727c6677",
+    "files": [
+      "results/published/v0.4-security-nsec3-followup/nsec3-final/X24/all-runs.json",
+      "results/published/v0.4-security-nsec3-followup/nsec3-final/X24/original-reproduction.json"
+    ]
+  },
+  {
+    "sha256": "b2fe33f44132d3147a83cd581bde7254194902d67bf441e8b3eb1ee4774387d9",
+    "files": [
+      "results/published/v0.4-security-nsec3-followup/nsec3-final/X25/all-runs.json",
+      "results/published/v0.4-security-nsec3-followup/nsec3-final/X25/original-reproduction.json"
+    ]
+  },
+  {
+    "sha256": "b9588b85dd6d910d9cfdd8719d7c320097ada389827c617772f0653ccd7a6fdb",
+    "files": [
+      "results/published/v0.4-security-nsec3-followup/nsec3-final/X26/all-runs.json",
+      "results/published/v0.4-security-nsec3-followup/nsec3-final/X26/original-reproduction.json"
+    ]
+  },
+  {
+    "sha256": "95cfb08faf94a1cd155cb62ea80f68e9ebad79902c66662301faa7146216ce25",
+    "files": [
+      "results/published/v0.4-security-nsec3-followup/nsec3-final/X27/all-runs.json",
+      "results/published/v0.4-security-nsec3-followup/nsec3-final/X27/original-reproduction.json"
+    ]
+  },
+  {
+    "sha256": "4f9bf777f02a72a1e63c9e868bc410b14b21a9af17082dc3286b7996e6e332a6",
+    "files": [
+      "results/published/v0.4-security-nsec3-followup/nsec3-final/X28/all-runs.json",
+      "results/published/v0.4-security-nsec3-followup/nsec3-final/X28/original-reproduction.json"
+    ]
+  },
+  {
+    "sha256": "0886d5378abf85ce589dd5a0d45aa74a99dc9217a91decebc26367258e64e508",
+    "files": [
+      "results/published/v06-final-review/20261102/final-replay/baidu-offline.png",
+      "results/published/v06-final-review/20261102/final-source-replay/baidu-offline.png"
+    ]
+  },
+  {
+    "sha256": "8e0f79d2268479714391dd85e724e1f29af96c030a7c2cf20b27f774f9cfe4d5",
+    "files": [
+      "results/published/v06-final-review/20261102/final-replay/baidu-web.png",
+      "results/published/v06-final-review/20261102/final-source-replay/baidu-web.png"
+    ]
+  },
+  {
+    "sha256": "ab0de1a0cc40f9bf4133edf3612893a6df886bccf7fb38130b95577910c2ffa4",
+    "files": [
+      "results/published/v06-final-review/20261102/final-replay/baidu.html",
+      "results/published/v06-final-review/20261102/final-source-replay/baidu.html"
+    ]
+  },
+  {
+    "sha256": "a2e7c6d1729af3ad4dbae98f6390b0c0eb67bddac9c9725476fa559f9c4a50bc",
+    "files": [
+      "results/published/v06-final-review/20261102/final-replay/comparison.json",
+      "results/published/v06-final-review/20261102/final-source-replay/comparison.json"
+    ]
+  },
+  {
+    "sha256": "3bddaf135c1133fd5cafa328b5927fc9bcc0e97f19b065aacafa015a0dc6ffcc",
+    "files": [
+      "results/published/v06-final-review/20261102/final-replay/dnssec_timeout-cli.txt",
+      "results/published/v06-final-review/20261102/final-source-replay/dnssec_timeout-cli.txt"
+    ]
+  },
+  {
+    "sha256": "8cafe433f810270ecb0ba57500862a444468dc53e92204aa95cc8b245db721f0",
+    "files": [
+      "results/published/v06-final-review/20261102/final-replay/dnssec_timeout-offline.png",
+      "results/published/v06-final-review/20261102/final-source-replay/dnssec_timeout-offline.png"
+    ]
+  },
+  {
+    "sha256": "94b01981d400a60a09a18085da0bb160b6bf373b683f33fb7678ad7e8d8da8fc",
+    "files": [
+      "results/published/v06-final-review/20261102/final-replay/dnssec_timeout-web.png",
+      "results/published/v06-final-review/20261102/final-source-replay/dnssec_timeout-web.png"
+    ]
+  },
+  {
+    "sha256": "33dee78bfc111b14f4fc7a03bc62346ae0d13e154a9ebc9a0c2fec5555789f84",
+    "files": [
+      "results/published/v06-final-review/20261102/final-replay/dnssec_timeout.html",
+      "results/published/v06-final-review/20261102/final-source-replay/dnssec_timeout.html"
+    ]
+  },
+  {
+    "sha256": "1fc5ae7509fb761c0ba91c1faa7d3d76e12193267130cdccab6f8836f6a1260d",
+    "files": [
+      "results/published/v06-final-review/20261102/final-replay/http_timeout-cli.txt",
+      "results/published/v06-final-review/20261102/final-source-replay/http_timeout-cli.txt"
+    ]
+  },
+  {
+    "sha256": "7d0f3d71c1a57cce5cde0267afbf95dd7c2e1e8ab8f63f5871e0e82937301b74",
+    "files": [
+      "results/published/v06-final-review/20261102/final-replay/http_timeout-offline.png",
+      "results/published/v06-final-review/20261102/final-source-replay/http_timeout-offline.png"
+    ]
+  },
+  {
+    "sha256": "43dac7af12e7205e27d55d79b02787041228998a6f4cafc1e21e6cb771ea4de3",
+    "files": [
+      "results/published/v06-final-review/20261102/final-replay/http_timeout-web.png",
+      "results/published/v06-final-review/20261102/final-source-replay/http_timeout-web.png"
+    ]
+  },
+  {
+    "sha256": "087014be9d480153a63f62de00abecf5b6f32c3c223cb8c6bcc48032e19094ce",
+    "files": [
+      "results/published/v06-final-review/20261102/final-replay/http_timeout.html",
+      "results/published/v06-final-review/20261102/final-source-replay/http_timeout.html"
+    ]
+  },
+  {
+    "sha256": "a306aef4ae48c56300105c30efa90075adec653d7820c13356bbf7f48845fcea",
+    "files": [
+      "results/published/v06-final-review/20261102/final-replay/imported/case0.json",
+      "results/published/v06-final-review/20261102/final-source-replay/imported/case0.json"
+    ]
+  },
+  {
+    "sha256": "98307a3affbd570ad241c819900301165fe929d0acd94ac63c2175e501b99d8c",
+    "files": [
+      "results/published/v06-final-review/20261102/final-replay/imported/case1.json",
+      "results/published/v06-final-review/20261102/final-source-replay/imported/case1.json"
+    ]
+  },
+  {
+    "sha256": "ada89f54e69b7d7c2bbf49d89cbced5c9d4b73a61bb14c0a5a90eabff211da1c",
+    "files": [
+      "results/published/v06-final-review/20261102/final-replay/imported/case2.json",
+      "results/published/v06-final-review/20261102/final-source-replay/imported/case2.json"
+    ]
+  },
+  {
+    "sha256": "351951fbcd0af95d4674f4e7358a3da896b299fe5d707fb26674470aea9558a0",
+    "files": [
+      "results/published/v06-final-review/20261102/final-replay/imported/case3.json",
+      "results/published/v06-final-review/20261102/final-source-replay/imported/case3.json"
+    ]
+  },
+  {
+    "sha256": "5050c3eb74e560328e4269bf917bd9f6631c9ab5a5474578f4e7b7070521d2d7",
+    "files": [
+      "results/published/v06-final-review/20261102/final-replay/imported/case4.json",
+      "results/published/v06-final-review/20261102/final-source-replay/imported/case4.json"
+    ]
+  },
+  {
+    "sha256": "3835a9391501b08766f744c7470762acf0ddea856c2102536c96a9879f62eb7e",
+    "files": [
+      "results/published/v06-final-review/20261102/final-replay/imported/case5.json",
+      "results/published/v06-final-review/20261102/final-source-replay/imported/case5.json"
+    ]
+  },
+  {
+    "sha256": "eabd2bc81f94ff2fa11af711c1b9c64e74e425320c6ed32d8bf3b7ead273e53d",
+    "files": [
+      "results/published/v06-final-review/20261102/final-replay/imported/case6.json",
+      "results/published/v06-final-review/20261102/final-source-replay/imported/case6.json"
+    ]
+  },
+  {
+    "sha256": "621ad5cde580ccd8c20268ed37f7256bc94ae7b53657b03ac4769b6deea41f99",
+    "files": [
+      "results/published/v06-final-review/20261102/final-replay/imported/case7.json",
+      "results/published/v06-final-review/20261102/final-source-replay/imported/case7.json"
+    ]
+  },
+  {
+    "sha256": "d5bc9a2d07cd405e9f10112ac968493b6d74c613d7c181928b01228746dcedb0",
+    "files": [
+      "results/published/v06-final-review/20261102/final-replay/imported/case8.json",
+      "results/published/v06-final-review/20261102/final-source-replay/imported/case8.json"
+    ]
+  },
+  {
+    "sha256": "bdb1751fa43ce0cf62750a6e056ec4a7498f3d05a5c7f90359b715d1a59c761f",
+    "files": [
+      "results/published/v06-final-review/20261102/final-replay/indeterminate_timeout-cli.txt",
+      "results/published/v06-final-review/20261102/final-source-replay/indeterminate_timeout-cli.txt"
+    ]
+  },
+  {
+    "sha256": "1dc3e9bcefbf0d5cd54c3adec990e8b5af57da7d2889118a7aeb822307eb435c",
+    "files": [
+      "results/published/v06-final-review/20261102/final-replay/indeterminate_timeout-web.png",
+      "results/published/v06-final-review/20261102/final-source-replay/indeterminate_timeout-web.png"
+    ]
+  },
+  {
+    "sha256": "cd9c615e90abd1a9623a5217e5b16b8e8c339d45a2f40cb935645a5409cae2a2",
+    "files": [
+      "results/published/v06-final-review/20261102/final-replay/indeterminate_timeout.html",
+      "results/published/v06-final-review/20261102/final-source-replay/indeterminate_timeout.html"
+    ]
+  },
+  {
+    "sha256": "b6d595b583f6bffce0f985773ef764dcc3c4f2ee513edd60d92dfaef04f1d2e2",
+    "files": [
+      "results/published/v06-final-review/20261102/final-replay/legacy_result_context-cli.txt",
+      "results/published/v06-final-review/20261102/final-replay/legacy_root_context-cli.txt",
+      "results/published/v06-final-review/20261102/final-source-replay/legacy_result_context-cli.txt",
+      "results/published/v06-final-review/20261102/final-source-replay/legacy_root_context-cli.txt"
+    ]
+  },
+  {
+    "sha256": "b924dc125e81f0de6587485f990352cfdd3dd0f89f1bb3843617c55ee3bd266c",
+    "files": [
+      "results/published/v06-final-review/20261102/final-replay/legacy_result_context-web.png",
+      "results/published/v06-final-review/20261102/final-replay/legacy_root_context-web.png",
+      "results/published/v06-final-review/20261102/final-source-replay/legacy_result_context-web.png",
+      "results/published/v06-final-review/20261102/final-source-replay/legacy_root_context-web.png"
+    ]
+  },
+  {
+    "sha256": "5abf263c5595d2c4f1f33141c15fe3f9759e53b72428ebc731f403b35197d848",
+    "files": [
+      "results/published/v06-final-review/20261102/final-replay/legacy_result_context.html",
+      "results/published/v06-final-review/20261102/final-source-replay/legacy_result_context.html"
+    ]
+  },
+  {
+    "sha256": "b0ef530e5becfef82f388c52583adf5761cde0d024be958b0ad884ce5019ffd2",
+    "files": [
+      "results/published/v06-final-review/20261102/final-replay/legacy_root_context.html",
+      "results/published/v06-final-review/20261102/final-source-replay/legacy_root_context.html"
+    ]
+  },
+  {
+    "sha256": "b4924638fcc31ca48c0396223035c69d8be3bddf945fe93204417b0d9aa20fc6",
+    "files": [
+      "results/published/v06-final-review/20261102/final-replay/only_timeouts-cli.txt",
+      "results/published/v06-final-review/20261102/final-source-replay/only_timeouts-cli.txt"
+    ]
+  },
+  {
+    "sha256": "632ef21a00c43126a5e9cfd4cc8d7b3b2f6d8a5012c0da1323a04aeb1af92230",
+    "files": [
+      "results/published/v06-final-review/20261102/final-replay/only_timeouts-web.png",
+      "results/published/v06-final-review/20261102/final-source-replay/only_timeouts-web.png"
+    ]
+  },
+  {
+    "sha256": "c874c651b79db2d1dcfcb63edd8bef88f47e38ec1ae0b44dc0aa70a5fe68b319",
+    "files": [
+      "results/published/v06-final-review/20261102/final-replay/only_timeouts.html",
+      "results/published/v06-final-review/20261102/final-source-replay/only_timeouts.html"
+    ]
+  },
+  {
+    "sha256": "160dbbe0ff687a66f0ecd8e8853103df9ec8b387e72737370c1ef3e878fbc429",
+    "files": [
+      "results/published/v06-final-review/20261102/final-replay/partial_timeouts-cli.txt",
+      "results/published/v06-final-review/20261102/final-source-replay/partial_timeouts-cli.txt"
+    ]
+  },
+  {
+    "sha256": "a2bf7787c5cd9b4517ddc3683af929e0c5dba6662e4fd83aedfd69b2b66e1acf",
+    "files": [
+      "results/published/v06-final-review/20261102/final-replay/partial_timeouts-web.png",
+      "results/published/v06-final-review/20261102/final-source-replay/partial_timeouts-web.png"
+    ]
+  },
+  {
+    "sha256": "8a08598d8d9cf88e050c2191c288c8b84f4d5a56da93e1647cfb32a8a3173f21",
+    "files": [
+      "results/published/v06-final-review/20261102/final-replay/partial_timeouts.html",
+      "results/published/v06-final-review/20261102/final-source-replay/partial_timeouts.html"
+    ]
+  },
+  {
+    "sha256": "833a0bdc3f5f9e2ebca446bf5987acef84c27df61e1fa205e000a664ad996e3a",
+    "files": [
+      "results/published/v06-final-review/20261102/final-replay/tcp_timeout-cli.txt",
+      "results/published/v06-final-review/20261102/final-source-replay/tcp_timeout-cli.txt"
+    ]
+  },
+  {
+    "sha256": "4e3a0248d3bb8aecde1de55b3f7c04055aa05ba5b9ebac3545e8d74b5bd0bbb8",
+    "files": [
+      "results/published/v06-final-review/20261102/final-replay/tcp_timeout-web.png",
+      "results/published/v06-final-review/20261102/final-source-replay/tcp_timeout-web.png"
+    ]
+  },
+  {
+    "sha256": "8416534f8e26f72ff385800ff9ffe6e6c3be78da3c728d2e8dbc04efe3793e3f",
+    "files": [
+      "results/published/v06-final-review/20261102/final-replay/tcp_timeout.html",
+      "results/published/v06-final-review/20261102/final-source-replay/tcp_timeout.html"
+    ]
+  }
+]

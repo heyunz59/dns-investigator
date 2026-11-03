@@ -1,0 +1,9 @@
+{
+  "filename": "dns-investigator-a8fd689-pre-release.zip",
+  "sha256": "b4b11f6830fadff085856ce121c3dc0c65573d950e729e3bff87a0fdd2570536",
+  "bytes": 23126375,
+  "verified_files": 6536,
+  "source_commit": "a8fd68983c11c5841275f0a4423e2110525ff278",
+  "verification": "every entry decompressed and compared to pre-cleanup SHA256; no untracked files included",
+  "public_recovery": "immutable source commit on GitHub; local verified archive not uploaded"
+}

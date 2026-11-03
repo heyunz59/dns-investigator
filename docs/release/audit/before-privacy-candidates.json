@@ -1,0 +1,1187 @@
+[
+  {
+    "path": "README.md",
+    "category": "private_address_candidate",
+    "disposition": "candidate for contextual review; value not included"
+  },
+  {
+    "path": "data/regressions/baidu-investigation.json",
+    "category": "private_address_candidate",
+    "disposition": "candidate for contextual review; value not included"
+  },
+  {
+    "path": "docs/v06-final-review.md",
+    "category": "private_address_candidate",
+    "disposition": "candidate for contextual review; value not included"
+  },
+  {
+    "path": "docs/v06-polish/baidu-report.html",
+    "category": "private_address_candidate",
+    "disposition": "candidate for contextual review; value not included"
+  },
+  {
+    "path": "docs/v06-web/live-check.json",
+    "category": "private_address_candidate",
+    "disposition": "candidate for contextual review; value not included"
+  },
+  {
+    "path": "docs/validation.md",
+    "category": "private_address_candidate",
+    "disposition": "candidate for contextual review; value not included"
+  },
+  {
+    "path": "evaluation/protocol_lab.py",
+    "category": "private_address_candidate",
+    "disposition": "candidate for contextual review; value not included"
+  },
+  {
+    "path": "evaluation/public_path_replay.py",
+    "category": "private_address_candidate",
+    "disposition": "candidate for contextual review; value not included"
+  },
+  {
+    "path": "evaluation/report_quality.py",
+    "category": "private_address_candidate",
+    "disposition": "candidate for contextual review; value not included"
+  },
+  {
+    "path": "evaluation/tcp_security_capture.py",
+    "category": "private_address_candidate",
+    "disposition": "candidate for contextual review; value not included"
+  },
+  {
+    "path": "results/published/nsec3-divergence-audit/after-fix/verifier-logs/T01-1-project.json",
+    "category": "private_address_candidate",
+    "disposition": "candidate for contextual review; value not included"
+  },
+  {
+    "path": "results/published/nsec3-divergence-audit/after-fix/verifier-logs/T01-2-project.json",
+    "category": "private_address_candidate",
+    "disposition": "candidate for contextual review; value not included"
+  },
+  {
+    "path": "results/published/nsec3-divergence-audit/after-isolated/verifier-logs/T01-1-project.json",
+    "category": "private_address_candidate",
+    "disposition": "candidate for contextual review; value not included"
+  },
+  {
+    "path": "results/published/nsec3-divergence-audit/after-isolated/verifier-logs/T01-2-project.json",
+    "category": "private_address_candidate",
+    "disposition": "candidate for contextual review; value not included"
+  },
+  {
+    "path": "results/published/nsec3-divergence-audit/after-isolated/verifier-logs/T01-3-project.json",
+    "category": "private_address_candidate",
+    "disposition": "candidate for contextual review; value not included"
+  },
+  {
+    "path": "results/published/nsec3-divergence-audit/after-isolated/verifier-logs/T02-1-project.json",
+    "category": "private_address_candidate",
+    "disposition": "candidate for contextual review; value not included"
+  },
+  {
+    "path": "results/published/nsec3-divergence-audit/after-isolated/verifier-logs/T03-1-project.json",
+    "category": "private_address_candidate",
+    "disposition": "candidate for contextual review; value not included"
+  },
+  {
+    "path": "results/published/nsec3-divergence-audit/after-isolated/verifier-logs/T04-1-project.json",
+    "category": "private_address_candidate",
+    "disposition": "candidate for contextual review; value not included"
+  },
+  {
+    "path": "results/published/nsec3-divergence-audit/after-isolated/verifier-logs/T05-1-project.json",
+    "category": "private_address_candidate",
+    "disposition": "candidate for contextual review; value not included"
+  },
+  {
+    "path": "results/published/nsec3-divergence-audit/after-isolated/verifier-logs/T06-1-project.json",
+    "category": "private_address_candidate",
+    "disposition": "candidate for contextual review; value not included"
+  },
+  {
+    "path": "results/published/nsec3-divergence-audit/after-isolated/verifier-logs/T07-1-project.json",
+    "category": "private_address_candidate",
+    "disposition": "candidate for contextual review; value not included"
+  },
+  {
+    "path": "results/published/nsec3-divergence-audit/after-isolated/verifier-logs/T08-1-project.json",
+    "category": "private_address_candidate",
+    "disposition": "candidate for contextual review; value not included"
+  },
+  {
+    "path": "results/published/nsec3-divergence-audit/after-isolated/verifier-logs/T09-1-project.json",
+    "category": "private_address_candidate",
+    "disposition": "candidate for contextual review; value not included"
+  },
+  {
+    "path": "results/published/nsec3-divergence-audit/after-isolated/verifier-logs/T10-1-project.json",
+    "category": "private_address_candidate",
+    "disposition": "candidate for contextual review; value not included"
+  },
+  {
+    "path": "results/published/nsec3-divergence-audit/after-isolated/verifier-logs/T11-1-project.json",
+    "category": "private_address_candidate",
+    "disposition": "candidate for contextual review; value not included"
+  },
+  {
+    "path": "results/published/nsec3-divergence-audit/after-isolated/verifier-logs/T12-1-project.json",
+    "category": "private_address_candidate",
+    "disposition": "candidate for contextual review; value not included"
+  },
+  {
+    "path": "results/published/nsec3-divergence-audit/full-reference-after.json",
+    "category": "private_address_candidate",
+    "disposition": "candidate for contextual review; value not included"
+  },
+  {
+    "path": "results/published/nsec3-divergence-audit/full-reference-isolated.json",
+    "category": "private_address_candidate",
+    "disposition": "candidate for contextual review; value not included"
+  },
+  {
+    "path": "results/published/nsec3-divergence-audit/reference-debug/verifier-logs/T01-1-project.json",
+    "category": "private_address_candidate",
+    "disposition": "candidate for contextual review; value not included"
+  },
+  {
+    "path": "results/published/nsec3-divergence-audit/t07-corrected-v2/verifier-logs/T07-1-project.json",
+    "category": "private_address_candidate",
+    "disposition": "candidate for contextual review; value not included"
+  },
+  {
+    "path": "results/published/nsec3-divergence-audit/verifier-logs/T01-1-project.json",
+    "category": "private_address_candidate",
+    "disposition": "candidate for contextual review; value not included"
+  },
+  {
+    "path": "results/published/nsec3-divergence-audit/verifier-logs/T01-2-project.json",
+    "category": "private_address_candidate",
+    "disposition": "candidate for contextual review; value not included"
+  },
+  {
+    "path": "results/published/nsec3-divergence-audit/verifier-logs/T01-3-project.json",
+    "category": "private_address_candidate",
+    "disposition": "candidate for contextual review; value not included"
+  },
+  {
+    "path": "results/published/nsec3-divergence-audit/verifier-logs/T02-1-project.json",
+    "category": "private_address_candidate",
+    "disposition": "candidate for contextual review; value not included"
+  },
+  {
+    "path": "results/published/nsec3-divergence-audit/verifier-logs/T03-1-project.json",
+    "category": "private_address_candidate",
+    "disposition": "candidate for contextual review; value not included"
+  },
+  {
+    "path": "results/published/nsec3-divergence-audit/verifier-logs/T04-1-project.json",
+    "category": "private_address_candidate",
+    "disposition": "candidate for contextual review; value not included"
+  },
+  {
+    "path": "results/published/nsec3-divergence-audit/verifier-logs/T05-1-project.json",
+    "category": "private_address_candidate",
+    "disposition": "candidate for contextual review; value not included"
+  },
+  {
+    "path": "results/published/nsec3-divergence-audit/verifier-logs/T06-1-project.json",
+    "category": "private_address_candidate",
+    "disposition": "candidate for contextual review; value not included"
+  },
+  {
+    "path": "results/published/nsec3-divergence-audit/verifier-logs/T07-1-project.json",
+    "category": "private_address_candidate",
+    "disposition": "candidate for contextual review; value not included"
+  },
+  {
+    "path": "results/published/nsec3-divergence-audit/verifier-logs/T08-1-project.json",
+    "category": "private_address_candidate",
+    "disposition": "candidate for contextual review; value not included"
+  },
+  {
+    "path": "results/published/nsec3-divergence-audit/verifier-logs/T09-1-project.json",
+    "category": "private_address_candidate",
+    "disposition": "candidate for contextual review; value not included"
+  },
+  {
+    "path": "results/published/nsec3-divergence-audit/verifier-logs/T10-1-project.json",
+    "category": "private_address_candidate",
+    "disposition": "candidate for contextual review; value not included"
+  },
+  {
+    "path": "results/published/nsec3-divergence-audit/verifier-logs/T11-1-project.json",
+    "category": "private_address_candidate",
+    "disposition": "candidate for contextual review; value not included"
+  },
+  {
+    "path": "results/published/nsec3-divergence-audit/verifier-logs/T12-1-project.json",
+    "category": "private_address_candidate",
+    "disposition": "candidate for contextual review; value not included"
+  },
+  {
+    "path": "results/published/public-path-aggregation/20261102-baidu/after-cli.txt",
+    "category": "private_address_candidate",
+    "disposition": "candidate for contextual review; value not included"
+  },
+  {
+    "path": "results/published/public-path-aggregation/20261102-baidu/after-investigation.json",
+    "category": "private_address_candidate",
+    "disposition": "candidate for contextual review; value not included"
+  },
+  {
+    "path": "results/published/public-path-aggregation/20261102-baidu/after-web.json",
+    "category": "private_address_candidate",
+    "disposition": "candidate for contextual review; value not included"
+  },
+  {
+    "path": "results/published/public-path-aggregation/20261102-baidu/before-regenerated-report.json",
+    "category": "private_address_candidate",
+    "disposition": "candidate for contextual review; value not included"
+  },
+  {
+    "path": "results/published/public-path-aggregation/20261102-baidu/before-report.json",
+    "category": "private_address_candidate",
+    "disposition": "candidate for contextual review; value not included"
+  },
+  {
+    "path": "results/published/public-path-aggregation/20261102-baidu/before-web.json",
+    "category": "private_address_candidate",
+    "disposition": "candidate for contextual review; value not included"
+  },
+  {
+    "path": "results/published/public-path-aggregation/20261102-baidu/conclusion.json",
+    "category": "private_address_candidate",
+    "disposition": "candidate for contextual review; value not included"
+  },
+  {
+    "path": "results/published/public-path-aggregation/20261102-baidu/group-evidence.csv",
+    "category": "private_address_candidate",
+    "disposition": "candidate for contextual review; value not included"
+  },
+  {
+    "path": "results/published/public-path-aggregation/20261102-baidu/review-summary.md",
+    "category": "private_address_candidate",
+    "disposition": "candidate for contextual review; value not included"
+  },
+  {
+    "path": "results/published/public-path-aggregation/20261102-baidu/source.diff",
+    "category": "private_address_candidate",
+    "disposition": "candidate for contextual review; value not included"
+  },
+  {
+    "path": "results/published/v0.4-protocol/agent-133b49a/15adf93d44e9463a9d4f798057b4419a.json",
+    "category": "private_address_candidate",
+    "disposition": "candidate for contextual review; value not included"
+  },
+  {
+    "path": "results/published/v0.4-protocol/agent-133b49a/591630773c644cad8566072fd0ee0429.json",
+    "category": "private_address_candidate",
+    "disposition": "candidate for contextual review; value not included"
+  },
+  {
+    "path": "results/published/v0.4-protocol/agent-133b49a/905aa028d0ec41679e8af923f4f18737.json",
+    "category": "private_address_candidate",
+    "disposition": "candidate for contextual review; value not included"
+  },
+  {
+    "path": "results/published/v0.4-protocol/agent-133b49a/bb15d440040e4c5aa7ae960efe14b3da.json",
+    "category": "private_address_candidate",
+    "disposition": "candidate for contextual review; value not included"
+  },
+  {
+    "path": "results/published/v0.4-protocol/agent-133b49a/d6069266ea084150b758fda59ab29b16.json",
+    "category": "private_address_candidate",
+    "disposition": "candidate for contextual review; value not included"
+  },
+  {
+    "path": "results/published/v0.4-protocol/agent-819a5de/49e532cd6eba43b4980e874ce7f94ad8.json",
+    "category": "private_address_candidate",
+    "disposition": "candidate for contextual review; value not included"
+  },
+  {
+    "path": "results/published/v0.4-protocol/agent-819a5de/6bfb123e97954c5b9d308f6fd801cbc6.json",
+    "category": "private_address_candidate",
+    "disposition": "candidate for contextual review; value not included"
+  },
+  {
+    "path": "results/published/v0.4-protocol/agent-819a5de/7100faed87be41e1a585df32cc300968.json",
+    "category": "private_address_candidate",
+    "disposition": "candidate for contextual review; value not included"
+  },
+  {
+    "path": "results/published/v0.4-protocol/agent-819a5de/b90e5c61e6a74cf1a929c5d8bc68caf9.json",
+    "category": "private_address_candidate",
+    "disposition": "candidate for contextual review; value not included"
+  },
+  {
+    "path": "results/published/v0.4-protocol/agent-819a5de/f36e51a3887a406a955e0b7f6e980563.json",
+    "category": "private_address_candidate",
+    "disposition": "candidate for contextual review; value not included"
+  },
+  {
+    "path": "results/published/v0.4-protocol/agent-9bd82d9/1924d821c9b342d7ac864c7ced1c2b6b.json",
+    "category": "private_address_candidate",
+    "disposition": "candidate for contextual review; value not included"
+  },
+  {
+    "path": "results/published/v0.4-protocol/agent-9bd82d9/3d28c4b7513541a482d8401d0dde63e3.json",
+    "category": "private_address_candidate",
+    "disposition": "candidate for contextual review; value not included"
+  },
+  {
+    "path": "results/published/v0.4-protocol/agent-9bd82d9/77df9275073b49a1bcb2f0300e70b0c3.json",
+    "category": "private_address_candidate",
+    "disposition": "candidate for contextual review; value not included"
+  },
+  {
+    "path": "results/published/v0.4-protocol/agent-9bd82d9/af8e2d8c23d642ed90e2783852d712e3.json",
+    "category": "private_address_candidate",
+    "disposition": "candidate for contextual review; value not included"
+  },
+  {
+    "path": "results/published/v0.4-protocol/agent-9bd82d9/cc6fe8ad478448a08d68b7bf5a43e2c4.json",
+    "category": "private_address_candidate",
+    "disposition": "candidate for contextual review; value not included"
+  },
+  {
+    "path": "results/published/v0.4-protocol/agent-a525dc2/1873d8859acb4e4e8d1338974e95b260.json",
+    "category": "private_address_candidate",
+    "disposition": "candidate for contextual review; value not included"
+  },
+  {
+    "path": "results/published/v0.4-protocol/agent-a525dc2/34443dfd163b4a41b108c7a3234ee4ea.json",
+    "category": "private_address_candidate",
+    "disposition": "candidate for contextual review; value not included"
+  },
+  {
+    "path": "results/published/v0.4-protocol/agent-a525dc2/34fa8b1357b24819923571343b6ee9c9.json",
+    "category": "private_address_candidate",
+    "disposition": "candidate for contextual review; value not included"
+  },
+  {
+    "path": "results/published/v0.4-protocol/agent-a525dc2/6c45dd025343425697c790a27b6938fe.json",
+    "category": "private_address_candidate",
+    "disposition": "candidate for contextual review; value not included"
+  },
+  {
+    "path": "results/published/v0.4-protocol/agent-a525dc2/ee01d344980448399f37c134d71ff407.json",
+    "category": "private_address_candidate",
+    "disposition": "candidate for contextual review; value not included"
+  },
+  {
+    "path": "results/published/v0.4-protocol/agent-c46a54b/52d21c3c635c4d618c98d032e8b2f822.json",
+    "category": "private_address_candidate",
+    "disposition": "candidate for contextual review; value not included"
+  },
+  {
+    "path": "results/published/v0.4-protocol/agent-c46a54b/8c98b5397a2746858e22820098f4d580.json",
+    "category": "private_address_candidate",
+    "disposition": "candidate for contextual review; value not included"
+  },
+  {
+    "path": "results/published/v0.4-protocol/agent-c46a54b/cb9bdf991d4041f99591bbe3ddbe0b27.json",
+    "category": "private_address_candidate",
+    "disposition": "candidate for contextual review; value not included"
+  },
+  {
+    "path": "results/published/v0.4-protocol/agent-c46a54b/da5e65c937094502a2962ea3bb113e56.json",
+    "category": "private_address_candidate",
+    "disposition": "candidate for contextual review; value not included"
+  },
+  {
+    "path": "results/published/v0.4-protocol/agent-c46a54b/e4d300149dc8410dab8e77bc4ab9ec59.json",
+    "category": "private_address_candidate",
+    "disposition": "candidate for contextual review; value not included"
+  },
+  {
+    "path": "results/published/v0.4-protocol/cohosted-first-6a97cb8.json",
+    "category": "private_address_candidate",
+    "disposition": "candidate for contextual review; value not included"
+  },
+  {
+    "path": "results/published/v0.4-protocol/proof-edges-before-9bd82d9.json",
+    "category": "private_address_candidate",
+    "disposition": "candidate for contextual review; value not included"
+  },
+  {
+    "path": "results/published/v0.4-protocol/reference-133b49a.json",
+    "category": "private_address_candidate",
+    "disposition": "candidate for contextual review; value not included"
+  },
+  {
+    "path": "results/published/v0.4-protocol/reference-819a5de.json",
+    "category": "private_address_candidate",
+    "disposition": "candidate for contextual review; value not included"
+  },
+  {
+    "path": "results/published/v0.4-protocol/reference-9bd82d9.json",
+    "category": "private_address_candidate",
+    "disposition": "candidate for contextual review; value not included"
+  },
+  {
+    "path": "results/published/v0.4-protocol/reference-a525dc2.json",
+    "category": "private_address_candidate",
+    "disposition": "candidate for contextual review; value not included"
+  },
+  {
+    "path": "results/published/v0.4-protocol/reference-c46a54b.json",
+    "category": "private_address_candidate",
+    "disposition": "candidate for contextual review; value not included"
+  },
+  {
+    "path": "results/published/v0.4-protocol/reference-first.json",
+    "category": "private_address_candidate",
+    "disposition": "candidate for contextual review; value not included"
+  },
+  {
+    "path": "results/published/v0.4-protocol/reference-fourth.json",
+    "category": "private_address_candidate",
+    "disposition": "candidate for contextual review; value not included"
+  },
+  {
+    "path": "results/published/v0.4-protocol/reference-matrix-initial.json",
+    "category": "private_address_candidate",
+    "disposition": "candidate for contextual review; value not included"
+  },
+  {
+    "path": "results/published/v0.4-protocol/reference-matrix-v2.json",
+    "category": "private_address_candidate",
+    "disposition": "candidate for contextual review; value not included"
+  },
+  {
+    "path": "results/published/v0.4-protocol/reference-second.json",
+    "category": "private_address_candidate",
+    "disposition": "candidate for contextual review; value not included"
+  },
+  {
+    "path": "results/published/v0.4-protocol/reference-third.json",
+    "category": "private_address_candidate",
+    "disposition": "candidate for contextual review; value not included"
+  },
+  {
+    "path": "results/published/v0.4-protocol/trace-controlled.json",
+    "category": "private_address_candidate",
+    "disposition": "candidate for contextual review; value not included"
+  },
+  {
+    "path": "results/published/v0.4-security-nsec3-followup/nsec3-after/T01/verifier-logs/T01-1-project.json",
+    "category": "private_address_candidate",
+    "disposition": "candidate for contextual review; value not included"
+  },
+  {
+    "path": "results/published/v0.4-security-nsec3-followup/nsec3-after/T02/verifier-logs/T02-1-project.json",
+    "category": "private_address_candidate",
+    "disposition": "candidate for contextual review; value not included"
+  },
+  {
+    "path": "results/published/v0.4-security-nsec3-followup/nsec3-after/T03/verifier-logs/T03-1-project.json",
+    "category": "private_address_candidate",
+    "disposition": "candidate for contextual review; value not included"
+  },
+  {
+    "path": "results/published/v0.4-security-nsec3-followup/nsec3-after/T04/verifier-logs/T04-1-project.json",
+    "category": "private_address_candidate",
+    "disposition": "candidate for contextual review; value not included"
+  },
+  {
+    "path": "results/published/v0.4-security-nsec3-followup/nsec3-after/T05/verifier-logs/T05-1-project.json",
+    "category": "private_address_candidate",
+    "disposition": "candidate for contextual review; value not included"
+  },
+  {
+    "path": "results/published/v0.4-security-nsec3-followup/nsec3-after/T06/verifier-logs/T06-1-project.json",
+    "category": "private_address_candidate",
+    "disposition": "candidate for contextual review; value not included"
+  },
+  {
+    "path": "results/published/v0.4-security-nsec3-followup/nsec3-after/T07/verifier-logs/T07-1-project.json",
+    "category": "private_address_candidate",
+    "disposition": "candidate for contextual review; value not included"
+  },
+  {
+    "path": "results/published/v0.4-security-nsec3-followup/nsec3-after/T08/verifier-logs/T08-1-project.json",
+    "category": "private_address_candidate",
+    "disposition": "candidate for contextual review; value not included"
+  },
+  {
+    "path": "results/published/v0.4-security-nsec3-followup/nsec3-after/T09/verifier-logs/T09-1-project.json",
+    "category": "private_address_candidate",
+    "disposition": "candidate for contextual review; value not included"
+  },
+  {
+    "path": "results/published/v0.4-security-nsec3-followup/nsec3-after/T10/verifier-logs/T10-1-project.json",
+    "category": "private_address_candidate",
+    "disposition": "candidate for contextual review; value not included"
+  },
+  {
+    "path": "results/published/v0.4-security-nsec3-followup/nsec3-after/T11/verifier-logs/T11-1-project.json",
+    "category": "private_address_candidate",
+    "disposition": "candidate for contextual review; value not included"
+  },
+  {
+    "path": "results/published/v0.4-security-nsec3-followup/nsec3-after/T12/verifier-logs/T12-1-project.json",
+    "category": "private_address_candidate",
+    "disposition": "candidate for contextual review; value not included"
+  },
+  {
+    "path": "results/published/v0.4-security-nsec3-followup/nsec3-after/X13/verifier-logs/X13-1-project.json",
+    "category": "private_address_candidate",
+    "disposition": "candidate for contextual review; value not included"
+  },
+  {
+    "path": "results/published/v0.4-security-nsec3-followup/nsec3-after/X14/verifier-logs/X14-1-project.json",
+    "category": "private_address_candidate",
+    "disposition": "candidate for contextual review; value not included"
+  },
+  {
+    "path": "results/published/v0.4-security-nsec3-followup/nsec3-after/X15/verifier-logs/X15-1-project.json",
+    "category": "private_address_candidate",
+    "disposition": "candidate for contextual review; value not included"
+  },
+  {
+    "path": "results/published/v0.4-security-nsec3-followup/nsec3-after/X16/verifier-logs/X16-1-project.json",
+    "category": "private_address_candidate",
+    "disposition": "candidate for contextual review; value not included"
+  },
+  {
+    "path": "results/published/v0.4-security-nsec3-followup/nsec3-after/X17/verifier-logs/X17-1-project.json",
+    "category": "private_address_candidate",
+    "disposition": "candidate for contextual review; value not included"
+  },
+  {
+    "path": "results/published/v0.4-security-nsec3-followup/nsec3-after/X18/verifier-logs/X18-1-project.json",
+    "category": "private_address_candidate",
+    "disposition": "candidate for contextual review; value not included"
+  },
+  {
+    "path": "results/published/v0.4-security-nsec3-followup/nsec3-after/X19/verifier-logs/X19-1-project.json",
+    "category": "private_address_candidate",
+    "disposition": "candidate for contextual review; value not included"
+  },
+  {
+    "path": "results/published/v0.4-security-nsec3-followup/nsec3-after/X20/verifier-logs/X20-1-project.json",
+    "category": "private_address_candidate",
+    "disposition": "candidate for contextual review; value not included"
+  },
+  {
+    "path": "results/published/v0.4-security-nsec3-followup/nsec3-after/X21/verifier-logs/X21-1-project.json",
+    "category": "private_address_candidate",
+    "disposition": "candidate for contextual review; value not included"
+  },
+  {
+    "path": "results/published/v0.4-security-nsec3-followup/nsec3-after/X22/verifier-logs/X22-1-project.json",
+    "category": "private_address_candidate",
+    "disposition": "candidate for contextual review; value not included"
+  },
+  {
+    "path": "results/published/v0.4-security-nsec3-followup/nsec3-after/X23/verifier-logs/X23-1-project.json",
+    "category": "private_address_candidate",
+    "disposition": "candidate for contextual review; value not included"
+  },
+  {
+    "path": "results/published/v0.4-security-nsec3-followup/nsec3-after/X24/verifier-logs/X24-1-project.json",
+    "category": "private_address_candidate",
+    "disposition": "candidate for contextual review; value not included"
+  },
+  {
+    "path": "results/published/v0.4-security-nsec3-followup/nsec3-after/X25/verifier-logs/X25-1-project.json",
+    "category": "private_address_candidate",
+    "disposition": "candidate for contextual review; value not included"
+  },
+  {
+    "path": "results/published/v0.4-security-nsec3-followup/nsec3-after/X26/verifier-logs/X26-1-project.json",
+    "category": "private_address_candidate",
+    "disposition": "candidate for contextual review; value not included"
+  },
+  {
+    "path": "results/published/v0.4-security-nsec3-followup/nsec3-after/X27/verifier-logs/X27-1-project.json",
+    "category": "private_address_candidate",
+    "disposition": "candidate for contextual review; value not included"
+  },
+  {
+    "path": "results/published/v0.4-security-nsec3-followup/nsec3-after/X28/verifier-logs/X28-1-project.json",
+    "category": "private_address_candidate",
+    "disposition": "candidate for contextual review; value not included"
+  },
+  {
+    "path": "results/published/v0.4-security-nsec3-followup/nsec3-before/T01/verifier-logs/T01-1-project.json",
+    "category": "private_address_candidate",
+    "disposition": "candidate for contextual review; value not included"
+  },
+  {
+    "path": "results/published/v0.4-security-nsec3-followup/nsec3-before/T02/verifier-logs/T02-1-project.json",
+    "category": "private_address_candidate",
+    "disposition": "candidate for contextual review; value not included"
+  },
+  {
+    "path": "results/published/v0.4-security-nsec3-followup/nsec3-before/T03/verifier-logs/T03-1-project.json",
+    "category": "private_address_candidate",
+    "disposition": "candidate for contextual review; value not included"
+  },
+  {
+    "path": "results/published/v0.4-security-nsec3-followup/nsec3-before/T04/verifier-logs/T04-1-project.json",
+    "category": "private_address_candidate",
+    "disposition": "candidate for contextual review; value not included"
+  },
+  {
+    "path": "results/published/v0.4-security-nsec3-followup/nsec3-before/T05/verifier-logs/T05-1-project.json",
+    "category": "private_address_candidate",
+    "disposition": "candidate for contextual review; value not included"
+  },
+  {
+    "path": "results/published/v0.4-security-nsec3-followup/nsec3-before/T06/verifier-logs/T06-1-project.json",
+    "category": "private_address_candidate",
+    "disposition": "candidate for contextual review; value not included"
+  },
+  {
+    "path": "results/published/v0.4-security-nsec3-followup/nsec3-before/T07/verifier-logs/T07-1-project.json",
+    "category": "private_address_candidate",
+    "disposition": "candidate for contextual review; value not included"
+  },
+  {
+    "path": "results/published/v0.4-security-nsec3-followup/nsec3-before/T08/verifier-logs/T08-1-project.json",
+    "category": "private_address_candidate",
+    "disposition": "candidate for contextual review; value not included"
+  },
+  {
+    "path": "results/published/v0.4-security-nsec3-followup/nsec3-before/T09/verifier-logs/T09-1-project.json",
+    "category": "private_address_candidate",
+    "disposition": "candidate for contextual review; value not included"
+  },
+  {
+    "path": "results/published/v0.4-security-nsec3-followup/nsec3-before/T10/verifier-logs/T10-1-project.json",
+    "category": "private_address_candidate",
+    "disposition": "candidate for contextual review; value not included"
+  },
+  {
+    "path": "results/published/v0.4-security-nsec3-followup/nsec3-before/T11/verifier-logs/T11-1-project.json",
+    "category": "private_address_candidate",
+    "disposition": "candidate for contextual review; value not included"
+  },
+  {
+    "path": "results/published/v0.4-security-nsec3-followup/nsec3-before/T12/verifier-logs/T12-1-project.json",
+    "category": "private_address_candidate",
+    "disposition": "candidate for contextual review; value not included"
+  },
+  {
+    "path": "results/published/v0.4-security-nsec3-followup/nsec3-before/X13/verifier-logs/X13-1-project.json",
+    "category": "private_address_candidate",
+    "disposition": "candidate for contextual review; value not included"
+  },
+  {
+    "path": "results/published/v0.4-security-nsec3-followup/nsec3-before/X14/verifier-logs/X14-1-project.json",
+    "category": "private_address_candidate",
+    "disposition": "candidate for contextual review; value not included"
+  },
+  {
+    "path": "results/published/v0.4-security-nsec3-followup/nsec3-before/X15/verifier-logs/X15-1-project.json",
+    "category": "private_address_candidate",
+    "disposition": "candidate for contextual review; value not included"
+  },
+  {
+    "path": "results/published/v0.4-security-nsec3-followup/nsec3-before/X16/verifier-logs/X16-1-project.json",
+    "category": "private_address_candidate",
+    "disposition": "candidate for contextual review; value not included"
+  },
+  {
+    "path": "results/published/v0.4-security-nsec3-followup/nsec3-before/X17/verifier-logs/X17-1-project.json",
+    "category": "private_address_candidate",
+    "disposition": "candidate for contextual review; value not included"
+  },
+  {
+    "path": "results/published/v0.4-security-nsec3-followup/nsec3-before/X18/verifier-logs/X18-1-project.json",
+    "category": "private_address_candidate",
+    "disposition": "candidate for contextual review; value not included"
+  },
+  {
+    "path": "results/published/v0.4-security-nsec3-followup/nsec3-before/X19/verifier-logs/X19-1-project.json",
+    "category": "private_address_candidate",
+    "disposition": "candidate for contextual review; value not included"
+  },
+  {
+    "path": "results/published/v0.4-security-nsec3-followup/nsec3-before/X20/verifier-logs/X20-1-project.json",
+    "category": "private_address_candidate",
+    "disposition": "candidate for contextual review; value not included"
+  },
+  {
+    "path": "results/published/v0.4-security-nsec3-followup/nsec3-before/X21/verifier-logs/X21-1-project.json",
+    "category": "private_address_candidate",
+    "disposition": "candidate for contextual review; value not included"
+  },
+  {
+    "path": "results/published/v0.4-security-nsec3-followup/nsec3-before/X22/verifier-logs/X22-1-project.json",
+    "category": "private_address_candidate",
+    "disposition": "candidate for contextual review; value not included"
+  },
+  {
+    "path": "results/published/v0.4-security-nsec3-followup/nsec3-before/X23/verifier-logs/X23-1-project.json",
+    "category": "private_address_candidate",
+    "disposition": "candidate for contextual review; value not included"
+  },
+  {
+    "path": "results/published/v0.4-security-nsec3-followup/nsec3-before/X24/verifier-logs/X24-1-project.json",
+    "category": "private_address_candidate",
+    "disposition": "candidate for contextual review; value not included"
+  },
+  {
+    "path": "results/published/v0.4-security-nsec3-followup/nsec3-before/X25/verifier-logs/X25-1-project.json",
+    "category": "private_address_candidate",
+    "disposition": "candidate for contextual review; value not included"
+  },
+  {
+    "path": "results/published/v0.4-security-nsec3-followup/nsec3-before/X26/verifier-logs/X26-1-project.json",
+    "category": "private_address_candidate",
+    "disposition": "candidate for contextual review; value not included"
+  },
+  {
+    "path": "results/published/v0.4-security-nsec3-followup/nsec3-before/X27/verifier-logs/X27-1-project.json",
+    "category": "private_address_candidate",
+    "disposition": "candidate for contextual review; value not included"
+  },
+  {
+    "path": "results/published/v0.4-security-nsec3-followup/nsec3-before/X28/verifier-logs/X28-1-project.json",
+    "category": "private_address_candidate",
+    "disposition": "candidate for contextual review; value not included"
+  },
+  {
+    "path": "results/published/v0.4-security-nsec3-followup/nsec3-final/T01/verifier-logs/T01-1-project.json",
+    "category": "private_address_candidate",
+    "disposition": "candidate for contextual review; value not included"
+  },
+  {
+    "path": "results/published/v0.4-security-nsec3-followup/nsec3-final/T02/verifier-logs/T02-1-project.json",
+    "category": "private_address_candidate",
+    "disposition": "candidate for contextual review; value not included"
+  },
+  {
+    "path": "results/published/v0.4-security-nsec3-followup/nsec3-final/T03/verifier-logs/T03-1-project.json",
+    "category": "private_address_candidate",
+    "disposition": "candidate for contextual review; value not included"
+  },
+  {
+    "path": "results/published/v0.4-security-nsec3-followup/nsec3-final/T04/verifier-logs/T04-1-project.json",
+    "category": "private_address_candidate",
+    "disposition": "candidate for contextual review; value not included"
+  },
+  {
+    "path": "results/published/v0.4-security-nsec3-followup/nsec3-final/T05/verifier-logs/T05-1-project.json",
+    "category": "private_address_candidate",
+    "disposition": "candidate for contextual review; value not included"
+  },
+  {
+    "path": "results/published/v0.4-security-nsec3-followup/nsec3-final/T06/verifier-logs/T06-1-project.json",
+    "category": "private_address_candidate",
+    "disposition": "candidate for contextual review; value not included"
+  },
+  {
+    "path": "results/published/v0.4-security-nsec3-followup/nsec3-final/T07/verifier-logs/T07-1-project.json",
+    "category": "private_address_candidate",
+    "disposition": "candidate for contextual review; value not included"
+  },
+  {
+    "path": "results/published/v0.4-security-nsec3-followup/nsec3-final/T08/verifier-logs/T08-1-project.json",
+    "category": "private_address_candidate",
+    "disposition": "candidate for contextual review; value not included"
+  },
+  {
+    "path": "results/published/v0.4-security-nsec3-followup/nsec3-final/T09/verifier-logs/T09-1-project.json",
+    "category": "private_address_candidate",
+    "disposition": "candidate for contextual review; value not included"
+  },
+  {
+    "path": "results/published/v0.4-security-nsec3-followup/nsec3-final/T10/verifier-logs/T10-1-project.json",
+    "category": "private_address_candidate",
+    "disposition": "candidate for contextual review; value not included"
+  },
+  {
+    "path": "results/published/v0.4-security-nsec3-followup/nsec3-final/T11/verifier-logs/T11-1-project.json",
+    "category": "private_address_candidate",
+    "disposition": "candidate for contextual review; value not included"
+  },
+  {
+    "path": "results/published/v0.4-security-nsec3-followup/nsec3-final/T12/verifier-logs/T12-1-project.json",
+    "category": "private_address_candidate",
+    "disposition": "candidate for contextual review; value not included"
+  },
+  {
+    "path": "results/published/v0.4-security-nsec3-followup/nsec3-final/X13/verifier-logs/X13-1-project.json",
+    "category": "private_address_candidate",
+    "disposition": "candidate for contextual review; value not included"
+  },
+  {
+    "path": "results/published/v0.4-security-nsec3-followup/nsec3-final/X14/verifier-logs/X14-1-project.json",
+    "category": "private_address_candidate",
+    "disposition": "candidate for contextual review; value not included"
+  },
+  {
+    "path": "results/published/v0.4-security-nsec3-followup/nsec3-final/X15/verifier-logs/X15-1-project.json",
+    "category": "private_address_candidate",
+    "disposition": "candidate for contextual review; value not included"
+  },
+  {
+    "path": "results/published/v0.4-security-nsec3-followup/nsec3-final/X16/verifier-logs/X16-1-project.json",
+    "category": "private_address_candidate",
+    "disposition": "candidate for contextual review; value not included"
+  },
+  {
+    "path": "results/published/v0.4-security-nsec3-followup/nsec3-final/X17/verifier-logs/X17-1-project.json",
+    "category": "private_address_candidate",
+    "disposition": "candidate for contextual review; value not included"
+  },
+  {
+    "path": "results/published/v0.4-security-nsec3-followup/nsec3-final/X18/verifier-logs/X18-1-project.json",
+    "category": "private_address_candidate",
+    "disposition": "candidate for contextual review; value not included"
+  },
+  {
+    "path": "results/published/v0.4-security-nsec3-followup/nsec3-final/X19/verifier-logs/X19-1-project.json",
+    "category": "private_address_candidate",
+    "disposition": "candidate for contextual review; value not included"
+  },
+  {
+    "path": "results/published/v0.4-security-nsec3-followup/nsec3-final/X20/verifier-logs/X20-1-project.json",
+    "category": "private_address_candidate",
+    "disposition": "candidate for contextual review; value not included"
+  },
+  {
+    "path": "results/published/v0.4-security-nsec3-followup/nsec3-final/X21/verifier-logs/X21-1-project.json",
+    "category": "private_address_candidate",
+    "disposition": "candidate for contextual review; value not included"
+  },
+  {
+    "path": "results/published/v0.4-security-nsec3-followup/nsec3-final/X22/verifier-logs/X22-1-project.json",
+    "category": "private_address_candidate",
+    "disposition": "candidate for contextual review; value not included"
+  },
+  {
+    "path": "results/published/v0.4-security-nsec3-followup/nsec3-final/X23/verifier-logs/X23-1-project.json",
+    "category": "private_address_candidate",
+    "disposition": "candidate for contextual review; value not included"
+  },
+  {
+    "path": "results/published/v0.4-security-nsec3-followup/nsec3-final/X24/verifier-logs/X24-1-project.json",
+    "category": "private_address_candidate",
+    "disposition": "candidate for contextual review; value not included"
+  },
+  {
+    "path": "results/published/v0.4-security-nsec3-followup/nsec3-final/X25/verifier-logs/X25-1-project.json",
+    "category": "private_address_candidate",
+    "disposition": "candidate for contextual review; value not included"
+  },
+  {
+    "path": "results/published/v0.4-security-nsec3-followup/nsec3-final/X26/verifier-logs/X26-1-project.json",
+    "category": "private_address_candidate",
+    "disposition": "candidate for contextual review; value not included"
+  },
+  {
+    "path": "results/published/v0.4-security-nsec3-followup/nsec3-final/X27/verifier-logs/X27-1-project.json",
+    "category": "private_address_candidate",
+    "disposition": "candidate for contextual review; value not included"
+  },
+  {
+    "path": "results/published/v0.4-security-nsec3-followup/nsec3-final/X28/verifier-logs/X28-1-project.json",
+    "category": "private_address_candidate",
+    "disposition": "candidate for contextual review; value not included"
+  },
+  {
+    "path": "results/published/v0.4-security-nsec3-followup/tcp-security-details.json",
+    "category": "private_address_candidate",
+    "disposition": "candidate for contextual review; value not included"
+  },
+  {
+    "path": "results/published/v0.4-security-nsec3-followup/tcp-security-matrix-initial.csv",
+    "category": "private_address_candidate",
+    "disposition": "candidate for contextual review; value not included"
+  },
+  {
+    "path": "results/published/v0.4-security-nsec3-followup/tcp-security-matrix.csv",
+    "category": "private_address_candidate",
+    "disposition": "candidate for contextual review; value not included"
+  },
+  {
+    "path": "results/published/v05-diagnostic-upgrade/final-f13c/dnssec-ds_mismatch.json",
+    "category": "private_address_candidate",
+    "disposition": "candidate for contextual review; value not included"
+  },
+  {
+    "path": "results/published/v05-diagnostic-upgrade/final-f13c/dnssec-insecure.json",
+    "category": "private_address_candidate",
+    "disposition": "candidate for contextual review; value not included"
+  },
+  {
+    "path": "results/published/v05-diagnostic-upgrade/final-f13c/dnssec-tampered.json",
+    "category": "private_address_candidate",
+    "disposition": "candidate for contextual review; value not included"
+  },
+  {
+    "path": "results/published/v05-diagnostic-upgrade/final-release/dnssec-ds_mismatch.json",
+    "category": "private_address_candidate",
+    "disposition": "candidate for contextual review; value not included"
+  },
+  {
+    "path": "results/published/v05-diagnostic-upgrade/final-release/dnssec-insecure.json",
+    "category": "private_address_candidate",
+    "disposition": "candidate for contextual review; value not included"
+  },
+  {
+    "path": "results/published/v05-diagnostic-upgrade/final-release/dnssec-tampered.json",
+    "category": "private_address_candidate",
+    "disposition": "candidate for contextual review; value not included"
+  },
+  {
+    "path": "results/published/v05-diagnostic-upgrade/final-release/trace-non_aa.json",
+    "category": "private_address_candidate",
+    "disposition": "candidate for contextual review; value not included"
+  },
+  {
+    "path": "results/published/v05-diagnostic-upgrade/final-release/trace-normal.json",
+    "category": "private_address_candidate",
+    "disposition": "candidate for contextual review; value not included"
+  },
+  {
+    "path": "results/published/v05-diagnostic-upgrade/final-release/trace-timeout.json",
+    "category": "private_address_candidate",
+    "disposition": "candidate for contextual review; value not included"
+  },
+  {
+    "path": "results/published/v05-diagnostic-upgrade/final-source/dnssec-ds_mismatch.json",
+    "category": "private_address_candidate",
+    "disposition": "candidate for contextual review; value not included"
+  },
+  {
+    "path": "results/published/v05-diagnostic-upgrade/final-source/dnssec-insecure.json",
+    "category": "private_address_candidate",
+    "disposition": "candidate for contextual review; value not included"
+  },
+  {
+    "path": "results/published/v05-diagnostic-upgrade/final-source/dnssec-tampered.json",
+    "category": "private_address_candidate",
+    "disposition": "candidate for contextual review; value not included"
+  },
+  {
+    "path": "results/published/v05-diagnostic-upgrade/final/dnssec-ds_mismatch.json",
+    "category": "private_address_candidate",
+    "disposition": "candidate for contextual review; value not included"
+  },
+  {
+    "path": "results/published/v05-diagnostic-upgrade/final/dnssec-insecure.json",
+    "category": "private_address_candidate",
+    "disposition": "candidate for contextual review; value not included"
+  },
+  {
+    "path": "results/published/v05-diagnostic-upgrade/final/dnssec-tampered.json",
+    "category": "private_address_candidate",
+    "disposition": "candidate for contextual review; value not included"
+  },
+  {
+    "path": "results/published/v05-finalization/20261102-crossplatform/minimal-source.diff",
+    "category": "url_credentials",
+    "disposition": "candidate for contextual review; value not included"
+  },
+  {
+    "path": "results/published/v05-finalization/20261102-crossplatform/minimal-source.diff",
+    "category": "private_address_candidate",
+    "disposition": "candidate for contextual review; value not included"
+  },
+  {
+    "path": "results/published/v05-finalization/20261102-crossplatform/resolver-mapping.json",
+    "category": "private_address_candidate",
+    "disposition": "candidate for contextual review; value not included"
+  },
+  {
+    "path": "results/published/v05-report-quality-fixes/20261102-report-quality/before.json",
+    "category": "private_address_candidate",
+    "disposition": "candidate for contextual review; value not included"
+  },
+  {
+    "path": "results/published/v05-report-quality-fixes/20261102-report-quality/expanded-baseline/before.json",
+    "category": "private_address_candidate",
+    "disposition": "candidate for contextual review; value not included"
+  },
+  {
+    "path": "results/published/v05-report-quality-fixes/20261102-report-quality/reports-after.json",
+    "category": "private_address_candidate",
+    "disposition": "candidate for contextual review; value not included"
+  },
+  {
+    "path": "results/published/v05-report-quality-fixes/20261102-report-quality/supplemental-baseline/before.json",
+    "category": "private_address_candidate",
+    "disposition": "candidate for contextual review; value not included"
+  },
+  {
+    "path": "results/published/v06-final-review/20261102/before.json",
+    "category": "private_address_candidate",
+    "disposition": "candidate for contextual review; value not included"
+  },
+  {
+    "path": "results/published/v06-final-review/20261102/final-replay/baidu-cli.txt",
+    "category": "private_address_candidate",
+    "disposition": "candidate for contextual review; value not included"
+  },
+  {
+    "path": "results/published/v06-final-review/20261102/final-replay/baidu.html",
+    "category": "private_address_candidate",
+    "disposition": "candidate for contextual review; value not included"
+  },
+  {
+    "path": "results/published/v06-final-review/20261102/final-replay/comparison.json",
+    "category": "private_address_candidate",
+    "disposition": "candidate for contextual review; value not included"
+  },
+  {
+    "path": "results/published/v06-final-review/20261102/final-replay/dnssec_timeout.html",
+    "category": "private_address_candidate",
+    "disposition": "candidate for contextual review; value not included"
+  },
+  {
+    "path": "results/published/v06-final-review/20261102/final-replay/imported/case4.json",
+    "category": "private_address_candidate",
+    "disposition": "candidate for contextual review; value not included"
+  },
+  {
+    "path": "results/published/v06-final-review/20261102/final-replay/imported/case5.json",
+    "category": "private_address_candidate",
+    "disposition": "candidate for contextual review; value not included"
+  },
+  {
+    "path": "results/published/v06-final-review/20261102/final-replay/imported/case7.json",
+    "category": "private_address_candidate",
+    "disposition": "candidate for contextual review; value not included"
+  },
+  {
+    "path": "results/published/v06-final-review/20261102/final-replay/indeterminate_timeout.html",
+    "category": "private_address_candidate",
+    "disposition": "candidate for contextual review; value not included"
+  },
+  {
+    "path": "results/published/v06-final-review/20261102/final-source-replay/baidu-cli.txt",
+    "category": "private_address_candidate",
+    "disposition": "candidate for contextual review; value not included"
+  },
+  {
+    "path": "results/published/v06-final-review/20261102/final-source-replay/baidu.html",
+    "category": "private_address_candidate",
+    "disposition": "candidate for contextual review; value not included"
+  },
+  {
+    "path": "results/published/v06-final-review/20261102/final-source-replay/comparison.json",
+    "category": "private_address_candidate",
+    "disposition": "candidate for contextual review; value not included"
+  },
+  {
+    "path": "results/published/v06-final-review/20261102/final-source-replay/dnssec_timeout.html",
+    "category": "private_address_candidate",
+    "disposition": "candidate for contextual review; value not included"
+  },
+  {
+    "path": "results/published/v06-final-review/20261102/final-source-replay/imported/case4.json",
+    "category": "private_address_candidate",
+    "disposition": "candidate for contextual review; value not included"
+  },
+  {
+    "path": "results/published/v06-final-review/20261102/final-source-replay/imported/case5.json",
+    "category": "private_address_candidate",
+    "disposition": "candidate for contextual review; value not included"
+  },
+  {
+    "path": "results/published/v06-final-review/20261102/final-source-replay/imported/case7.json",
+    "category": "private_address_candidate",
+    "disposition": "candidate for contextual review; value not included"
+  },
+  {
+    "path": "results/published/v06-final-review/20261102/final-source-replay/indeterminate_timeout.html",
+    "category": "private_address_candidate",
+    "disposition": "candidate for contextual review; value not included"
+  },
+  {
+    "path": "scripts/check_installation.py",
+    "category": "url_credentials",
+    "disposition": "candidate for contextual review; value not included"
+  },
+  {
+    "path": "tests/test_cli.py",
+    "category": "url_credentials",
+    "disposition": "candidate for contextual review; value not included"
+  },
+  {
+    "path": "tests/test_dns_v3.py",
+    "category": "private_address_candidate",
+    "disposition": "candidate for contextual review; value not included"
+  },
+  {
+    "path": "tests/test_http_security.py",
+    "category": "url_credentials",
+    "disposition": "candidate for contextual review; value not included"
+  },
+  {
+    "path": "tests/test_http_security.py",
+    "category": "private_address_candidate",
+    "disposition": "candidate for contextual review; value not included"
+  },
+  {
+    "path": "tests/test_path_groups.py",
+    "category": "private_address_candidate",
+    "disposition": "candidate for contextual review; value not included"
+  },
+  {
+    "path": "tests/test_protocol_edns.py",
+    "category": "private_address_candidate",
+    "disposition": "candidate for contextual review; value not included"
+  },
+  {
+    "path": "tests/test_report_acceptance.py",
+    "category": "private_address_candidate",
+    "disposition": "candidate for contextual review; value not included"
+  },
+  {
+    "path": "tests/test_report_quality.py",
+    "category": "url_credentials",
+    "disposition": "candidate for contextual review; value not included"
+  },
+  {
+    "path": "tests/test_report_quality.py",
+    "category": "private_address_candidate",
+    "disposition": "candidate for contextual review; value not included"
+  },
+  {
+    "path": "tests/test_tcp_policy.py",
+    "category": "private_address_candidate",
+    "disposition": "candidate for contextual review; value not included"
+  },
+  {
+    "path": "tests/test_tools.py",
+    "category": "url_credentials",
+    "disposition": "candidate for contextual review; value not included"
+  },
+  {
+    "path": "tests/test_v05_closure.py",
+    "category": "private_address_candidate",
+    "disposition": "candidate for contextual review; value not included"
+  },
+  {
+    "path": "tests/test_v05_reasoning.py",
+    "category": "private_address_candidate",
+    "disposition": "candidate for contextual review; value not included"
+  },
+  {
+    "path": "tests/test_v06_final_review.py",
+    "category": "private_address_candidate",
+    "disposition": "candidate for contextual review; value not included"
+  },
+  {
+    "path": "tests/test_web.py",
+    "category": "url_credentials",
+    "disposition": "candidate for contextual review; value not included"
+  },
+  {
+    "path": "tests/test_web_product.py",
+    "category": "url_credentials",
+    "disposition": "candidate for contextual review; value not included"
+  },
+  {
+    "path": "tests/test_web_product.py",
+    "category": "private_address_candidate",
+    "disposition": "candidate for contextual review; value not included"
+  }
+]

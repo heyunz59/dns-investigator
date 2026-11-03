@@ -38,7 +38,7 @@ def run(out):
         text=io.StringIO()
         with contextlib.redirect_stdout(text):summary(v['result'])
         (out/(name+'-cli.txt')).write_text(text.getvalue(),encoding='utf8')
-        comparisons[name]=dict(before_short_title=baseline.get(name,{}).get('view',{}).get('short_title'),
+        comparisons[name]=dict(before_short_title=baseline.get(name,{}).get('before_short_title'),
             after={k:v[k] for k in ('short_title','short_explanation','short_location','label','tone','paths','dnssec')},
             first_actions=v['steps'][:3],diagnosis_selection_mode=v['result'].get('diagnosis_selection_mode'),
             diagnoses=[{k:d.get(k) for k in ('primary_issue','diagnosis_status','direct_evidence_ids','direct_validation_ids','dependency_evidence_ids','dependency_validation_ids')} for d in v['diagnoses']],

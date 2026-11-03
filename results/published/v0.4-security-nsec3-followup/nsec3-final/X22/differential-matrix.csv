@@ -1,2 +1,0 @@
-﻿case_id,input_hash,changed_factor,project_status,unbound_status,project_reason,unbound_reason,proof_sufficient,evidence_files,rfc_basis,interpretation
-X22,3071131fe61af3d43248ca231b4279f2485f940b27e861329fe889677d6afb64,"('known_noncover', False)",BOGUS,BOGUS,DENIAL_DOES_NOT_COVER_QUESTION,validation failure <probe.example.test. A IN>: nameerror proof failed from 127.0.0.12,PENDING_PROTOCOL_ANALYSIS,verifier-logs/X22-1-project.json,RFC5155 8.1-8.4,not adjudicated from status equality

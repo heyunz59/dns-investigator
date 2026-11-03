@@ -9,7 +9,7 @@ from fastapi.testclient import TestClient
 from dns_investigator.web import create_app, present
 from evaluation.report_quality import report
 
-ROWS=json.loads(Path('results/published/v05-report-quality-fixes/20261102-report-quality/before.json').read_text(encoding='utf8'))['cases']
+ROWS=json.loads(Path('tests/fixtures/reports/report-quality.json').read_text(encoding='utf8'))['cases']
 
 @pytest.mark.parametrize('row',ROWS,ids=lambda r:r['case'])
 def test_existing_report_mapping(row):

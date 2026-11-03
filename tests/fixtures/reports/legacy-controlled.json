@@ -1,0 +1,5343 @@
+{
+  "source_commit": "a8fd68983c11c5841275f0a4423e2110525ff278",
+  "cases": [
+    {
+      "original_path": "results/published/dns-accuracy-f0787c0/controlled-final/669ed9ec776c4821a34c7b0353b6236e.json",
+      "source_sha256": "cb7f4231e70cad07d91c417d4920aec4e64799e5dc965f669b7586a8c2f19fbd",
+      "result": {
+        "diagnostic_assessment": "查询 probe.example A：[local-resolver-1] 对 probe.example 返回 NXDOMAIN（E2）；[local-resolver-2] 对 probe.example 返回 NXDOMAIN（E3）；[local-resolver-3] 对 probe.example 返回 NXDOMAIN（E4）。不推断注册状态或服务器宕机。（E2、E3、E4） probe.example A [来源 live]：recursive [local-resolver-1]=NXDOMAIN、recursive [local-resolver-2]=NXDOMAIN、recursive [local-resolver-3]=NXDOMAIN、authoritative [local-resolver-5]=NOERROR、authoritative [local-resolver-4]=NOERROR 存在完整响应状态或记录差异；范围限于已列路径，缓存、策略、调度与时间原因尚未区分（E2、E3、E4、E7、E10）。",
+        "assessment_level": "scope_localized",
+        "report_fallback_reason": null,
+        "dns_comparison": {
+          "scope": {
+            "max_time_gap_seconds": 300
+          },
+          "paths": [
+            {
+              "evidence_id": "E1",
+              "attempt_id": "A2",
+              "query_attempt_id": "Q1",
+              "target": "probe.example",
+              "record_type": "SOA",
+              "resolver": "[local-resolver-1]",
+              "role": "recursive",
+              "source_mode": "live",
+              "measured_at": "2026-11-01T02:33:16.219509+00:00",
+              "execution_status": "ok",
+              "error": null,
+              "transport_status": "responded",
+              "dns_rcode": "NOERROR",
+              "result_kind": "NOERROR"
+            },
+            {
+              "evidence_id": "E2",
+              "attempt_id": "A1",
+              "query_attempt_id": "Q2",
+              "target": "probe.example",
+              "record_type": "A",
+              "resolver": "[local-resolver-1]",
+              "role": "recursive",
+              "source_mode": "live",
+              "measured_at": "2026-11-01T02:33:16.222020+00:00",
+              "execution_status": "ok",
+              "error": null,
+              "transport_status": "responded",
+              "dns_rcode": "NXDOMAIN",
+              "result_kind": "NXDOMAIN"
+            },
+            {
+              "evidence_id": "E3",
+              "attempt_id": "A1",
+              "query_attempt_id": "Q3",
+              "target": "probe.example",
+              "record_type": "A",
+              "resolver": "[local-resolver-2]",
+              "role": "recursive",
+              "source_mode": "live",
+              "measured_at": "2026-11-01T02:33:16.222020+00:00",
+              "execution_status": "ok",
+              "error": null,
+              "transport_status": "responded",
+              "dns_rcode": "NXDOMAIN",
+              "result_kind": "NXDOMAIN"
+            },
+            {
+              "evidence_id": "E4",
+              "attempt_id": "A1",
+              "query_attempt_id": "Q4",
+              "target": "probe.example",
+              "record_type": "A",
+              "resolver": "[local-resolver-3]",
+              "role": "recursive",
+              "source_mode": "live",
+              "measured_at": "2026-11-01T02:33:16.223020+00:00",
+              "execution_status": "ok",
+              "error": null,
+              "transport_status": "responded",
+              "dns_rcode": "NXDOMAIN",
+              "result_kind": "NXDOMAIN"
+            },
+            {
+              "evidence_id": "E5",
+              "attempt_id": "A2",
+              "query_attempt_id": "Q5",
+              "target": "probe.example",
+              "record_type": "NS",
+              "resolver": "[local-resolver-1]",
+              "role": "recursive",
+              "source_mode": "live",
+              "measured_at": "2026-11-01T02:33:16.225970+00:00",
+              "execution_status": "ok",
+              "error": null,
+              "transport_status": "responded",
+              "dns_rcode": "NOERROR",
+              "result_kind": "NOERROR"
+            },
+            {
+              "evidence_id": "E6",
+              "attempt_id": "A2",
+              "query_attempt_id": "Q6",
+              "target": "ns2.test.example",
+              "record_type": "A",
+              "resolver": "[local-resolver-1]",
+              "role": "recursive",
+              "source_mode": "live",
+              "measured_at": "2026-11-01T02:33:16.228133+00:00",
+              "execution_status": "ok",
+              "error": null,
+              "transport_status": "responded",
+              "dns_rcode": "NOERROR",
+              "result_kind": "NOERROR"
+            },
+            {
+              "evidence_id": "E7",
+              "attempt_id": "A2",
+              "query_attempt_id": "Q7",
+              "target": "probe.example",
+              "record_type": "A",
+              "resolver": "[local-resolver-5]",
+              "role": "authoritative",
+              "source_mode": "live",
+              "measured_at": "2026-11-01T02:33:16.229137+00:00",
+              "execution_status": "ok",
+              "error": null,
+              "transport_status": "responded",
+              "dns_rcode": "NOERROR",
+              "result_kind": "NOERROR"
+            },
+            {
+              "evidence_id": "E8",
+              "attempt_id": "A2",
+              "query_attempt_id": "Q8",
+              "target": "probe.example",
+              "record_type": "SOA",
+              "resolver": "[local-resolver-5]",
+              "role": "authoritative",
+              "source_mode": "live",
+              "measured_at": "2026-11-01T02:33:16.230141+00:00",
+              "execution_status": "ok",
+              "error": null,
+              "transport_status": "responded",
+              "dns_rcode": "NOERROR",
+              "result_kind": "NOERROR"
+            },
+            {
+              "evidence_id": "E9",
+              "attempt_id": "A2",
+              "query_attempt_id": "Q9",
+              "target": "ns1.test.example",
+              "record_type": "A",
+              "resolver": "[local-resolver-1]",
+              "role": "recursive",
+              "source_mode": "live",
+              "measured_at": "2026-11-01T02:33:16.231480+00:00",
+              "execution_status": "ok",
+              "error": null,
+              "transport_status": "responded",
+              "dns_rcode": "NOERROR",
+              "result_kind": "NOERROR"
+            },
+            {
+              "evidence_id": "E10",
+              "attempt_id": "A2",
+              "query_attempt_id": "Q10",
+              "target": "probe.example",
+              "record_type": "A",
+              "resolver": "[local-resolver-4]",
+              "role": "authoritative",
+              "source_mode": "live",
+              "measured_at": "2026-11-01T02:33:16.233740+00:00",
+              "execution_status": "ok",
+              "error": null,
+              "transport_status": "responded",
+              "dns_rcode": "NOERROR",
+              "result_kind": "NOERROR"
+            },
+            {
+              "evidence_id": "E11",
+              "attempt_id": "A2",
+              "query_attempt_id": "Q11",
+              "target": "probe.example",
+              "record_type": "SOA",
+              "resolver": "[local-resolver-4]",
+              "role": "authoritative",
+              "source_mode": "live",
+              "measured_at": "2026-11-01T02:33:16.235319+00:00",
+              "execution_status": "ok",
+              "error": null,
+              "transport_status": "responded",
+              "dns_rcode": "NOERROR",
+              "result_kind": "NOERROR"
+            }
+          ],
+          "pairs": [
+            {
+              "path_indices": [
+                0,
+                1
+              ],
+              "evidence_ids": [
+                "E1",
+                "E2"
+              ],
+              "codes": [],
+              "comparable": false,
+              "reason": "QUERY_SCOPE_DIFFERS"
+            },
+            {
+              "path_indices": [
+                0,
+                2
+              ],
+              "evidence_ids": [
+                "E1",
+                "E3"
+              ],
+              "codes": [],
+              "comparable": false,
+              "reason": "QUERY_SCOPE_DIFFERS"
+            },
+            {
+              "path_indices": [
+                0,
+                3
+              ],
+              "evidence_ids": [
+                "E1",
+                "E4"
+              ],
+              "codes": [],
+              "comparable": false,
+              "reason": "QUERY_SCOPE_DIFFERS"
+            },
+            {
+              "path_indices": [
+                0,
+                4
+              ],
+              "evidence_ids": [
+                "E1",
+                "E5"
+              ],
+              "codes": [],
+              "comparable": false,
+              "reason": "QUERY_SCOPE_DIFFERS"
+            },
+            {
+              "path_indices": [
+                0,
+                5
+              ],
+              "evidence_ids": [
+                "E1",
+                "E6"
+              ],
+              "codes": [],
+              "comparable": false,
+              "reason": "QUERY_SCOPE_DIFFERS"
+            },
+            {
+              "path_indices": [
+                0,
+                6
+              ],
+              "evidence_ids": [
+                "E1",
+                "E7"
+              ],
+              "codes": [],
+              "comparable": false,
+              "reason": "QUERY_SCOPE_DIFFERS"
+            },
+            {
+              "path_indices": [
+                0,
+                7
+              ],
+              "evidence_ids": [
+                "E1",
+                "E8"
+              ],
+              "codes": [],
+              "comparable": true,
+              "reason": null
+            },
+            {
+              "path_indices": [
+                0,
+                8
+              ],
+              "evidence_ids": [
+                "E1",
+                "E9"
+              ],
+              "codes": [],
+              "comparable": false,
+              "reason": "QUERY_SCOPE_DIFFERS"
+            },
+            {
+              "path_indices": [
+                0,
+                9
+              ],
+              "evidence_ids": [
+                "E1",
+                "E10"
+              ],
+              "codes": [],
+              "comparable": false,
+              "reason": "QUERY_SCOPE_DIFFERS"
+            },
+            {
+              "path_indices": [
+                0,
+                10
+              ],
+              "evidence_ids": [
+                "E1",
+                "E11"
+              ],
+              "codes": [],
+              "comparable": true,
+              "reason": null
+            },
+            {
+              "path_indices": [
+                1,
+                2
+              ],
+              "evidence_ids": [
+                "E2",
+                "E3"
+              ],
+              "codes": [],
+              "comparable": true,
+              "reason": null
+            },
+            {
+              "path_indices": [
+                1,
+                3
+              ],
+              "evidence_ids": [
+                "E2",
+                "E4"
+              ],
+              "codes": [],
+              "comparable": true,
+              "reason": null
+            },
+            {
+              "path_indices": [
+                1,
+                4
+              ],
+              "evidence_ids": [
+                "E2",
+                "E5"
+              ],
+              "codes": [],
+              "comparable": false,
+              "reason": "QUERY_SCOPE_DIFFERS"
+            },
+            {
+              "path_indices": [
+                1,
+                5
+              ],
+              "evidence_ids": [
+                "E2",
+                "E6"
+              ],
+              "codes": [],
+              "comparable": false,
+              "reason": "QUERY_SCOPE_DIFFERS"
+            },
+            {
+              "path_indices": [
+                1,
+                6
+              ],
+              "evidence_ids": [
+                "E2",
+                "E7"
+              ],
+              "codes": [
+                "RCODE_DISAGREEMENT",
+                "RECORD_PRESENCE_DISAGREEMENT",
+                "ADDRESS_SET_DIFFERENCE"
+              ],
+              "comparable": true,
+              "reason": null
+            },
+            {
+              "path_indices": [
+                1,
+                7
+              ],
+              "evidence_ids": [
+                "E2",
+                "E8"
+              ],
+              "codes": [],
+              "comparable": false,
+              "reason": "QUERY_SCOPE_DIFFERS"
+            },
+            {
+              "path_indices": [
+                1,
+                8
+              ],
+              "evidence_ids": [
+                "E2",
+                "E9"
+              ],
+              "codes": [],
+              "comparable": false,
+              "reason": "QUERY_SCOPE_DIFFERS"
+            },
+            {
+              "path_indices": [
+                1,
+                9
+              ],
+              "evidence_ids": [
+                "E2",
+                "E10"
+              ],
+              "codes": [
+                "RCODE_DISAGREEMENT",
+                "RECORD_PRESENCE_DISAGREEMENT",
+                "ADDRESS_SET_DIFFERENCE"
+              ],
+              "comparable": true,
+              "reason": null
+            },
+            {
+              "path_indices": [
+                1,
+                10
+              ],
+              "evidence_ids": [
+                "E2",
+                "E11"
+              ],
+              "codes": [],
+              "comparable": false,
+              "reason": "QUERY_SCOPE_DIFFERS"
+            },
+            {
+              "path_indices": [
+                2,
+                3
+              ],
+              "evidence_ids": [
+                "E3",
+                "E4"
+              ],
+              "codes": [],
+              "comparable": true,
+              "reason": null
+            },
+            {
+              "path_indices": [
+                2,
+                4
+              ],
+              "evidence_ids": [
+                "E3",
+                "E5"
+              ],
+              "codes": [],
+              "comparable": false,
+              "reason": "QUERY_SCOPE_DIFFERS"
+            },
+            {
+              "path_indices": [
+                2,
+                5
+              ],
+              "evidence_ids": [
+                "E3",
+                "E6"
+              ],
+              "codes": [],
+              "comparable": false,
+              "reason": "QUERY_SCOPE_DIFFERS"
+            },
+            {
+              "path_indices": [
+                2,
+                6
+              ],
+              "evidence_ids": [
+                "E3",
+                "E7"
+              ],
+              "codes": [
+                "RCODE_DISAGREEMENT",
+                "RECORD_PRESENCE_DISAGREEMENT",
+                "ADDRESS_SET_DIFFERENCE"
+              ],
+              "comparable": true,
+              "reason": null
+            },
+            {
+              "path_indices": [
+                2,
+                7
+              ],
+              "evidence_ids": [
+                "E3",
+                "E8"
+              ],
+              "codes": [],
+              "comparable": false,
+              "reason": "QUERY_SCOPE_DIFFERS"
+            },
+            {
+              "path_indices": [
+                2,
+                8
+              ],
+              "evidence_ids": [
+                "E3",
+                "E9"
+              ],
+              "codes": [],
+              "comparable": false,
+              "reason": "QUERY_SCOPE_DIFFERS"
+            },
+            {
+              "path_indices": [
+                2,
+                9
+              ],
+              "evidence_ids": [
+                "E3",
+                "E10"
+              ],
+              "codes": [
+                "RCODE_DISAGREEMENT",
+                "RECORD_PRESENCE_DISAGREEMENT",
+                "ADDRESS_SET_DIFFERENCE"
+              ],
+              "comparable": true,
+              "reason": null
+            },
+            {
+              "path_indices": [
+                2,
+                10
+              ],
+              "evidence_ids": [
+                "E3",
+                "E11"
+              ],
+              "codes": [],
+              "comparable": false,
+              "reason": "QUERY_SCOPE_DIFFERS"
+            },
+            {
+              "path_indices": [
+                3,
+                4
+              ],
+              "evidence_ids": [
+                "E4",
+                "E5"
+              ],
+              "codes": [],
+              "comparable": false,
+              "reason": "QUERY_SCOPE_DIFFERS"
+            },
+            {
+              "path_indices": [
+                3,
+                5
+              ],
+              "evidence_ids": [
+                "E4",
+                "E6"
+              ],
+              "codes": [],
+              "comparable": false,
+              "reason": "QUERY_SCOPE_DIFFERS"
+            },
+            {
+              "path_indices": [
+                3,
+                6
+              ],
+              "evidence_ids": [
+                "E4",
+                "E7"
+              ],
+              "codes": [
+                "RCODE_DISAGREEMENT",
+                "RECORD_PRESENCE_DISAGREEMENT",
+                "ADDRESS_SET_DIFFERENCE"
+              ],
+              "comparable": true,
+              "reason": null
+            },
+            {
+              "path_indices": [
+                3,
+                7
+              ],
+              "evidence_ids": [
+                "E4",
+                "E8"
+              ],
+              "codes": [],
+              "comparable": false,
+              "reason": "QUERY_SCOPE_DIFFERS"
+            },
+            {
+              "path_indices": [
+                3,
+                8
+              ],
+              "evidence_ids": [
+                "E4",
+                "E9"
+              ],
+              "codes": [],
+              "comparable": false,
+              "reason": "QUERY_SCOPE_DIFFERS"
+            },
+            {
+              "path_indices": [
+                3,
+                9
+              ],
+              "evidence_ids": [
+                "E4",
+                "E10"
+              ],
+              "codes": [
+                "RCODE_DISAGREEMENT",
+                "RECORD_PRESENCE_DISAGREEMENT",
+                "ADDRESS_SET_DIFFERENCE"
+              ],
+              "comparable": true,
+              "reason": null
+            },
+            {
+              "path_indices": [
+                3,
+                10
+              ],
+              "evidence_ids": [
+                "E4",
+                "E11"
+              ],
+              "codes": [],
+              "comparable": false,
+              "reason": "QUERY_SCOPE_DIFFERS"
+            },
+            {
+              "path_indices": [
+                4,
+                5
+              ],
+              "evidence_ids": [
+                "E5",
+                "E6"
+              ],
+              "codes": [],
+              "comparable": false,
+              "reason": "QUERY_SCOPE_DIFFERS"
+            },
+            {
+              "path_indices": [
+                4,
+                6
+              ],
+              "evidence_ids": [
+                "E5",
+                "E7"
+              ],
+              "codes": [],
+              "comparable": false,
+              "reason": "QUERY_SCOPE_DIFFERS"
+            },
+            {
+              "path_indices": [
+                4,
+                7
+              ],
+              "evidence_ids": [
+                "E5",
+                "E8"
+              ],
+              "codes": [],
+              "comparable": false,
+              "reason": "QUERY_SCOPE_DIFFERS"
+            },
+            {
+              "path_indices": [
+                4,
+                8
+              ],
+              "evidence_ids": [
+                "E5",
+                "E9"
+              ],
+              "codes": [],
+              "comparable": false,
+              "reason": "QUERY_SCOPE_DIFFERS"
+            },
+            {
+              "path_indices": [
+                4,
+                9
+              ],
+              "evidence_ids": [
+                "E5",
+                "E10"
+              ],
+              "codes": [],
+              "comparable": false,
+              "reason": "QUERY_SCOPE_DIFFERS"
+            },
+            {
+              "path_indices": [
+                4,
+                10
+              ],
+              "evidence_ids": [
+                "E5",
+                "E11"
+              ],
+              "codes": [],
+              "comparable": false,
+              "reason": "QUERY_SCOPE_DIFFERS"
+            },
+            {
+              "path_indices": [
+                5,
+                6
+              ],
+              "evidence_ids": [
+                "E6",
+                "E7"
+              ],
+              "codes": [],
+              "comparable": false,
+              "reason": "QUERY_SCOPE_DIFFERS"
+            },
+            {
+              "path_indices": [
+                5,
+                7
+              ],
+              "evidence_ids": [
+                "E6",
+                "E8"
+              ],
+              "codes": [],
+              "comparable": false,
+              "reason": "QUERY_SCOPE_DIFFERS"
+            },
+            {
+              "path_indices": [
+                5,
+                8
+              ],
+              "evidence_ids": [
+                "E6",
+                "E9"
+              ],
+              "codes": [],
+              "comparable": false,
+              "reason": "QUERY_SCOPE_DIFFERS"
+            },
+            {
+              "path_indices": [
+                5,
+                9
+              ],
+              "evidence_ids": [
+                "E6",
+                "E10"
+              ],
+              "codes": [],
+              "comparable": false,
+              "reason": "QUERY_SCOPE_DIFFERS"
+            },
+            {
+              "path_indices": [
+                5,
+                10
+              ],
+              "evidence_ids": [
+                "E6",
+                "E11"
+              ],
+              "codes": [],
+              "comparable": false,
+              "reason": "QUERY_SCOPE_DIFFERS"
+            },
+            {
+              "path_indices": [
+                6,
+                7
+              ],
+              "evidence_ids": [
+                "E7",
+                "E8"
+              ],
+              "codes": [],
+              "comparable": false,
+              "reason": "QUERY_SCOPE_DIFFERS"
+            },
+            {
+              "path_indices": [
+                6,
+                8
+              ],
+              "evidence_ids": [
+                "E7",
+                "E9"
+              ],
+              "codes": [],
+              "comparable": false,
+              "reason": "QUERY_SCOPE_DIFFERS"
+            },
+            {
+              "path_indices": [
+                6,
+                9
+              ],
+              "evidence_ids": [
+                "E7",
+                "E10"
+              ],
+              "codes": [],
+              "comparable": true,
+              "reason": null
+            },
+            {
+              "path_indices": [
+                6,
+                10
+              ],
+              "evidence_ids": [
+                "E7",
+                "E11"
+              ],
+              "codes": [],
+              "comparable": false,
+              "reason": "QUERY_SCOPE_DIFFERS"
+            },
+            {
+              "path_indices": [
+                7,
+                8
+              ],
+              "evidence_ids": [
+                "E8",
+                "E9"
+              ],
+              "codes": [],
+              "comparable": false,
+              "reason": "QUERY_SCOPE_DIFFERS"
+            },
+            {
+              "path_indices": [
+                7,
+                9
+              ],
+              "evidence_ids": [
+                "E8",
+                "E10"
+              ],
+              "codes": [],
+              "comparable": false,
+              "reason": "QUERY_SCOPE_DIFFERS"
+            },
+            {
+              "path_indices": [
+                7,
+                10
+              ],
+              "evidence_ids": [
+                "E8",
+                "E11"
+              ],
+              "codes": [],
+              "comparable": true,
+              "reason": null
+            },
+            {
+              "path_indices": [
+                8,
+                9
+              ],
+              "evidence_ids": [
+                "E9",
+                "E10"
+              ],
+              "codes": [],
+              "comparable": false,
+              "reason": "QUERY_SCOPE_DIFFERS"
+            },
+            {
+              "path_indices": [
+                8,
+                10
+              ],
+              "evidence_ids": [
+                "E9",
+                "E11"
+              ],
+              "codes": [],
+              "comparable": false,
+              "reason": "QUERY_SCOPE_DIFFERS"
+            },
+            {
+              "path_indices": [
+                9,
+                10
+              ],
+              "evidence_ids": [
+                "E10",
+                "E11"
+              ],
+              "codes": [],
+              "comparable": false,
+              "reason": "QUERY_SCOPE_DIFFERS"
+            }
+          ],
+          "differences": [
+            "RCODE_DISAGREEMENT",
+            "RECORD_PRESENCE_DISAGREEMENT",
+            "ADDRESS_SET_DIFFERENCE"
+          ],
+          "observations": [
+            {
+              "path_indices": [
+                0,
+                7
+              ],
+              "evidence_ids": [
+                "E1",
+                "E8"
+              ],
+              "ttl_values": [
+                [
+                  60
+                ],
+                [
+                  60
+                ]
+              ],
+              "duration_ms": [
+                0.0,
+                0.0
+              ],
+              "interpretation": "TTL 与耗时为单次观测，不证明缓存、配置或性能异常。"
+            },
+            {
+              "path_indices": [
+                0,
+                10
+              ],
+              "evidence_ids": [
+                "E1",
+                "E11"
+              ],
+              "ttl_values": [
+                [
+                  60
+                ],
+                [
+                  60
+                ]
+              ],
+              "duration_ms": [
+                0.0,
+                0.0
+              ],
+              "interpretation": "TTL 与耗时为单次观测，不证明缓存、配置或性能异常。"
+            },
+            {
+              "path_indices": [
+                1,
+                2
+              ],
+              "evidence_ids": [
+                "E2",
+                "E3"
+              ],
+              "ttl_values": [
+                [],
+                []
+              ],
+              "duration_ms": [
+                0.0,
+                0.0
+              ],
+              "interpretation": "TTL 与耗时为单次观测，不证明缓存、配置或性能异常。"
+            },
+            {
+              "path_indices": [
+                1,
+                3
+              ],
+              "evidence_ids": [
+                "E2",
+                "E4"
+              ],
+              "ttl_values": [
+                [],
+                []
+              ],
+              "duration_ms": [
+                0.0,
+                0.0
+              ],
+              "interpretation": "TTL 与耗时为单次观测，不证明缓存、配置或性能异常。"
+            },
+            {
+              "path_indices": [
+                1,
+                6
+              ],
+              "evidence_ids": [
+                "E2",
+                "E7"
+              ],
+              "ttl_values": [
+                [],
+                [
+                  60
+                ]
+              ],
+              "duration_ms": [
+                0.0,
+                0.0
+              ],
+              "interpretation": "TTL 与耗时为单次观测，不证明缓存、配置或性能异常。"
+            },
+            {
+              "path_indices": [
+                1,
+                9
+              ],
+              "evidence_ids": [
+                "E2",
+                "E10"
+              ],
+              "ttl_values": [
+                [],
+                [
+                  60
+                ]
+              ],
+              "duration_ms": [
+                0.0,
+                0.0
+              ],
+              "interpretation": "TTL 与耗时为单次观测，不证明缓存、配置或性能异常。"
+            },
+            {
+              "path_indices": [
+                2,
+                3
+              ],
+              "evidence_ids": [
+                "E3",
+                "E4"
+              ],
+              "ttl_values": [
+                [],
+                []
+              ],
+              "duration_ms": [
+                0.0,
+                0.0
+              ],
+              "interpretation": "TTL 与耗时为单次观测，不证明缓存、配置或性能异常。"
+            },
+            {
+              "path_indices": [
+                2,
+                6
+              ],
+              "evidence_ids": [
+                "E3",
+                "E7"
+              ],
+              "ttl_values": [
+                [],
+                [
+                  60
+                ]
+              ],
+              "duration_ms": [
+                0.0,
+                0.0
+              ],
+              "interpretation": "TTL 与耗时为单次观测，不证明缓存、配置或性能异常。"
+            },
+            {
+              "path_indices": [
+                2,
+                9
+              ],
+              "evidence_ids": [
+                "E3",
+                "E10"
+              ],
+              "ttl_values": [
+                [],
+                [
+                  60
+                ]
+              ],
+              "duration_ms": [
+                0.0,
+                0.0
+              ],
+              "interpretation": "TTL 与耗时为单次观测，不证明缓存、配置或性能异常。"
+            },
+            {
+              "path_indices": [
+                3,
+                6
+              ],
+              "evidence_ids": [
+                "E4",
+                "E7"
+              ],
+              "ttl_values": [
+                [],
+                [
+                  60
+                ]
+              ],
+              "duration_ms": [
+                0.0,
+                0.0
+              ],
+              "interpretation": "TTL 与耗时为单次观测，不证明缓存、配置或性能异常。"
+            },
+            {
+              "path_indices": [
+                3,
+                9
+              ],
+              "evidence_ids": [
+                "E4",
+                "E10"
+              ],
+              "ttl_values": [
+                [],
+                [
+                  60
+                ]
+              ],
+              "duration_ms": [
+                0.0,
+                0.0
+              ],
+              "interpretation": "TTL 与耗时为单次观测，不证明缓存、配置或性能异常。"
+            },
+            {
+              "path_indices": [
+                6,
+                9
+              ],
+              "evidence_ids": [
+                "E7",
+                "E10"
+              ],
+              "ttl_values": [
+                [
+                  60
+                ],
+                [
+                  60
+                ]
+              ],
+              "duration_ms": [
+                0.0,
+                0.0
+              ],
+              "interpretation": "TTL 与耗时为单次观测，不证明缓存、配置或性能异常。"
+            },
+            {
+              "path_indices": [
+                7,
+                10
+              ],
+              "evidence_ids": [
+                "E8",
+                "E11"
+              ],
+              "ttl_values": [
+                [
+                  60
+                ],
+                [
+                  60
+                ]
+              ],
+              "duration_ms": [
+                0.0,
+                0.0
+              ],
+              "interpretation": "TTL 与耗时为单次观测，不证明缓存、配置或性能异常。"
+            }
+          ],
+          "limitations": [
+            "时间/来源缺失的旧记录不能证明同时或同源；响应差异不等于唯一根因。",
+            "记录差异可能来自 CDN、GeoDNS、负载均衡、缓存、策略和查询时间；超时没有提供记录或 TTL 事实。"
+          ]
+        },
+        "execution_issues": [],
+        "measured_facts": [
+          {
+            "evidence_id": "E1",
+            "target": "probe.example",
+            "resolver": "[local-resolver-1]",
+            "record_type": "SOA",
+            "measured_at": "2026-11-01T02:33:16.219509+00:00",
+            "source_mode": "live",
+            "tool": "query_dns",
+            "result": "NOERROR",
+            "records": [
+              {
+                "value": "ns1.test.example. host.test.example. 1 60 60 60 60",
+                "ttl": 60
+              }
+            ],
+            "error": null,
+            "error_detail": null,
+            "peer_ip": null,
+            "transport_status": "responded",
+            "dns_rcode": "NOERROR",
+            "result_kind": "NOERROR",
+            "resolver_role": "recursive",
+            "negative_name": null,
+            "cname_chain": [],
+            "canonical_name": "probe.example",
+            "query_attempt_id": "Q1",
+            "attempt_id": "A2",
+            "target_authorization": null
+          },
+          {
+            "evidence_id": "E2",
+            "target": "probe.example",
+            "resolver": "[local-resolver-1]",
+            "record_type": "A",
+            "measured_at": "2026-11-01T02:33:16.222020+00:00",
+            "source_mode": "live",
+            "tool": "query_dns",
+            "result": "NXDOMAIN",
+            "records": [],
+            "error": null,
+            "error_detail": null,
+            "peer_ip": null,
+            "transport_status": "responded",
+            "dns_rcode": "NXDOMAIN",
+            "result_kind": "NXDOMAIN",
+            "resolver_role": "recursive",
+            "negative_name": "probe.example",
+            "cname_chain": [],
+            "canonical_name": "probe.example",
+            "query_attempt_id": "Q2",
+            "attempt_id": "A1",
+            "target_authorization": null
+          },
+          {
+            "evidence_id": "E3",
+            "target": "probe.example",
+            "resolver": "[local-resolver-2]",
+            "record_type": "A",
+            "measured_at": "2026-11-01T02:33:16.222020+00:00",
+            "source_mode": "live",
+            "tool": "query_dns",
+            "result": "NXDOMAIN",
+            "records": [],
+            "error": null,
+            "error_detail": null,
+            "peer_ip": null,
+            "transport_status": "responded",
+            "dns_rcode": "NXDOMAIN",
+            "result_kind": "NXDOMAIN",
+            "resolver_role": "recursive",
+            "negative_name": "probe.example",
+            "cname_chain": [],
+            "canonical_name": "probe.example",
+            "query_attempt_id": "Q3",
+            "attempt_id": "A1",
+            "target_authorization": null
+          },
+          {
+            "evidence_id": "E4",
+            "target": "probe.example",
+            "resolver": "[local-resolver-3]",
+            "record_type": "A",
+            "measured_at": "2026-11-01T02:33:16.223020+00:00",
+            "source_mode": "live",
+            "tool": "query_dns",
+            "result": "NXDOMAIN",
+            "records": [],
+            "error": null,
+            "error_detail": null,
+            "peer_ip": null,
+            "transport_status": "responded",
+            "dns_rcode": "NXDOMAIN",
+            "result_kind": "NXDOMAIN",
+            "resolver_role": "recursive",
+            "negative_name": "probe.example",
+            "cname_chain": [],
+            "canonical_name": "probe.example",
+            "query_attempt_id": "Q4",
+            "attempt_id": "A1",
+            "target_authorization": null
+          },
+          {
+            "evidence_id": "E5",
+            "target": "probe.example",
+            "resolver": "[local-resolver-1]",
+            "record_type": "NS",
+            "measured_at": "2026-11-01T02:33:16.225970+00:00",
+            "source_mode": "live",
+            "tool": "query_dns",
+            "result": "NOERROR",
+            "records": [
+              {
+                "value": "ns2.test.example.",
+                "ttl": 60
+              },
+              {
+                "value": "ns1.test.example.",
+                "ttl": 60
+              }
+            ],
+            "error": null,
+            "error_detail": null,
+            "peer_ip": null,
+            "transport_status": "responded",
+            "dns_rcode": "NOERROR",
+            "result_kind": "NOERROR",
+            "resolver_role": "recursive",
+            "negative_name": null,
+            "cname_chain": [],
+            "canonical_name": "probe.example",
+            "query_attempt_id": "Q5",
+            "attempt_id": "A2",
+            "target_authorization": null
+          },
+          {
+            "evidence_id": "E6",
+            "target": "ns2.test.example",
+            "resolver": "[local-resolver-1]",
+            "record_type": "A",
+            "measured_at": "2026-11-01T02:33:16.228133+00:00",
+            "source_mode": "live",
+            "tool": "query_dns",
+            "result": "NOERROR",
+            "records": [
+              {
+                "value": "8.8.4.4",
+                "ttl": 60
+              }
+            ],
+            "error": null,
+            "error_detail": null,
+            "peer_ip": null,
+            "transport_status": "responded",
+            "dns_rcode": "NOERROR",
+            "result_kind": "NOERROR",
+            "resolver_role": "recursive",
+            "negative_name": null,
+            "cname_chain": [],
+            "canonical_name": "ns2.test.example",
+            "query_attempt_id": "Q6",
+            "attempt_id": "A2",
+            "target_authorization": null
+          },
+          {
+            "evidence_id": "E7",
+            "target": "probe.example",
+            "resolver": "[local-resolver-5]",
+            "record_type": "A",
+            "measured_at": "2026-11-01T02:33:16.229137+00:00",
+            "source_mode": "live",
+            "tool": "query_dns",
+            "result": "NOERROR",
+            "records": [
+              {
+                "value": "192.0.2.10",
+                "ttl": 60
+              }
+            ],
+            "error": null,
+            "error_detail": null,
+            "peer_ip": null,
+            "transport_status": "responded",
+            "dns_rcode": "NOERROR",
+            "result_kind": "NOERROR",
+            "resolver_role": "authoritative",
+            "negative_name": null,
+            "cname_chain": [],
+            "canonical_name": "probe.example",
+            "query_attempt_id": "Q7",
+            "attempt_id": "A2",
+            "target_authorization": null
+          },
+          {
+            "evidence_id": "E8",
+            "target": "probe.example",
+            "resolver": "[local-resolver-5]",
+            "record_type": "SOA",
+            "measured_at": "2026-11-01T02:33:16.230141+00:00",
+            "source_mode": "live",
+            "tool": "query_dns",
+            "result": "NOERROR",
+            "records": [
+              {
+                "value": "ns1.test.example. host.test.example. 1 60 60 60 60",
+                "ttl": 60
+              }
+            ],
+            "error": null,
+            "error_detail": null,
+            "peer_ip": null,
+            "transport_status": "responded",
+            "dns_rcode": "NOERROR",
+            "result_kind": "NOERROR",
+            "resolver_role": "authoritative",
+            "negative_name": null,
+            "cname_chain": [],
+            "canonical_name": "probe.example",
+            "query_attempt_id": "Q8",
+            "attempt_id": "A2",
+            "target_authorization": null
+          },
+          {
+            "evidence_id": "E9",
+            "target": "ns1.test.example",
+            "resolver": "[local-resolver-1]",
+            "record_type": "A",
+            "measured_at": "2026-11-01T02:33:16.231480+00:00",
+            "source_mode": "live",
+            "tool": "query_dns",
+            "result": "NOERROR",
+            "records": [
+              {
+                "value": "9.9.9.9",
+                "ttl": 60
+              }
+            ],
+            "error": null,
+            "error_detail": null,
+            "peer_ip": null,
+            "transport_status": "responded",
+            "dns_rcode": "NOERROR",
+            "result_kind": "NOERROR",
+            "resolver_role": "recursive",
+            "negative_name": null,
+            "cname_chain": [],
+            "canonical_name": "ns1.test.example",
+            "query_attempt_id": "Q9",
+            "attempt_id": "A2",
+            "target_authorization": null
+          },
+          {
+            "evidence_id": "E10",
+            "target": "probe.example",
+            "resolver": "[local-resolver-4]",
+            "record_type": "A",
+            "measured_at": "2026-11-01T02:33:16.233740+00:00",
+            "source_mode": "live",
+            "tool": "query_dns",
+            "result": "NOERROR",
+            "records": [
+              {
+                "value": "192.0.2.10",
+                "ttl": 60
+              }
+            ],
+            "error": null,
+            "error_detail": null,
+            "peer_ip": null,
+            "transport_status": "responded",
+            "dns_rcode": "NOERROR",
+            "result_kind": "NOERROR",
+            "resolver_role": "authoritative",
+            "negative_name": null,
+            "cname_chain": [],
+            "canonical_name": "probe.example",
+            "query_attempt_id": "Q10",
+            "attempt_id": "A2",
+            "target_authorization": null
+          },
+          {
+            "evidence_id": "E11",
+            "target": "probe.example",
+            "resolver": "[local-resolver-4]",
+            "record_type": "SOA",
+            "measured_at": "2026-11-01T02:33:16.235319+00:00",
+            "source_mode": "live",
+            "tool": "query_dns",
+            "result": "NOERROR",
+            "records": [
+              {
+                "value": "ns1.test.example. host.test.example. 1 60 60 60 60",
+                "ttl": 60
+              }
+            ],
+            "error": null,
+            "error_detail": null,
+            "peer_ip": null,
+            "transport_status": "responded",
+            "dns_rcode": "NOERROR",
+            "result_kind": "NOERROR",
+            "resolver_role": "authoritative",
+            "negative_name": null,
+            "cname_chain": [],
+            "canonical_name": "probe.example",
+            "query_attempt_id": "Q11",
+            "attempt_id": "A2",
+            "target_authorization": null
+          }
+        ],
+        "findings": [
+          {
+            "scope": {
+              "target": "probe.example",
+              "record_type": "A",
+              "source_mode": "live",
+              "dns_followup_only": false,
+              "paths": [
+                {
+                  "resolver": "[local-resolver-1]",
+                  "role": "recursive",
+                  "evidence_id": "E2"
+                },
+                {
+                  "resolver": "[local-resolver-2]",
+                  "role": "recursive",
+                  "evidence_id": "E3"
+                },
+                {
+                  "resolver": "[local-resolver-3]",
+                  "role": "recursive",
+                  "evidence_id": "E4"
+                }
+              ],
+              "time_start": "2026-11-01T02:33:16.222020+00:00",
+              "time_end": "2026-11-01T02:33:16.223020+00:00"
+            },
+            "observed_facts": [
+              {
+                "evidence_id": "E2",
+                "resolver": "[local-resolver-1]",
+                "role": "recursive",
+                "authoritative_answer": false,
+                "negative_name": "probe.example",
+                "records": [],
+                "soa_serials": [
+                  1
+                ],
+                "transport_status": "responded",
+                "dns_rcode": "NXDOMAIN",
+                "result_kind": "NXDOMAIN"
+              },
+              {
+                "evidence_id": "E3",
+                "resolver": "[local-resolver-2]",
+                "role": "recursive",
+                "authoritative_answer": false,
+                "negative_name": "probe.example",
+                "records": [],
+                "soa_serials": [
+                  1
+                ],
+                "transport_status": "responded",
+                "dns_rcode": "NXDOMAIN",
+                "result_kind": "NXDOMAIN"
+              },
+              {
+                "evidence_id": "E4",
+                "resolver": "[local-resolver-3]",
+                "role": "recursive",
+                "authoritative_answer": false,
+                "negative_name": "probe.example",
+                "records": [],
+                "soa_serials": [
+                  1
+                ],
+                "transport_status": "responded",
+                "dns_rcode": "NXDOMAIN",
+                "result_kind": "NXDOMAIN"
+              }
+            ],
+            "localization": {
+              "affected_evidence_ids": [
+                "E2",
+                "E3",
+                "E4"
+              ],
+              "other_paths": [
+                {
+                  "evidence_id": "E7",
+                  "resolver": "[local-resolver-5]",
+                  "transport_status": "responded",
+                  "dns_rcode": "NOERROR",
+                  "result_kind": "NOERROR"
+                },
+                {
+                  "evidence_id": "E10",
+                  "resolver": "[local-resolver-4]",
+                  "transport_status": "responded",
+                  "dns_rcode": "NOERROR",
+                  "result_kind": "NOERROR"
+                }
+              ],
+              "interpretation": "只定位列出的查询与路径；异常不自动归因于整台解析器或整个域名。"
+            },
+            "root_cause_confirmed": false,
+            "code": "NXDOMAIN_OBSERVED",
+            "stage": "recursive",
+            "status": "observed",
+            "evidence_ids": [
+              "E2",
+              "E3",
+              "E4"
+            ],
+            "explanation": "查询 probe.example A：[local-resolver-1] 对 probe.example 返回 NXDOMAIN（E2）；[local-resolver-2] 对 probe.example 返回 NXDOMAIN（E3）；[local-resolver-3] 对 probe.example 返回 NXDOMAIN（E4）。不推断注册状态或服务器宕机。",
+            "limitations": [
+              "单次观测不能区分缓存、策略、调度、网络路径或服务因素；未确认唯一根因。",
+              "缺失时间/来源的旧日志保留未知；未执行 DNSSEC 验证或完整迭代解析。"
+            ],
+            "next_checks": [
+              "query_authoritative：按需检查 probe.example A，仅使用 AA 回答；一致时削弱递归独有差异解释，不一致时仍需区分缓存、策略和时间。"
+            ]
+          },
+          {
+            "scope": {
+              "target": "probe.example",
+              "record_type": "A",
+              "source_mode": "live",
+              "dns_followup_only": false,
+              "paths": [
+                {
+                  "resolver": "[local-resolver-1]",
+                  "role": "recursive",
+                  "evidence_id": "E2"
+                },
+                {
+                  "resolver": "[local-resolver-2]",
+                  "role": "recursive",
+                  "evidence_id": "E3"
+                },
+                {
+                  "resolver": "[local-resolver-3]",
+                  "role": "recursive",
+                  "evidence_id": "E4"
+                },
+                {
+                  "resolver": "[local-resolver-5]",
+                  "role": "authoritative",
+                  "evidence_id": "E7"
+                },
+                {
+                  "resolver": "[local-resolver-4]",
+                  "role": "authoritative",
+                  "evidence_id": "E10"
+                }
+              ],
+              "time_start": "2026-11-01T02:33:16.222020+00:00",
+              "time_end": "2026-11-01T02:33:16.233740+00:00"
+            },
+            "observed_facts": [
+              {
+                "evidence_id": "E2",
+                "resolver": "[local-resolver-1]",
+                "role": "recursive",
+                "authoritative_answer": false,
+                "negative_name": "probe.example",
+                "records": [],
+                "soa_serials": [
+                  1
+                ],
+                "transport_status": "responded",
+                "dns_rcode": "NXDOMAIN",
+                "result_kind": "NXDOMAIN"
+              },
+              {
+                "evidence_id": "E3",
+                "resolver": "[local-resolver-2]",
+                "role": "recursive",
+                "authoritative_answer": false,
+                "negative_name": "probe.example",
+                "records": [],
+                "soa_serials": [
+                  1
+                ],
+                "transport_status": "responded",
+                "dns_rcode": "NXDOMAIN",
+                "result_kind": "NXDOMAIN"
+              },
+              {
+                "evidence_id": "E4",
+                "resolver": "[local-resolver-3]",
+                "role": "recursive",
+                "authoritative_answer": false,
+                "negative_name": "probe.example",
+                "records": [],
+                "soa_serials": [
+                  1
+                ],
+                "transport_status": "responded",
+                "dns_rcode": "NXDOMAIN",
+                "result_kind": "NXDOMAIN"
+              },
+              {
+                "evidence_id": "E7",
+                "resolver": "[local-resolver-5]",
+                "role": "authoritative",
+                "authoritative_answer": true,
+                "negative_name": null,
+                "records": [
+                  {
+                    "value": "192.0.2.10",
+                    "ttl": 60
+                  }
+                ],
+                "soa_serials": [],
+                "transport_status": "responded",
+                "dns_rcode": "NOERROR",
+                "result_kind": "NOERROR"
+              },
+              {
+                "evidence_id": "E10",
+                "resolver": "[local-resolver-4]",
+                "role": "authoritative",
+                "authoritative_answer": true,
+                "negative_name": null,
+                "records": [
+                  {
+                    "value": "192.0.2.10",
+                    "ttl": 60
+                  }
+                ],
+                "soa_serials": [],
+                "transport_status": "responded",
+                "dns_rcode": "NOERROR",
+                "result_kind": "NOERROR"
+              }
+            ],
+            "localization": {
+              "affected_evidence_ids": [
+                "E2",
+                "E3",
+                "E4",
+                "E7",
+                "E10"
+              ],
+              "other_paths": [],
+              "interpretation": "只定位列出的查询与路径；异常不自动归因于整台解析器或整个域名。"
+            },
+            "root_cause_confirmed": false,
+            "code": "RECURSIVE_AUTH_RESPONSE_MISMATCH",
+            "stage": "dns-comparison",
+            "status": "observed",
+            "evidence_ids": [
+              "E2",
+              "E3",
+              "E4",
+              "E7",
+              "E10"
+            ],
+            "explanation": "probe.example A 的完整可比较响应存在状态或记录集合差异；详见各路径结果。地址及 SOA Serial 差异只是观察，正常调度和时间变化仍可能解释。",
+            "limitations": [
+              "单次观测不能区分缓存、策略、调度、网络路径或服务因素；未确认唯一根因。",
+              "缺失时间/来源的旧日志保留未知；未执行 DNSSEC 验证或完整迭代解析。"
+            ],
+            "next_checks": [
+              "query_authoritative / query_dns：预算允许时复测 probe.example A 的已列路径（[local-resolver-1], [local-resolver-2], [local-resolver-3], [local-resolver-5], [local-resolver-4]），比较记录和 SOA；持续差异缩小到这些查询路径，不能单凭 Serial 确认同步故障。"
+            ]
+          }
+        ],
+        "request_kind": "investigation",
+        "outcome": "answered",
+        "observations": [
+          {
+            "evidence_id": "E1",
+            "observation": "probe.example SOA / 解析器 [local-resolver-1]：NOERROR [{\"value\": \"ns1.test.example. host.test.example. 1 60 60 60 60\", \"ttl\": 60}]；来源 live；时间 2026-11-01T02:33:16.219509+00:00（E1）"
+          },
+          {
+            "evidence_id": "E2",
+            "observation": "probe.example A / 解析器 [local-resolver-1]：NXDOMAIN ；来源 live；时间 2026-11-01T02:33:16.222020+00:00（E2）"
+          },
+          {
+            "evidence_id": "E3",
+            "observation": "probe.example A / 解析器 [local-resolver-2]：NXDOMAIN ；来源 live；时间 2026-11-01T02:33:16.222020+00:00（E3）"
+          },
+          {
+            "evidence_id": "E4",
+            "observation": "probe.example A / 解析器 [local-resolver-3]：NXDOMAIN ；来源 live；时间 2026-11-01T02:33:16.223020+00:00（E4）"
+          },
+          {
+            "evidence_id": "E5",
+            "observation": "probe.example NS / 解析器 [local-resolver-1]：NOERROR [{\"value\": \"ns2.test.example.\", \"ttl\": 60}, {\"value\": \"ns1.test.example.\", \"ttl\": 60}]；来源 live；时间 2026-11-01T02:33:16.225970+00:00（E5）"
+          },
+          {
+            "evidence_id": "E6",
+            "observation": "ns2.test.example A / 解析器 [local-resolver-1]：NOERROR [{\"value\": \"8.8.4.4\", \"ttl\": 60}]；来源 live；时间 2026-11-01T02:33:16.228133+00:00（E6）"
+          },
+          {
+            "evidence_id": "E7",
+            "observation": "probe.example A / 解析器 [local-resolver-5]：NOERROR [{\"value\": \"192.0.2.10\", \"ttl\": 60}]；来源 live；时间 2026-11-01T02:33:16.229137+00:00（E7）"
+          },
+          {
+            "evidence_id": "E8",
+            "observation": "probe.example SOA / 解析器 [local-resolver-5]：NOERROR [{\"value\": \"ns1.test.example. host.test.example. 1 60 60 60 60\", \"ttl\": 60}]；来源 live；时间 2026-11-01T02:33:16.230141+00:00（E8）"
+          },
+          {
+            "evidence_id": "E9",
+            "observation": "ns1.test.example A / 解析器 [local-resolver-1]：NOERROR [{\"value\": \"9.9.9.9\", \"ttl\": 60}]；来源 live；时间 2026-11-01T02:33:16.231480+00:00（E9）"
+          },
+          {
+            "evidence_id": "E10",
+            "observation": "probe.example A / 解析器 [local-resolver-4]：NOERROR [{\"value\": \"192.0.2.10\", \"ttl\": 60}]；来源 live；时间 2026-11-01T02:33:16.233740+00:00（E10）"
+          },
+          {
+            "evidence_id": "E11",
+            "observation": "probe.example SOA / 解析器 [local-resolver-4]：NOERROR [{\"value\": \"ns1.test.example. host.test.example. 1 60 60 60 60\", \"ttl\": 60}]；来源 live；时间 2026-11-01T02:33:16.235319+00:00（E11）"
+          }
+        ],
+        "hypotheses": [
+          {
+            "testable_claim": "dns_query_failure",
+            "measurement_scope": {
+              "target": "probe.example",
+              "record_type": "A",
+              "source_mode": "live",
+              "resolvers": [
+                "[local-resolver-1]",
+                "[local-resolver-2]",
+                "[local-resolver-3]",
+                "[local-resolver-4]",
+                "[local-resolver-5]"
+              ]
+            },
+            "evidence_review_notes": [
+              "三个递归路径一致 NXDOMAIN（E2/E3/E4），两台权威一致 NOERROR+AA（E7/E10），差异方向明确。",
+              "E2 的支持关系缺少匹配的具体观测命题/范围或结果类型；未据此确认或否定该原因。",
+              "E3 的支持关系缺少匹配的具体观测命题/范围或结果类型；未据此确认或否定该原因。",
+              "E4 的支持关系缺少匹配的具体观测命题/范围或结果类型；未据此确认或否定该原因。",
+              "E7 的支持关系缺少匹配的具体观测命题/范围或结果类型；未据此确认或否定该原因。",
+              "E10 的支持关系缺少匹配的具体观测命题/范围或结果类型；未据此确认或否定该原因。"
+            ],
+            "category": "dns_resolution",
+            "id": "H1",
+            "statement": "递归解析器对 probe.example A 返回 NXDOMAIN，而权威服务器存在 A 记录 192.0.2.10，二者不一致。",
+            "status": "无法确定",
+            "supporting_evidence_ids": [],
+            "contradicting_evidence_ids": [],
+            "missing_information": [
+              "递归侧是否处于负缓存状态及其起始时间",
+              "递归与权威之间是否存在策略过滤或路径差异"
+            ]
+          },
+          {
+            "testable_claim": "dns_query_failure",
+            "measurement_scope": {
+              "target": "probe.example",
+              "record_type": "A",
+              "source_mode": "live"
+            },
+            "evidence_review_notes": [
+              "NXDOMAIN 携带 SOA 且 TTL 60，符合负应答形态，但未观测 TTL 递减；权威当前为 NOERROR，削弱“权威当前无记录”的解释，但不能证明缓存来源。",
+              "E2 的支持关系缺少匹配的具体观测命题/范围或结果类型；未据此确认或否定该原因。",
+              "E3 的支持关系缺少匹配的具体观测命题/范围或结果类型；未据此确认或否定该原因。",
+              "E4 的支持关系缺少匹配的具体观测命题/范围或结果类型；未据此确认或否定该原因。",
+              "E7 的反面关系缺少匹配的具体观测命题/范围或结果类型；未据此确认或否定该原因。",
+              "E10 的反面关系缺少匹配的具体观测命题/范围或结果类型；未据此确认或否定该原因。"
+            ],
+            "category": "dns_resolution",
+            "id": "H2",
+            "statement": "递归侧 NXDOMAIN 由负缓存（此前权威返回过否定应答）导致，而非当前权威状态。",
+            "status": "无法确定",
+            "supporting_evidence_ids": [],
+            "contradicting_evidence_ids": [],
+            "missing_information": [
+              "负缓存 TTL 递减观测",
+              "递归解析器缓存状态与日志",
+              "历史权威应答记录"
+            ]
+          },
+          {
+            "testable_claim": null,
+            "measurement_scope": {
+              "target": "probe.example",
+              "record_type": "A",
+              "source_mode": "live"
+            },
+            "evidence_review_notes": [
+              "三个递归解析器行为一致，可能指向共享策略，但也可能只是共享上游或缓存；无解析器配置证据。",
+              "E2 的支持关系缺少匹配的具体观测命题/范围或结果类型；未据此确认或否定该原因。",
+              "E3 的支持关系缺少匹配的具体观测命题/范围或结果类型；未据此确认或否定该原因。",
+              "E4 的支持关系缺少匹配的具体观测命题/范围或结果类型；未据此确认或否定该原因。"
+            ],
+            "category": "client_environment",
+            "id": "H3",
+            "statement": "递归侧存在策略/过滤（如 RPZ、拦截或本地覆盖）导致对 probe.example 返回 NXDOMAIN。",
+            "status": "无法确定",
+            "supporting_evidence_ids": [],
+            "contradicting_evidence_ids": [],
+            "missing_information": [
+              "递归解析器配置（RPZ/过滤策略）",
+              "递归解析器上游转发关系",
+              "非本机公共递归的对照结果"
+            ]
+          },
+          {
+            "testable_claim": null,
+            "measurement_scope": {
+              "target": "probe.example",
+              "record_type": "A",
+              "source_mode": "live"
+            },
+            "evidence_review_notes": [
+              "两台权威均以 AA=true 返回 A=192.0.2.10 与一致的 SOA，未见权威侧缺失。",
+              "E7 的反面关系缺少匹配的具体观测命题/范围或结果类型；未据此确认或否定该原因。",
+              "E10 的反面关系缺少匹配的具体观测命题/范围或结果类型；未据此确认或否定该原因。",
+              "E8 的反面关系缺少匹配的具体观测命题/范围或结果类型；未据此确认或否定该原因。",
+              "E11 的反面关系缺少匹配的具体观测命题/范围或结果类型；未据此确认或否定该原因。"
+            ],
+            "category": "dns_resolution",
+            "id": "H4",
+            "statement": "权威侧记录本身缺失或配置错误。",
+            "status": "无法确定",
+            "supporting_evidence_ids": [],
+            "contradicting_evidence_ids": [],
+            "missing_information": [
+              "其他权威节点或网络位置的应答"
+            ]
+          },
+          {
+            "testable_claim": null,
+            "measurement_scope": {
+              "target": "probe.example",
+              "source_mode": "live"
+            },
+            "evidence_review_notes": [
+              "递归可返回 NS（E5）与 SOA（E1），权威以 AA=true 返回 A 与 SOA（E7/E8/E10/E11），说明区域存在且可服务；未做 WHOIS 查询，注册状态本身未直接测量。",
+              "E5 的反面关系缺少匹配的具体观测命题/范围或结果类型；未据此确认或否定该原因。",
+              "E7 的反面关系缺少匹配的具体观测命题/范围或结果类型；未据此确认或否定该原因。",
+              "E10 的反面关系缺少匹配的具体观测命题/范围或结果类型；未据此确认或否定该原因。",
+              "E8 的反面关系缺少匹配的具体观测命题/范围或结果类型；未据此确认或否定该原因。"
+            ],
+            "category": "registration",
+            "id": "H5",
+            "statement": "域名注册状态异常（如未注册/过期）导致解析失败。",
+            "status": "无法确定",
+            "supporting_evidence_ids": [],
+            "contradicting_evidence_ids": [],
+            "missing_information": [
+              "WHOIS/RDAP 注册数据"
+            ]
+          }
+        ],
+        "conclusion": "查询 probe.example A：[local-resolver-1] 对 probe.example 返回 NXDOMAIN（E2）；[local-resolver-2] 对 probe.example 返回 NXDOMAIN（E3）；[local-resolver-3] 对 probe.example 返回 NXDOMAIN（E4）。不推断注册状态或服务器宕机。（E2、E3、E4） probe.example A [来源 live]：recursive [local-resolver-1]=NXDOMAIN、recursive [local-resolver-2]=NXDOMAIN、recursive [local-resolver-3]=NXDOMAIN、authoritative [local-resolver-5]=NOERROR、authoritative [local-resolver-4]=NOERROR 存在完整响应状态或记录差异；范围限于已列路径，缓存、策略、调度与时间原因尚未区分（E2、E3、E4、E7、E10）。 已验证事实：probe.example SOA / 解析器 [local-resolver-1]：NOERROR [{\"value\": \"ns1.test.example. host.test.example. 1 60 60 60 60\", \"ttl\": 60}]；来源 live；时间 2026-11-01T02:33:16.219509+00:00（E1）；probe.example A / 解析器 [local-resolver-1]：NXDOMAIN ；来源 live；时间 2026-11-01T02:33:16.222020+00:00（E2）；probe.example A / 解析器 [local-resolver-2]：NXDOMAIN ；来源 live；时间 2026-11-01T02:33:16.222020+00:00（E3）；probe.example A / 解析器 [local-resolver-3]：NXDOMAIN ；来源 live；时间 2026-11-01T02:33:16.223020+00:00（E4）；probe.example NS / 解析器 [local-resolver-1]：NOERROR [{\"value\": \"ns2.test.example.\", \"ttl\": 60}, {\"value\": \"ns1.test.example.\", \"ttl\": 60}]；来源 live；时间 2026-11-01T02:33:16.225970+00:00（E5）；ns2.test.example A / 解析器 [local-resolver-1]：NOERROR [{\"value\": \"8.8.4.4\", \"ttl\": 60}]；来源 live；时间 2026-11-01T02:33:16.228133+00:00（E6）；probe.example A / 解析器 [local-resolver-5]：NOERROR [{\"value\": \"192.0.2.10\", \"ttl\": 60}]；来源 live；时间 2026-11-01T02:33:16.229137+00:00（E7）；probe.example SOA / 解析器 [local-resolver-5]：NOERROR [{\"value\": \"ns1.test.example. host.test.example. 1 60 60 60 60\", \"ttl\": 60}]；来源 live；时间 2026-11-01T02:33:16.230141+00:00（E8）；ns1.test.example A / 解析器 [local-resolver-1]：NOERROR [{\"value\": \"9.9.9.9\", \"ttl\": 60}]；来源 live；时间 2026-11-01T02:33:16.231480+00:00（E9）；probe.example A / 解析器 [local-resolver-4]：NOERROR [{\"value\": \"192.0.2.10\", \"ttl\": 60}]；来源 live；时间 2026-11-01T02:33:16.233740+00:00（E10）；probe.example SOA / 解析器 [local-resolver-4]：NOERROR [{\"value\": \"ns1.test.example. host.test.example. 1 60 60 60 60\", \"ttl\": 60}]；来源 live；时间 2026-11-01T02:33:16.235319+00:00（E11）。以上仅为已测组合，未列出的解析器×类型组合未测；不据此确认唯一根因。",
+        "conclusion_evidence_ids": [
+          "E1",
+          "E2",
+          "E3",
+          "E4",
+          "E5",
+          "E6",
+          "E7",
+          "E8",
+          "E9",
+          "E10",
+          "E11"
+        ],
+        "limitations": [
+          "仅代表列出的测量位置、时刻、来源和组合；程序路径成功不证明用户客户端有问题。",
+          "独立 TCP 和 HTTP 是不同连接，可能使用不同后端；结果差异须先核查工具和现场。",
+          "候选解释与事实分开，结构和类型限制仍不能保证全部语义正确。"
+        ],
+        "recommendations": [
+          "query_authoritative / query_dns：预算允许时复测 probe.example A 的已列路径（[local-resolver-1], [local-resolver-2], [local-resolver-3], [local-resolver-5], [local-resolver-4]），比较记录和 SOA；持续差异缩小到这些查询路径，不能单凭 Serial 确认同步故障。",
+          "query_authoritative：按需检查 probe.example A，仅使用 AA 回答；一致时削弱递归独有差异解释，不一致时仍需区分缓存、策略和时间。"
+        ]
+      }
+    },
+    {
+      "original_path": "results/published/dns-accuracy-f0787c0/controlled-final/845b0b96cddb496fa246d986a7ebd686.json",
+      "source_sha256": "2f2c341ff446a2acda966e325ae84233ffe1d71b0f4e16d793c162aaf13895be",
+      "result": {
+        "diagnostic_assessment": "probe.example SOA [来源 live]：recursive [local-resolver-1]=NOERROR、recursive [local-resolver-1]=NOERROR、authoritative [local-resolver-3]=NOERROR、authoritative [local-resolver-3]=NOERROR 存在完整响应状态或记录差异；范围限于已列路径，缓存、策略、调度与时间原因尚未区分（E1、E2、E8、E9）。 probe.example SOA [来源 live]：authoritative [local-resolver-3]=NOERROR、authoritative [local-resolver-3]=NOERROR、authoritative [local-resolver-2]=NOERROR、authoritative [local-resolver-2]=NOERROR 存在完整响应状态或记录差异；范围限于已列路径，缓存、策略、调度与时间原因尚未区分（E8、E9、E12、E14）。 probe.example A [来源 live]：authoritative [local-resolver-3]=NOERROR、authoritative [local-resolver-2]=NOERROR 存在完整响应状态或记录差异；范围限于已列路径，缓存、策略、调度与时间原因尚未区分（E7、E13）。",
+        "assessment_level": "scope_localized",
+        "report_fallback_reason": "UnexpectedModelBehavior: 未取得通过校验的模型总结；使用确定性事实与范围摘要。",
+        "dns_comparison": {
+          "scope": {
+            "max_time_gap_seconds": 300
+          },
+          "paths": [
+            {
+              "evidence_id": "E1",
+              "attempt_id": "A1",
+              "query_attempt_id": "Q1",
+              "target": "probe.example",
+              "record_type": "SOA",
+              "resolver": "[local-resolver-1]",
+              "role": "recursive",
+              "source_mode": "live",
+              "measured_at": "2026-11-01T02:33:34.482245+00:00",
+              "execution_status": "ok",
+              "error": null,
+              "transport_status": "responded",
+              "dns_rcode": "NOERROR",
+              "result_kind": "NOERROR"
+            },
+            {
+              "evidence_id": "E2",
+              "attempt_id": "A2",
+              "query_attempt_id": "Q2",
+              "target": "probe.example",
+              "record_type": "SOA",
+              "resolver": "[local-resolver-1]",
+              "role": "recursive",
+              "source_mode": "live",
+              "measured_at": "2026-11-01T02:33:34.485380+00:00",
+              "execution_status": "ok",
+              "error": null,
+              "transport_status": "responded",
+              "dns_rcode": "NOERROR",
+              "result_kind": "NOERROR"
+            },
+            {
+              "evidence_id": "E3",
+              "attempt_id": "A1",
+              "query_attempt_id": "Q3",
+              "target": "probe.example",
+              "record_type": "NS",
+              "resolver": "[local-resolver-1]",
+              "role": "recursive",
+              "source_mode": "live",
+              "measured_at": "2026-11-01T02:33:34.488780+00:00",
+              "execution_status": "ok",
+              "error": null,
+              "transport_status": "responded",
+              "dns_rcode": "NOERROR",
+              "result_kind": "NOERROR"
+            },
+            {
+              "evidence_id": "E4",
+              "attempt_id": "A2",
+              "query_attempt_id": "Q4",
+              "target": "probe.example",
+              "record_type": "NS",
+              "resolver": "[local-resolver-1]",
+              "role": "recursive",
+              "source_mode": "live",
+              "measured_at": "2026-11-01T02:33:34.491279+00:00",
+              "execution_status": "ok",
+              "error": null,
+              "transport_status": "responded",
+              "dns_rcode": "NOERROR",
+              "result_kind": "NOERROR"
+            },
+            {
+              "evidence_id": "E5",
+              "attempt_id": "A1",
+              "query_attempt_id": "Q5",
+              "target": "ns2.test.example",
+              "record_type": "A",
+              "resolver": "[local-resolver-1]",
+              "role": "recursive",
+              "source_mode": "live",
+              "measured_at": "2026-11-01T02:33:34.494396+00:00",
+              "execution_status": "ok",
+              "error": null,
+              "transport_status": "responded",
+              "dns_rcode": "NOERROR",
+              "result_kind": "NOERROR"
+            },
+            {
+              "evidence_id": "E6",
+              "attempt_id": "A2",
+              "query_attempt_id": "Q6",
+              "target": "ns2.test.example",
+              "record_type": "A",
+              "resolver": "[local-resolver-1]",
+              "role": "recursive",
+              "source_mode": "live",
+              "measured_at": "2026-11-01T02:33:34.497417+00:00",
+              "execution_status": "ok",
+              "error": null,
+              "transport_status": "responded",
+              "dns_rcode": "NOERROR",
+              "result_kind": "NOERROR"
+            },
+            {
+              "evidence_id": "E7",
+              "attempt_id": "A1",
+              "query_attempt_id": "Q7",
+              "target": "probe.example",
+              "record_type": "A",
+              "resolver": "[local-resolver-3]",
+              "role": "authoritative",
+              "source_mode": "live",
+              "measured_at": "2026-11-01T02:33:34.500586+00:00",
+              "execution_status": "ok",
+              "error": null,
+              "transport_status": "responded",
+              "dns_rcode": "NOERROR",
+              "result_kind": "NOERROR"
+            },
+            {
+              "evidence_id": "E8",
+              "attempt_id": "A2",
+              "query_attempt_id": "Q8",
+              "target": "probe.example",
+              "record_type": "SOA",
+              "resolver": "[local-resolver-3]",
+              "role": "authoritative",
+              "source_mode": "live",
+              "measured_at": "2026-11-01T02:33:34.503157+00:00",
+              "execution_status": "ok",
+              "error": null,
+              "transport_status": "responded",
+              "dns_rcode": "NOERROR",
+              "result_kind": "NOERROR"
+            },
+            {
+              "evidence_id": "E9",
+              "attempt_id": "A1",
+              "query_attempt_id": "Q9",
+              "target": "probe.example",
+              "record_type": "SOA",
+              "resolver": "[local-resolver-3]",
+              "role": "authoritative",
+              "source_mode": "live",
+              "measured_at": "2026-11-01T02:33:34.506171+00:00",
+              "execution_status": "ok",
+              "error": null,
+              "transport_status": "responded",
+              "dns_rcode": "NOERROR",
+              "result_kind": "NOERROR"
+            },
+            {
+              "evidence_id": "E10",
+              "attempt_id": "A2",
+              "query_attempt_id": "Q10",
+              "target": "ns1.test.example",
+              "record_type": "A",
+              "resolver": "[local-resolver-1]",
+              "role": "recursive",
+              "source_mode": "live",
+              "measured_at": "2026-11-01T02:33:34.508214+00:00",
+              "execution_status": "ok",
+              "error": null,
+              "transport_status": "responded",
+              "dns_rcode": "NOERROR",
+              "result_kind": "NOERROR"
+            },
+            {
+              "evidence_id": "E11",
+              "attempt_id": "A1",
+              "query_attempt_id": "Q11",
+              "target": "ns1.test.example",
+              "record_type": "A",
+              "resolver": "[local-resolver-1]",
+              "role": "recursive",
+              "source_mode": "live",
+              "measured_at": "2026-11-01T02:33:34.511653+00:00",
+              "execution_status": "ok",
+              "error": null,
+              "transport_status": "responded",
+              "dns_rcode": "NOERROR",
+              "result_kind": "NOERROR"
+            },
+            {
+              "evidence_id": "E12",
+              "attempt_id": "A2",
+              "query_attempt_id": "Q12",
+              "target": "probe.example",
+              "record_type": "SOA",
+              "resolver": "[local-resolver-2]",
+              "role": "authoritative",
+              "source_mode": "live",
+              "measured_at": "2026-11-01T02:33:34.514789+00:00",
+              "execution_status": "ok",
+              "error": null,
+              "transport_status": "responded",
+              "dns_rcode": "NOERROR",
+              "result_kind": "NOERROR"
+            },
+            {
+              "evidence_id": "E13",
+              "attempt_id": "A1",
+              "query_attempt_id": "Q13",
+              "target": "probe.example",
+              "record_type": "A",
+              "resolver": "[local-resolver-2]",
+              "role": "authoritative",
+              "source_mode": "live",
+              "measured_at": "2026-11-01T02:33:34.518813+00:00",
+              "execution_status": "ok",
+              "error": null,
+              "transport_status": "responded",
+              "dns_rcode": "NOERROR",
+              "result_kind": "NOERROR"
+            },
+            {
+              "evidence_id": "E14",
+              "attempt_id": "A1",
+              "query_attempt_id": "Q14",
+              "target": "probe.example",
+              "record_type": "SOA",
+              "resolver": "[local-resolver-2]",
+              "role": "authoritative",
+              "source_mode": "live",
+              "measured_at": "2026-11-01T02:33:34.522101+00:00",
+              "execution_status": "ok",
+              "error": null,
+              "transport_status": "responded",
+              "dns_rcode": "NOERROR",
+              "result_kind": "NOERROR"
+            }
+          ],
+          "pairs": [
+            {
+              "path_indices": [
+                0,
+                1
+              ],
+              "evidence_ids": [
+                "E1",
+                "E2"
+              ],
+              "codes": [],
+              "comparable": true,
+              "reason": null
+            },
+            {
+              "path_indices": [
+                0,
+                2
+              ],
+              "evidence_ids": [
+                "E1",
+                "E3"
+              ],
+              "codes": [],
+              "comparable": false,
+              "reason": "QUERY_SCOPE_DIFFERS"
+            },
+            {
+              "path_indices": [
+                0,
+                3
+              ],
+              "evidence_ids": [
+                "E1",
+                "E4"
+              ],
+              "codes": [],
+              "comparable": false,
+              "reason": "QUERY_SCOPE_DIFFERS"
+            },
+            {
+              "path_indices": [
+                0,
+                4
+              ],
+              "evidence_ids": [
+                "E1",
+                "E5"
+              ],
+              "codes": [],
+              "comparable": false,
+              "reason": "QUERY_SCOPE_DIFFERS"
+            },
+            {
+              "path_indices": [
+                0,
+                5
+              ],
+              "evidence_ids": [
+                "E1",
+                "E6"
+              ],
+              "codes": [],
+              "comparable": false,
+              "reason": "QUERY_SCOPE_DIFFERS"
+            },
+            {
+              "path_indices": [
+                0,
+                6
+              ],
+              "evidence_ids": [
+                "E1",
+                "E7"
+              ],
+              "codes": [],
+              "comparable": false,
+              "reason": "QUERY_SCOPE_DIFFERS"
+            },
+            {
+              "path_indices": [
+                0,
+                7
+              ],
+              "evidence_ids": [
+                "E1",
+                "E8"
+              ],
+              "codes": [
+                "ADDRESS_SET_DIFFERENCE",
+                "SOA_SERIAL_DIFFERENCE"
+              ],
+              "comparable": true,
+              "reason": null
+            },
+            {
+              "path_indices": [
+                0,
+                8
+              ],
+              "evidence_ids": [
+                "E1",
+                "E9"
+              ],
+              "codes": [
+                "ADDRESS_SET_DIFFERENCE",
+                "SOA_SERIAL_DIFFERENCE"
+              ],
+              "comparable": true,
+              "reason": null
+            },
+            {
+              "path_indices": [
+                0,
+                9
+              ],
+              "evidence_ids": [
+                "E1",
+                "E10"
+              ],
+              "codes": [],
+              "comparable": false,
+              "reason": "QUERY_SCOPE_DIFFERS"
+            },
+            {
+              "path_indices": [
+                0,
+                10
+              ],
+              "evidence_ids": [
+                "E1",
+                "E11"
+              ],
+              "codes": [],
+              "comparable": false,
+              "reason": "QUERY_SCOPE_DIFFERS"
+            },
+            {
+              "path_indices": [
+                0,
+                11
+              ],
+              "evidence_ids": [
+                "E1",
+                "E12"
+              ],
+              "codes": [],
+              "comparable": true,
+              "reason": null
+            },
+            {
+              "path_indices": [
+                0,
+                12
+              ],
+              "evidence_ids": [
+                "E1",
+                "E13"
+              ],
+              "codes": [],
+              "comparable": false,
+              "reason": "QUERY_SCOPE_DIFFERS"
+            },
+            {
+              "path_indices": [
+                0,
+                13
+              ],
+              "evidence_ids": [
+                "E1",
+                "E14"
+              ],
+              "codes": [],
+              "comparable": true,
+              "reason": null
+            },
+            {
+              "path_indices": [
+                1,
+                2
+              ],
+              "evidence_ids": [
+                "E2",
+                "E3"
+              ],
+              "codes": [],
+              "comparable": false,
+              "reason": "QUERY_SCOPE_DIFFERS"
+            },
+            {
+              "path_indices": [
+                1,
+                3
+              ],
+              "evidence_ids": [
+                "E2",
+                "E4"
+              ],
+              "codes": [],
+              "comparable": false,
+              "reason": "QUERY_SCOPE_DIFFERS"
+            },
+            {
+              "path_indices": [
+                1,
+                4
+              ],
+              "evidence_ids": [
+                "E2",
+                "E5"
+              ],
+              "codes": [],
+              "comparable": false,
+              "reason": "QUERY_SCOPE_DIFFERS"
+            },
+            {
+              "path_indices": [
+                1,
+                5
+              ],
+              "evidence_ids": [
+                "E2",
+                "E6"
+              ],
+              "codes": [],
+              "comparable": false,
+              "reason": "QUERY_SCOPE_DIFFERS"
+            },
+            {
+              "path_indices": [
+                1,
+                6
+              ],
+              "evidence_ids": [
+                "E2",
+                "E7"
+              ],
+              "codes": [],
+              "comparable": false,
+              "reason": "QUERY_SCOPE_DIFFERS"
+            },
+            {
+              "path_indices": [
+                1,
+                7
+              ],
+              "evidence_ids": [
+                "E2",
+                "E8"
+              ],
+              "codes": [
+                "ADDRESS_SET_DIFFERENCE",
+                "SOA_SERIAL_DIFFERENCE"
+              ],
+              "comparable": true,
+              "reason": null
+            },
+            {
+              "path_indices": [
+                1,
+                8
+              ],
+              "evidence_ids": [
+                "E2",
+                "E9"
+              ],
+              "codes": [
+                "ADDRESS_SET_DIFFERENCE",
+                "SOA_SERIAL_DIFFERENCE"
+              ],
+              "comparable": true,
+              "reason": null
+            },
+            {
+              "path_indices": [
+                1,
+                9
+              ],
+              "evidence_ids": [
+                "E2",
+                "E10"
+              ],
+              "codes": [],
+              "comparable": false,
+              "reason": "QUERY_SCOPE_DIFFERS"
+            },
+            {
+              "path_indices": [
+                1,
+                10
+              ],
+              "evidence_ids": [
+                "E2",
+                "E11"
+              ],
+              "codes": [],
+              "comparable": false,
+              "reason": "QUERY_SCOPE_DIFFERS"
+            },
+            {
+              "path_indices": [
+                1,
+                11
+              ],
+              "evidence_ids": [
+                "E2",
+                "E12"
+              ],
+              "codes": [],
+              "comparable": true,
+              "reason": null
+            },
+            {
+              "path_indices": [
+                1,
+                12
+              ],
+              "evidence_ids": [
+                "E2",
+                "E13"
+              ],
+              "codes": [],
+              "comparable": false,
+              "reason": "QUERY_SCOPE_DIFFERS"
+            },
+            {
+              "path_indices": [
+                1,
+                13
+              ],
+              "evidence_ids": [
+                "E2",
+                "E14"
+              ],
+              "codes": [],
+              "comparable": true,
+              "reason": null
+            },
+            {
+              "path_indices": [
+                2,
+                3
+              ],
+              "evidence_ids": [
+                "E3",
+                "E4"
+              ],
+              "codes": [],
+              "comparable": true,
+              "reason": null
+            },
+            {
+              "path_indices": [
+                2,
+                4
+              ],
+              "evidence_ids": [
+                "E3",
+                "E5"
+              ],
+              "codes": [],
+              "comparable": false,
+              "reason": "QUERY_SCOPE_DIFFERS"
+            },
+            {
+              "path_indices": [
+                2,
+                5
+              ],
+              "evidence_ids": [
+                "E3",
+                "E6"
+              ],
+              "codes": [],
+              "comparable": false,
+              "reason": "QUERY_SCOPE_DIFFERS"
+            },
+            {
+              "path_indices": [
+                2,
+                6
+              ],
+              "evidence_ids": [
+                "E3",
+                "E7"
+              ],
+              "codes": [],
+              "comparable": false,
+              "reason": "QUERY_SCOPE_DIFFERS"
+            },
+            {
+              "path_indices": [
+                2,
+                7
+              ],
+              "evidence_ids": [
+                "E3",
+                "E8"
+              ],
+              "codes": [],
+              "comparable": false,
+              "reason": "QUERY_SCOPE_DIFFERS"
+            },
+            {
+              "path_indices": [
+                2,
+                8
+              ],
+              "evidence_ids": [
+                "E3",
+                "E9"
+              ],
+              "codes": [],
+              "comparable": false,
+              "reason": "QUERY_SCOPE_DIFFERS"
+            },
+            {
+              "path_indices": [
+                2,
+                9
+              ],
+              "evidence_ids": [
+                "E3",
+                "E10"
+              ],
+              "codes": [],
+              "comparable": false,
+              "reason": "QUERY_SCOPE_DIFFERS"
+            },
+            {
+              "path_indices": [
+                2,
+                10
+              ],
+              "evidence_ids": [
+                "E3",
+                "E11"
+              ],
+              "codes": [],
+              "comparable": false,
+              "reason": "QUERY_SCOPE_DIFFERS"
+            },
+            {
+              "path_indices": [
+                2,
+                11
+              ],
+              "evidence_ids": [
+                "E3",
+                "E12"
+              ],
+              "codes": [],
+              "comparable": false,
+              "reason": "QUERY_SCOPE_DIFFERS"
+            },
+            {
+              "path_indices": [
+                2,
+                12
+              ],
+              "evidence_ids": [
+                "E3",
+                "E13"
+              ],
+              "codes": [],
+              "comparable": false,
+              "reason": "QUERY_SCOPE_DIFFERS"
+            },
+            {
+              "path_indices": [
+                2,
+                13
+              ],
+              "evidence_ids": [
+                "E3",
+                "E14"
+              ],
+              "codes": [],
+              "comparable": false,
+              "reason": "QUERY_SCOPE_DIFFERS"
+            },
+            {
+              "path_indices": [
+                3,
+                4
+              ],
+              "evidence_ids": [
+                "E4",
+                "E5"
+              ],
+              "codes": [],
+              "comparable": false,
+              "reason": "QUERY_SCOPE_DIFFERS"
+            },
+            {
+              "path_indices": [
+                3,
+                5
+              ],
+              "evidence_ids": [
+                "E4",
+                "E6"
+              ],
+              "codes": [],
+              "comparable": false,
+              "reason": "QUERY_SCOPE_DIFFERS"
+            },
+            {
+              "path_indices": [
+                3,
+                6
+              ],
+              "evidence_ids": [
+                "E4",
+                "E7"
+              ],
+              "codes": [],
+              "comparable": false,
+              "reason": "QUERY_SCOPE_DIFFERS"
+            },
+            {
+              "path_indices": [
+                3,
+                7
+              ],
+              "evidence_ids": [
+                "E4",
+                "E8"
+              ],
+              "codes": [],
+              "comparable": false,
+              "reason": "QUERY_SCOPE_DIFFERS"
+            },
+            {
+              "path_indices": [
+                3,
+                8
+              ],
+              "evidence_ids": [
+                "E4",
+                "E9"
+              ],
+              "codes": [],
+              "comparable": false,
+              "reason": "QUERY_SCOPE_DIFFERS"
+            },
+            {
+              "path_indices": [
+                3,
+                9
+              ],
+              "evidence_ids": [
+                "E4",
+                "E10"
+              ],
+              "codes": [],
+              "comparable": false,
+              "reason": "QUERY_SCOPE_DIFFERS"
+            },
+            {
+              "path_indices": [
+                3,
+                10
+              ],
+              "evidence_ids": [
+                "E4",
+                "E11"
+              ],
+              "codes": [],
+              "comparable": false,
+              "reason": "QUERY_SCOPE_DIFFERS"
+            },
+            {
+              "path_indices": [
+                3,
+                11
+              ],
+              "evidence_ids": [
+                "E4",
+                "E12"
+              ],
+              "codes": [],
+              "comparable": false,
+              "reason": "QUERY_SCOPE_DIFFERS"
+            },
+            {
+              "path_indices": [
+                3,
+                12
+              ],
+              "evidence_ids": [
+                "E4",
+                "E13"
+              ],
+              "codes": [],
+              "comparable": false,
+              "reason": "QUERY_SCOPE_DIFFERS"
+            },
+            {
+              "path_indices": [
+                3,
+                13
+              ],
+              "evidence_ids": [
+                "E4",
+                "E14"
+              ],
+              "codes": [],
+              "comparable": false,
+              "reason": "QUERY_SCOPE_DIFFERS"
+            },
+            {
+              "path_indices": [
+                4,
+                5
+              ],
+              "evidence_ids": [
+                "E5",
+                "E6"
+              ],
+              "codes": [],
+              "comparable": true,
+              "reason": null
+            },
+            {
+              "path_indices": [
+                4,
+                6
+              ],
+              "evidence_ids": [
+                "E5",
+                "E7"
+              ],
+              "codes": [],
+              "comparable": false,
+              "reason": "QUERY_SCOPE_DIFFERS"
+            },
+            {
+              "path_indices": [
+                4,
+                7
+              ],
+              "evidence_ids": [
+                "E5",
+                "E8"
+              ],
+              "codes": [],
+              "comparable": false,
+              "reason": "QUERY_SCOPE_DIFFERS"
+            },
+            {
+              "path_indices": [
+                4,
+                8
+              ],
+              "evidence_ids": [
+                "E5",
+                "E9"
+              ],
+              "codes": [],
+              "comparable": false,
+              "reason": "QUERY_SCOPE_DIFFERS"
+            },
+            {
+              "path_indices": [
+                4,
+                9
+              ],
+              "evidence_ids": [
+                "E5",
+                "E10"
+              ],
+              "codes": [],
+              "comparable": false,
+              "reason": "QUERY_SCOPE_DIFFERS"
+            },
+            {
+              "path_indices": [
+                4,
+                10
+              ],
+              "evidence_ids": [
+                "E5",
+                "E11"
+              ],
+              "codes": [],
+              "comparable": false,
+              "reason": "QUERY_SCOPE_DIFFERS"
+            },
+            {
+              "path_indices": [
+                4,
+                11
+              ],
+              "evidence_ids": [
+                "E5",
+                "E12"
+              ],
+              "codes": [],
+              "comparable": false,
+              "reason": "QUERY_SCOPE_DIFFERS"
+            },
+            {
+              "path_indices": [
+                4,
+                12
+              ],
+              "evidence_ids": [
+                "E5",
+                "E13"
+              ],
+              "codes": [],
+              "comparable": false,
+              "reason": "QUERY_SCOPE_DIFFERS"
+            },
+            {
+              "path_indices": [
+                4,
+                13
+              ],
+              "evidence_ids": [
+                "E5",
+                "E14"
+              ],
+              "codes": [],
+              "comparable": false,
+              "reason": "QUERY_SCOPE_DIFFERS"
+            },
+            {
+              "path_indices": [
+                5,
+                6
+              ],
+              "evidence_ids": [
+                "E6",
+                "E7"
+              ],
+              "codes": [],
+              "comparable": false,
+              "reason": "QUERY_SCOPE_DIFFERS"
+            },
+            {
+              "path_indices": [
+                5,
+                7
+              ],
+              "evidence_ids": [
+                "E6",
+                "E8"
+              ],
+              "codes": [],
+              "comparable": false,
+              "reason": "QUERY_SCOPE_DIFFERS"
+            },
+            {
+              "path_indices": [
+                5,
+                8
+              ],
+              "evidence_ids": [
+                "E6",
+                "E9"
+              ],
+              "codes": [],
+              "comparable": false,
+              "reason": "QUERY_SCOPE_DIFFERS"
+            },
+            {
+              "path_indices": [
+                5,
+                9
+              ],
+              "evidence_ids": [
+                "E6",
+                "E10"
+              ],
+              "codes": [],
+              "comparable": false,
+              "reason": "QUERY_SCOPE_DIFFERS"
+            },
+            {
+              "path_indices": [
+                5,
+                10
+              ],
+              "evidence_ids": [
+                "E6",
+                "E11"
+              ],
+              "codes": [],
+              "comparable": false,
+              "reason": "QUERY_SCOPE_DIFFERS"
+            },
+            {
+              "path_indices": [
+                5,
+                11
+              ],
+              "evidence_ids": [
+                "E6",
+                "E12"
+              ],
+              "codes": [],
+              "comparable": false,
+              "reason": "QUERY_SCOPE_DIFFERS"
+            },
+            {
+              "path_indices": [
+                5,
+                12
+              ],
+              "evidence_ids": [
+                "E6",
+                "E13"
+              ],
+              "codes": [],
+              "comparable": false,
+              "reason": "QUERY_SCOPE_DIFFERS"
+            },
+            {
+              "path_indices": [
+                5,
+                13
+              ],
+              "evidence_ids": [
+                "E6",
+                "E14"
+              ],
+              "codes": [],
+              "comparable": false,
+              "reason": "QUERY_SCOPE_DIFFERS"
+            },
+            {
+              "path_indices": [
+                6,
+                7
+              ],
+              "evidence_ids": [
+                "E7",
+                "E8"
+              ],
+              "codes": [],
+              "comparable": false,
+              "reason": "QUERY_SCOPE_DIFFERS"
+            },
+            {
+              "path_indices": [
+                6,
+                8
+              ],
+              "evidence_ids": [
+                "E7",
+                "E9"
+              ],
+              "codes": [],
+              "comparable": false,
+              "reason": "QUERY_SCOPE_DIFFERS"
+            },
+            {
+              "path_indices": [
+                6,
+                9
+              ],
+              "evidence_ids": [
+                "E7",
+                "E10"
+              ],
+              "codes": [],
+              "comparable": false,
+              "reason": "QUERY_SCOPE_DIFFERS"
+            },
+            {
+              "path_indices": [
+                6,
+                10
+              ],
+              "evidence_ids": [
+                "E7",
+                "E11"
+              ],
+              "codes": [],
+              "comparable": false,
+              "reason": "QUERY_SCOPE_DIFFERS"
+            },
+            {
+              "path_indices": [
+                6,
+                11
+              ],
+              "evidence_ids": [
+                "E7",
+                "E12"
+              ],
+              "codes": [],
+              "comparable": false,
+              "reason": "QUERY_SCOPE_DIFFERS"
+            },
+            {
+              "path_indices": [
+                6,
+                12
+              ],
+              "evidence_ids": [
+                "E7",
+                "E13"
+              ],
+              "codes": [
+                "ADDRESS_SET_DIFFERENCE"
+              ],
+              "comparable": true,
+              "reason": null
+            },
+            {
+              "path_indices": [
+                6,
+                13
+              ],
+              "evidence_ids": [
+                "E7",
+                "E14"
+              ],
+              "codes": [],
+              "comparable": false,
+              "reason": "QUERY_SCOPE_DIFFERS"
+            },
+            {
+              "path_indices": [
+                7,
+                8
+              ],
+              "evidence_ids": [
+                "E8",
+                "E9"
+              ],
+              "codes": [],
+              "comparable": true,
+              "reason": null
+            },
+            {
+              "path_indices": [
+                7,
+                9
+              ],
+              "evidence_ids": [
+                "E8",
+                "E10"
+              ],
+              "codes": [],
+              "comparable": false,
+              "reason": "QUERY_SCOPE_DIFFERS"
+            },
+            {
+              "path_indices": [
+                7,
+                10
+              ],
+              "evidence_ids": [
+                "E8",
+                "E11"
+              ],
+              "codes": [],
+              "comparable": false,
+              "reason": "QUERY_SCOPE_DIFFERS"
+            },
+            {
+              "path_indices": [
+                7,
+                11
+              ],
+              "evidence_ids": [
+                "E8",
+                "E12"
+              ],
+              "codes": [
+                "ADDRESS_SET_DIFFERENCE",
+                "SOA_SERIAL_DIFFERENCE"
+              ],
+              "comparable": true,
+              "reason": null
+            },
+            {
+              "path_indices": [
+                7,
+                12
+              ],
+              "evidence_ids": [
+                "E8",
+                "E13"
+              ],
+              "codes": [],
+              "comparable": false,
+              "reason": "QUERY_SCOPE_DIFFERS"
+            },
+            {
+              "path_indices": [
+                7,
+                13
+              ],
+              "evidence_ids": [
+                "E8",
+                "E14"
+              ],
+              "codes": [
+                "ADDRESS_SET_DIFFERENCE",
+                "SOA_SERIAL_DIFFERENCE"
+              ],
+              "comparable": true,
+              "reason": null
+            },
+            {
+              "path_indices": [
+                8,
+                9
+              ],
+              "evidence_ids": [
+                "E9",
+                "E10"
+              ],
+              "codes": [],
+              "comparable": false,
+              "reason": "QUERY_SCOPE_DIFFERS"
+            },
+            {
+              "path_indices": [
+                8,
+                10
+              ],
+              "evidence_ids": [
+                "E9",
+                "E11"
+              ],
+              "codes": [],
+              "comparable": false,
+              "reason": "QUERY_SCOPE_DIFFERS"
+            },
+            {
+              "path_indices": [
+                8,
+                11
+              ],
+              "evidence_ids": [
+                "E9",
+                "E12"
+              ],
+              "codes": [
+                "ADDRESS_SET_DIFFERENCE",
+                "SOA_SERIAL_DIFFERENCE"
+              ],
+              "comparable": true,
+              "reason": null
+            },
+            {
+              "path_indices": [
+                8,
+                12
+              ],
+              "evidence_ids": [
+                "E9",
+                "E13"
+              ],
+              "codes": [],
+              "comparable": false,
+              "reason": "QUERY_SCOPE_DIFFERS"
+            },
+            {
+              "path_indices": [
+                8,
+                13
+              ],
+              "evidence_ids": [
+                "E9",
+                "E14"
+              ],
+              "codes": [
+                "ADDRESS_SET_DIFFERENCE",
+                "SOA_SERIAL_DIFFERENCE"
+              ],
+              "comparable": true,
+              "reason": null
+            },
+            {
+              "path_indices": [
+                9,
+                10
+              ],
+              "evidence_ids": [
+                "E10",
+                "E11"
+              ],
+              "codes": [],
+              "comparable": true,
+              "reason": null
+            },
+            {
+              "path_indices": [
+                9,
+                11
+              ],
+              "evidence_ids": [
+                "E10",
+                "E12"
+              ],
+              "codes": [],
+              "comparable": false,
+              "reason": "QUERY_SCOPE_DIFFERS"
+            },
+            {
+              "path_indices": [
+                9,
+                12
+              ],
+              "evidence_ids": [
+                "E10",
+                "E13"
+              ],
+              "codes": [],
+              "comparable": false,
+              "reason": "QUERY_SCOPE_DIFFERS"
+            },
+            {
+              "path_indices": [
+                9,
+                13
+              ],
+              "evidence_ids": [
+                "E10",
+                "E14"
+              ],
+              "codes": [],
+              "comparable": false,
+              "reason": "QUERY_SCOPE_DIFFERS"
+            },
+            {
+              "path_indices": [
+                10,
+                11
+              ],
+              "evidence_ids": [
+                "E11",
+                "E12"
+              ],
+              "codes": [],
+              "comparable": false,
+              "reason": "QUERY_SCOPE_DIFFERS"
+            },
+            {
+              "path_indices": [
+                10,
+                12
+              ],
+              "evidence_ids": [
+                "E11",
+                "E13"
+              ],
+              "codes": [],
+              "comparable": false,
+              "reason": "QUERY_SCOPE_DIFFERS"
+            },
+            {
+              "path_indices": [
+                10,
+                13
+              ],
+              "evidence_ids": [
+                "E11",
+                "E14"
+              ],
+              "codes": [],
+              "comparable": false,
+              "reason": "QUERY_SCOPE_DIFFERS"
+            },
+            {
+              "path_indices": [
+                11,
+                12
+              ],
+              "evidence_ids": [
+                "E12",
+                "E13"
+              ],
+              "codes": [],
+              "comparable": false,
+              "reason": "QUERY_SCOPE_DIFFERS"
+            },
+            {
+              "path_indices": [
+                11,
+                13
+              ],
+              "evidence_ids": [
+                "E12",
+                "E14"
+              ],
+              "codes": [],
+              "comparable": true,
+              "reason": null
+            },
+            {
+              "path_indices": [
+                12,
+                13
+              ],
+              "evidence_ids": [
+                "E13",
+                "E14"
+              ],
+              "codes": [],
+              "comparable": false,
+              "reason": "QUERY_SCOPE_DIFFERS"
+            }
+          ],
+          "differences": [
+            "ADDRESS_SET_DIFFERENCE",
+            "SOA_SERIAL_DIFFERENCE"
+          ],
+          "observations": [
+            {
+              "path_indices": [
+                0,
+                1
+              ],
+              "evidence_ids": [
+                "E1",
+                "E2"
+              ],
+              "ttl_values": [
+                [
+                  60
+                ],
+                [
+                  60
+                ]
+              ],
+              "duration_ms": [
+                16.0,
+                16.0
+              ],
+              "interpretation": "TTL 与耗时为单次观测，不证明缓存、配置或性能异常。"
+            },
+            {
+              "path_indices": [
+                0,
+                7
+              ],
+              "evidence_ids": [
+                "E1",
+                "E8"
+              ],
+              "ttl_values": [
+                [
+                  60
+                ],
+                [
+                  60
+                ]
+              ],
+              "duration_ms": [
+                16.0,
+                0.0
+              ],
+              "interpretation": "TTL 与耗时为单次观测，不证明缓存、配置或性能异常。"
+            },
+            {
+              "path_indices": [
+                0,
+                8
+              ],
+              "evidence_ids": [
+                "E1",
+                "E9"
+              ],
+              "ttl_values": [
+                [
+                  60
+                ],
+                [
+                  60
+                ]
+              ],
+              "duration_ms": [
+                16.0,
+                0.0
+              ],
+              "interpretation": "TTL 与耗时为单次观测，不证明缓存、配置或性能异常。"
+            },
+            {
+              "path_indices": [
+                0,
+                11
+              ],
+              "evidence_ids": [
+                "E1",
+                "E12"
+              ],
+              "ttl_values": [
+                [
+                  60
+                ],
+                [
+                  60
+                ]
+              ],
+              "duration_ms": [
+                16.0,
+                15.0
+              ],
+              "interpretation": "TTL 与耗时为单次观测，不证明缓存、配置或性能异常。"
+            },
+            {
+              "path_indices": [
+                0,
+                13
+              ],
+              "evidence_ids": [
+                "E1",
+                "E14"
+              ],
+              "ttl_values": [
+                [
+                  60
+                ],
+                [
+                  60
+                ]
+              ],
+              "duration_ms": [
+                16.0,
+                0.0
+              ],
+              "interpretation": "TTL 与耗时为单次观测，不证明缓存、配置或性能异常。"
+            },
+            {
+              "path_indices": [
+                1,
+                7
+              ],
+              "evidence_ids": [
+                "E2",
+                "E8"
+              ],
+              "ttl_values": [
+                [
+                  60
+                ],
+                [
+                  60
+                ]
+              ],
+              "duration_ms": [
+                16.0,
+                0.0
+              ],
+              "interpretation": "TTL 与耗时为单次观测，不证明缓存、配置或性能异常。"
+            },
+            {
+              "path_indices": [
+                1,
+                8
+              ],
+              "evidence_ids": [
+                "E2",
+                "E9"
+              ],
+              "ttl_values": [
+                [
+                  60
+                ],
+                [
+                  60
+                ]
+              ],
+              "duration_ms": [
+                16.0,
+                0.0
+              ],
+              "interpretation": "TTL 与耗时为单次观测，不证明缓存、配置或性能异常。"
+            },
+            {
+              "path_indices": [
+                1,
+                11
+              ],
+              "evidence_ids": [
+                "E2",
+                "E12"
+              ],
+              "ttl_values": [
+                [
+                  60
+                ],
+                [
+                  60
+                ]
+              ],
+              "duration_ms": [
+                16.0,
+                15.0
+              ],
+              "interpretation": "TTL 与耗时为单次观测，不证明缓存、配置或性能异常。"
+            },
+            {
+              "path_indices": [
+                1,
+                13
+              ],
+              "evidence_ids": [
+                "E2",
+                "E14"
+              ],
+              "ttl_values": [
+                [
+                  60
+                ],
+                [
+                  60
+                ]
+              ],
+              "duration_ms": [
+                16.0,
+                0.0
+              ],
+              "interpretation": "TTL 与耗时为单次观测，不证明缓存、配置或性能异常。"
+            },
+            {
+              "path_indices": [
+                2,
+                3
+              ],
+              "evidence_ids": [
+                "E3",
+                "E4"
+              ],
+              "ttl_values": [
+                [
+                  60,
+                  60
+                ],
+                [
+                  60,
+                  60
+                ]
+              ],
+              "duration_ms": [
+                0.0,
+                0.0
+              ],
+              "interpretation": "TTL 与耗时为单次观测，不证明缓存、配置或性能异常。"
+            },
+            {
+              "path_indices": [
+                4,
+                5
+              ],
+              "evidence_ids": [
+                "E5",
+                "E6"
+              ],
+              "ttl_values": [
+                [
+                  60
+                ],
+                [
+                  60
+                ]
+              ],
+              "duration_ms": [
+                16.0,
+                16.0
+              ],
+              "interpretation": "TTL 与耗时为单次观测，不证明缓存、配置或性能异常。"
+            },
+            {
+              "path_indices": [
+                6,
+                12
+              ],
+              "evidence_ids": [
+                "E7",
+                "E13"
+              ],
+              "ttl_values": [
+                [
+                  60
+                ],
+                [
+                  60
+                ]
+              ],
+              "duration_ms": [
+                0.0,
+                0.0
+              ],
+              "interpretation": "TTL 与耗时为单次观测，不证明缓存、配置或性能异常。"
+            },
+            {
+              "path_indices": [
+                7,
+                8
+              ],
+              "evidence_ids": [
+                "E8",
+                "E9"
+              ],
+              "ttl_values": [
+                [
+                  60
+                ],
+                [
+                  60
+                ]
+              ],
+              "duration_ms": [
+                0.0,
+                0.0
+              ],
+              "interpretation": "TTL 与耗时为单次观测，不证明缓存、配置或性能异常。"
+            },
+            {
+              "path_indices": [
+                7,
+                11
+              ],
+              "evidence_ids": [
+                "E8",
+                "E12"
+              ],
+              "ttl_values": [
+                [
+                  60
+                ],
+                [
+                  60
+                ]
+              ],
+              "duration_ms": [
+                0.0,
+                15.0
+              ],
+              "interpretation": "TTL 与耗时为单次观测，不证明缓存、配置或性能异常。"
+            },
+            {
+              "path_indices": [
+                7,
+                13
+              ],
+              "evidence_ids": [
+                "E8",
+                "E14"
+              ],
+              "ttl_values": [
+                [
+                  60
+                ],
+                [
+                  60
+                ]
+              ],
+              "duration_ms": [
+                0.0,
+                0.0
+              ],
+              "interpretation": "TTL 与耗时为单次观测，不证明缓存、配置或性能异常。"
+            },
+            {
+              "path_indices": [
+                8,
+                11
+              ],
+              "evidence_ids": [
+                "E9",
+                "E12"
+              ],
+              "ttl_values": [
+                [
+                  60
+                ],
+                [
+                  60
+                ]
+              ],
+              "duration_ms": [
+                0.0,
+                15.0
+              ],
+              "interpretation": "TTL 与耗时为单次观测，不证明缓存、配置或性能异常。"
+            },
+            {
+              "path_indices": [
+                8,
+                13
+              ],
+              "evidence_ids": [
+                "E9",
+                "E14"
+              ],
+              "ttl_values": [
+                [
+                  60
+                ],
+                [
+                  60
+                ]
+              ],
+              "duration_ms": [
+                0.0,
+                0.0
+              ],
+              "interpretation": "TTL 与耗时为单次观测，不证明缓存、配置或性能异常。"
+            },
+            {
+              "path_indices": [
+                9,
+                10
+              ],
+              "evidence_ids": [
+                "E10",
+                "E11"
+              ],
+              "ttl_values": [
+                [
+                  60
+                ],
+                [
+                  60
+                ]
+              ],
+              "duration_ms": [
+                0.0,
+                15.0
+              ],
+              "interpretation": "TTL 与耗时为单次观测，不证明缓存、配置或性能异常。"
+            },
+            {
+              "path_indices": [
+                11,
+                13
+              ],
+              "evidence_ids": [
+                "E12",
+                "E14"
+              ],
+              "ttl_values": [
+                [
+                  60
+                ],
+                [
+                  60
+                ]
+              ],
+              "duration_ms": [
+                15.0,
+                0.0
+              ],
+              "interpretation": "TTL 与耗时为单次观测，不证明缓存、配置或性能异常。"
+            }
+          ],
+          "limitations": [
+            "时间/来源缺失的旧记录不能证明同时或同源；响应差异不等于唯一根因。",
+            "记录差异可能来自 CDN、GeoDNS、负载均衡、缓存、策略和查询时间；超时没有提供记录或 TTL 事实。"
+          ]
+        },
+        "execution_issues": [
+          {
+            "attempt_id": "A4",
+            "tool_name": "query_dns",
+            "target": "probe.example",
+            "record_type": "A",
+            "error_code": "INVALID_INPUT",
+            "description": "参数非法或不在本次调查范围；检查目标、端口、类型和已有 DNS 证据。"
+          },
+          {
+            "attempt_id": "A5",
+            "tool_name": "query_dns",
+            "target": "probe.example",
+            "record_type": "A",
+            "error_code": "INVALID_INPUT",
+            "description": "参数非法或不在本次调查范围；检查目标、端口、类型和已有 DNS 证据。"
+          }
+        ],
+        "measured_facts": [
+          {
+            "evidence_id": "E1",
+            "target": "probe.example",
+            "resolver": "[local-resolver-1]",
+            "record_type": "SOA",
+            "measured_at": "2026-11-01T02:33:34.482245+00:00",
+            "source_mode": "live",
+            "tool": "query_dns",
+            "result": "NOERROR",
+            "records": [
+              {
+                "value": "ns1.test.example. host.test.example. 1 60 60 60 60",
+                "ttl": 60
+              }
+            ],
+            "error": null,
+            "error_detail": null,
+            "peer_ip": null,
+            "transport_status": "responded",
+            "dns_rcode": "NOERROR",
+            "result_kind": "NOERROR",
+            "resolver_role": "recursive",
+            "negative_name": null,
+            "cname_chain": [],
+            "canonical_name": "probe.example",
+            "query_attempt_id": "Q1",
+            "attempt_id": "A1",
+            "target_authorization": null
+          },
+          {
+            "evidence_id": "E2",
+            "target": "probe.example",
+            "resolver": "[local-resolver-1]",
+            "record_type": "SOA",
+            "measured_at": "2026-11-01T02:33:34.485380+00:00",
+            "source_mode": "live",
+            "tool": "query_dns",
+            "result": "NOERROR",
+            "records": [
+              {
+                "value": "ns1.test.example. host.test.example. 1 60 60 60 60",
+                "ttl": 60
+              }
+            ],
+            "error": null,
+            "error_detail": null,
+            "peer_ip": null,
+            "transport_status": "responded",
+            "dns_rcode": "NOERROR",
+            "result_kind": "NOERROR",
+            "resolver_role": "recursive",
+            "negative_name": null,
+            "cname_chain": [],
+            "canonical_name": "probe.example",
+            "query_attempt_id": "Q2",
+            "attempt_id": "A2",
+            "target_authorization": null
+          },
+          {
+            "evidence_id": "E3",
+            "target": "probe.example",
+            "resolver": "[local-resolver-1]",
+            "record_type": "NS",
+            "measured_at": "2026-11-01T02:33:34.488780+00:00",
+            "source_mode": "live",
+            "tool": "query_dns",
+            "result": "NOERROR",
+            "records": [
+              {
+                "value": "ns2.test.example.",
+                "ttl": 60
+              },
+              {
+                "value": "ns1.test.example.",
+                "ttl": 60
+              }
+            ],
+            "error": null,
+            "error_detail": null,
+            "peer_ip": null,
+            "transport_status": "responded",
+            "dns_rcode": "NOERROR",
+            "result_kind": "NOERROR",
+            "resolver_role": "recursive",
+            "negative_name": null,
+            "cname_chain": [],
+            "canonical_name": "probe.example",
+            "query_attempt_id": "Q3",
+            "attempt_id": "A1",
+            "target_authorization": null
+          },
+          {
+            "evidence_id": "E4",
+            "target": "probe.example",
+            "resolver": "[local-resolver-1]",
+            "record_type": "NS",
+            "measured_at": "2026-11-01T02:33:34.491279+00:00",
+            "source_mode": "live",
+            "tool": "query_dns",
+            "result": "NOERROR",
+            "records": [
+              {
+                "value": "ns2.test.example.",
+                "ttl": 60
+              },
+              {
+                "value": "ns1.test.example.",
+                "ttl": 60
+              }
+            ],
+            "error": null,
+            "error_detail": null,
+            "peer_ip": null,
+            "transport_status": "responded",
+            "dns_rcode": "NOERROR",
+            "result_kind": "NOERROR",
+            "resolver_role": "recursive",
+            "negative_name": null,
+            "cname_chain": [],
+            "canonical_name": "probe.example",
+            "query_attempt_id": "Q4",
+            "attempt_id": "A2",
+            "target_authorization": null
+          },
+          {
+            "evidence_id": "E5",
+            "target": "ns2.test.example",
+            "resolver": "[local-resolver-1]",
+            "record_type": "A",
+            "measured_at": "2026-11-01T02:33:34.494396+00:00",
+            "source_mode": "live",
+            "tool": "query_dns",
+            "result": "NOERROR",
+            "records": [
+              {
+                "value": "8.8.4.4",
+                "ttl": 60
+              }
+            ],
+            "error": null,
+            "error_detail": null,
+            "peer_ip": null,
+            "transport_status": "responded",
+            "dns_rcode": "NOERROR",
+            "result_kind": "NOERROR",
+            "resolver_role": "recursive",
+            "negative_name": null,
+            "cname_chain": [],
+            "canonical_name": "ns2.test.example",
+            "query_attempt_id": "Q5",
+            "attempt_id": "A1",
+            "target_authorization": null
+          },
+          {
+            "evidence_id": "E6",
+            "target": "ns2.test.example",
+            "resolver": "[local-resolver-1]",
+            "record_type": "A",
+            "measured_at": "2026-11-01T02:33:34.497417+00:00",
+            "source_mode": "live",
+            "tool": "query_dns",
+            "result": "NOERROR",
+            "records": [
+              {
+                "value": "8.8.4.4",
+                "ttl": 60
+              }
+            ],
+            "error": null,
+            "error_detail": null,
+            "peer_ip": null,
+            "transport_status": "responded",
+            "dns_rcode": "NOERROR",
+            "result_kind": "NOERROR",
+            "resolver_role": "recursive",
+            "negative_name": null,
+            "cname_chain": [],
+            "canonical_name": "ns2.test.example",
+            "query_attempt_id": "Q6",
+            "attempt_id": "A2",
+            "target_authorization": null
+          },
+          {
+            "evidence_id": "E7",
+            "target": "probe.example",
+            "resolver": "[local-resolver-3]",
+            "record_type": "A",
+            "measured_at": "2026-11-01T02:33:34.500586+00:00",
+            "source_mode": "live",
+            "tool": "query_dns",
+            "result": "NOERROR",
+            "records": [
+              {
+                "value": "192.0.2.11",
+                "ttl": 60
+              }
+            ],
+            "error": null,
+            "error_detail": null,
+            "peer_ip": null,
+            "transport_status": "responded",
+            "dns_rcode": "NOERROR",
+            "result_kind": "NOERROR",
+            "resolver_role": "authoritative",
+            "negative_name": null,
+            "cname_chain": [],
+            "canonical_name": "probe.example",
+            "query_attempt_id": "Q7",
+            "attempt_id": "A1",
+            "target_authorization": null
+          },
+          {
+            "evidence_id": "E8",
+            "target": "probe.example",
+            "resolver": "[local-resolver-3]",
+            "record_type": "SOA",
+            "measured_at": "2026-11-01T02:33:34.503157+00:00",
+            "source_mode": "live",
+            "tool": "query_dns",
+            "result": "NOERROR",
+            "records": [
+              {
+                "value": "ns1.test.example. host.test.example. 2 60 60 60 60",
+                "ttl": 60
+              }
+            ],
+            "error": null,
+            "error_detail": null,
+            "peer_ip": null,
+            "transport_status": "responded",
+            "dns_rcode": "NOERROR",
+            "result_kind": "NOERROR",
+            "resolver_role": "authoritative",
+            "negative_name": null,
+            "cname_chain": [],
+            "canonical_name": "probe.example",
+            "query_attempt_id": "Q8",
+            "attempt_id": "A2",
+            "target_authorization": null
+          },
+          {
+            "evidence_id": "E9",
+            "target": "probe.example",
+            "resolver": "[local-resolver-3]",
+            "record_type": "SOA",
+            "measured_at": "2026-11-01T02:33:34.506171+00:00",
+            "source_mode": "live",
+            "tool": "query_dns",
+            "result": "NOERROR",
+            "records": [
+              {
+                "value": "ns1.test.example. host.test.example. 2 60 60 60 60",
+                "ttl": 60
+              }
+            ],
+            "error": null,
+            "error_detail": null,
+            "peer_ip": null,
+            "transport_status": "responded",
+            "dns_rcode": "NOERROR",
+            "result_kind": "NOERROR",
+            "resolver_role": "authoritative",
+            "negative_name": null,
+            "cname_chain": [],
+            "canonical_name": "probe.example",
+            "query_attempt_id": "Q9",
+            "attempt_id": "A1",
+            "target_authorization": null
+          },
+          {
+            "evidence_id": "E10",
+            "target": "ns1.test.example",
+            "resolver": "[local-resolver-1]",
+            "record_type": "A",
+            "measured_at": "2026-11-01T02:33:34.508214+00:00",
+            "source_mode": "live",
+            "tool": "query_dns",
+            "result": "NOERROR",
+            "records": [
+              {
+                "value": "9.9.9.9",
+                "ttl": 60
+              }
+            ],
+            "error": null,
+            "error_detail": null,
+            "peer_ip": null,
+            "transport_status": "responded",
+            "dns_rcode": "NOERROR",
+            "result_kind": "NOERROR",
+            "resolver_role": "recursive",
+            "negative_name": null,
+            "cname_chain": [],
+            "canonical_name": "ns1.test.example",
+            "query_attempt_id": "Q10",
+            "attempt_id": "A2",
+            "target_authorization": null
+          },
+          {
+            "evidence_id": "E11",
+            "target": "ns1.test.example",
+            "resolver": "[local-resolver-1]",
+            "record_type": "A",
+            "measured_at": "2026-11-01T02:33:34.511653+00:00",
+            "source_mode": "live",
+            "tool": "query_dns",
+            "result": "NOERROR",
+            "records": [
+              {
+                "value": "9.9.9.9",
+                "ttl": 60
+              }
+            ],
+            "error": null,
+            "error_detail": null,
+            "peer_ip": null,
+            "transport_status": "responded",
+            "dns_rcode": "NOERROR",
+            "result_kind": "NOERROR",
+            "resolver_role": "recursive",
+            "negative_name": null,
+            "cname_chain": [],
+            "canonical_name": "ns1.test.example",
+            "query_attempt_id": "Q11",
+            "attempt_id": "A1",
+            "target_authorization": null
+          },
+          {
+            "evidence_id": "E12",
+            "target": "probe.example",
+            "resolver": "[local-resolver-2]",
+            "record_type": "SOA",
+            "measured_at": "2026-11-01T02:33:34.514789+00:00",
+            "source_mode": "live",
+            "tool": "query_dns",
+            "result": "NOERROR",
+            "records": [
+              {
+                "value": "ns1.test.example. host.test.example. 1 60 60 60 60",
+                "ttl": 60
+              }
+            ],
+            "error": null,
+            "error_detail": null,
+            "peer_ip": null,
+            "transport_status": "responded",
+            "dns_rcode": "NOERROR",
+            "result_kind": "NOERROR",
+            "resolver_role": "authoritative",
+            "negative_name": null,
+            "cname_chain": [],
+            "canonical_name": "probe.example",
+            "query_attempt_id": "Q12",
+            "attempt_id": "A2",
+            "target_authorization": null
+          },
+          {
+            "evidence_id": "E13",
+            "target": "probe.example",
+            "resolver": "[local-resolver-2]",
+            "record_type": "A",
+            "measured_at": "2026-11-01T02:33:34.518813+00:00",
+            "source_mode": "live",
+            "tool": "query_dns",
+            "result": "NOERROR",
+            "records": [
+              {
+                "value": "192.0.2.10",
+                "ttl": 60
+              }
+            ],
+            "error": null,
+            "error_detail": null,
+            "peer_ip": null,
+            "transport_status": "responded",
+            "dns_rcode": "NOERROR",
+            "result_kind": "NOERROR",
+            "resolver_role": "authoritative",
+            "negative_name": null,
+            "cname_chain": [],
+            "canonical_name": "probe.example",
+            "query_attempt_id": "Q13",
+            "attempt_id": "A1",
+            "target_authorization": null
+          },
+          {
+            "evidence_id": "E14",
+            "target": "probe.example",
+            "resolver": "[local-resolver-2]",
+            "record_type": "SOA",
+            "measured_at": "2026-11-01T02:33:34.522101+00:00",
+            "source_mode": "live",
+            "tool": "query_dns",
+            "result": "NOERROR",
+            "records": [
+              {
+                "value": "ns1.test.example. host.test.example. 1 60 60 60 60",
+                "ttl": 60
+              }
+            ],
+            "error": null,
+            "error_detail": null,
+            "peer_ip": null,
+            "transport_status": "responded",
+            "dns_rcode": "NOERROR",
+            "result_kind": "NOERROR",
+            "resolver_role": "authoritative",
+            "negative_name": null,
+            "cname_chain": [],
+            "canonical_name": "probe.example",
+            "query_attempt_id": "Q14",
+            "attempt_id": "A1",
+            "target_authorization": null
+          }
+        ],
+        "findings": [
+          {
+            "scope": {
+              "target": "probe.example",
+              "record_type": "SOA",
+              "source_mode": "live",
+              "dns_followup_only": false,
+              "paths": [
+                {
+                  "resolver": "[local-resolver-1]",
+                  "role": "recursive",
+                  "evidence_id": "E1"
+                },
+                {
+                  "resolver": "[local-resolver-1]",
+                  "role": "recursive",
+                  "evidence_id": "E2"
+                },
+                {
+                  "resolver": "[local-resolver-3]",
+                  "role": "authoritative",
+                  "evidence_id": "E8"
+                },
+                {
+                  "resolver": "[local-resolver-3]",
+                  "role": "authoritative",
+                  "evidence_id": "E9"
+                }
+              ],
+              "time_start": "2026-11-01T02:33:34.482245+00:00",
+              "time_end": "2026-11-01T02:33:34.506171+00:00"
+            },
+            "observed_facts": [
+              {
+                "evidence_id": "E1",
+                "resolver": "[local-resolver-1]",
+                "role": "recursive",
+                "authoritative_answer": false,
+                "negative_name": null,
+                "records": [
+                  {
+                    "value": "ns1.test.example. host.test.example. 1 60 60 60 60",
+                    "ttl": 60
+                  }
+                ],
+                "soa_serials": [
+                  1
+                ],
+                "transport_status": "responded",
+                "dns_rcode": "NOERROR",
+                "result_kind": "NOERROR"
+              },
+              {
+                "evidence_id": "E2",
+                "resolver": "[local-resolver-1]",
+                "role": "recursive",
+                "authoritative_answer": false,
+                "negative_name": null,
+                "records": [
+                  {
+                    "value": "ns1.test.example. host.test.example. 1 60 60 60 60",
+                    "ttl": 60
+                  }
+                ],
+                "soa_serials": [
+                  1
+                ],
+                "transport_status": "responded",
+                "dns_rcode": "NOERROR",
+                "result_kind": "NOERROR"
+              },
+              {
+                "evidence_id": "E8",
+                "resolver": "[local-resolver-3]",
+                "role": "authoritative",
+                "authoritative_answer": true,
+                "negative_name": null,
+                "records": [
+                  {
+                    "value": "ns1.test.example. host.test.example. 2 60 60 60 60",
+                    "ttl": 60
+                  }
+                ],
+                "soa_serials": [
+                  2
+                ],
+                "transport_status": "responded",
+                "dns_rcode": "NOERROR",
+                "result_kind": "NOERROR"
+              },
+              {
+                "evidence_id": "E9",
+                "resolver": "[local-resolver-3]",
+                "role": "authoritative",
+                "authoritative_answer": true,
+                "negative_name": null,
+                "records": [
+                  {
+                    "value": "ns1.test.example. host.test.example. 2 60 60 60 60",
+                    "ttl": 60
+                  }
+                ],
+                "soa_serials": [
+                  2
+                ],
+                "transport_status": "responded",
+                "dns_rcode": "NOERROR",
+                "result_kind": "NOERROR"
+              }
+            ],
+            "localization": {
+              "affected_evidence_ids": [
+                "E1",
+                "E2",
+                "E8",
+                "E9"
+              ],
+              "other_paths": [
+                {
+                  "evidence_id": "E12",
+                  "resolver": "[local-resolver-2]",
+                  "transport_status": "responded",
+                  "dns_rcode": "NOERROR",
+                  "result_kind": "NOERROR"
+                },
+                {
+                  "evidence_id": "E14",
+                  "resolver": "[local-resolver-2]",
+                  "transport_status": "responded",
+                  "dns_rcode": "NOERROR",
+                  "result_kind": "NOERROR"
+                }
+              ],
+              "interpretation": "只定位列出的查询与路径；异常不自动归因于整台解析器或整个域名。"
+            },
+            "root_cause_confirmed": false,
+            "code": "RECURSIVE_AUTH_RESPONSE_MISMATCH",
+            "stage": "dns-comparison",
+            "status": "observed",
+            "evidence_ids": [
+              "E1",
+              "E2",
+              "E8",
+              "E9"
+            ],
+            "explanation": "probe.example SOA 的完整可比较响应存在状态或记录集合差异；详见各路径结果。地址及 SOA Serial 差异只是观察，正常调度和时间变化仍可能解释。",
+            "limitations": [
+              "单次观测不能区分缓存、策略、调度、网络路径或服务因素；未确认唯一根因。",
+              "缺失时间/来源的旧日志保留未知；未执行 DNSSEC 验证或完整迭代解析。"
+            ],
+            "next_checks": [
+              "query_authoritative / query_dns：预算允许时复测 probe.example SOA 的已列路径（[local-resolver-1], [local-resolver-1], [local-resolver-3], [local-resolver-3]），比较记录和 SOA；持续差异缩小到这些查询路径，不能单凭 Serial 确认同步故障。"
+            ]
+          },
+          {
+            "scope": {
+              "target": "probe.example",
+              "record_type": "SOA",
+              "source_mode": "live",
+              "dns_followup_only": false,
+              "paths": [
+                {
+                  "resolver": "[local-resolver-3]",
+                  "role": "authoritative",
+                  "evidence_id": "E8"
+                },
+                {
+                  "resolver": "[local-resolver-3]",
+                  "role": "authoritative",
+                  "evidence_id": "E9"
+                },
+                {
+                  "resolver": "[local-resolver-2]",
+                  "role": "authoritative",
+                  "evidence_id": "E12"
+                },
+                {
+                  "resolver": "[local-resolver-2]",
+                  "role": "authoritative",
+                  "evidence_id": "E14"
+                }
+              ],
+              "time_start": "2026-11-01T02:33:34.503157+00:00",
+              "time_end": "2026-11-01T02:33:34.522101+00:00"
+            },
+            "observed_facts": [
+              {
+                "evidence_id": "E8",
+                "resolver": "[local-resolver-3]",
+                "role": "authoritative",
+                "authoritative_answer": true,
+                "negative_name": null,
+                "records": [
+                  {
+                    "value": "ns1.test.example. host.test.example. 2 60 60 60 60",
+                    "ttl": 60
+                  }
+                ],
+                "soa_serials": [
+                  2
+                ],
+                "transport_status": "responded",
+                "dns_rcode": "NOERROR",
+                "result_kind": "NOERROR"
+              },
+              {
+                "evidence_id": "E9",
+                "resolver": "[local-resolver-3]",
+                "role": "authoritative",
+                "authoritative_answer": true,
+                "negative_name": null,
+                "records": [
+                  {
+                    "value": "ns1.test.example. host.test.example. 2 60 60 60 60",
+                    "ttl": 60
+                  }
+                ],
+                "soa_serials": [
+                  2
+                ],
+                "transport_status": "responded",
+                "dns_rcode": "NOERROR",
+                "result_kind": "NOERROR"
+              },
+              {
+                "evidence_id": "E12",
+                "resolver": "[local-resolver-2]",
+                "role": "authoritative",
+                "authoritative_answer": true,
+                "negative_name": null,
+                "records": [
+                  {
+                    "value": "ns1.test.example. host.test.example. 1 60 60 60 60",
+                    "ttl": 60
+                  }
+                ],
+                "soa_serials": [
+                  1
+                ],
+                "transport_status": "responded",
+                "dns_rcode": "NOERROR",
+                "result_kind": "NOERROR"
+              },
+              {
+                "evidence_id": "E14",
+                "resolver": "[local-resolver-2]",
+                "role": "authoritative",
+                "authoritative_answer": true,
+                "negative_name": null,
+                "records": [
+                  {
+                    "value": "ns1.test.example. host.test.example. 1 60 60 60 60",
+                    "ttl": 60
+                  }
+                ],
+                "soa_serials": [
+                  1
+                ],
+                "transport_status": "responded",
+                "dns_rcode": "NOERROR",
+                "result_kind": "NOERROR"
+              }
+            ],
+            "localization": {
+              "affected_evidence_ids": [
+                "E8",
+                "E9",
+                "E12",
+                "E14"
+              ],
+              "other_paths": [
+                {
+                  "evidence_id": "E1",
+                  "resolver": "[local-resolver-1]",
+                  "transport_status": "responded",
+                  "dns_rcode": "NOERROR",
+                  "result_kind": "NOERROR"
+                },
+                {
+                  "evidence_id": "E2",
+                  "resolver": "[local-resolver-1]",
+                  "transport_status": "responded",
+                  "dns_rcode": "NOERROR",
+                  "result_kind": "NOERROR"
+                }
+              ],
+              "interpretation": "只定位列出的查询与路径；异常不自动归因于整台解析器或整个域名。"
+            },
+            "root_cause_confirmed": false,
+            "code": "AUTHORITATIVE_RESPONSE_DISAGREEMENT",
+            "stage": "dns-comparison",
+            "status": "observed",
+            "evidence_ids": [
+              "E8",
+              "E9",
+              "E12",
+              "E14"
+            ],
+            "explanation": "probe.example SOA 的完整可比较响应存在状态或记录集合差异；详见各路径结果。地址及 SOA Serial 差异只是观察，正常调度和时间变化仍可能解释。",
+            "limitations": [
+              "单次观测不能区分缓存、策略、调度、网络路径或服务因素；未确认唯一根因。",
+              "缺失时间/来源的旧日志保留未知；未执行 DNSSEC 验证或完整迭代解析。"
+            ],
+            "next_checks": [
+              "query_authoritative / query_dns：预算允许时复测 probe.example SOA 的已列路径（[local-resolver-3], [local-resolver-3], [local-resolver-2], [local-resolver-2]），比较记录和 SOA；持续差异缩小到这些查询路径，不能单凭 Serial 确认同步故障。"
+            ]
+          },
+          {
+            "scope": {
+              "target": "probe.example",
+              "record_type": "A",
+              "source_mode": "live",
+              "dns_followup_only": false,
+              "paths": [
+                {
+                  "resolver": "[local-resolver-3]",
+                  "role": "authoritative",
+                  "evidence_id": "E7"
+                },
+                {
+                  "resolver": "[local-resolver-2]",
+                  "role": "authoritative",
+                  "evidence_id": "E13"
+                }
+              ],
+              "time_start": "2026-11-01T02:33:34.500586+00:00",
+              "time_end": "2026-11-01T02:33:34.518813+00:00"
+            },
+            "observed_facts": [
+              {
+                "evidence_id": "E7",
+                "resolver": "[local-resolver-3]",
+                "role": "authoritative",
+                "authoritative_answer": true,
+                "negative_name": null,
+                "records": [
+                  {
+                    "value": "192.0.2.11",
+                    "ttl": 60
+                  }
+                ],
+                "soa_serials": [],
+                "transport_status": "responded",
+                "dns_rcode": "NOERROR",
+                "result_kind": "NOERROR"
+              },
+              {
+                "evidence_id": "E13",
+                "resolver": "[local-resolver-2]",
+                "role": "authoritative",
+                "authoritative_answer": true,
+                "negative_name": null,
+                "records": [
+                  {
+                    "value": "192.0.2.10",
+                    "ttl": 60
+                  }
+                ],
+                "soa_serials": [],
+                "transport_status": "responded",
+                "dns_rcode": "NOERROR",
+                "result_kind": "NOERROR"
+              }
+            ],
+            "localization": {
+              "affected_evidence_ids": [
+                "E7",
+                "E13"
+              ],
+              "other_paths": [],
+              "interpretation": "只定位列出的查询与路径；异常不自动归因于整台解析器或整个域名。"
+            },
+            "root_cause_confirmed": false,
+            "code": "AUTHORITATIVE_RESPONSE_DISAGREEMENT",
+            "stage": "dns-comparison",
+            "status": "observed",
+            "evidence_ids": [
+              "E7",
+              "E13"
+            ],
+            "explanation": "probe.example A 的完整可比较响应存在状态或记录集合差异；详见各路径结果。地址及 SOA Serial 差异只是观察，正常调度和时间变化仍可能解释。",
+            "limitations": [
+              "单次观测不能区分缓存、策略、调度、网络路径或服务因素；未确认唯一根因。",
+              "缺失时间/来源的旧日志保留未知；未执行 DNSSEC 验证或完整迭代解析。"
+            ],
+            "next_checks": [
+              "query_authoritative / query_dns：预算允许时复测 probe.example A 的已列路径（[local-resolver-3], [local-resolver-2]），比较记录和 SOA；持续差异缩小到这些查询路径，不能单凭 Serial 确认同步故障。"
+            ]
+          }
+        ],
+        "request_kind": "investigation",
+        "outcome": "execution_failed",
+        "observations": [
+          {
+            "evidence_id": "E1",
+            "observation": "probe.example SOA / 解析器 [local-resolver-1]：NOERROR [{\"value\": \"ns1.test.example. host.test.example. 1 60 60 60 60\", \"ttl\": 60}]；来源 live；时间 2026-11-01T02:33:34.482245+00:00（E1）"
+          },
+          {
+            "evidence_id": "E2",
+            "observation": "probe.example SOA / 解析器 [local-resolver-1]：NOERROR [{\"value\": \"ns1.test.example. host.test.example. 1 60 60 60 60\", \"ttl\": 60}]；来源 live；时间 2026-11-01T02:33:34.485380+00:00（E2）"
+          },
+          {
+            "evidence_id": "E3",
+            "observation": "probe.example NS / 解析器 [local-resolver-1]：NOERROR [{\"value\": \"ns2.test.example.\", \"ttl\": 60}, {\"value\": \"ns1.test.example.\", \"ttl\": 60}]；来源 live；时间 2026-11-01T02:33:34.488780+00:00（E3）"
+          },
+          {
+            "evidence_id": "E4",
+            "observation": "probe.example NS / 解析器 [local-resolver-1]：NOERROR [{\"value\": \"ns2.test.example.\", \"ttl\": 60}, {\"value\": \"ns1.test.example.\", \"ttl\": 60}]；来源 live；时间 2026-11-01T02:33:34.491279+00:00（E4）"
+          },
+          {
+            "evidence_id": "E5",
+            "observation": "ns2.test.example A / 解析器 [local-resolver-1]：NOERROR [{\"value\": \"8.8.4.4\", \"ttl\": 60}]；来源 live；时间 2026-11-01T02:33:34.494396+00:00（E5）"
+          },
+          {
+            "evidence_id": "E6",
+            "observation": "ns2.test.example A / 解析器 [local-resolver-1]：NOERROR [{\"value\": \"8.8.4.4\", \"ttl\": 60}]；来源 live；时间 2026-11-01T02:33:34.497417+00:00（E6）"
+          },
+          {
+            "evidence_id": "E7",
+            "observation": "probe.example A / 解析器 [local-resolver-3]：NOERROR [{\"value\": \"192.0.2.11\", \"ttl\": 60}]；来源 live；时间 2026-11-01T02:33:34.500586+00:00（E7）"
+          },
+          {
+            "evidence_id": "E8",
+            "observation": "probe.example SOA / 解析器 [local-resolver-3]：NOERROR [{\"value\": \"ns1.test.example. host.test.example. 2 60 60 60 60\", \"ttl\": 60}]；来源 live；时间 2026-11-01T02:33:34.503157+00:00（E8）"
+          },
+          {
+            "evidence_id": "E9",
+            "observation": "probe.example SOA / 解析器 [local-resolver-3]：NOERROR [{\"value\": \"ns1.test.example. host.test.example. 2 60 60 60 60\", \"ttl\": 60}]；来源 live；时间 2026-11-01T02:33:34.506171+00:00（E9）"
+          },
+          {
+            "evidence_id": "E10",
+            "observation": "ns1.test.example A / 解析器 [local-resolver-1]：NOERROR [{\"value\": \"9.9.9.9\", \"ttl\": 60}]；来源 live；时间 2026-11-01T02:33:34.508214+00:00（E10）"
+          },
+          {
+            "evidence_id": "E11",
+            "observation": "ns1.test.example A / 解析器 [local-resolver-1]：NOERROR [{\"value\": \"9.9.9.9\", \"ttl\": 60}]；来源 live；时间 2026-11-01T02:33:34.511653+00:00（E11）"
+          },
+          {
+            "evidence_id": "E12",
+            "observation": "probe.example SOA / 解析器 [local-resolver-2]：NOERROR [{\"value\": \"ns1.test.example. host.test.example. 1 60 60 60 60\", \"ttl\": 60}]；来源 live；时间 2026-11-01T02:33:34.514789+00:00（E12）"
+          },
+          {
+            "evidence_id": "E13",
+            "observation": "probe.example A / 解析器 [local-resolver-2]：NOERROR [{\"value\": \"192.0.2.10\", \"ttl\": 60}]；来源 live；时间 2026-11-01T02:33:34.518813+00:00（E13）"
+          },
+          {
+            "evidence_id": "E14",
+            "observation": "probe.example SOA / 解析器 [local-resolver-2]：NOERROR [{\"value\": \"ns1.test.example. host.test.example. 1 60 60 60 60\", \"ttl\": 60}]；来源 live；时间 2026-11-01T02:33:34.522101+00:00（E14）"
+          }
+        ],
+        "hypotheses": [],
+        "conclusion": "probe.example SOA [来源 live]：recursive [local-resolver-1]=NOERROR、recursive [local-resolver-1]=NOERROR、authoritative [local-resolver-3]=NOERROR、authoritative [local-resolver-3]=NOERROR 存在完整响应状态或记录差异；范围限于已列路径，缓存、策略、调度与时间原因尚未区分（E1、E2、E8、E9）。 probe.example SOA [来源 live]：authoritative [local-resolver-3]=NOERROR、authoritative [local-resolver-3]=NOERROR、authoritative [local-resolver-2]=NOERROR、authoritative [local-resolver-2]=NOERROR 存在完整响应状态或记录差异；范围限于已列路径，缓存、策略、调度与时间原因尚未区分（E8、E9、E12、E14）。 probe.example A [来源 live]：authoritative [local-resolver-3]=NOERROR、authoritative [local-resolver-2]=NOERROR 存在完整响应状态或记录差异；范围限于已列路径，缓存、策略、调度与时间原因尚未区分（E7、E13）。 已验证事实：probe.example SOA / 解析器 [local-resolver-1]：NOERROR [{\"value\": \"ns1.test.example. host.test.example. 1 60 60 60 60\", \"ttl\": 60}]；来源 live；时间 2026-11-01T02:33:34.482245+00:00（E1）；probe.example SOA / 解析器 [local-resolver-1]：NOERROR [{\"value\": \"ns1.test.example. host.test.example. 1 60 60 60 60\", \"ttl\": 60}]；来源 live；时间 2026-11-01T02:33:34.485380+00:00（E2）；probe.example NS / 解析器 [local-resolver-1]：NOERROR [{\"value\": \"ns2.test.example.\", \"ttl\": 60}, {\"value\": \"ns1.test.example.\", \"ttl\": 60}]；来源 live；时间 2026-11-01T02:33:34.488780+00:00（E3）；probe.example NS / 解析器 [local-resolver-1]：NOERROR [{\"value\": \"ns2.test.example.\", \"ttl\": 60}, {\"value\": \"ns1.test.example.\", \"ttl\": 60}]；来源 live；时间 2026-11-01T02:33:34.491279+00:00（E4）；ns2.test.example A / 解析器 [local-resolver-1]：NOERROR [{\"value\": \"8.8.4.4\", \"ttl\": 60}]；来源 live；时间 2026-11-01T02:33:34.494396+00:00（E5）；ns2.test.example A / 解析器 [local-resolver-1]：NOERROR [{\"value\": \"8.8.4.4\", \"ttl\": 60}]；来源 live；时间 2026-11-01T02:33:34.497417+00:00（E6）；probe.example A / 解析器 [local-resolver-3]：NOERROR [{\"value\": \"192.0.2.11\", \"ttl\": 60}]；来源 live；时间 2026-11-01T02:33:34.500586+00:00（E7）；probe.example SOA / 解析器 [local-resolver-3]：NOERROR [{\"value\": \"ns1.test.example. host.test.example. 2 60 60 60 60\", \"ttl\": 60}]；来源 live；时间 2026-11-01T02:33:34.503157+00:00（E8）；probe.example SOA / 解析器 [local-resolver-3]：NOERROR [{\"value\": \"ns1.test.example. host.test.example. 2 60 60 60 60\", \"ttl\": 60}]；来源 live；时间 2026-11-01T02:33:34.506171+00:00（E9）；ns1.test.example A / 解析器 [local-resolver-1]：NOERROR [{\"value\": \"9.9.9.9\", \"ttl\": 60}]；来源 live；时间 2026-11-01T02:33:34.508214+00:00（E10）；ns1.test.example A / 解析器 [local-resolver-1]：NOERROR [{\"value\": \"9.9.9.9\", \"ttl\": 60}]；来源 live；时间 2026-11-01T02:33:34.511653+00:00（E11）；probe.example SOA / 解析器 [local-resolver-2]：NOERROR [{\"value\": \"ns1.test.example. host.test.example. 1 60 60 60 60\", \"ttl\": 60}]；来源 live；时间 2026-11-01T02:33:34.514789+00:00（E12）；probe.example A / 解析器 [local-resolver-2]：NOERROR [{\"value\": \"192.0.2.10\", \"ttl\": 60}]；来源 live；时间 2026-11-01T02:33:34.518813+00:00（E13）；probe.example SOA / 解析器 [local-resolver-2]：NOERROR [{\"value\": \"ns1.test.example. host.test.example. 1 60 60 60 60\", \"ttl\": 60}]；来源 live；时间 2026-11-01T02:33:34.522101+00:00（E14）。以上仅为已测组合，未列出的解析器×类型组合未测；不据此确认唯一根因。",
+        "conclusion_evidence_ids": [
+          "E1",
+          "E2",
+          "E3",
+          "E4",
+          "E5",
+          "E6",
+          "E7",
+          "E8",
+          "E9",
+          "E10",
+          "E11",
+          "E12",
+          "E13",
+          "E14"
+        ],
+        "limitations": [
+          "仅代表列出的测量位置、时刻、来源和组合；程序路径成功不证明用户客户端有问题。",
+          "独立 TCP 和 HTTP 是不同连接，可能使用不同后端；结果差异须先核查工具和现场。",
+          "候选解释与事实分开，结构和类型限制仍不能保证全部语义正确。"
+        ],
+        "recommendations": [
+          "query_authoritative / query_dns：预算允许时复测 probe.example SOA 的已列路径（[local-resolver-1], [local-resolver-1], [local-resolver-3], [local-resolver-3]），比较记录和 SOA；持续差异缩小到这些查询路径，不能单凭 Serial 确认同步故障。",
+          "query_authoritative / query_dns：预算允许时复测 probe.example SOA 的已列路径（[local-resolver-3], [local-resolver-3], [local-resolver-2], [local-resolver-2]），比较记录和 SOA；持续差异缩小到这些查询路径，不能单凭 Serial 确认同步故障。",
+          "query_authoritative / query_dns：预算允许时复测 probe.example A 的已列路径（[local-resolver-3], [local-resolver-2]），比较记录和 SOA；持续差异缩小到这些查询路径，不能单凭 Serial 确认同步故障。"
+        ]
+      }
+    },
+    {
+      "original_path": "results/published/dns-accuracy-f0787c0/controlled-final/e03423d0d8ab4bb3b3e304c249feb367.json",
+      "source_sha256": "ef5c5c5e440a9e57abd875e8384b825a3565f6ce34ea6ec93332b2e0c9421bf6",
+      "result": {
+        "diagnostic_assessment": "单项查询的本次结果如下；不据此诊断其他路径或唯一根因。",
+        "assessment_level": "query_measured",
+        "report_fallback_reason": null,
+        "dns_comparison": {
+          "scope": {
+            "max_time_gap_seconds": 300
+          },
+          "paths": [
+            {
+              "evidence_id": "E1",
+              "attempt_id": "A1",
+              "query_attempt_id": "Q1",
+              "target": "probe.example",
+              "record_type": "A",
+              "resolver": "[local-resolver-1]",
+              "role": "recursive",
+              "source_mode": "live",
+              "measured_at": "2026-11-01T02:34:27.664205+00:00",
+              "execution_status": "ok",
+              "error": null,
+              "transport_status": "responded",
+              "dns_rcode": "NOERROR",
+              "result_kind": "NOERROR"
+            }
+          ],
+          "pairs": [],
+          "differences": [
+            "COMPARISON_INCONCLUSIVE"
+          ],
+          "observations": [],
+          "limitations": [
+            "时间/来源缺失的旧记录不能证明同时或同源；响应差异不等于唯一根因。",
+            "记录差异可能来自 CDN、GeoDNS、负载均衡、缓存、策略和查询时间；超时没有提供记录或 TTL 事实。"
+          ]
+        },
+        "execution_issues": [],
+        "measured_facts": [
+          {
+            "evidence_id": "E1",
+            "target": "probe.example",
+            "resolver": "[local-resolver-1]",
+            "record_type": "A",
+            "measured_at": "2026-11-01T02:34:27.664205+00:00",
+            "source_mode": "live",
+            "tool": "query_dns",
+            "result": "NOERROR",
+            "records": [
+              {
+                "value": "192.0.2.10",
+                "ttl": 60
+              }
+            ],
+            "error": null,
+            "error_detail": null,
+            "peer_ip": null,
+            "transport_status": "responded",
+            "dns_rcode": "NOERROR",
+            "result_kind": "NOERROR",
+            "resolver_role": "recursive",
+            "negative_name": null,
+            "cname_chain": [],
+            "canonical_name": "probe.example",
+            "query_attempt_id": "Q1",
+            "attempt_id": "A1",
+            "target_authorization": null
+          }
+        ],
+        "findings": [],
+        "request_kind": "query",
+        "outcome": "answered",
+        "observations": [
+          {
+            "evidence_id": "E1",
+            "observation": "probe.example A / 解析器 [local-resolver-1]：NOERROR [{\"value\": \"192.0.2.10\", \"ttl\": 60}]；来源 live；时间 2026-11-01T02:34:27.664205+00:00（E1）"
+          }
+        ],
+        "hypotheses": [],
+        "conclusion": "单项查询的本次结果如下；不据此诊断其他路径或唯一根因。 已验证事实：probe.example A / 解析器 [local-resolver-1]：NOERROR [{\"value\": \"192.0.2.10\", \"ttl\": 60}]；来源 live；时间 2026-11-01T02:34:27.664205+00:00（E1）",
+        "conclusion_evidence_ids": [
+          "E1"
+        ],
+        "limitations": [
+          "仅报告列出的本次查询及应答 TTL，未测组合未知；没有权威对照时不判断原始 TTL。"
+        ],
+        "recommendations": [
+          "优先收集故障设备的具体错误、发生时间，再进行不修改配置的对照检查。"
+        ]
+      }
+    },
+    {
+      "original_path": "results/published/dns-accuracy-f0787c0/controlled-final/f380e03db1e646cfa6822d2cf954b973.json",
+      "source_sha256": "855dda48ae69f2f4a1f3daa9bdc451cfae49dc31ed1ba742243e81dea1911fd5",
+      "result": {
+        "diagnostic_assessment": "probe.example A [来源 live]：[local-resolver-1] 本次查询超时，其他响应路径为 [local-resolver-2]=NOERROR, [local-resolver-3]=NOERROR；线索限于这些查询路径的可用性，不能区分服务与网络问题，也没有取得超时路径的记录内容（E3、E1、E2）。",
+        "assessment_level": "scope_localized",
+        "report_fallback_reason": null,
+        "dns_comparison": {
+          "scope": {
+            "max_time_gap_seconds": 300
+          },
+          "paths": [
+            {
+              "evidence_id": "E1",
+              "attempt_id": "A1",
+              "query_attempt_id": "Q2",
+              "target": "probe.example",
+              "record_type": "A",
+              "resolver": "[local-resolver-2]",
+              "role": "recursive",
+              "source_mode": "live",
+              "measured_at": "2026-11-01T02:33:03.319649+00:00",
+              "execution_status": "ok",
+              "error": null,
+              "transport_status": "responded",
+              "dns_rcode": "NOERROR",
+              "result_kind": "NOERROR"
+            },
+            {
+              "evidence_id": "E2",
+              "attempt_id": "A1",
+              "query_attempt_id": "Q3",
+              "target": "probe.example",
+              "record_type": "A",
+              "resolver": "[local-resolver-3]",
+              "role": "recursive",
+              "source_mode": "live",
+              "measured_at": "2026-11-01T02:33:03.320943+00:00",
+              "execution_status": "ok",
+              "error": null,
+              "transport_status": "responded",
+              "dns_rcode": "NOERROR",
+              "result_kind": "NOERROR"
+            },
+            {
+              "evidence_id": "E3",
+              "attempt_id": "A1",
+              "query_attempt_id": "Q1",
+              "target": "probe.example",
+              "record_type": "A",
+              "resolver": "[local-resolver-1]",
+              "role": "recursive",
+              "source_mode": "live",
+              "measured_at": "2026-11-01T02:33:03.608503+00:00",
+              "execution_status": "ok",
+              "error": null,
+              "transport_status": "timeout",
+              "dns_rcode": null,
+              "result_kind": "TIMEOUT"
+            }
+          ],
+          "pairs": [
+            {
+              "path_indices": [
+                0,
+                1
+              ],
+              "evidence_ids": [
+                "E1",
+                "E2"
+              ],
+              "codes": [],
+              "comparable": true,
+              "reason": null
+            },
+            {
+              "path_indices": [
+                0,
+                2
+              ],
+              "evidence_ids": [
+                "E1",
+                "E3"
+              ],
+              "codes": [
+                "QUERY_AVAILABILITY_DIFFERENCE"
+              ],
+              "comparable": false,
+              "reason": "NO_CONTENT_FROM_TIMEOUT"
+            },
+            {
+              "path_indices": [
+                1,
+                2
+              ],
+              "evidence_ids": [
+                "E2",
+                "E3"
+              ],
+              "codes": [
+                "QUERY_AVAILABILITY_DIFFERENCE"
+              ],
+              "comparable": false,
+              "reason": "NO_CONTENT_FROM_TIMEOUT"
+            }
+          ],
+          "differences": [
+            "QUERY_AVAILABILITY_DIFFERENCE"
+          ],
+          "observations": [
+            {
+              "path_indices": [
+                0,
+                1
+              ],
+              "evidence_ids": [
+                "E1",
+                "E2"
+              ],
+              "ttl_values": [
+                [
+                  60
+                ],
+                [
+                  60
+                ]
+              ],
+              "duration_ms": [
+                16.0,
+                16.0
+              ],
+              "interpretation": "TTL 与耗时为单次观测，不证明缓存、配置或性能异常。"
+            }
+          ],
+          "limitations": [
+            "时间/来源缺失的旧记录不能证明同时或同源；响应差异不等于唯一根因。",
+            "记录差异可能来自 CDN、GeoDNS、负载均衡、缓存、策略和查询时间；超时没有提供记录或 TTL 事实。"
+          ]
+        },
+        "execution_issues": [
+          {
+            "attempt_id": "A2",
+            "tool_name": "query_dns",
+            "target": "probe.example",
+            "record_type": "A",
+            "error_code": "INVALID_INPUT",
+            "description": "参数非法或不在本次调查范围；检查目标、端口、类型和已有 DNS 证据。"
+          }
+        ],
+        "measured_facts": [
+          {
+            "evidence_id": "E1",
+            "target": "probe.example",
+            "resolver": "[local-resolver-2]",
+            "record_type": "A",
+            "measured_at": "2026-11-01T02:33:03.319649+00:00",
+            "source_mode": "live",
+            "tool": "query_dns",
+            "result": "NOERROR",
+            "records": [
+              {
+                "value": "192.0.2.10",
+                "ttl": 60
+              }
+            ],
+            "error": null,
+            "error_detail": null,
+            "peer_ip": null,
+            "transport_status": "responded",
+            "dns_rcode": "NOERROR",
+            "result_kind": "NOERROR",
+            "resolver_role": "recursive",
+            "negative_name": null,
+            "cname_chain": [],
+            "canonical_name": "probe.example",
+            "query_attempt_id": "Q2",
+            "attempt_id": "A1",
+            "target_authorization": null
+          },
+          {
+            "evidence_id": "E2",
+            "target": "probe.example",
+            "resolver": "[local-resolver-3]",
+            "record_type": "A",
+            "measured_at": "2026-11-01T02:33:03.320943+00:00",
+            "source_mode": "live",
+            "tool": "query_dns",
+            "result": "NOERROR",
+            "records": [
+              {
+                "value": "192.0.2.10",
+                "ttl": 60
+              }
+            ],
+            "error": null,
+            "error_detail": null,
+            "peer_ip": null,
+            "transport_status": "responded",
+            "dns_rcode": "NOERROR",
+            "result_kind": "NOERROR",
+            "resolver_role": "recursive",
+            "negative_name": null,
+            "cname_chain": [],
+            "canonical_name": "probe.example",
+            "query_attempt_id": "Q3",
+            "attempt_id": "A1",
+            "target_authorization": null
+          },
+          {
+            "evidence_id": "E3",
+            "target": "probe.example",
+            "resolver": "[local-resolver-1]",
+            "record_type": "A",
+            "measured_at": "2026-11-01T02:33:03.608503+00:00",
+            "source_mode": "live",
+            "tool": "query_dns",
+            "result": "TIMEOUT",
+            "records": [],
+            "error": null,
+            "error_detail": null,
+            "peer_ip": null,
+            "transport_status": "timeout",
+            "dns_rcode": null,
+            "result_kind": "TIMEOUT",
+            "resolver_role": "recursive",
+            "negative_name": null,
+            "cname_chain": [],
+            "canonical_name": null,
+            "query_attempt_id": "Q1",
+            "attempt_id": "A1",
+            "target_authorization": null
+          }
+        ],
+        "findings": [
+          {
+            "scope": {
+              "target": "probe.example",
+              "record_type": "A",
+              "source_mode": "live",
+              "dns_followup_only": false,
+              "paths": [
+                {
+                  "resolver": "[local-resolver-1]",
+                  "role": "recursive",
+                  "evidence_id": "E3"
+                },
+                {
+                  "resolver": "[local-resolver-2]",
+                  "role": "recursive",
+                  "evidence_id": "E1"
+                },
+                {
+                  "resolver": "[local-resolver-3]",
+                  "role": "recursive",
+                  "evidence_id": "E2"
+                }
+              ],
+              "time_start": "2026-11-01T02:33:03.319649+00:00",
+              "time_end": "2026-11-01T02:33:03.608503+00:00"
+            },
+            "observed_facts": [
+              {
+                "evidence_id": "E3",
+                "resolver": "[local-resolver-1]",
+                "role": "recursive",
+                "authoritative_answer": false,
+                "negative_name": null,
+                "records": [],
+                "soa_serials": [],
+                "transport_status": "timeout",
+                "dns_rcode": null,
+                "result_kind": "TIMEOUT"
+              },
+              {
+                "evidence_id": "E1",
+                "resolver": "[local-resolver-2]",
+                "role": "recursive",
+                "authoritative_answer": false,
+                "negative_name": null,
+                "records": [
+                  {
+                    "value": "192.0.2.10",
+                    "ttl": 60
+                  }
+                ],
+                "soa_serials": [],
+                "transport_status": "responded",
+                "dns_rcode": "NOERROR",
+                "result_kind": "NOERROR"
+              },
+              {
+                "evidence_id": "E2",
+                "resolver": "[local-resolver-3]",
+                "role": "recursive",
+                "authoritative_answer": false,
+                "negative_name": null,
+                "records": [
+                  {
+                    "value": "192.0.2.10",
+                    "ttl": 60
+                  }
+                ],
+                "soa_serials": [],
+                "transport_status": "responded",
+                "dns_rcode": "NOERROR",
+                "result_kind": "NOERROR"
+              }
+            ],
+            "localization": {
+              "affected_evidence_ids": [
+                "E3"
+              ],
+              "other_paths": [
+                {
+                  "evidence_id": "E1",
+                  "resolver": "[local-resolver-2]",
+                  "transport_status": "responded",
+                  "dns_rcode": "NOERROR",
+                  "result_kind": "NOERROR"
+                },
+                {
+                  "evidence_id": "E2",
+                  "resolver": "[local-resolver-3]",
+                  "transport_status": "responded",
+                  "dns_rcode": "NOERROR",
+                  "result_kind": "NOERROR"
+                }
+              ],
+              "interpretation": "只定位列出的查询与路径；异常不自动归因于整台解析器或整个域名。"
+            },
+            "root_cause_confirmed": false,
+            "code": "RECURSIVE_QUERY_TIMEOUT",
+            "stage": "recursive",
+            "status": "observed",
+            "evidence_ids": [
+              "E3",
+              "E1",
+              "E2"
+            ],
+            "explanation": "查询 probe.example A：[local-resolver-1] 对 probe.example 返回 TIMEOUT（E3）。不推断注册状态或服务器宕机。",
+            "limitations": [
+              "单次观测不能区分缓存、策略、调度、网络路径或服务因素；未确认唯一根因。",
+              "缺失时间/来源的旧日志保留未知；未执行 DNSSEC 验证或完整迭代解析。"
+            ],
+            "next_checks": [
+              "query_dns：预算允许时对 probe.example A 的超时路径有限复测（涉及 [local-resolver-1], [local-resolver-2], [local-resolver-3]）；若恢复则削弱持续不可用解释，若仍超时仍不能区分服务与网络。"
+            ]
+          }
+        ],
+        "request_kind": "investigation",
+        "outcome": "answered",
+        "observations": [
+          {
+            "evidence_id": "E1",
+            "observation": "probe.example A / 解析器 [local-resolver-2]：NOERROR [{\"value\": \"192.0.2.10\", \"ttl\": 60}]；来源 live；时间 2026-11-01T02:33:03.319649+00:00（E1）"
+          },
+          {
+            "evidence_id": "E2",
+            "observation": "probe.example A / 解析器 [local-resolver-3]：NOERROR [{\"value\": \"192.0.2.10\", \"ttl\": 60}]；来源 live；时间 2026-11-01T02:33:03.320943+00:00（E2）"
+          },
+          {
+            "evidence_id": "E3",
+            "observation": "probe.example A / 解析器 [local-resolver-1]：TIMEOUT ；来源 live；时间 2026-11-01T02:33:03.608503+00:00（E3）"
+          }
+        ],
+        "hypotheses": [
+          {
+            "testable_claim": null,
+            "measurement_scope": {},
+            "evidence_review_notes": [
+              "两个独立递归解析器均返回 NOERROR 且记录一致（192.0.2.10，TTL 60），未见 NXDOMAIN/SERVFAIL/REFUSED。",
+              "E1 的反面关系缺少匹配的具体观测命题/范围或结果类型；未据此确认或否定该原因。",
+              "E2 的反面关系缺少匹配的具体观测命题/范围或结果类型；未据此确认或否定该原因。"
+            ],
+            "category": "dns_resolution",
+            "id": "H1",
+            "statement": "probe.example 的 DNS 记录本身存在异常（缺失、错误或权威侧不可用）。",
+            "status": "无法确定",
+            "supporting_evidence_ids": [],
+            "contradicting_evidence_ids": [],
+            "missing_information": [
+              "权威服务器直查结果（AA 应答）",
+              "DNSSEC 验证状态"
+            ]
+          },
+          {
+            "testable_claim": null,
+            "measurement_scope": {},
+            "evidence_review_notes": [
+              "仅一次超时观测，且复测请求被工具拒绝（A2），无法判断是否持续；超时本身不能证明服务器宕机。",
+              "E3 的支持关系缺少匹配的具体观测命题/范围或结果类型；未据此确认或否定该原因。"
+            ],
+            "category": "dns_resolution",
+            "id": "H2",
+            "statement": "[local-resolver-1] 这一条递归查询路径当前不可用（解析器服务或到该解析器的网络路径问题）。",
+            "status": "无法确定",
+            "supporting_evidence_ids": [],
+            "contradicting_evidence_ids": [],
+            "missing_information": [
+              "[local-resolver-1] 路径的复测结果",
+              "该解析器进程/监听状态与上游连通性",
+              "是否仅对该域名超时（其他域名对照）"
+            ]
+          },
+          {
+            "testable_claim": null,
+            "measurement_scope": {},
+            "evidence_review_notes": [
+              "本次测量来自程序所在主机，未检查 hosts、浏览器缓存、代理或 DoH 配置。"
+            ],
+            "category": "client_environment",
+            "id": "H3",
+            "statement": "客户端本地环境（hosts、缓存、代理、DoH）导致解析差异。",
+            "status": "无法确定",
+            "supporting_evidence_ids": [],
+            "contradicting_evidence_ids": [],
+            "missing_information": [
+              "hosts 文件内容",
+              "浏览器/系统 DoH 与代理设置",
+              "客户端本地缓存状态"
+            ]
+          }
+        ],
+        "conclusion": "probe.example A [来源 live]：[local-resolver-1] 本次查询超时，其他响应路径为 [local-resolver-2]=NOERROR, [local-resolver-3]=NOERROR；线索限于这些查询路径的可用性，不能区分服务与网络问题，也没有取得超时路径的记录内容（E3、E1、E2）。 已验证事实：probe.example A / 解析器 [local-resolver-2]：NOERROR [{\"value\": \"192.0.2.10\", \"ttl\": 60}]；来源 live；时间 2026-11-01T02:33:03.319649+00:00（E1）；probe.example A / 解析器 [local-resolver-3]：NOERROR [{\"value\": \"192.0.2.10\", \"ttl\": 60}]；来源 live；时间 2026-11-01T02:33:03.320943+00:00（E2）；probe.example A / 解析器 [local-resolver-1]：TIMEOUT ；来源 live；时间 2026-11-01T02:33:03.608503+00:00（E3）。以上仅为已测组合，未列出的解析器×类型组合未测；不据此确认唯一根因。",
+        "conclusion_evidence_ids": [
+          "E1",
+          "E2",
+          "E3"
+        ],
+        "limitations": [
+          "仅代表列出的测量位置、时刻、来源和组合；程序路径成功不证明用户客户端有问题。",
+          "独立 TCP 和 HTTP 是不同连接，可能使用不同后端；结果差异须先核查工具和现场。",
+          "候选解释与事实分开，结构和类型限制仍不能保证全部语义正确。"
+        ],
+        "recommendations": [
+          "query_dns：预算允许时对 probe.example A 的超时路径有限复测（涉及 [local-resolver-1], [local-resolver-2], [local-resolver-3]）；若恢复则削弱持续不可用解释，若仍超时仍不能区分服务与网络。"
+        ]
+      }
+    }
+  ]
+}

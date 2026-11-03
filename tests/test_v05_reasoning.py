@@ -161,17 +161,13 @@ async def test_failed_agent_keeps_report_and_failed_status(tmp_path):
 
 def test_real_historical_reports_load_without_inventing_new_diagnosis():
     import json
-    paths=list(Path('results/published').glob('evaluation-reliability-*/*.json'))
-    # Use checked-in v0.4 wire-experiment reports if the v0.2 directory has no top-level reports.
-    paths+=list(Path('results/published/nsec3-divergence-audit').rglob('*project.json'))
-    checked=0
-    for p in paths:
-        old=json.loads(p.read_text(encoding='utf-8'))
-        if isinstance(old,dict) and isinstance(old.get('result'),dict):
-            r=InvestigationResult.model_validate(old['result'])
-            assert r.diagnostic_conclusion is None
-            assert r.conclusion==old['result']['conclusion'];checked+=1
-    assert checked>0
+    rows=json.loads(Path('tests/fixtures/reports/legacy-formal.json').read_text(encoding='utf-8'))['cases']
+    assert rows
+    for row in rows:
+        old=row['result'];r=InvestigationResult.model_validate(old)
+        assert r.diagnostic_conclusion is None
+        assert r.conclusion==old['conclusion']
+
 
 
 def test_policy_redirect_and_body_limit_remain_unknown():

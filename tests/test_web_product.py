@@ -25,12 +25,12 @@ def test_baidu_short_summary_and_scoped_comparisons():
     assert '整体 DNS 不可用' in v['short_explanation'] and '不能' in v['short_explanation']
     assert len(v['short_explanation'])<150
     groups={g['resolver']:g for g in v['resolver_groups']}
-    assert groups['192.168.5.1']['summary']=='5 次查询超时'
+    assert groups['192.0.2.53']['summary']=='5 次查询超时'
     assert groups['1.1.1.1']['summary']=='2 次查询超时'
     assert groups['8.8.8.8']['summary']=='1 次正常响应'
     assert {m['type'] for m in groups['8.8.8.8']['measurements']}=={'A'}
-    assert all(m['rcode']=='未收到响应' for m in groups['192.168.5.1']['measurements'])
-    assert all(m['query_id'] and m['evidence_id'] and m['time'] for m in groups['192.168.5.1']['measurements'])
+    assert all(m['rcode']=='未收到响应' for m in groups['192.0.2.53']['measurements'])
+    assert all(m['query_id'] and m['evidence_id'] and m['time'] for m in groups['192.0.2.53']['measurements'])
     assert len(v['timeline'])==len(log['attempts'])
     assert any('未执行' in e['summary'] for e in v['timeline'])
     assert '后续' in next(c['title'] for c in v['evidence_cards'] if c['id']=='E19')
@@ -60,7 +60,7 @@ def test_timeline_real_order_unknown_time_and_no_sixth_tool():
 
 def test_dnssec_direct_dependencies_and_html(tmp_path):
     c,h=client(tmp_path)
-    rows=json.loads(Path('results/published/v05-report-quality-fixes/20261102-report-quality/before.json').read_text(encoding='utf8'))['cases']
+    rows=json.loads(Path('tests/fixtures/reports/report-quality.json').read_text(encoding='utf8'))['cases']
     from evaluation.report_quality import report
     row=next(x for x in rows if x['case']=='dnssec-ds_mismatch')
     key=c.post('/api/import',headers=h,json={'result':report(row),'evidence':row['evidence'],'validation_results':row.get('validation_results',[]),'demo':True}).json()['id']

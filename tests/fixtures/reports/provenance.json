@@ -1,0 +1,255 @@
+[
+  {
+    "source": "results/published/v05-report-quality-fixes/20261102-report-quality/before.json",
+    "destination": "tests/fixtures/reports/report-quality.json",
+    "source_commit": "a8fd68983c11c5841275f0a4423e2110525ff278",
+    "source_sha256": "c7e9e1f87078626ea652c91fdd131ed4e03f886e510586f186d25df75a6f0ec1",
+    "destination_sha256": "d4a3e9af22f9e7e5244d4252a088c1c740f9dea0d0a3788198b76ecc42104c1a",
+    "transformation": "extracted required fields"
+  },
+  {
+    "source": "results/published/v05-diagnostic-upgrade/final-release/dnssec-ds_mismatch.json",
+    "destination": "tests/fixtures/reports/dnssec-ds-mismatch.json",
+    "source_commit": "a8fd68983c11c5841275f0a4423e2110525ff278",
+    "source_sha256": "152db7e19a764d9ec081bcd31cd921f66638c0afeab56a8b35fc8a3547186498",
+    "destination_sha256": "152db7e19a764d9ec081bcd31cd921f66638c0afeab56a8b35fc8a3547186498",
+    "transformation": "byte-for-byte copy"
+  },
+  {
+    "source": "results/published/v06-final-review/20261102/before.json",
+    "destination": "tests/fixtures/reports/mixed-faults.json",
+    "source_commit": "a8fd68983c11c5841275f0a4423e2110525ff278",
+    "source_sha256": "a7191237bba0389fb9b84d4b0a3078adeb63c92f2f313573ff7ee3d8ff7a5d82",
+    "destination_sha256": "83010988f21f4637e093eef91146be36bd299a1afc14d018c6b9ea766356453e",
+    "transformation": "extracted required fields"
+  },
+  {
+    "destination": "tests/fixtures/reports/legacy-controlled.json",
+    "transformation": "aggregate complete original result objects only; all previously validated cases retained",
+    "retained_results": 4,
+    "sources": [
+      {
+        "path": "results/published/dns-accuracy-f0787c0/controlled-final/669ed9ec776c4821a34c7b0353b6236e.json",
+        "sha256": "cb7f4231e70cad07d91c417d4920aec4e64799e5dc965f669b7586a8c2f19fbd"
+      },
+      {
+        "path": "results/published/dns-accuracy-f0787c0/controlled-final/845b0b96cddb496fa246d986a7ebd686.json",
+        "sha256": "2f2c341ff446a2acda966e325ae84233ffe1d71b0f4e16d793c162aaf13895be"
+      },
+      {
+        "path": "results/published/dns-accuracy-f0787c0/controlled-final/e03423d0d8ab4bb3b3e304c249feb367.json",
+        "sha256": "ef5c5c5e440a9e57abd875e8384b825a3565f6ce34ea6ec93332b2e0c9421bf6"
+      },
+      {
+        "path": "results/published/dns-accuracy-f0787c0/controlled-final/f380e03db1e646cfa6822d2cf954b973.json",
+        "sha256": "855dda48ae69f2f4a1f3daa9bdc451cfae49dc31ed1ba742243e81dea1911fd5"
+      }
+    ]
+  },
+  {
+    "destination": "tests/fixtures/reports/legacy-formal.json",
+    "transformation": "aggregate complete original result objects only; all previously validated cases retained",
+    "retained_results": 48,
+    "sources": [
+      {
+        "path": "results/published/evaluation-reliability-20261031T035848Z/0fec340a86a64e0ca21943bfeea2206f.json",
+        "sha256": "587bab8a65b7887a346ea4f3a6b75e0dc17f47eb34969cadb747984f2a142d6b"
+      },
+      {
+        "path": "results/published/evaluation-reliability-20261031T035848Z/10a883fee1bf4ecbafebd3204d671082.json",
+        "sha256": "5c7382581e9a1475ad46831b90cc59f605ffc16b20f1cb393e7ee5cce384577e"
+      },
+      {
+        "path": "results/published/evaluation-reliability-20261031T035848Z/1524381767a945708640df01dc15cc24.json",
+        "sha256": "53deea0913e933c4a28d5d91da58f77c42b6ac06dad100c1a3102752b700bd10"
+      },
+      {
+        "path": "results/published/evaluation-reliability-20261031T035848Z/1af393afd7eb49c89be91011d591400b.json",
+        "sha256": "9adb35d8ab9db1b2cd3655edf4520f57c3014954281038f64a8f28e933f4e321"
+      },
+      {
+        "path": "results/published/evaluation-reliability-20261031T035848Z/2ec16ecc9bd3437290afe1bcddf0b321.json",
+        "sha256": "0cda5d19076e15f43ca5885368e6aab50939d76cab0639f62bbc081e257075b3"
+      },
+      {
+        "path": "results/published/evaluation-reliability-20261031T035848Z/2f4731d9389f4c058c71ceea3f2c9422.json",
+        "sha256": "01d3ac58195c2330706ef253972c2487b36c2d5c0e96eb6a0b6e921ea67c41c5"
+      },
+      {
+        "path": "results/published/evaluation-reliability-20261031T035848Z/346306490d3740f79d4e91eea4ed1454.json",
+        "sha256": "87a3673fe1d00589f9f0d196731c1152e0666893ee36ac205bf8e250df3814e7"
+      },
+      {
+        "path": "results/published/evaluation-reliability-20261031T035848Z/3a1091999387466d918c6d269e275173.json",
+        "sha256": "e89e38c5c214461209efa65bebf42f79b6339af20a7a77a53341d09f35e419f9"
+      },
+      {
+        "path": "results/published/evaluation-reliability-20261031T035848Z/3b76d79366bb4d39b2c6fcaa4c82c3e8.json",
+        "sha256": "cbab5c7900dbf23da1d29de1d1b569640b28fe0df5887b630d378b27ce5d3ca8"
+      },
+      {
+        "path": "results/published/evaluation-reliability-20261031T035848Z/3cf8ab1ad12e46519c1a15f96aaefd7f.json",
+        "sha256": "7fcd6f2b236c65dace8cffc92baf0a00e63e90dd725b82649b64fa531779975f"
+      },
+      {
+        "path": "results/published/evaluation-reliability-20261031T035848Z/3e923683d6404b0baa3696a7fc917db6.json",
+        "sha256": "1e6db0d707f0b7d4f0e405dd47a6f4d7d7b96840bebe24c985e33182467a2fb9"
+      },
+      {
+        "path": "results/published/evaluation-reliability-20261031T035848Z/43492de50ecb4d16a328ccd62b63b82a.json",
+        "sha256": "d337bb8f5b53cbfa79ff2407a55c5ad4da97421753c7f76c196e90a386dee6ee"
+      },
+      {
+        "path": "results/published/evaluation-reliability-20261031T035848Z/4efc0eed4401405a9c1f00720be231e1.json",
+        "sha256": "9263f1600a3141b9431fe3163ad4bbae595e637de75e89b2ebe87675d21c7d51"
+      },
+      {
+        "path": "results/published/evaluation-reliability-20261031T035848Z/511c1ec1ff804010b2bc20ece07b4a0b.json",
+        "sha256": "2f9ebd057733f9d612a7aa0b60bd702cd7f62f56407b82059c0117634038258b"
+      },
+      {
+        "path": "results/published/evaluation-reliability-20261031T035848Z/536326b5085447c9ad3afb5ab7c4b822.json",
+        "sha256": "b7e08fa0409f2dc57fcd999ed6684b3c6448567b5e5c756178249127329a8f28"
+      },
+      {
+        "path": "results/published/evaluation-reliability-20261031T035848Z/581f17e9373f4ea3b60130b640aa2e0e.json",
+        "sha256": "2b587d28b7835041b0ec35ad39cd1bb2da478b4cc532a7e746f8150bbeda7f49"
+      },
+      {
+        "path": "results/published/evaluation-reliability-20261031T035848Z/6022aa5a458a43aeb5ef3d6492ce0095.json",
+        "sha256": "0fd271f108675411614bac0ca21589d681a0187630525e428b05fcc8a1d24c15"
+      },
+      {
+        "path": "results/published/evaluation-reliability-20261031T035848Z/69c946cb029f49659abb0525bf5c8ad6.json",
+        "sha256": "ad08f5ba4f81410c72e277e61561ae9467840e111e316a9c0217f82e9bf103c3"
+      },
+      {
+        "path": "results/published/evaluation-reliability-20261031T035848Z/7b783f7a32864092bbcdc3742f4ff378.json",
+        "sha256": "38cb2a302707069244862cd85e0c290ba30b680f9bd73e46ff4fbace6eb3b6f9"
+      },
+      {
+        "path": "results/published/evaluation-reliability-20261031T035848Z/7c503436262e4ab18e212bbaae2b4ba0.json",
+        "sha256": "09b5d7f084fa589437214fecd585789fda0e4ead03ce094ee9e82cd0ce773925"
+      },
+      {
+        "path": "results/published/evaluation-reliability-20261031T035848Z/7d8e397f422d4455b5cfd8cf6210fa19.json",
+        "sha256": "bd335dbf982a969366877b6dbae4fb6677856ad14abd2bdc4b9393c66895ff6f"
+      },
+      {
+        "path": "results/published/evaluation-reliability-20261031T035848Z/8369eeddd2d74d7ab92996a557b17c1a.json",
+        "sha256": "386f48c11124b45aab47d6d7b3575d336a05ee435839e96935ab3f445ee7f027"
+      },
+      {
+        "path": "results/published/evaluation-reliability-20261031T035848Z/89dd0ea37dde4e07aa5c3cecf341a14a.json",
+        "sha256": "caffa3a55fa2004c5d8400bc3a7233f2e909825d7e9093d90828b16c0d2b78b2"
+      },
+      {
+        "path": "results/published/evaluation-reliability-20261031T035848Z/8e306400f75a40ca9b819358183a1a1b.json",
+        "sha256": "ca274ac910760910c4ab64ba2f69c38d77cf4cfd1b45a16e04fbc32571c8d22c"
+      },
+      {
+        "path": "results/published/evaluation-reliability-20261031T035848Z/8e58649900b345c8a6bd624ac07f483a.json",
+        "sha256": "544e3af31675e895e07338921786947f34369f77a2ff432c3ff4dc772f7fa2e9"
+      },
+      {
+        "path": "results/published/evaluation-reliability-20261031T035848Z/9565f5383f7042db8563e32314d8f908.json",
+        "sha256": "a17cf14461b7ab829ea7049652113b894fa046e576a3408af389deab76d94b73"
+      },
+      {
+        "path": "results/published/evaluation-reliability-20261031T035848Z/9ca60453ec554d47920ec08b48a82d87.json",
+        "sha256": "91370b946624bff39f56072df4fa8946b353c0b23083ca6bce7ca1c7d6817f18"
+      },
+      {
+        "path": "results/published/evaluation-reliability-20261031T035848Z/a01e4fb2c32948d7a633cf1f17402f24.json",
+        "sha256": "1e353d91c69c31d00bc36d04dcc05c78c6e838e164cbb973afa077e7e707639f"
+      },
+      {
+        "path": "results/published/evaluation-reliability-20261031T035848Z/b992e976ae7843218806d45ccc1908bc.json",
+        "sha256": "3c95257aed74dd846cd158db22234a0ed84f18116cf1262c68727159188295f7"
+      },
+      {
+        "path": "results/published/evaluation-reliability-20261031T035848Z/b9c1b8aa68934629befb7c479dabdb23.json",
+        "sha256": "f3611522996849b5a0ba049e8dc2acad118cc44741261aae59b0f5a5ce3463d0"
+      },
+      {
+        "path": "results/published/evaluation-reliability-20261031T035848Z/c08e2771435648dab40a4d20f76aa299.json",
+        "sha256": "1c17e4630b5a8d8218c157644a408cde1297acc24433930c5ea2da990cc4ac9a"
+      },
+      {
+        "path": "results/published/evaluation-reliability-20261031T035848Z/c4c77c05566e425bb3c51a9cb9d0f2d0.json",
+        "sha256": "503aef341624b7d2d8152f13bbee4424cf636ec90858656c4674ce146f6cfae0"
+      },
+      {
+        "path": "results/published/evaluation-reliability-20261031T035848Z/ccae00f52f0143128918674d06f87cae.json",
+        "sha256": "11495c0c79eca8764bb7e40392865d1dee102852d1bd86071f454efcac83d6ea"
+      },
+      {
+        "path": "results/published/evaluation-reliability-20261031T035848Z/d165625c04314dea85933b81fa6a780f.json",
+        "sha256": "c55dcf34e0b2caa163404865169067bbe8ce13722f6437a525e858e349588da5"
+      },
+      {
+        "path": "results/published/evaluation-reliability-20261031T035848Z/d1889c5ffc6d43efa6c7e01c23844c6d.json",
+        "sha256": "d2660a8d482ae231de7ce88caccd01729f0f3c79e1c15774ca38a270c46c6810"
+      },
+      {
+        "path": "results/published/evaluation-reliability-20261031T035848Z/db240f3a6b7d4053a78c071c777c6266.json",
+        "sha256": "f2cf90f2ded268907d53455dc18753dcdcb6b091d949c3966e8c491456338ebc"
+      },
+      {
+        "path": "results/published/evaluation-reliability-20261031T035848Z/dd141bdd7799440b8a1b1c8f6daac5e7.json",
+        "sha256": "0ff7ae150e81076d079140898ce83607f940f4ca65a2bf6d7164d39249f3d439"
+      },
+      {
+        "path": "results/published/evaluation-reliability-20261031T035848Z/df51e0f489454c87baac0c3e84a30269.json",
+        "sha256": "7f3eade73a95f51319ebeba3e29f5038a2d5f7ab7654c2c82cd08bbedaa963a0"
+      },
+      {
+        "path": "results/published/evaluation-reliability-20261031T035848Z/e6491b6251054d0b98bb62946319428c.json",
+        "sha256": "97070a25e3bd201fd8b0a2244fc1c53b3135e9bd046fb9a0b7a88a8fa042ff1b"
+      },
+      {
+        "path": "results/published/evaluation-reliability-20261031T035848Z/ea72adc2d25b40c2a1a81113a1f1859c.json",
+        "sha256": "92c6ff4aa53d468c10d537e8c6bea6c65a1ff61ff1c5da8eab71986c902868d8"
+      },
+      {
+        "path": "results/published/evaluation-reliability-20261031T035848Z/ef618d749e844b36acdd4dce00a7d763.json",
+        "sha256": "2a98cdbeb93358c799b0474425d2e38dca46ca37ce5fb36efa005114a14d2e06"
+      },
+      {
+        "path": "results/published/evaluation-reliability-20261031T035848Z/f3e4bb9e605c48a5ba290c9d0daa183f.json",
+        "sha256": "2967f550ccb988ef0a7f5f2c87a071660cf3fdb081498e5ffd491e8dd82796e3"
+      },
+      {
+        "path": "results/published/evaluation-reliability-20261031T035848Z/f588bf4eeee3492f82c2eebed211df86.json",
+        "sha256": "b1b371e88d0499818631ed0ae90af591516bb6469458e7b51880ab125add36f4"
+      },
+      {
+        "path": "results/published/evaluation-reliability-20261031T035848Z/f7abf2fa979440529c59a44409a0d3f4.json",
+        "sha256": "bc07f3557ff9ee7ea37c52802cc74e2292a1f79f96c8b27d848ef3812c7e0613"
+      },
+      {
+        "path": "results/published/evaluation-reliability-20261031T035848Z/f7b7beed89e54bd4af7a7512e981c384.json",
+        "sha256": "c7f927f6a7718f51a479f8ac579a3e21260c8f681c183a1c9a9b250c7eb82f31"
+      },
+      {
+        "path": "results/published/evaluation-reliability-20261031T035848Z/fbbc6da3ce3c4e72a7f2bafa6df4946f.json",
+        "sha256": "f620a2ea5871c9e559eb8170295bd35f6977ddf90bc064388c15c57bd0c08c5c"
+      },
+      {
+        "path": "results/published/evaluation-reliability-20261031T035848Z/fe4d6a0e82a44102b1c4e2f594599ad9.json",
+        "sha256": "bffae21b62d131da9566ee073513d6867d9ec6a962e37e708c2bfd9e84e55e19"
+      },
+      {
+        "path": "results/published/evaluation-reliability-20261031T035848Z/ff07e6c21c87478198f26e49ab73752b.json",
+        "sha256": "82507367a9b09752e7fa4d6bfe29ea2cd9d501af5a58a5354030522ec1b0826e"
+      }
+    ]
+  },
+  {
+    "source": "data/regressions/baidu-investigation.json",
+    "destination": "data/regressions/baidu-investigation.json",
+    "source_sha256": "d71618858ed81eb38f6113250a3910817465e5b45c63b5d901ebce391421fdd4",
+    "destination_sha256": "d2aeedb25934e88428414bb35f8daecbb1c93f961e9e68888c340eec6e3c80ae",
+    "transformation": "redacted private resolver identity; original unchanged in verified archive and immutable source commit"
+  }
+]

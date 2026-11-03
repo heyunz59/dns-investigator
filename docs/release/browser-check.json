@@ -1,0 +1,11 @@
+{
+  "status": "PASS",
+  "mode": "actual local Web + local Markdown preview, not GitHub chrome",
+  "sources": [
+    "redacted historical Baidu",
+    "controlled DNSSEC fixture"
+  ],
+  "new_model_calls": 0,
+  "new_public_measurements": 0,
+  "errors": []
+}

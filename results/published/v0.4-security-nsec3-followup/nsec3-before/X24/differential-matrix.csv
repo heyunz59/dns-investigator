@@ -1,2 +1,0 @@
-﻿case_id,input_hash,changed_factor,project_status,unbound_status,project_reason,unbound_reason,proof_sufficient,evidence_files,rfc_basis,interpretation
-X24,726241f69480ab8202141460c625c0046c0f687490ec92f1ae3f943a10406e3b,"('policy_iterations', True)",INDETERMINATE,BOGUS,NSEC3_PARAMETERS_OR_OPT_OUT,validation failure <probe.example.test. A IN>: nameerror proof failed from 127.0.0.12,PENDING_PROTOCOL_ANALYSIS,verifier-logs/X24-1-project.json,RFC5155 8.1-8.4,not adjudicated from status equality

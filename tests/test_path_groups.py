@@ -24,11 +24,11 @@ def test_real_log_all_ledgers_preserved_and_two_path_groups(monkeypatch):
     assert len(log['evidence'])==19 and len(log['dns_attempts'])==17
     assert sum(e['data'].get('result_kind')=='TIMEOUT' for e in log['evidence'])==7
     g={x['location'][0]['resolver']:x for x in r['diagnostic_groups']}
-    assert set(g)=={'192.168.5.1','1.1.1.1'}
-    assert set(g['192.168.5.1']['direct_evidence_ids'])=={'E2','E5','E8','E10','E14'}
+    assert set(g)=={'192.0.2.53','1.1.1.1'}
+    assert set(g['192.0.2.53']['direct_evidence_ids'])=={'E2','E5','E8','E10','E14'}
     assert set(g['1.1.1.1']['direct_evidence_ids'])=={'E4','E7'}
-    assert [g[s]['grouped_observation_count'] for s in ['192.168.5.1','1.1.1.1']]==[5,2]
-    assert set(g['192.168.5.1']['query_attempt_ids'])=={'Q1','Q6','Q8','Q10','Q14'}
+    assert [g[s]['grouped_observation_count'] for s in ['192.0.2.53','1.1.1.1']]==[5,2]
+    assert set(g['192.0.2.53']['query_attempt_ids'])=={'Q1','Q6','Q8','Q10','Q14'}
     assert set(g['1.1.1.1']['query_attempt_ids'])=={'Q2','Q5'}
     assert len(r['secondary_diagnoses'])==2 and r['diagnostic_conclusion'] is None
     assert len(r['remediation_plan'])==6 and sum(s['action_type']=='CHECK' for s in r['remediation_plan'])==2
@@ -123,7 +123,7 @@ def test_other_mechanisms_and_authority_are_independent():
 
 
 def test_dnssec_bogus_not_swallowed_by_timeout():
-    p=Path('results/published/v05-diagnostic-upgrade/final-release/dnssec-ds_mismatch.json');old=json.loads(p.read_text(encoding='utf-8'))
+    p=Path('tests/fixtures/reports/dnssec-ds-mismatch.json');old=json.loads(p.read_text(encoding='utf-8'))
     from evaluation.report_quality import report as replay
     extra=constructed([row()]).calls[0];extra.update(id='E999',query_attempt_id='Q999')
     r=replay(dict(target=old['evidence'][0]['input']['domain'],evidence=old['evidence']+[extra],attempts=old['attempts'],dns_attempts=old['dns_attempts'],validation_results=old['validation_results']))
@@ -167,6 +167,6 @@ def test_cli_uses_same_scoped_overview_not_independent_root_causes(capsys):
     from dns_investigator.main import summary
     log=canonical(json.loads(FIX.read_text(encoding='utf-8-sig')));before=copy.deepcopy(log)
     summary(log['result']);text=capsys.readouterr().out
-    assert '部分递归 DNS 查询路径超时' in text and '192.168.5.1' in text and '1.1.1.1' in text
+    assert '部分递归 DNS 查询路径超时' in text and '192.0.2.53' in text and '1.1.1.1' in text
     assert '并列异常/未完成范围' not in text and '301' in text and '重定向被安全策略拒绝' in text
     assert text.count('CHECK（尚未执行）')==2 and log==before

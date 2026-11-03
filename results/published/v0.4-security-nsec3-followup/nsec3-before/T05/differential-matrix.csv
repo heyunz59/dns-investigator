@@ -1,2 +1,0 @@
-﻿case_id,input_hash,changed_factor,project_status,unbound_status,project_reason,unbound_reason,proof_sufficient,evidence_files,rfc_basis,interpretation
-T05,b13825bb92570cc35c2907550a4feb36f84e3f95ec20fff146a06b9704b008d4,valid ring + extra malformed,SECURE,SECURE,SUPPORTED_NEGATIVE_ANSWER_AUTHENTICATED,,PENDING_PROTOCOL_ANALYSIS,verifier-logs/T05-1-project.json,RFC5155 8.1-8.4,not adjudicated from status equality

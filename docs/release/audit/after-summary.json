@@ -1,0 +1,98 @@
+{
+  "files": 184,
+  "bytes": 9708696,
+  "directories": {
+    ".env.example": {
+      "files": 1,
+      "bytes": 549
+    },
+    ".gitattributes": {
+      "files": 1,
+      "bytes": 472
+    },
+    ".github": {
+      "files": 4,
+      "bytes": 2773
+    },
+    ".gitignore": {
+      "files": 1,
+      "bytes": 218
+    },
+    "CHANGELOG.md": {
+      "files": 1,
+      "bytes": 1273
+    },
+    "CONTRIBUTING.md": {
+      "files": 1,
+      "bytes": 1452
+    },
+    "LICENSE": {
+      "files": 1,
+      "bytes": 1103
+    },
+    "README.md": {
+      "files": 1,
+      "bytes": 9208
+    },
+    "README.zh-CN.md": {
+      "files": 1,
+      "bytes": 8339
+    },
+    "SECURITY.md": {
+      "files": 1,
+      "bytes": 1278
+    },
+    "THIRD_PARTY_NOTICES.md": {
+      "files": 1,
+      "bytes": 1993
+    },
+    "data": {
+      "files": 19,
+      "bytes": 606120
+    },
+    "docs": {
+      "files": 29,
+      "bytes": 5417469
+    },
+    "evaluation": {
+      "files": 20,
+      "bytes": 81510
+    },
+    "pyproject.toml": {
+      "files": 1,
+      "bytes": 1049
+    },
+    "requirements-dev.txt": {
+      "files": 1,
+      "bytes": 70
+    },
+    "requirements-lock.txt": {
+      "files": 1,
+      "bytes": 954
+    },
+    "requirements-web.txt": {
+      "files": 1,
+      "bytes": 66
+    },
+    "requirements.txt": {
+      "files": 1,
+      "bytes": 128
+    },
+    "results": {
+      "files": 1,
+      "bytes": 274
+    },
+    "scripts": {
+      "files": 7,
+      "bytes": 22180
+    },
+    "src": {
+      "files": 43,
+      "bytes": 342764
+    },
+    "tests": {
+      "files": 46,
+      "bytes": 3207454
+    }
+  }
+}

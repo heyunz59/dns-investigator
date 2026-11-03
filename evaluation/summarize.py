@@ -45,6 +45,6 @@ def summarize(source, output):
 if __name__ == "__main__":
     p = argparse.ArgumentParser()
     p.add_argument("review", type=Path)
-    p.add_argument("--output", type=Path, default=Path("results/published"))
+    p.add_argument("--output", type=Path, default=Path("results/runs/summary"))
     a = p.parse_args()
     summarize(a.review, a.output)
