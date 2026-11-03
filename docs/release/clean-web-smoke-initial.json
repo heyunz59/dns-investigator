@@ -1,0 +1,8 @@
+{
+  "status": "HTTP_RESPONSES_PASSED_CLEANUP_FAILED",
+  "mode": "actual installed wheel Web application on isolated loopback port, outside checkout",
+  "api_key": "empty",
+  "new_model_calls": 0,
+  "new_public_measurements": 0,
+  "limitation": "Windows launcher child cleanup race on first helper; no business failure"
+}

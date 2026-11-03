@@ -110,7 +110,7 @@ python -m dns_investigator.main --target example.com --tools-only --fixture data
 
 ## 测试与验证
 
-整理前候选在 Windows/Linux 通过 **604 项测试**。本轮保留全部测试函数，将必要数据从历史输出迁至稳定 fixture；[当前验证回执](docs/release/verification.json) 单独记录整理后的运行与 CI。覆盖受控报文、DNSSEC/NSEC3、安全授权、并发归属/统计、Agent、报告、Web 和安装后的 CLI。
+当前候选在 Linux Python 3.11/3.12 和 Windows 3.12 每组均通过 **604 项测试**（[实际 CI](https://github.com/heyunz59/dns-investigator/actions/runs/41558555186)）；按 README 新克隆并创建的独立环境也通过 604 项。本轮保留全部测试函数，将必要数据从历史输出迁至稳定 fixture；[当前验证回执](docs/release/verification.json) 单独记录整理后的运行与 CI。覆盖受控报文、DNSSEC/NSEC3、安全授权、并发归属/统计、Agent、报告、Web 和安装后的 CLI。
 
 ```bash
 python -m pip install -e ".[web,dev]"

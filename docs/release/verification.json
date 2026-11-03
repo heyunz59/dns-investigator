@@ -1,10 +1,47 @@
 {
-  "status": "IN_PROGRESS",
+  "status": "PASS",
+  "candidate_source_sha": "03f4324300f9333e62c025444ec375187f1b908c",
+  "version": "0.6.0rc1",
   "baseline": "604 passed in 43.23s",
-  "migration_targeted": "199 passed in 18.80s",
+  "migrated_full_suite": "604 passed in 42.20s",
+  "clean_clone_full_suite": "604 passed in 44.58s",
+  "clean_clone_origin": "GitHub shallow branch clone; new venv; no inherited project key",
+  "clean_installs": [
+    "editable core",
+    "editable web+dev",
+    "wheel outside checkout"
+  ],
+  "cli_strict_json_cases_per_installation": 20,
+  "web_smoke": "actual installed wheel uvicorn on isolated loopback port, outside checkout; PASS",
+  "ci": {
+    "url": "https://github.com/heyunz59/dns-investigator/actions/runs/41558555186",
+    "jobs": {
+      "Linux 3.11": "604 passed in 36.58s",
+      "Linux 3.12": "604 passed in 31.01s",
+      "Windows 3.12": "604 passed in 47.60s"
+    },
+    "installation": "all three PASS",
+    "public_audit": "all three PASS",
+    "skips": 0
+  },
+  "fixture_demo_measurements": 3,
+  "fixture_demo_model_calls": 0,
   "new_public_measurements": 0,
   "new_model_calls": 0,
-  "license": "MIT approved by owner",
-  "formal_release": "not created",
-  "main_merged": false
+  "runtime_changed_files": [
+    "src/dns_investigator/__init__.py"
+  ],
+  "license": "owner approved MIT; upstream exclusions retained",
+  "metadata_description_topics": "updated via authenticated GitHub CLI",
+  "private_reporting": "disabled when checked; no fabricated contact",
+  "main_merged": false,
+  "release_created": false,
+  "pypi_published": false,
+  "history_rewritten": false,
+  "remaining": [
+    "maintainer approval for main/tag/release",
+    "review any additional third-party resource redistribution terms",
+    "private vulnerability contact/reporting setup",
+    "no independent semantic/root-cause accuracy certification"
+  ]
 }

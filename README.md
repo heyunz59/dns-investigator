@@ -110,7 +110,7 @@ The redacted [Baidu replay](data/regressions/baidu-investigation.json) contains 
 
 ## Validation
 
-The pre-cleanup candidate passed **604 tests** on Windows/Linux. This preparation preserves all test functions and migrates fixed data out of historical output directories; [current verification](docs/release/verification.json) records the new run and CI. Tests cover controlled DNS wire exchanges, DNSSEC/NSEC3, authorization, accounting/concurrency, Agent behavior, reports, Web and installed CLI entry points.
+The current candidate passed **604 tests per job** on Linux Python 3.11/3.12 and Windows 3.12 ([actual CI](https://github.com/heyunz59/dns-investigator/actions/runs/41558555186)). A fresh README clone/environment also passed 604 tests. This preparation preserves all test functions and migrates fixed data out of historical output directories; [current verification](docs/release/verification.json) records the new run and CI. Tests cover controlled DNS wire exchanges, DNSSEC/NSEC3, authorization, accounting/concurrency, Agent behavior, reports, Web and installed CLI entry points.
 
 ```bash
 python -m pip install -e ".[web,dev]"

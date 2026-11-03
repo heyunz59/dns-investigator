@@ -1,6 +1,6 @@
 {
-  "files": 184,
-  "bytes": 9708696,
+  "files": 199,
+  "bytes": 9797479,
   "directories": {
     ".env.example": {
       "files": 1,
@@ -32,11 +32,11 @@
     },
     "README.md": {
       "files": 1,
-      "bytes": 9208
+      "bytes": 9379
     },
     "README.zh-CN.md": {
       "files": 1,
-      "bytes": 8339
+      "bytes": 8523
     },
     "SECURITY.md": {
       "files": 1,
@@ -51,8 +51,8 @@
       "bytes": 606120
     },
     "docs": {
-      "files": 29,
-      "bytes": 5417469
+      "files": 44,
+      "bytes": 5505578
     },
     "evaluation": {
       "files": 20,
@@ -68,7 +68,7 @@
     },
     "requirements-lock.txt": {
       "files": 1,
-      "bytes": 954
+      "bytes": 1229
     },
     "requirements-web.txt": {
       "files": 1,
@@ -84,7 +84,7 @@
     },
     "scripts": {
       "files": 7,
-      "bytes": 22180
+      "bytes": 22224
     },
     "src": {
       "files": 43,
@@ -94,5 +94,8 @@
       "files": 46,
       "bytes": 3207454
     }
-  }
+  },
+  "python_test_files": 40,
+  "generated_results_tracked": "README only",
+  "phase": "final candidate docs and receipts"
 }
