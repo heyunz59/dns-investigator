@@ -1,0 +1,8 @@
+{
+  "run_url": "https://github.com/heyunz59/dns-investigator/actions/runs/41558122311",
+  "source_commit": "08739d75fc881f643edd456b9fd6695cdeaf9eb2",
+  "failed_step": "Windows installation helper console-path lookup",
+  "linux_jobs": "PASS",
+  "windows_pytest": "PASS",
+  "fix": "use sysconfig scripts directory; no assertion removed"
+}

@@ -6,6 +6,7 @@ import os
 from pathlib import Path
 import subprocess
 import sys
+import sysconfig
 import tempfile
 
 
@@ -17,7 +18,7 @@ def run(cmd,**kwargs):
 def verify(root,kind,cwd):
     env=os.environ.copy();env.pop('PYTHONPATH',None)
     py=Path(sys.executable)
-    console=py.parent/('dns-investigator.exe' if os.name=='nt' else 'dns-investigator')
+    console=Path(sysconfig.get_path('scripts'))/('dns-investigator.exe' if os.name=='nt' else 'dns-investigator')
     assert console.exists(), 'Installed console entry point missing'
     probe=run([str(py),'-c','import dns_investigator; print(dns_investigator.__file__)'],cwd=cwd,env=env)
     assert probe.returncode==0,probe.stderr
