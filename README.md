@@ -1,6 +1,6 @@
 # DNS Investigator
 
-### Evidence-based DNS troubleshooting with an AI agent
+### DNS troubleshooting with traceable measurements
 
 English · [简体中文](README.zh-CN.md)
 
@@ -8,12 +8,12 @@ English · [简体中文](README.zh-CN.md)
 ![Python 3.11+](https://img.shields.io/badge/python-3.11%2B-blue)
 [![MIT License](https://img.shields.io/badge/license-MIT-green)](LICENSE)
 
-DNS Investigator is an open-source troubleshooting tool that combines a DeepSeek-powered PydanticAI agent with DNS protocol analysis and traceable network evidence. It selects DNS, TCP and HTTP checks according to the question, then produces a structured investigation covering observations, fault scope, validation results and the next troubleshooting steps.
+DNS Investigator is an open-source tool for troubleshooting DNS and related connection problems from the command line or a local Web interface. Describe the problem and provide a domain or URL. A DeepSeek-powered agent then chooses the checks to run, from DNS lookups and resolver comparisons to authoritative queries, TCP connections and HTTP requests.
 
-Use it when a domain fails to resolve, recursive resolvers disagree, DNSSEC prevents resolution, or a website remains inaccessible after DNS succeeds. The CLI supports terminal workflows and machine-readable output; the local Web interface provides resolver comparisons, evidence inspection and an investigation timeline.
+Each check is recorded with its target, time, result and source. The report lets you compare resolver responses, follow DNSSEC verification and connection checks, and decide what to investigate next. It also explains what remains unresolved and suggests further checks.
 
 ![DNS Investigator diagnostic report](docs/images/diagnosis.png)
-*Actual Web replay of a redacted historical investigation. A documentation address represents the original system resolver; results describe the recorded measurement period.*
+*A redacted replay of a historical Baidu investigation. The system resolver address has been replaced; results reflect the network conditions at the time.*
 
 **Contents:** [Quick start](#quick-start) · [Web interface](#web-interface) · [Command line](#command-line) · [Capabilities](#capabilities) · [How it works](#how-it-works) · [Reading reports](#reading-an-investigation-report) · [Development](#development-and-testing)
 
@@ -29,13 +29,9 @@ Use it when a domain fails to resolve, recursive resolvers disagree, DNSSEC prev
 | TCP / TLS / HTTP | IPv4/IPv6 TCP connections, HTTPS verification, HTTP status, redirects and body-read state | Separate resolution, connection, TLS, response-header and follow-up outcomes |
 | Diagnosis and remediation | Structured fault localization, path grouping, candidate analysis and conditional actions | Checks, change prerequisites, verification methods and missing information |
 
-Typical investigations include:
+For example, when system DNS works but a public resolver times out, the report shows both results. It distinguishes NXDOMAIN, NODATA, SERVFAIL, REFUSED, incomplete aliases and timeouts so you can decide whether to investigate the resolver, authoritative servers or a later connection stage.
 
-- **Resolution failures:** distinguish NXDOMAIN, NODATA, SERVFAIL, REFUSED, incomplete aliases and query timeouts.
-- **Resolver-specific failures:** identify a failing measured path while retaining successful comparisons.
-- **DNSSEC failures:** locate supported protocol issues, such as a parent DS that does not match the child DNSKEY.
-- **Website connectivity:** add TCP, TLS and HTTP checks when relevant to the reported symptom, preserving the scope of each connection.
-- **Mixed symptoms:** retain DNS timeouts alongside HTTP 503 or TCP refusal; keep parallel observations when evidence does not establish a primary cause.
+If DNS timeouts and HTTP 503 occur in the same investigation, both appear in the report. The report identifies a main problem when the evidence supports that choice; otherwise, it explains the checks needed for each observation.
 
 ## Quick start
 
@@ -121,7 +117,7 @@ Open **http://127.0.0.1:8765**. The installed `dns-investigator-web` command sta
 | Timeline | Actual calls, parameters, execution state, duration and related evidence |
 | History | Filter and reopen saved investigations by target |
 
-Cancellation retains evidence obtained before execution stops. Export JSON for programmatic analysis or a self-contained HTML report for offline viewing, printing and sharing. Review network identifiers and credentials before sharing either format.
+You can cancel an investigation while it runs; results already obtained will be saved. Export JSON for further analysis, or an HTML report with embedded styles for offline viewing and printing. Review targets, URLs, resolver addresses and credentials before sharing either format.
 
 The Web service binds to loopback for single-machine use. See [security design](docs/security.md) for its access controls and deployment boundaries.
 
@@ -133,7 +129,7 @@ The Web service binds to loopback for single-machine use. See [security design](
 dns-investigator "lookup example.com A records"
 ```
 
-For a single query, the agent retrieves the requested record information and reports addresses, TTLs and provenance. For an investigation, describe the symptom:
+A lookup returns the requested records, TTLs and query source. To investigate a failure, describe the symptom:
 
 ```bash
 dns-investigator "Investigate example.com DNS failures and compare recursive resolvers"
@@ -141,7 +137,7 @@ dns-investigator "Trace example.com delegation and check DNSSEC validation"
 dns-investigator "Investigate why https://example.com/ is inaccessible"
 ```
 
-These commands use the real model and may perform real network checks. The agent chooses tools and follow-ups from the available evidence and budgets.
+These commands call DeepSeek and may make network requests within the configured permissions. The agent uses the results and remaining call allowance to decide whether further checks are needed.
 
 ### JSON and detailed output
 
@@ -171,7 +167,7 @@ python -m dns_investigator.main --help
 | `1` | Investigation execution failed |
 | `2` | Invalid arguments, target or required configuration |
 
-Logs are stored under `results/runs/`, which is excluded from Git. If model summarization fails, obtained evidence and an available deterministic fallback report are retained with the execution failure visible.
+Logs are stored under `results/runs/`, which Git ignores. If the model cannot finish its summary, the application saves the evidence collected so far and provides a fallback report when possible, with the execution failure noted.
 
 ## Try it without an API key
 
@@ -209,9 +205,9 @@ flowchart TD
     R --> O[CLI / JSON / Web / offline HTML]
 ```
 
-**The agent selects the investigation.** It decides whether to query again, compare a path, inspect authority data or finish. A single lookup usually needs only DNS; substantive recursive differences can justify authoritative checks; connectivity symptoms can justify TCP/HTTP.
+One PydanticAI agent carries out the investigation. It reads the question and tool results, then decides what to do next. An A-record lookup usually needs only a DNS query. A significant difference between recursive answers may call for an authoritative query, while a website access problem may need TCP or HTTP checks.
 
-**The application establishes facts and protocol results.** ToolBackend enforces authorization, budgets, concurrent-call ownership and error classification. DNSSEC verification uses an isolated, bounded computation path. The report is derived from recorded measurements and verification results, with the model's candidate analysis retained for review.
+ToolBackend makes the requests and enforces target permissions, timeouts and call limits. DNSSEC verification runs locally with its own computation limits. The report is built from the recorded measurements and verification results; possible causes proposed by the model are listed separately for review.
 
 ### Five registered tools
 
@@ -234,11 +230,11 @@ These are agent tool interfaces. Resolver sets, budgets and permissions are loca
 | E | Measurement | Response or transport observation, with scope and source |
 | V | Local verification | E/V dependencies, policy, trust anchor and validation time |
 
-Composite child requests consume the DNS budget separately. Concurrent measurements are associated by explicit call IDs. Historical replay uses saved ledgers/context rather than filling gaps from the current machine's configuration.
+A single tool call can issue several DNS requests. Each request is recorded and counted separately, and call IDs link concurrent results to the right request. When reopening a historical report, the application uses the saved records and investigation context, without treating current machine settings as past measurements.
 
 ## Reading an investigation report
 
-Start with **fault scope and certainty**, inspect the referenced facts, then choose an action whose prerequisites apply.
+The report summary explains what went wrong and how far the investigation has progressed. Use the levels below to interpret the conclusion, then check the measurements it references.
 
 | Diagnostic level | Interpretation |
 | --- | --- |
@@ -248,7 +244,7 @@ Start with **fault scope and certainty**, inspect the referenced facts, then cho
 | No fault observed | The relevant measured scope showed no corresponding anomaly |
 | Insufficient evidence | More measurements, execution corrections or supported validation material are required |
 
-Remediation follows **CHECK → conditional POSSIBLE_FIX → VERIFY**. Branches specify conditions, interpretation, next actions and prerequisites such as administrative access. The application does not execute configuration changes.
+Recommendations follow **CHECK → POSSIBLE_FIX → VERIFY**. Each recommendation explains when it applies: first confirm the problem, then have an authorized operator make the relevant change, and finally repeat the check. Configuration changes are left to the user.
 
 ### Example: resolver-path timeouts
 
@@ -297,7 +293,7 @@ Common settings are listed below. See [configuration](docs/configuration.md) for
 - **Network permissions:** investigate authorized targets. HTTP preserves Host/SNI and certificate checks while reauthorizing addresses and redirects; TCP has independent address/port controls.
 - **Data handling:** logs remain local by default. Review credentials, private addresses, URLs and model text before sharing; structural checks and automatic redaction do not replace content review.
 
-This is an investigation aid. `completed` indicates local output requirements were met, not root-cause accuracy; an independent semantic accuracy estimate has not been established. See [SECURITY](SECURITY.md), [network security](docs/security.md) and [limitations](docs/limitations.md).
+`completed` means the investigation met the application's output requirements; it does not mean a unique root cause has been confirmed. Independent diagnostic accuracy has not yet been evaluated. See [SECURITY](SECURITY.md), [network security](docs/security.md) and [limitations](docs/limitations.md) for details.
 
 ## Development and testing
 
@@ -316,7 +312,7 @@ python -m pip wheel --no-deps . --wheel-dir dist
 python scripts/check_installation.py --wheel-dir dist --restore-editable --output results/runs/installation.json
 ```
 
-Keep exactly one project wheel in `dist`. Verification runs outside the checkout and checks both CLI entry points, JSON output, the Web application, modules and authenticated resources. See [development](docs/development.md) and [evaluation](docs/evaluation.md) for browser checks, evidence replay and same-model experiments.
+Before running the installation check, make sure `dist` contains exactly one project wheel. The script tests the CLI command and module entry points, JSON output, Web application and bundled resources from outside the checkout. See [development](docs/development.md) and [evaluation](docs/evaluation.md) for browser checks, historical replay and model experiments.
 
 ## Repository layout
 
@@ -340,7 +336,7 @@ dns-investigator/
 - [Development](docs/development.md) · [Evaluation methods](docs/evaluation.md)
 - [Changelog](CHANGELOG.md) · [Historical archive](docs/archive/README.md)
 
-Issues with sanitized reproductions and focused pull requests are welcome. See [CONTRIBUTING](CONTRIBUTING.md) for the development and review process. Report vulnerabilities through [GitHub private vulnerability reporting](https://github.com/heyunz59/dns-investigator/security/advisories/new), keeping sensitive details out of public issues.
+To report a bug, open an Issue with reproduction steps and remove sensitive details from any attached logs. Code, test and documentation changes can be submitted as pull requests; see [CONTRIBUTING](CONTRIBUTING.md) for the requirements. Use [GitHub private vulnerability reporting](https://github.com/heyunz59/dns-investigator/security/advisories/new) for security vulnerabilities.
 
 ## License
 
