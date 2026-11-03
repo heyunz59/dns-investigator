@@ -1,6 +1,6 @@
 # Development
 
-Clone the candidate branch shown in README, create a virtual environment and install `python -m pip install -e ".[web,dev]"`. requirements.txt is the pinned core input; web/dev extras are in pyproject.toml. requirements-web/dev.txt are repository-root compatibility installers. requirements-lock.txt is an environment constraints snapshot, not a universal hash lock.
+Clone the default main branch as shown in README, create a virtual environment and install `python -m pip install -e ".[web,dev]"`. requirements.txt is the pinned core input; web/dev extras are in pyproject.toml. requirements-web/dev.txt are repository-root compatibility installers. requirements-lock.txt is an environment constraints snapshot, not a universal hash lock.
 
 Run `python -m pytest -q`, `python scripts/check_repository.py` and `python scripts/check_public.py`. Build `python -m pip wheel --no-deps . --wheel-dir dist`; after editable installation run `python scripts/check_installation.py --wheel-dir dist --restore-editable --output results/runs/installation.json`. dist must contain exactly one project wheel. Checks run outside the checkout and verify both CLI entries, strict JSON and every module/asset.
 

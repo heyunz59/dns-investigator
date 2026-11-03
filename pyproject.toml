@@ -7,7 +7,8 @@ name = "dns-investigator"
 readme = "README.md"
 license = "MIT"
 license-files = ["LICENSE", "THIRD_PARTY_NOTICES.md"]
-description = "Evidence-based DNS investigation agent using DeepSeek"
+description = "Evidence-based DNS troubleshooting with an AI agent"
+keywords = ["dns", "dnssec", "troubleshooting", "ai-agent", "network-diagnostics"]
 requires-python = ">=3.11"
 dynamic = ["dependencies", "version"]
 
@@ -34,3 +35,10 @@ pythonpath = ["src"]
 asyncio_mode = "auto"
 asyncio_default_fixture_loop_scope = "function"
 testpaths = ["tests"]
+
+[project.urls]
+Homepage = "https://github.com/heyunz59/dns-investigator"
+Repository = "https://github.com/heyunz59/dns-investigator"
+Documentation = "https://github.com/heyunz59/dns-investigator/blob/main/README.md"
+Issues = "https://github.com/heyunz59/dns-investigator/issues"
+Changelog = "https://github.com/heyunz59/dns-investigator/blob/main/CHANGELOG.md"

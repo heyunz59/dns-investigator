@@ -1,4 +1,6 @@
-# v0.6 release preparation
+# v0.6 release preparation — historical record
+
+This directory records the preparation stage before main integration. Its branch, approval and CI statements describe that snapshot; current installation and support information is maintained in the root README and user guides.
 
 Candidate: 0.6.0rc1, chore/open-source-release-prep, based on a8fd689. Runtime changes are limited to __init__.__version__; all other runtime modules/assets retain their baseline content. No diagnosis, network, cryptography or interface algorithm was changed.
 

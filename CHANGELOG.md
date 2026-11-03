@@ -5,7 +5,8 @@
 - Local Web: evidence, troubleshooting branches, timeline, progress, cancellation, history and JSON/offline HTML exports.
 - Mixed-fault summaries retain confirmed and parallel observations. Historical replay restores validated context without current-environment authorization.
 - Release preparation: one version source, bilingual documentation, community templates, stable regression fixtures and verified archive index.
-- No tag, GitHub Release or PyPI publication; main has not been merged.
+- Consolidated the protocol, diagnostic, Web and repository work on main with complete bilingual user documentation.
+- Added the CLI/Web user guide, standard main-branch installation and GitHub private vulnerability reporting.
 
 ## Development milestones (not formal releases)
 

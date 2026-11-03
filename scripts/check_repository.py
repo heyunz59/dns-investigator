@@ -26,7 +26,9 @@ def main():
     assert 'version' in cfg['project']['dynamic'] and 'version' not in cfg['project']
     assert cfg['project']['license']=='MIT' and (root/'LICENSE').exists()
     for name in ('README.md','README.zh-CN.md'):
-        assert 'chore/open-source-release-prep' in (root/name).read_text(encoding='utf8')
+        text=(root/name).read_text(encoding='utf8')
+        assert 'git clone https://github.com/heyunz59/dns-investigator.git' in text
+        assert 'badge.svg?branch=main' in text
     print(json.dumps(dict(status='FAIL' if issues else 'PASS',checked_files=len(names),relative_links=links,issues=issues),ensure_ascii=False))
     return bool(issues)
 
